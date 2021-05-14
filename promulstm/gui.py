@@ -4,7 +4,7 @@ import tkinter.filedialog
 def prompt_folder():
     root = tkinter.Tk()
     root.withdraw()
-    folder = tkinter.filedialog.askdirectory(initialdir='~/projects/promulstm/test')
+    folder = tkinter.filedialog.askdirectory(initialdir='~/github/promulstm/test')
      
     root.destroy()
     return folder
@@ -13,7 +13,7 @@ def prompt_folder():
 def prompt_labj():
     root = tkinter.Tk()
     root.withdraw()
-    labj_path = tkinter.filedialog.askopenfilename(initialdir='~/projects/promulstm/test',
+    labj_path = tkinter.filedialog.askopenfilename(initialdir='~/github/promulstm/test',
                                                    filetypes=[("Excel files", '*.xlsx')])
      
     root.destroy()

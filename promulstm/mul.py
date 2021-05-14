@@ -126,7 +126,8 @@ class Mul:
 
                 img_lst.append({
                                 "filename": file,
-                                "img_id": file.split('/')[-1][:-4] + "_" + str(img_num),
+                                "basename": os.path.basename(file),
+                                "img_id": os.path.basename(file)[:-4] + "_" + str(img_num),
                                 "img_num": img_num,
                                 "size": size,
                                 "xres": xres,
