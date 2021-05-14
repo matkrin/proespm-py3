@@ -17,6 +17,7 @@ class Stm:
             setattr(self, key, img_dict[key])
         """
         self.filename
+        self.basename
         self.img_id
         self.img_num
         self.size

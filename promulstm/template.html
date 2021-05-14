@@ -165,7 +165,7 @@
         <h2>mul-files</h2>
           {% for obj in cls_objs %}
             {% if check_type(obj, 'Stm') and obj.img_id.endswith('_1') %}
-                <li><a href="#{{ obj.filename.split('/')[-1] }}">{{ obj.filename.split('/')[-1] }}</a>
+                <li><a href="#{{ obj.basename }}">{{ obj.basename }}</a>
                     (<strong>Sputtering:</strong> E = {{ obj.sp_E }} keV, p(Ar) = {{ obj.sp_p }} mbar, t = {{ obj.sp_t }} min; 
                     <strong>Annealing:</strong> T = {{ obj.an_T }} K, p(O<sub>2</sub>) = {{ obj.an_p }} mbar, t = {{ obj.an_t}} min)
                 </li>
@@ -175,7 +175,7 @@
         {% for obj in cls_objs %}
             {% if check_type(obj, 'Stm') %}
                 {% if obj.img_id.endswith('_1') %}
-                    <h2 id="{{ obj.filename.split('/')[-1] }}">{{ obj.filename.split('/')[-1] }}</h2>
+                    <h2 id="{{ obj.basename }}">{{ obj.basename }}</h2>
                 {% endif %}
                 <div class="row">
 
