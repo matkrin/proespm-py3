@@ -14,7 +14,7 @@ pc = Progress().console
 
 allowed_ftypes = (".mul", ".png")
 
-def labj(labjournal, obj):
+def extract_labj(labjournal, obj):
     matched_row = labj[labj['ID'].str.match(obj.img_id)]
     row_dict = matched_row.to_dict(orient='list')
     for key in row_dict:
@@ -61,7 +61,7 @@ for obj in track(cls_objs, description="> Processing Images"):
     #row_dict = matched_row.to_dict(orient='list')
     #for key in row_dict:
     #    setattr(obj, key, row_dict[key][0])
-    labj(labj_dir, obj=obj)
+    extract_labj(labj, obj)
 
     if type(obj).__name__ == 'Image':
         pc.log(f"Processing of [bold blue]{obj.filename}[/bold blue]")
