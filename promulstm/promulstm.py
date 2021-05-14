@@ -14,8 +14,7 @@ pc = Progress().console
 
 allowed_ftypes = (".mul", ".png")
 
-def labj(labj_path, obj):
-    labj = pd.read_excel(labj_path, dtype=str)
+def labj(labjournal, obj):
     matched_row = labj[labj['ID'].str.match(obj.img_id)]
     row_dict = matched_row.to_dict(orient='list')
     for key in row_dict:
@@ -26,7 +25,7 @@ files_dir = prompt_folder()
 labj_dir = prompt_labj()
 c.log(f"Selected folder:\n{files_dir}")
 c.log(f"Selected Labjournal:\n{labj_dir}")
-#labj = pd.read_excel(labj_dir, dtype=str)
+labj = pd.read_excel(labj_dir, dtype=str)
 
 
 # get filepaths for prompted folder
