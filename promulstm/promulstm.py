@@ -14,12 +14,19 @@ pc = Progress().console
 
 allowed_ftypes = (".mul", ".png")
 
+def labj(labj_path, obj):
+    labj = pd.read_excel(labj_path, dtype=str)
+    matched_row = labj[labj['ID'].str.match(obj.img_id)]
+    row_dict = matched_row.to_dict(orient='list')
+    for key in row_dict:
+        setattr(obj, key, row_dict[key][0])
+
 # gui prompt
 files_dir = prompt_folder()
 labj_dir = prompt_labj()
 c.log(f"Selected folder:\n{files_dir}")
 c.log(f"Selected Labjournal:\n{labj_dir}")
-labj = pd.read_excel(labj_dir, dtype=str)
+#labj = pd.read_excel(labj_dir, dtype=str)
 
 
 # get filepaths for prompted folder
@@ -51,10 +58,11 @@ cls_objs = sorted(cls_objs, key=lambda x: str(x.datetime))
 slide_num = 1 # for modal image slide show
 for obj in track(cls_objs, description="> Processing Images"):
 
-    matched_row = labj[labj['ID'].str.match(obj.img_id)]
-    row_dict = matched_row.to_dict(orient='list')
-    for key in row_dict:
-        setattr(obj, key, row_dict[key][0])
+    #matched_row = labj[labj['ID'].str.match(obj.img_id)]
+    #row_dict = matched_row.to_dict(orient='list')
+    #for key in row_dict:
+    #    setattr(obj, key, row_dict[key][0])
+    labj(labj_dir, obj=obj)
 
     if type(obj).__name__ == 'Image':
         pc.log(f"Processing of [bold blue]{obj.filename}[/bold blue]")
