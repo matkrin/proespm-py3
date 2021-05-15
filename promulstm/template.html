@@ -195,7 +195,7 @@
                       </tr>
                       <tr>
                         <th>I<sub>tun</sub></th>
-                        <td>{{ obj.current }} nA</td>
+                        <td>{{ "{:.2f}".format(obj.current) }} nA</td>
                       </tr>
                       <tr>
                         <th>U<sub>tun</sub></th>
@@ -222,7 +222,7 @@
                       </tr>
                       <tr>
                         <th>Offset</th>
-                        <td>{{ obj.xoffset }}, {{ obj.yoffset }}</td>
+                        <td>{{ obj.xoffset*0.1 }} nm, {{ obj.yoffset*0.1 }} nm</td>
                       </tr>
                       <tr>
                         <th>Gain</th>
