@@ -1,12 +1,12 @@
 import numpy as np
 import os
-import scipy.optimize
 import base64
 import datetime
 import matplotlib.pyplot as plt
 plt.rcParams.update({'figure.max_open_warning': 0})
 from matplotlib import transforms
 from matplotlib_scalebar.scalebar import ScaleBar
+from pySPM import SPM
 from mul import Mul
 
 
@@ -111,63 +111,32 @@ class Stm:
         return self
 
 
-
     def corr_plane(self):
         """
-        Subtract the average of each line for the image.
-        if inline is True the current data are updated otherwise a new image
-        with the corrected data is returned
-        from https://github.com/scholi/pySPM/blob/master/pySPM/SPM.py
-        index: 0 for image nr. 1, etc. 
+        Correct the image by subtracting a fitted 2D-plane on the data
         """
-        x0, y0 = np.meshgrid(np.arange(self.xres), np.arange(self.yres))
-        z0 = self.img_data
-        x, y, z = x0, y0, z0
-        a = np.column_stack((np.ones(z.ravel().size), x.ravel(), y.ravel()))
-        c, resid, rank, sigma = np.linalg.lstsq(a, z.ravel(), rcond=-1)
-        self.img_data -= c[0] * np.ones(self.img_data.shape) \
-                         + c[1] * x0 + c[2] * y0
-        return self
+        return SPM.SPM_image(BIN=self.img_data).correct_plane()
 
 
     def corr_median_diff(self):
         """
         Correct the image with the median difference
-        from https://github.com/scholi/pySPM/blob/master/pySPM/SPM.py
-        index: 0 for image nr. 1, etc. 
         """
-        n = self.img_data
-        n2 = n-np.vstack([n[:1, :],n[:-1, :]])
-        c = np.cumsum(np.median(n2, axis=1))
-        d = np.tile(c, (n.shape[0], 1)).T
-        self.img_data = n-d
-        return self
+        return SPM.SPM_image(BIN=self.img_data).correct_median_diff()
 
 
     def corr_slope(self):
         """
         Correct the image by subtracting a fitted slope along the y-axis
-        from https://github.com/scholi/pySPM/blob/master/pySPM/SPM.py
-        index: 0 for image nr. 1, etc. 
         """
-        s = np.mean(self.img_data, axis=1)
-        i = np.arange(len(s))
-        fit = np.polyfit(i, s, 1)
-        self.img_data -= np.tile(np.polyval(fit, i).reshape(len(i), 1), len(i))
-        return self
+        return SPM.SPM_image(BIN=self.img_data).correct_slope()
 
 
     def corr_lines(self):
         """
         Subtract the average of each line for the image.
-        if inline is True the current data are updated otherwise a new image 
-        with the corrected data is returned
-        from https://github.com/scholi/pySPM/blob/master/pySPM/SPM.py
-        index: 0 for image nr. 1, etc. 
         """
-        self.img_data -= np.tile(np.mean(self.img_data, axis=1).T,
-                                 (self.img_data.shape[0], 1)).T
-        return self
+        return SPM.SPM_image(BIN=self.img_data).correct_lines()
 
 
     def corr_fit2d(self, nx=2, ny=1):
@@ -184,21 +153,4 @@ class Stm:
         from https://github.com/scholi/pySPM/blob/master/pySPM/SPM.py
         index: 0 for image nr. 1, etc. 
         """
-        x = np.arange(self.img_data.shape[1], dtype=np.float)
-        y = np.arange(self.img_data.shape[0], dtype=np.float)
-        X0, Y0 = np.meshgrid(x, y)
-        X, Y = X0, Y0
-        Z = self.img_data
-        x2 = X.ravel()
-        y2 = Y.ravel()
-        A = np.vstack([x2**i for i in range(nx+1)])
-        A = np.vstack([A]+[y2**i for i in range(1, ny+1)])
-        res = scipy.optimize.lsq_linear(A.T, Z.ravel())
-        r = res['x']
-        Z2 = r[0]*np.ones(self.img_data.shape)
-        for i in range(1, nx+1):
-            Z2 += r[i]*(X0**i)
-        for i in range(1, ny+1):
-            Z2 += r[nx+i]*(Y0**i)
-        self.img_data -= Z2
-        return self
+        return SPM.SPM_image(BIN=self.img_data).corr_fit2d(nx=nx, ny=ny)
