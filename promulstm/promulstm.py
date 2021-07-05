@@ -6,28 +6,49 @@ from rich.progress import track, Progress
 from mul import Mul
 from stm import Stm
 from image import Image
+from xps import XpsVtStm, XpsScan
 from gui import prompt_folder, prompt_labj
-from html import create_html
+from html_rendering import create_html
 
-c = Console()
-pc = Progress().console
 
-allowed_ftypes = (".mul", ".png")
+c = Console()   # normal logging
+pc = Progress().console     # logging in loops with track()
+
+allowed_ftypes = (".mul", ".png", ".txt")
 
 
 def extract_labj(labjournal, obj):
-    matched_row = labjournal[labjournal['ID'].str.match(obj.img_id)]
+    """
+    """
+    matched_row = labjournal[labjournal['ID'].str.match(obj.m_id)]
     row_dict = matched_row.to_dict(orient='list')
-    for key in row_dict:
-        setattr(obj, key, row_dict[key][0])
+    for key, value in row_dict.items():
+        setattr(obj, key, value[0])
 
 
-# gui prompt
+def check_filestart(file, string_to_check):
+    """
+    Check if a file starts with a certain string
+    
+    Args:
+        file (str): file to check
+        string_to_check (str): string that is checked if file starts with it
+    Returns:
+        bool: True if file starts with string_to_check, False if not
+    """
+    with open(file) as f:
+        first_line = f.readline()
+    return True if first_line.startswith(string_to_check) else False
+
+
+# gui prompt for files
 files_dir = prompt_folder()
-labj_dir = prompt_labj()
 c.log(f"Selected folder:\n{files_dir}")
-c.log(f"Selected Labjournal:\n{labj_dir}")
-labj = pd.read_excel(labj_dir, dtype=str)
+# gui prompt for labjournal
+if True:
+    labj_dir = prompt_labj()
+    c.log(f"Selected Labjournal:\n{labj_dir}")
+    labj = pd.read_excel(labj_dir, dtype=str)
 
 
 # get filepaths for prompted folder
@@ -52,28 +73,35 @@ for file in track(file_lst, description="> Importing Files  "):
     elif file.endswith(".png"):
         obj = Image(file)
         cls_objs.append(obj)
+    elif file.endswith(".txt") and check_filestart(file, 'Region'):
+        xps = XpsVtStm(file)
+        xps_scans = [XpsScan(scan_dict, file) for scan_dict in xps.data]
+        cls_objs += xps_scans
 
 #sort by datetime
 cls_objs = sorted(cls_objs, key=lambda x: str(x.datetime))
 
 slide_num = 1 # for modal image slide show in html
 for obj in track(cls_objs, description="> Processing Images"):
-
-    extract_labj(labj, obj)
+    if True:
+        extract_labj(labj, obj)
 
     if type(obj).__name__ == 'Image':
-        pc.log(f"Processing of [bold blue]{obj.filename}[/bold blue]")
+        pc.log(f"Processing of [bold blue]{obj.m_id}[/bold blue]")
         obj.slide_num = slide_num
         slide_num += 1
 
     if type(obj).__name__ == 'Stm':
-        pc.log(f"Processing of [bold cyan]{obj.img_id}[/bold cyan]")
+        pc.log(f"Processing of [bold cyan]{obj.m_id}[/bold cyan]")
         obj.slide_num = slide_num
         slide_num += 1
         obj.corr_plane()
         obj.corr_lines()
         obj.plot(files_dir, save=True)
         obj.add_png(files_dir)
+
+    if type(obj).__name__ == 'XpsScan':
+        pc.log(f"Processing of [bold yellow]{obj.m_id}[/bold yellow]")
 
 create_html(cls_objs, files_dir)
 c.log("HTML-Report created " +  u"[bold green]\u2713[/bold green]")
