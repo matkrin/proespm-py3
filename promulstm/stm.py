@@ -13,8 +13,9 @@ from mul import Mul
 class Stm:
 
     def __init__(self, img_dict):
-        for key in img_dict:
-            setattr(self, key, img_dict[key])
+        for key, value in img_dict.items():
+            setattr(self, key, value)
+        self.m_id = self.img_id
         """
         self.filename
         self.basename
