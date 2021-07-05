@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>TEST</title>
+    <script>{{ bokeh_231 }}</script>
+    <script>{{ bokeh_231_widgets }}</script>
+    <script>{{ bokeh_231_tables }}</script>
+    <style>{{ style_css }}</style>
+  </head>
+  <body>
+    <h1>{{ title }}</h1>
+      <div id="toc">
+        <h2>mul-files</h2>
+          {% for obj in cls_objs %}
+            {% if check_type(obj, 'Stm') and obj.img_id.endswith('_1') %}
+                <li><a href="#{{ obj.basename }}">{{ obj.basename }}</a>
+                    (<strong>Sputtering:</strong> E = {{ obj.sp_E }} keV, p(Ar) = {{ obj.sp_p }} mbar, t = {{ obj.sp_t }} min; 
+                    <strong>Annealing:</strong> T = {{ obj.an_T }} K, p(O<sub>2</sub>) = {{ obj.an_p }} mbar, t = {{ obj.an_t}} min)
+                </li>
+            {% endif %}
+          {% endfor %}
+      </div>
+        {% for obj in cls_objs %}
+            {% if check_type(obj, 'Stm') %}
+                {% if obj.img_id.endswith('_1') %}
+                    <h2 id="{{ obj.basename }}">{{ obj.basename }}</h2>
+                {% endif %}
+                <div class="row">
+
+                  <div class="stm_image">
+                    <img id="{{ obj.img_id }}" src="{{ obj.png_str }}" onclick="openModal();currentSlide({{ obj.slide_num }})" class="hover-shadow" width=100% />
+                  </div>
+                  <!-- IMAGE METADATA -->
+                  <div class="table_column">
+                    <table>
+                      <tr>
+                        <th>Image ID</th>
+                        <td>{{ obj.img_id}}</td>
+                      </tr>
+                      <tr>
+                        <th>Datetime</th>
+                        <td>{{ obj.datetime }}</td>
+                      </tr>
+                      <tr>
+                        <th>I<sub>tun</sub></th>
+                        <td>{{ "{:.2f}".format(obj.current) }} nA</td>
+                      </tr>
+                      <tr>
+                        <th>U<sub>tun</sub></th>
+                        <td>{{ "{:.1f}".format(obj.bias) }} mV</td>
+                      </tr>
+                      <tr>
+                        <th>Scan Size</th>
+                        <td>{{ "{:.0f}".format(obj.xsize*0.1) }} &#215; {{ "{:.0f}".format(obj.ysize*0.1) }} nm&#178;</td>
+                      </tr>
+                      <tr>
+                        <th>Resolution</th>
+                        <td>{{ obj.xres }} &#215; {{ obj.yres }}</td>
+                      </tr>
+                      <tr>
+                        <th>Tilt</th>
+                        <td>{{ obj.tilt }}&#176;</td>
+                      <tr>
+                        <th>Scan Duration</th>
+                        <td>{{ "{:.2f}".format(obj.speed) }} s</td>
+                      </tr>
+                      <tr>
+                        <th>Line Time</th>
+                        <td>{{ "{:.2f}".format(obj.line_time*1000) }} ms</td>
+                      </tr>
+                      <tr>
+                        <th>Offset</th>
+                        <td>{{ "{:.2f}".format(obj.xoffset*0.1) }} nm, {{ "{:.2f}".format(obj.yoffset*0.1) }} nm</td>
+                      </tr>
+                      <tr>
+                        <th>Gain</th>
+                        <td>{{ obj.gain }}</td>
+                      </tr>
+                      <tr>
+                        <th>Mode</th>
+                        <td>{{ obj.mode }}</td>
+                      </tr>
+                    </table>
+                  </div>
+                  <!-- LABJOURNAL DATA -->
+                  <div class="table_column">
+                    <table style:"width=100%" >
+                      {% if obj.img_id.endswith('_1') %}
+                          <tr>
+                            <th colspan="2" style="text-align:center">Sputtering</th>
+                          </tr>
+                          <tr>
+                            <th>Energy</th><td>{{ obj.sp_E }} eV</td>
+                          </tr>
+                          <tr>
+                            <th>p(Ar)</th><td>{{ obj.sp_p }} mbar</td>
+                          </tr>
+                          <tr>
+                            <th>Time</th><td>{{ obj.sp_t }} min</td>
+                          </tr>
+                          <tr><td colspan="2"><hr></td></tr>
+                          <tr>
+                            <th colspan="2" style="text-align:center">Annealing</th>
+                          </tr>
+                          <tr>
+                            <th>Temperature</th><td>{{ obj.an_T }} K</td>
+                          </tr>
+                          <tr>
+                            <th>p(O<sub>2</sub>)</th><td>{{ obj.an_p }} mbar</td>
+                          </tr>
+                          <tr>
+                            <th>Time</th><td>{{ obj.an_t }} min</td>
+                          </tr>
+                          <tr><td colspan="2"><hr></td></tr>
+                      {% endif %}
+                      <tr>
+                        <th>Surface</th><td>{{ obj.surface }}</td>
+                      </tr>
+                      <tr>
+                        <th>Tip</th><td>{{ obj.tip }}</td>
+                      </tr>
+                      <tr>
+                        <th>NAP Gas</th><td>{{ obj.nap_gas }}</td>
+                      </tr>
+                      <tr>
+                        <th>p(NAP)</th><td>{{ obj.nap_p }} mbar</td>
+                      </tr>
+                    </table>
+                  </div>
+                  <!-- LABJOURNAL REMARK -->
+                  <div class="remark_column">
+                      <b>Remark</b>
+                      <p>{{ obj.remark }}</p>
+                  </div>
+
+                </div><!-- End of one row -->
+
+            {% elif check_type(obj, 'Image') %}
+                <div class="row">
+                  <div class="stm_image">
+                    <img id="{{ obj.filename }}" src="{{ obj.png_str }}" 
+                    onclick="openModal();currentSlide({{ obj.slide_num }})" class="hover-shadow" width=100% />
+                  </div>
+
+                  <div class="table_column">
+                    <table style:"width=100%" >
+                      <tr>
+                        <th>ID</th>
+                        <td>{{ obj.m_id }}</td>
+                      </tr>
+                      <tr>
+                        <th>Datetime</th>
+                        <td>{{ obj.datetime }}</td>
+                      </tr> <tr>
+                        <th>Surface</th>
+                        <td>{{ obj.surface }}</td>
+                      </tr>
+                      <tr>
+                        <th>slide num</th>
+                        <td>{{ obj.slide_num }}</td>
+                      </tr>
+                    </table>
+                  </div>
+
+                  <div class="table_column">
+                    <table style:"width=100%" >
+                      <tr>
+                        <th>Labjournal Table</th>
+                        <td>DAta</td>
+                      </tr>
+                      <tr>
+                        <th>Labjournal Table</th>
+                        <td>DAta</td>
+                      </tr>
+                      <tr>
+                        <th>slide num</th>
+                        <td>{{ obj.slide_num }}</td>
+                      </tr>
+                    </table>
+                  </div>
+
+                  <div class="remark_column">
+                    <b>Remark</b>
+                    <p>{{ obj.remark }}</p>
+                  </div>
+                </div><!-- End row -->
+            {% elif check_type(obj, 'XpsScan') %}
+                <div class="row">
+                  <div class="xps_plot">
+                    {{ obj.script }} 
+                    {{ obj.div }}
+                  </div>
+
+                  <div class="table_column">
+                    <table style:"width=100%" >
+                      <tr>
+                        <th>ID</th>
+                        <td>{{ obj.m_id }}</td>
+                      </tr>
+                      <tr>
+                        <th>Scan Number</th>
+                        <td>{{ obj.region }}</td>
+                      </tr>
+                      <tr>
+                        <th>Datetime</th>
+                        <td>{{ obj.datetime }}</td>
+                      </tr>
+                      <tr>
+                        <th>Region</th>
+                        <td>{{ obj.start }} - {{ obj.end }} eV</td>
+                      </tr>
+                      <tr>
+                        <th>Step</th>
+                        <td>{{ obj.step }} eV</td>
+                      </tr>
+                      <tr>
+                        <th>Sweeps</th>
+                        <td>{{ obj.sweeps }}</td>
+                      </tr>
+                      <tr>
+                        <th>Dwell</th>
+                        <td>{{ obj.dwell }} s</td>
+                      </tr>
+                      <tr>
+                          <th>E<sub>pass</sub></th>
+                        <td>{{ obj.e_pass }} eV</td>
+                      </tr>
+                    </table>
+                  </div>
+
+                  <div class="remark_column">
+                    <b>Remark</b>
+                    <p>{{ obj.remark }}</p>
+                  </div>
+
+                </div><!-- End row -->
+            {% endif %}
+        {% endfor %}
+        <!-- The Modal/Lightbox -->
+        <div id="myModal" class="modal">
+          <span class="close cursor" onclick="closeModal()">&times;</span>
+          <div class="modal-content">
+
+                {% for obj in cls_objs %}
+                    {% if check_type(obj, 'Stm') %}
+                        <div class="mySlides">
+                            <div class="numbertext">{{ obj.img_id }}</div>
+                          <img src="{{ obj.png_str }}" width="100%" />
+                          <div class="caption-container">
+                            <p id="caption">{{ obj.img_id }}</p>
+                          </div>
+                        </div>
+                    {% elif check_type(obj, 'Image') %}
+                        <div class="mySlides">
+                            <div class="numbertext">{{ obj.img_id }}</div>
+                          <img src="{{ obj.png_str }}" width="100%" />
+                          <div class="caption-container">
+                            <p id="caption">{{ obj.img_id }}</p>
+                          </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            <!-- Next/previous controls -->
+              <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+              <a class="next" onclick="plusSlides(1)">&#10095;</a>
+          </div>
+        </div>
+
+    <script>{{ slideshow }}</script>
+  </body>
+</html>
