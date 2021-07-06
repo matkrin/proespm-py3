@@ -83,13 +83,18 @@ class XpsScan:
         """
         x = self.xps_data[:,0]
         y = self.xps_data[:,1]
+
+        if self.xps == 'vtstm':
+            x_range = (x[-1], x[0])
+        elif self.xps == 'maxlab_hippie':
+            x_range = (x[0], x[-1])
             
         plot = figure(
             plot_width = 1000,
             plot_height = 540,
             x_axis_label = 'E_b / eV',
             y_axis_label = 'Intensity / arb. units',
-            x_range = (x[-1], x[0]),
+            x_range = x_range,
             sizing_mode = 'scale_width',
             tools = 'pan, wheel_zoom, box_zoom, crosshair, save, reset, hover'
         )
