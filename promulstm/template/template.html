@@ -20,6 +20,11 @@
                     (<strong>Sputtering:</strong> E = {{ obj.sp_E }} keV, p(Ar) = {{ obj.sp_p }} mbar, t = {{ obj.sp_t }} min; 
                     <strong>Annealing:</strong> T = {{ obj.an_T }} K, p(O<sub>2</sub>) = {{ obj.an_p }} mbar, t = {{ obj.an_t}} min)
                 </li>
+              <h2>Files</h2>
+            {% elif  check_type(obj, 'XpsScan') and obj.m_id.endswith('_1') %}
+                <li><a href="#{{ obj.m_id }}">{{ obj.m_id[:-2] }}</a>
+                </li>
+
             {% endif %}
           {% endfor %}
       </div>
@@ -187,7 +192,10 @@
                     <p>{{ obj.remark }}</p>
                   </div>
                 </div><!-- End row -->
-            {% elif check_type(obj, 'XpsScan') %}
+            {% elif check_type(obj, 'XpsScan') and obj.xps == "vtstm" %}
+                {% if obj.m_id.endswith('_1') %}
+                    <h2 id="{{ obj.m_id }}">{{ obj.m_id[:-2] }}</h2>
+                {% endif %}
                 <div class="row">
                   <div class="xps_plot">
                     {{ obj.script }} 
@@ -223,6 +231,67 @@
                       <tr>
                         <th>Dwell</th>
                         <td>{{ obj.dwell }} s</td>
+                      </tr>
+                      <tr>
+                          <th>E<sub>pass</sub></th>
+                        <td>{{ obj.e_pass }} eV</td>
+                      </tr>
+                    </table>
+                  </div>
+
+                  <div class="remark_column">
+                    <b>Remark</b>
+                    <p>{{ obj.remark }}</p>
+                  </div>
+
+                </div><!-- End row -->
+            {% elif check_type(obj, 'XpsScan') and obj.xps == "maxlab_hippie" %}
+                {% if obj.m_id.endswith('_1') %}
+                    <h2 id="{{ obj.m_id }}">{{ obj.m_id[:-2] }}</h2>
+                {% endif %}
+                <div class="row">
+                  <div class="xps_plot">
+                    {{ obj.script }} 
+                    {{ obj.div }}
+                  </div>
+
+                  <div class="table_column">
+                    <table style:"width=100%" >
+                      <tr>
+                        <th>ID</th>
+                        <td>{{ obj.m_id }}</td>
+                      </tr>
+                      <tr>
+                        <th>Region Name</th>
+                        <td>{{ obj.region_name }}</td>
+                      </tr>
+                      <tr>
+                        <th>Scan Number</th>
+                        <td>{{ obj.region }}</td>
+                      </tr>
+                      <tr>
+                        <th>Datetime</th>
+                        <td>{{ obj.datetime }}</td>
+                      </tr>
+                      <tr>
+                        <th>E<sub>exitation</sub></th>
+                        <td>{{ "{:.2f}".format(obj.excitation_energy) }} eV</td>
+                      </tr>
+                      <tr>
+                        <th>Region</th>
+                        <td>{{ obj.dim_scale[-1] }} - {{ obj.dim_scale[0] }} eV</td>
+                      </tr>
+                      <tr>
+                        <th>Step</th>
+                        <td>{{ obj.step }} eV</td>
+                      </tr>
+                      <tr>
+                        <th>Sweeps</th>
+                        <td>{{ obj.sweeps }}</td>
+                      </tr>
+                      <tr>
+                        <th>Step Time (Dwell?)</th>
+                        <td>{{ obj.step_time }} ms?</td>
                       </tr>
                       <tr>
                           <th>E<sub>pass</sub></th>
