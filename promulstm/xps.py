@@ -3,7 +3,6 @@ import os
 import datetime
 from bokeh.plotting import figure
 from bokeh.embed import components
-from rich import print
 
 
 class XpsVtStm:
@@ -62,13 +61,19 @@ class XpsScan:
     def __init__(self, data, filepath):
         self.filepath = filepath
         self.filename = os.path.basename(filepath)
-        self.m_id = os.path.splitext(self.filename)[0]
         self.datetime = datetime.datetime.utcfromtimestamp(
             os.path.getmtime(filepath)).strftime('%Y-%m-%d %H:%M:%S')
 
         for key, value in data.items():
             setattr(self, key.lower(), value)
-        self.e_pass = data['CAE/CRR']
+
+        self.m_id = f'{os.path.splitext(self.filename)[0]}_{self.region}'
+
+        if self.xps == 'vtstm':
+            self.e_pass = data['CAE/CRR']
+
+        if self.xps == 'maxlab_hippie':
+            self.datetime = f'{self.date} {self.time}'
 
         self.plot()
 
@@ -97,3 +102,16 @@ class XpsScan:
         plot.line(x, y)
         plot.toolbar.active_scroll = "auto"
         self.script, self.div = components(plot, wrap_script=True)
+
+
+    def save_plain_data(self, directory):
+        plain_data_dir = os.path.join(
+            directory,
+            self.filename.split('.')[0] + "_plain_data"
+        )
+        if not os.path.exists(plain_data_dir):
+            os.makedirs(plain_data_dir)
+        np.savetxt(
+            os.path.join(plain_data_dir, self.m_id + ".txt"),
+            self.xps_data
+        )

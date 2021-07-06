@@ -7,6 +7,7 @@ from mul import Mul
 from stm import Stm
 from image import Image
 from xps import XpsVtStm, XpsScan
+from xps_hippie import XpsHippie
 from gui import prompt_folder, prompt_labj
 from html_rendering import create_html
 
@@ -45,7 +46,7 @@ def check_filestart(file, string_to_check):
 files_dir = prompt_folder()
 c.log(f"Selected folder:\n{files_dir}")
 # gui prompt for labjournal
-if True:
+if False:
     labj_dir = prompt_labj()
     c.log(f"Selected Labjournal:\n{labj_dir}")
     labj = pd.read_excel(labj_dir, dtype=str)
@@ -66,24 +67,29 @@ for entry in os.scandir(files_dir):
 # create class instances
 cls_objs = []
 for file in track(file_lst, description="> Importing Files  "):
-    if file.endswith(".mul"):
+    if file.endswith('.mul'):
         mul = Mul(file)
         stm_imgs = [Stm(img_dic) for img_dic in mul.img_lst]
         cls_objs += stm_imgs
-    elif file.endswith(".png"):
+    elif file.endswith('.png'):
         obj = Image(file)
         cls_objs.append(obj)
-    elif file.endswith(".txt") and check_filestart(file, 'Region'):
-        xps = XpsVtStm(file)
-        xps_scans = [XpsScan(scan_dict, file) for scan_dict in xps.data]
-        cls_objs += xps_scans
+    elif file.endswith('.txt') and check_filestart(file, 'Region'):
+        xps_vt = XpsVtStm(file)
+        xps_vt_scans = [XpsScan(scan_dict, file) for scan_dict in xps_vt.data]
+        cls_objs += xps_vt_scans
+    elif file.endswith('.txt') and check_filestart(file, '[Info]'):
+        xps_hippie = XpsHippie(file)
+        xps_hippie_scans = [XpsScan(scan_dict, file) for scan_dict in xps_hippie.data]
+        cls_objs += xps_hippie_scans
+        
 
 #sort by datetime
 cls_objs = sorted(cls_objs, key=lambda x: str(x.datetime))
 
 slide_num = 1 # for modal image slide show in html
 for obj in track(cls_objs, description="> Processing Images"):
-    if True:
+    if False:
         extract_labj(labj, obj)
 
     if type(obj).__name__ == 'Image':
@@ -102,6 +108,9 @@ for obj in track(cls_objs, description="> Processing Images"):
 
     if type(obj).__name__ == 'XpsScan':
         pc.log(f"Processing of [bold yellow]{obj.m_id}[/bold yellow]")
+        if obj.xps == 'maxlab_hippie':
+            obj.save_plain_data(files_dir)
+            pc.log(f"Saved plain data as txt of {obj.m_id}")
 
 create_html(cls_objs, files_dir)
 c.log("HTML-Report created " +  u"[bold green]\u2713[/bold green]")
