@@ -5,10 +5,13 @@ import datetime
 
 class Image():
     def __init__(self, filepath):
-        self.png_str = None
         self.filepath = filepath
-        self.filename = os.path.basename(filepath)
+        self.basename = os.path.basename(self.filepath)
+        self.dirname = os.path.dirname(self.filepath)
+        self.filename, self.fileext = os.path.splitext(self.basename)
+
         self.m_id = os.path.splitext(self.filename)[0]
+        self.png_str = None
         self.encode_png()
         self.datetime = datetime.datetime.utcfromtimestamp(
             os.path.getmtime(filepath)).strftime('%Y-%m-%d %H:%M:%S')
