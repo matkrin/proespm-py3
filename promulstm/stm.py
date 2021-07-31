@@ -6,141 +6,107 @@ import matplotlib.pyplot as plt
 plt.rcParams.update({'figure.max_open_warning': 0})
 from matplotlib import transforms
 from matplotlib_scalebar.scalebar import ScaleBar
+import seaborn as sns
 from pySPM import SPM
-from mul import Mul
 
 
 class Stm:
 
-    def __init__(self, img_dict):
-        for key, value in img_dict.items():
-            setattr(self, key, value)
-        self.m_id = self.img_id
-        """
-        self.filename
-        self.basename
-        self.img_id
-        self.img_num
-        self.size
-        self.xres
-        self.yres
-        self.zres
-        self.datetime
-        self.xsize
-        self.ysize
-        self.xoffset
-        self.yoffset
-        self.zscale
-        self.tilt
-        self.speed
-        self.line_time
-        self.bias
-        self.current
-        self.sample_string
-        self.title_string
-        self.postpr
-        self.postd1
-        self.mode
-        self.currfac
-        self.num_pointscans
-        self.unitnr
-        self.version
-        self.gain
-        self.img_data
-        """
-
-
-    def plot(self, dirc, save=False, show=False):
+    def stm_plot(self, img_array, xsize, ysize, save_dir, save_name, save=False, show=False):
         """
         Plot the image.
         """
+        rocket = sns.color_palette("rocket", as_cmap=True)
         fig, ax = plt.subplots(figsize=(5,5))
-        ax.imshow(self.img_data*0.1,   #in nm
-                   cmap='inferno',
-                   vmin=None,
-                   vmax=None,
-                   origin='lower',
-                   extent=(0, self.xsize*0.1,
-                           0, self.ysize*0.1) #in nm
-                 )
+        ax.imshow(
+            img_array,
+            cmap=rocket,
+            vmin=None,
+            vmax=None,
+            origin='lower',
+            extent=(0, xsize, 0, ysize),
+        )
         #plt.colorbar()
-        scalebar = ScaleBar(1,
-                            "nm",
-                            length_fraction=0.3,
-                            location='lower right',
-                            color='white',
-                            box_alpha=0
-                           )
+        scalebar = ScaleBar(
+            1,
+            "nm",
+            length_fraction=0.3,
+            location='lower right',
+            color='white',
+            box_alpha=0
+        )
         ax.add_artist(scalebar)
-        ax.tick_params(left=False,
-                       bottom=False,
-                       labelleft=False,
-                       labelbottom=False
-                      )
+        ax.tick_params(
+            left=False,
+            bottom=False,
+            labelleft=False,
+            labelbottom=False
+        )
         plt.tight_layout()
 
         if save is True:
-            png_dir = os.path.join(dirc, self.filename.split('.')[0] + "_png")
-            if not os.path.exists(png_dir):
-                os.makedirs(png_dir)
+            if not os.path.exists(save_dir):
+                os.makedirs(save_dir)
+
             extent = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-            plt.savefig(os.path.join(png_dir, self.img_id +'.png'),
-                        bbox_inches=extent
-                       )
+            plt.savefig(os.path.join(save_dir, save_name + '.png'), bbox_inches=extent)
+
         if show is True:
             plt.show()
         return fig
 
 
-    def add_png(self, dirc):
+    def stm_add_png(self, save_dir, png_name):
         """
         adds the png encoded string to the image dictionary when save=True
         for plot
         base64 encode: encodes png to bytes type
         decode: makes a string out of byte type
         """
-        png_dir = os.path.join(dirc, self.filename.split('.')[0] + "_png")
-        with open(os.path.join(png_dir, self.img_id + ".png"), 'rb') as f:
-            self.png_str = 'data:image/png;base64, ' + base64.b64encode(f.read()).decode('ascii')
+        png_dir = save_dir
+        with open(os.path.join(png_dir, png_name + ".png"), 'rb') as f:
+            png_str = 'data:image/png;base64, ' + base64.b64encode(f.read()).decode('ascii')
+
+        return png_str
 
 
-    def fix_zero(self):
+    def fix_zero(self, img_array):
         """
         Shift all values so that the minimum becomes zero.
         """
-        self.img_data -= np.min(self.img_data)
+        img_array -= np.min(img_array)
         return self
 
 
-    def corr_plane(self):
+    def corr_plane(self, img_array):
         """
         Correct the image by subtracting a fitted 2D-plane on the data
         """
-        return SPM.SPM_image(BIN=self.img_data).correct_plane()
+        return SPM.SPM_image(BIN=img_array).correct_plane()
 
 
-    def corr_median_diff(self):
+    def corr_median_diff(self, img_array):
         """
         Correct the image with the median difference
         """
-        return SPM.SPM_image(BIN=self.img_data).correct_median_diff()
+        return SPM.SPM_image(BIN=img_array).correct_median_diff()
 
 
-    def corr_slope(self):
+    def corr_slope(self, img_array):
         """
         Correct the image by subtracting a fitted slope along the y-axis
         """
-        return SPM.SPM_image(BIN=self.img_data).correct_slope()
+        return SPM.SPM_image(BIN=img_array).correct_slope()
 
 
-    def corr_lines(self):
+    def corr_lines(self, img_array):
         """
         Subtract the average of each line for the image.
         """
-        return SPM.SPM_image(BIN=self.img_data).correct_lines()
+        return SPM.SPM_image(BIN=img_array).correct_lines()
 
 
-    def corr_fit2d(self, nx=2, ny=1):
+    def corr_fit2d(self, img_array, nx=2, ny=2):
         """
         Subtract a fitted 2D-polynom of nx and ny order from the data
         Parameters
@@ -152,6 +118,6 @@ class Stm:
         poly : bool
             if True the polynom is returned as output
         from https://github.com/scholi/pySPM/blob/master/pySPM/SPM.py
-        index: 0 for image nr. 1, etc. 
+        index: 0 for image nr. 1, etc.
         """
-        return SPM.SPM_image(BIN=self.img_data).corr_fit2d(nx=nx, ny=ny)
+        return SPM.SPM_image(BIN=img_array).corr_fit2d(nx=nx, ny=ny)
