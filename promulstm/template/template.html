@@ -11,39 +11,39 @@
     <style>{{ style_css }}</style>
   </head>
   <body>
+    <button onclick="topFunction()" id="top_button" title="Go to top">Top</button> 
     <h1>{{ title }} - Report</h1>
       <div id="toc">
-        <h2>mul-files</h2>
+        <h2>multi-files</h2>
           {% for obj in cls_objs %}
-            {% if check_type(obj, 'Stm') and obj.img_id.endswith('_1') %}
+            {% if check_type(obj, 'StmMul') and obj.m_id.endswith('_1') %}
                 <li><a href="#{{ obj.basename }}">{{ obj.basename }}</a>
-                    (<strong>Sputtering:</strong> E = {{ obj.sp_E }} keV, p(Ar) = {{ obj.sp_p }} mbar, t = {{ obj.sp_t }} min; 
+                    (<strong>Sputtering:</strong> E = {{ obj.sp_E }} keV, p(Ar) = {{ obj.sp_p }} mbar, t = {{ obj.sp_t }} min;
                     <strong>Annealing:</strong> T = {{ obj.an_T }} K, p(O<sub>2</sub>) = {{ obj.an_p }} mbar, t = {{ obj.an_t}} min)
                 </li>
-              <h2>Files</h2>
             {% elif  check_type(obj, 'XpsScan') and obj.m_id.endswith('_1') %}
-                <li><a href="#{{ obj.m_id }}">{{ obj.m_id[:-2] }}</a>
+                <li><a href="#{{ obj.basename }}">{{ obj.basename }}</a>
                 </li>
 
             {% endif %}
           {% endfor %}
       </div>
         {% for obj in cls_objs %}
-            {% if check_type(obj, 'Stm') %}
-                {% if obj.img_id.endswith('_1') %}
+            {% if check_type(obj, 'StmMul') %}
+                {% if obj.m_id.endswith('_1') %}
                     <h2 id="{{ obj.basename }}">{{ obj.basename }}</h2>
                 {% endif %}
                 <div class="row">
 
                   <div class="stm_image">
-                    <img id="{{ obj.img_id }}" src="{{ obj.png_str }}" onclick="openModal();currentSlide({{ obj.slide_num }})" class="hover-shadow" width=100% />
+                    <img id="{{ obj.m_id }}" src="{{ obj.png_str }}" onclick="openModal();currentSlide({{ obj.slide_num }})" class="hover-shadow" width=100% />
                   </div>
                   <!-- IMAGE METADATA -->
                   <div class="table_column">
                     <table>
                       <tr>
                         <th>Image ID</th>
-                        <td>{{ obj.img_id}}</td>
+                        <td>{{ obj.m_id}}</td>
                       </tr>
                       <tr>
                         <th>Datetime</th>
@@ -59,7 +59,7 @@
                       </tr>
                       <tr>
                         <th>Scan Size</th>
-                        <td>{{ "{:.0f}".format(obj.xsize*0.1) }} &#215; {{ "{:.0f}".format(obj.ysize*0.1) }} nm&#178;</td>
+                        <td>{{ "{:.0f}".format(obj.xsize) }} &#215; {{ "{:.0f}".format(obj.ysize) }} nm&#178;</td>
                       </tr>
                       <tr>
                         <th>Resolution</th>
@@ -78,7 +78,7 @@
                       </tr>
                       <tr>
                         <th>Offset</th>
-                        <td>{{ "{:.2f}".format(obj.xoffset*0.1) }} nm, {{ "{:.2f}".format(obj.yoffset*0.1) }} nm</td>
+                        <td>{{ "{:.2f}".format(obj.xoffset) }} nm, {{ "{:.2f}".format(obj.yoffset) }} nm</td>
                       </tr>
                       <tr>
                         <th>Gain</th>
@@ -93,7 +93,7 @@
                   <!-- LABJOURNAL DATA -->
                   <div class="table_column">
                     <table style:"width=100%" >
-                      {% if obj.img_id.endswith('_1') %}
+                      {% if obj.m_id.endswith('_1') %}
                           <tr>
                             <th colspan="2" style="text-align:center">Sputtering</th>
                           </tr>
@@ -143,10 +143,82 @@
 
                 </div><!-- End of one row -->
 
+                {% elif check_type(obj, 'StmMatrix') %}
+                    <div class="row">
+
+                      <div class="stm_image">
+                        <img id="{{ obj.m_id }}" src="{{ obj.png_str_fw }}" onclick="openModal();currentSlide({{ obj.slide_num }})" class="hover-shadow" width=100% />
+                      </div>
+                      <div class="stm_image">
+                        <img id="{{ obj.m_id }}" src="{{ obj.png_str_bw }}" onclick="openModal();currentSlide({{ obj.slide_num }})" class="hover-shadow" width=100% />
+                      </div>
+                      <!-- IMAGE METADATA -->
+                      <div class="table_column">
+                        <table>
+                          <tr>
+                            <th>Image ID</th>
+                            <td>{{ obj.m_id}}</td>
+                          </tr>
+                          <tr>
+                            <th>Datetime</th>
+                            <td>{{ obj.datetime }}</td>
+                          </tr>
+                          <tr>
+                            <th>I<sub>tun</sub></th>
+                            <td>{{ "{:.2f}".format(obj.current) }} nA</td>
+                          </tr>
+                          <tr>
+                            <th>U<sub>tun</sub></th>
+                            <td>{{ "{:.1f}".format(obj.bias) }} mV</td>
+                          </tr>
+                          <tr>
+                            <th>Scan Size</th>
+                            <td>{{ "{:.0f}".format(obj.xsize) }} &#215; {{ "{:.0f}".format(obj.ysize) }} nm&#178;</td>
+                          </tr>
+                          <tr>
+                            <th>Resolution</th>
+                            <td>{{ obj.xres }} &#215; {{ obj.yres }}</td>
+                          </tr>
+                          <tr>
+                            <th>Tilt</th>
+                            <td>{{ obj.tilt }}&#176;</td>
+                          <tr>
+                            <th>Scan Duration</th>
+                            <td>{{ "{:.2f}".format(obj.speed) }} s</td>
+                          </tr>
+                          <tr>
+                            <th>Line Time</th>
+                            <td>{{ "{:.2f}".format(obj.line_time) }} ms</td>
+                          </tr>
+                          <tr>
+                            <th>Offset</th>
+                            <td>{{ "{:.2f}".format(obj.xoffset) }} nm, {{ "{:.2f}".format(obj.yoffset) }} nm</td>
+                          </tr>
+                        </table>
+                      </div>
+                      <!-- LABJOURNAL DATA -->
+                      <div class="table_column">
+                        <table style:"width=100%" >
+                          <tr>
+                            <th>Surface</th><td>{{ obj.surface }}</td>
+                          </tr>
+                          <tr>
+                            <th>Tip</th><td>{{ obj.tip }}</td>
+                          </tr>
+                        </table>
+                      </div>
+                      <!-- LABJOURNAL REMARK -->
+                      <div class="remark_column">
+                          <b>Remark</b>
+                          <p>{{ obj.remark }}</p>
+                      </div>
+
+                    </div><!-- End of one row -->
+
             {% elif check_type(obj, 'Image') %}
                 <div class="row">
                   <div class="stm_image">
-                    <img id="{{ obj.filename }}" src="{{ obj.png_str }}" 
+                    <img id="{{ obj.m_id }}" src="{{ obj.png_str }}"
                     onclick="openModal();currentSlide({{ obj.slide_num }})" class="hover-shadow" width=100% />
                   </div>
 
@@ -194,11 +266,11 @@
                 </div><!-- End row -->
             {% elif check_type(obj, 'XpsScan') and obj.xps == "vtstm" %}
                 {% if obj.m_id.endswith('_1') %}
-                    <h2 id="{{ obj.m_id }}">{{ obj.m_id[:-2] }}</h2>
+                    <h2 id="{{ obj.basename }}">{{ obj.basename }}</h2>
                 {% endif %}
                 <div class="row">
                   <div class="xps_plot">
-                    {{ obj.script }} 
+                    {{ obj.script }}
                     {{ obj.div }}
                   </div>
 
@@ -247,11 +319,11 @@
                 </div><!-- End row -->
             {% elif check_type(obj, 'XpsScan') and obj.xps == "maxlab_hippie" %}
                 {% if obj.m_id.endswith('_1') %}
-                    <h2 id="{{ obj.m_id }}">{{ obj.m_id[:-2] }}</h2>
+                    <h2 id="{{ obj.basename }}">{{ obj.basename }}</h2>
                 {% endif %}
                 <div class="row">
                   <div class="xps_plot">
-                    {{ obj.script }} 
+                    {{ obj.script }}
                     {{ obj.div }}
                   </div>
 
@@ -304,30 +376,47 @@
                     <b>Remark</b>
                     <p>{{ obj.remark }}</p>
                   </div>
-
                 </div><!-- End row -->
             {% endif %}
         {% endfor %}
+        <a href="#top">Back to Top</a>
         <!-- The Modal/Lightbox -->
         <div id="myModal" class="modal">
           <span class="close cursor" onclick="closeModal()">&times;</span>
           <div class="modal-content">
 
                 {% for obj in cls_objs %}
-                    {% if check_type(obj, 'Stm') %}
+                    {% if check_type(obj, 'StmMul') %}
                         <div class="mySlides">
-                            <div class="numbertext">{{ obj.img_id }}</div>
+                            <div class="numbertext">{{ obj.m_id }}</div>
                           <img src="{{ obj.png_str }}" width="100%" />
                           <div class="caption-container">
-                            <p id="caption">{{ obj.img_id }}</p>
+                            <p id="caption">{{ obj.m_id }}</p>
                           </div>
                         </div>
+
+                  {% elif check_type(obj, 'StmMatrix') %}
+                      <div class="mySlides">
+
+                            <div class="numbertext">{{ obj.m_id }}</div>
+                          <img src="{{ obj.png_str_fw }}" width="100%"/>
+
+                            <div class="numbertext">{{ obj.m_id }}</div>
+                          <img src="{{ obj.png_str_bw }}" width="100%"/>
+
+                        <!--
+                        <div class="caption-container">
+                          <p id="caption">{{ obj.m_id }}</p>
+                        </div>
+                      -->
+                      </div>
+
                     {% elif check_type(obj, 'Image') %}
                         <div class="mySlides">
-                            <div class="numbertext">{{ obj.img_id }}</div>
+                            <div class="numbertext">{{ obj.m_id }}</div>
                           <img src="{{ obj.png_str }}" width="100%" />
                           <div class="caption-container">
-                            <p id="caption">{{ obj.img_id }}</p>
+                            <p id="caption">{{ obj.m_id }}</p>
                           </div>
                         </div>
                     {% endif %}
@@ -339,5 +428,6 @@
         </div>
 
     <script>{{ slideshow }}</script>
+    <script>{{ top_button }}</script>
   </body>
 </html>
