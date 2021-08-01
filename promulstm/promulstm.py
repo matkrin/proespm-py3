@@ -18,7 +18,9 @@ pc = Progress().console     # logging in loops with track()
 
 allowed_ftypes = ('.mul', '.png', '.txt', '.Z_mtrx')
 
-config_file = f'{os.path.dirname(__file__)}/../config.json'
+config_file = os.path.join(
+    os.path.join(os.path.dirname(__file__), '..'), 'config.json'
+)
 
 with open(config_file) as f:
     config = json.load(f)
