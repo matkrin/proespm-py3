@@ -36,7 +36,7 @@ def extract_labj(labjournal, obj):
             setattr(obj, key, value[0])
 
     except IndexError:
-        c.log(f"No Labjournal Data for {obj.m_id}")
+        c.log(f"\nNo Labjournal Data for {obj.m_id}")
 
 def check_filestart(file, string_to_check):
     """
@@ -103,7 +103,7 @@ for file in track(file_lst, description="> Importing Files  "):
 cls_objs = sorted(cls_objs, key=lambda x: str(x.datetime))
 
 slide_num = 1 # for modal image slide show in html
-for obj in track(cls_objs, description="> Processing Images"):
+for obj in track(cls_objs, description="> Processing"):
     if config['use_labjournal']:
         extract_labj(labj, obj)
 
