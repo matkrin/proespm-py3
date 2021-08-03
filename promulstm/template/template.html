@@ -136,10 +136,12 @@
                     </table>
                   </div>
                   <!-- LABJOURNAL REMARK -->
+                  {% if obj.remark %}
                   <div class="remark_column">
                       <b>Remark</b>
                       <p>{{ obj.remark }}</p>
                   </div>
+                  {% endif %}
 
                 </div><!-- End of one row -->
 
@@ -208,10 +210,12 @@
                         </table>
                       </div>
                       <!-- LABJOURNAL REMARK -->
+                      {% if obj.remark %}
                       <div class="remark_column">
                           <b>Remark</b>
                           <p>{{ obj.remark }}</p>
                       </div>
+                      {% endif %}
 
                     </div><!-- End of one row -->
 
@@ -258,11 +262,13 @@
                       </tr>
                     </table>
                   </div>
-
+                    
+                  {% if obj.remark %}
                   <div class="remark_column">
                     <b>Remark</b>
                     <p>{{ obj.remark }}</p>
                   </div>
+                  {% endif %}
                 </div><!-- End row -->
             {% elif check_type(obj, 'XpsScan') and obj.xps == "vtstm" %}
                 {% if obj.m_id.endswith('_1') %}
@@ -311,10 +317,12 @@
                     </table>
                   </div>
 
+                  {% if obj.remark %}
                   <div class="remark_column">
                     <b>Remark</b>
                     <p>{{ obj.remark }}</p>
                   </div>
+                  {% endif %}
 
                 </div><!-- End row -->
             {% elif check_type(obj, 'XpsScan') and obj.xps == "maxlab_hippie" %}
@@ -372,11 +380,15 @@
                     </table>
                   </div>
 
+                  {% if obj.remark %}
                   <div class="remark_column">
                     <b>Remark</b>
                     <p>{{ obj.remark }}</p>
                   </div>
+                  {% endif %}
+
                 </div><!-- End row -->
+
             {% endif %}
         {% endfor %}
         <a href="#top">Back to Top</a>
