@@ -16,7 +16,6 @@ def create_html(class_obj_lst,  output_path):
 
     output_name = os.path.basename(output_path)
     template_dir = os.path.join(os.path.dirname(__file__), 'template')
-    print(template_dir)
 
     env = Environment(loader=FileSystemLoader(template_dir))
     env.globals['check_type'] = check_type      #adds function to jinja env
