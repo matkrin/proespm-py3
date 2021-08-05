@@ -18,15 +18,17 @@ tr:nth-child(even) {background-color: #f2f2f2;}
   padding: 20px;
 }
 .row {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   border-style: solid;
-  border-width: 1px;
+  border-width: 0px;
   border-color: grey;
   border-radius: 20px 20px 20px 20px;
+  box-shadow: 0 0  3px 3px #c2c2c2;
 }
 .stm_image {
+  cursor: pointer;
   float: left;
-  width: 25%;
+  width: 22%;
   padding: 20px;
 }
 .xps_plot {
@@ -69,7 +71,7 @@ tr:nth-child(even) {background-color: #f2f2f2;}
   position: relative;
   margin: auto;
   padding: 0;
-  max-width: 870px;
+  max-width: 850px;
 }
 
 /* The Close Button */
@@ -153,4 +155,24 @@ img.hover-shadow {
 
 .hover-shadow:hover {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#top_button {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
+  right: 30px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: #FFB3BA; /* Set a background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 15px; /* Some padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 18px; /* Increase font size */
+}
+
+#top_button:hover {
+  background-color: #40d1b6; /* Add a dark-grey background on hover */
 }

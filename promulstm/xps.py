@@ -8,17 +8,18 @@ from bokeh.embed import components
 class XpsVtStm:
     def __init__(self, filepath):
         self.filepath = filepath
-        self.filename = os.path.splitext(self.filepath)[0]
+        self.basename = os.path.basename(filepath)
+        self.filename, self.fileext = os.path.splitext(self.basename)
         self.data = None
         self.read_xps_vtstm(filepath)
 
-    
+
     def read_xps_vtstm(self, filepath):
         """
         """
         with open(filepath) as f:
             scan_num = f.read().count('Region')
-            f.seek(0) 
+            f.seek(0)
 
             self.data = []
             for i in range(scan_num):
@@ -60,14 +61,15 @@ class XpsVtStm:
 class XpsScan:
     def __init__(self, data, filepath):
         self.filepath = filepath
-        self.filename = os.path.basename(filepath)
+        self.basename = os.path.basename(filepath)
+        self.filename, self.fileext = os.path.splitext(self.basename)
         self.datetime = datetime.datetime.utcfromtimestamp(
             os.path.getmtime(filepath)).strftime('%Y-%m-%d %H:%M:%S')
 
         for key, value in data.items():
             setattr(self, key.lower(), value)
 
-        self.m_id = f'{os.path.splitext(self.filename)[0]}_{self.region}'
+        self.m_id = f'{self.filename}_{self.region}'
 
         if self.xps == 'vtstm':
             self.e_pass = data['CAE/CRR']
@@ -88,7 +90,7 @@ class XpsScan:
             x_range = (x[-1], x[0])
         elif self.xps == 'maxlab_hippie':
             x_range = (x[0], x[-1])
-            
+
         plot = figure(
             plot_width = 1000,
             plot_height = 540,

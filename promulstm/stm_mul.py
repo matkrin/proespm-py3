@@ -1,26 +1,27 @@
-import struct
 import os
-from datetime import datetime
+import datetime
+import struct
 import numpy as np
+from stm import Stm
 
 
 class Mul:
 
-    def __init__(self, file):
-        self.file = file
-        self.img_lst = self.read_mul(file)
-        self.datetime = datetime.utcfromtimestamp(
-            os.path.getmtime(file)).strftime('%Y-%m-%d %H:%M:%S')
+    def __init__(self, filepath):
+        self.filepath = filepath
+        self.img_lst = self.read_mul(filepath)
+        self.datetime = datetime.datetime.utcfromtimestamp(
+            os.path.getmtime(filepath)).strftime('%Y-%m-%d %H:%M:%S')
 
-    def read_mul(self, file):
-        filesize = os.path.getsize(file)
+    def read_mul(self, filepath):
+        filesize = os.path.getsize(filepath)
         mul_block = 128
 
-        with open(file, 'rb') as f:
+        with open(filepath, 'rb') as f:
             nr = struct.unpack('h', f.read(2))[0]
             adr = struct.unpack('i', f.read(4))[0]
 
-        with open(file, 'rb') as f:
+        with open(filepath, 'rb') as f:
             block_counter = 0
             img_lst = []
 
@@ -30,9 +31,9 @@ class Mul:
 
             while block_counter*mul_block < filesize:
                 img_num = struct.unpack('h', f.read(2))[0]
-                size = struct.unpack('h', f.read(2))[0]		#in mul_blocks
-                xres = struct.unpack('h', f.read(2))[0]		#in pixels
-                yres = struct.unpack('h', f.read(2))[0]		#in pixels
+                size = struct.unpack('h', f.read(2))[0]		       # in mul_blocks
+                xres = struct.unpack('h', f.read(2))[0]		       # in pixels
+                yres = struct.unpack('h', f.read(2))[0]            # in pixels
                 zres = struct.unpack('h', f.read(2))[0]
 
                 y = struct.unpack('h', f.read(2))[0]
@@ -42,12 +43,12 @@ class Mul:
                 mm = struct.unpack('h', f.read(2))[0]
                 ss = struct.unpack('h', f.read(2))[0]
 
-                xsize = struct.unpack('h', f.read(2))[0]	#in Angstrom
-                ysize  = struct.unpack('h', f.read(2))[0]	#in Angstrom
-                xoffset = struct.unpack('h', f.read(2))[0]
-                yoffset = struct.unpack('h', f.read(2))[0]
-                zscale = struct.unpack('h', f.read(2))[0]	#in V
-                tilt = struct.unpack('h', f.read(2))[0]		#in deg
+                xsize = struct.unpack('h', f.read(2))[0] * 0.1	    # in nm
+                ysize  = struct.unpack('h', f.read(2))[0] * 0.1     # in nm
+                xoffset = struct.unpack('h', f.read(2))[0] * 0.1    # in nm
+                yoffset = struct.unpack('h', f.read(2))[0] * 0.1    # in nm
+                zscale = struct.unpack('h', f.read(2))[0]	        #in V
+                tilt = struct.unpack('h', f.read(2))[0]		        #in deg
 
                 speed = struct.unpack('h', f.read(2))[0]
                 bias = struct.unpack('h', f.read(2))[0]
@@ -81,10 +82,10 @@ class Mul:
                 spare_62 = struct.unpack('h', f.read(2))[0]
                 spare_63 = struct.unpack('h', f.read(2))[0]
 
-                speed *= 0.01					#in seconds
-                line_time = speed / yres			#in seconds
-                bias = -bias / 3.2768				#in mV
-                current *= currfac * 0.01			#in nA
+                speed *= 0.01					                  # in seconds
+                line_time = speed / yres			              # in seconds
+                bias = -bias / 3.2768				              # in mV
+                current *= currfac * 0.01			              #in nA
 
                 img_data = np.frombuffer(f.read(xres*2), dtype=np.int16)
                 for i in range(0, yres - 1):
@@ -92,7 +93,7 @@ class Mul:
                     img_data = np.vstack([img_data, line])
 
                 img_data = img_data.astype('float64')
-                img_data *= -0.1/1.36 * zscale/200  	#in Angstrom
+                img_data *= -0.1/1.36 * zscale/2000  	          #in nm
 
                 if num_pointscans > 0:
                     for i in range(0, num_pointscans):
@@ -125,35 +126,73 @@ class Mul:
                 block_counter += size
 
                 img_lst.append({
-                                "filename": file,
-                                "basename": os.path.basename(file),
-                                "img_id": os.path.basename(file)[:-4] + "_" + str(img_num),
-                                "img_num": img_num,
-                                "size": size,
-                                "xres": xres,
-                                "yres": yres,
-                                "zres": zres,
-                                "datetime": datetime(y, m, d, hh, mm, ss),
-                                "xsize": xsize,
-                                "ysize": ysize,
-                                "yoffset": yoffset,
-                                "xoffset": xoffset,
-                                "zscale": zscale,
-                                "tilt": tilt,
-                                "speed": speed,
-                                "line_time": line_time,
-                                "bias": bias,
-                                "current": current,
-                                "sample_string": sample_string,
-                                "title_string": title_string,
-                                "postpr": postpr,
-                                "postd1": postd1,
-                                "mode": mode,
-                                "currfac": currfac,
-                                "num_pointscans": num_pointscans,
-                                "unitnr": unitnr,
-                                "version": version,
-                                "gain": gain,
-                                "img_data": img_data
-                                })
+                    "filepath": filepath,
+                    "basename": os.path.basename(filepath),
+                    "img_id": os.path.splitext(os.path.basename(filepath))[0] + "_" + str(img_num),
+                    "img_num": img_num,
+                    "size": size,
+                    "xres": xres,
+                    "yres": yres,
+                    "zres": zres,
+                    "datetime": datetime.datetime(y, m, d, hh, mm, ss),
+                    "xsize": xsize,
+                    "ysize": ysize,
+                    "yoffset": yoffset,
+                    "xoffset": xoffset,
+                    "zscale": zscale,
+                    "tilt": tilt,
+                    "speed": speed,
+                    "line_time": line_time,
+                    "bias": bias,
+                    "current": current,
+                    "sample_string": sample_string,
+                    "title_string": title_string,
+                    "postpr": postpr,
+                    "postd1": postd1,
+                    "mode": mode,
+                    "currfac": currfac,
+                    "num_pointscans": num_pointscans,
+                    "unitnr": unitnr,
+                    "version": version,
+                    "gain": gain,
+                    "img_data": img_data
+                })
         return img_lst
+
+
+class StmMul(Stm):
+
+    def __init__(self, img_dict):
+        for key, value in img_dict.items():
+            setattr(self, key, value)
+
+        self.m_id = self.img_id
+
+        self.basename = os.path.basename(self.filepath)
+        self.dirname = os.path.dirname(self.filepath)
+        self.filename, self.fileext = os.path.splitext(self.basename)
+
+        self.png_save_dir = os.path.join(self.dirname, self.filename + '_png')
+
+
+    def plot(self, show, save):
+        """
+        returns method from Stm with useful parameters for mul-file Images
+        """
+        return self.stm_plot(
+                    img_array = self.img_data,
+                    xsize = self.xsize,
+                    ysize = self.ysize,
+                    save_dir = self.png_save_dir,
+                    save_name = self.m_id,
+                    show=show,
+                    save=save
+                    )
+
+    def add_png(self):
+        """
+        adds base64 string as field, only possible if a plot was saved as
+        png beforehand
+        """
+        self.png_str = self.stm_add_png(save_dir=self.png_save_dir,
+                                        png_name=self.m_id)
