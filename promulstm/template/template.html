@@ -13,8 +13,13 @@
   <body>
     <button onclick="topFunction()" id="top_button" title="Go to top">Top</button> 
     <h1>{{ title }} - Report</h1>
+      <div>
+          <ul class="navbar_ul">
+          <li class="navbar_li"><a href="{{ files_dir }}" class="navbar_a">Files</a></li>
+          </ul>
+      </div>
       <div id="toc">
-        <h2>multi-files</h2>
+        <h2>Multi-Files</h2>
           {% for obj in cls_objs %}
             {% if check_type(obj, 'StmMul') and obj.m_id.endswith('_1') %}
                 <li><a href="#{{ obj.basename }}">{{ obj.basename }}</a>

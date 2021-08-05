@@ -2,7 +2,7 @@ import os
 from jinja2 import Environment, FileSystemLoader
 
 
-def create_html(class_obj_lst,  output_path):
+def create_html(class_obj_lst, output_path):
     """
     class_obj_lst: list with all class objects for the html report
     output_name: name or full path of the html report
@@ -43,6 +43,7 @@ def create_html(class_obj_lst,  output_path):
     output = template.render(
         cls_objs = class_obj_lst,
         title = output_name,
+        files_dir = output_path,
         style_css = style_css,
         slideshow = slideshow,
         bokeh_231 = bokeh_231,
