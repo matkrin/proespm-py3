@@ -1,9 +1,9 @@
 import os
-import json
 import pandas as pd
 from rich import print
 from rich.console import Console
 from rich.progress import track, Progress
+import config
 from stm_mul import Mul, StmMul
 from stm_matrix import StmMatrix
 from image import Image
@@ -18,12 +18,6 @@ pc = Progress().console     # logging in loops with track()
 
 allowed_ftypes = ('.mul', '.png', '.txt', '.Z_mtrx')
 
-config_file = os.path.join(
-    os.path.join(os.path.dirname(__file__), '..'), 'config.json'
-)
-
-with open(config_file) as f:
-    config = json.load(f)
 
 
 def extract_labj(labjournal, obj):
@@ -37,6 +31,7 @@ def extract_labj(labjournal, obj):
 
     except IndexError:
         c.log(f"\nNo Labjournal Data for {obj.m_id}")
+
 
 def check_filestart(file, string_to_check):
     """
@@ -58,7 +53,7 @@ files_dir = prompt_folder()
 c.log(f"Selected folder:\n{files_dir}")
 
 # gui prompt for labjournal
-if config['use_labjournal']:
+if config.use_labjournal:
     labj_dir = prompt_labj()
     c.log(f"Selected Labjournal:\n{labj_dir}")
     labj = pd.read_excel(labj_dir, dtype=str)
@@ -104,7 +99,7 @@ cls_objs = sorted(cls_objs, key=lambda x: str(x.datetime))
 
 slide_num = 1 # for modal image slide show in html
 for obj in track(cls_objs, description="> Processing"):
-    if config['use_labjournal']:
+    if config.use_labjournal:
         extract_labj(labj, obj)
 
     if type(obj).__name__ == 'StmMul':

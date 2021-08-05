@@ -1,3 +1,5 @@
 {
-    "use_labjournal": false
+    "use_labjournal": false,
+    "path_data": "./test/",
+    "path_labjournal": "./test/"
 }
