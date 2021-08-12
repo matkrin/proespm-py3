@@ -19,20 +19,25 @@
           </ul>
       </div>
       <div id="toc">
-        <h2>Multi-Files</h2>
+        <h2>Multi-Files and Movies</h2>
           {% for obj in cls_objs %}
             {% if check_type(obj, 'StmMul') and obj.m_id.endswith('_1') %}
                 <li><a href="#{{ obj.basename }}">{{ obj.basename }}</a>
                     (<strong>Sputtering:</strong> E = {{ obj.sp_E }} keV, p(Ar) = {{ obj.sp_p }} mbar, t = {{ obj.sp_t }} min;
                     <strong>Annealing:</strong> T = {{ obj.an_T }} K, p(O<sub>2</sub>) = {{ obj.an_p }} mbar, t = {{ obj.an_t}} min)
                 </li>
+
             {% elif  check_type(obj, 'XpsScan') and obj.m_id.endswith('_1') %}
                 <li><a href="#{{ obj.basename }}">{{ obj.basename }}</a>
                 </li>
 
+            {% elif check_type(obj, 'Flm') %}
+                <li><a href="{{ obj.filepath }}">{{ obj.basename }}</a></li>
+
             {% endif %}
           {% endfor %}
       </div>
+
         {% for obj in cls_objs %}
             {% if check_type(obj, 'StmMul') %}
                 {% if obj.m_id.endswith('_1') %}
