@@ -5,6 +5,7 @@ from rich.console import Console
 from rich.progress import track, Progress
 import config
 from stm_mul import Mul, StmMul
+from stm_flm import Flm
 from stm_matrix import StmMatrix
 from image import Image
 from xps import XpsVtStm, XpsScan
@@ -16,7 +17,7 @@ from html_rendering import create_html
 c = Console()   # normal logging
 pc = Progress().console     # logging in loops with track()
 
-allowed_ftypes = ('.mul', '.png', '.txt', '.Z_mtrx')
+allowed_ftypes = ('.mul', '.png', '.txt', '.Z_mtrx', '.flm')
 
 
 
@@ -78,12 +79,15 @@ for file in track(file_lst, description="> Importing Files  "):
         mul = Mul(file)
         mul_stm_imgs = [StmMul(img_dic) for img_dic in mul.img_lst]
         cls_objs += mul_stm_imgs
+    elif file.endswith('.flm'):
+        flm = Flm(file)
+        cls_objs.append(flm)
     elif file.endswith('.Z_mtrx'):
-        obj = StmMatrix(file)
-        cls_objs.append(obj)
+        stm_matrix = StmMatrix(file)
+        cls_objs.append(stm_matrix)
     elif file.endswith('.png'):
-        obj = Image(file)
-        cls_objs.append(obj)
+        image = Image(file)
+        cls_objs.append(image)
     elif file.endswith('.txt') and check_filestart(file, 'Region'):
         xps_vt = XpsVtStm(file)
         xps_vt_scans = [XpsScan(scan_dict, file) for scan_dict in xps_vt.data]
@@ -111,7 +115,14 @@ for obj in track(cls_objs, description="> Processing"):
         obj.plot(save=True, show=False)
         obj.add_png()
 
-    if type(obj).__name__ == 'StmMatrix':
+    elif type(obj).__name__ == 'Flm':
+        pc.log(f"Processing of [bold cyan]{obj.basename}[/bold cyan]")
+        for frame in obj.img_lst:
+            obj.corr_plane(frame['img_data'])
+            obj.corr_lines(frame['img_data'])
+        obj.convert_to_mp4()
+
+    elif type(obj).__name__ == 'StmMatrix':
         pc.log(f"Processing of [bold cyan]{obj.m_id}[/bold cyan]")
         obj.slide_num = slide_num
         slide_num += 1
@@ -123,12 +134,12 @@ for obj in track(cls_objs, description="> Processing"):
         obj.plot_bw(save=True, show=False)
         obj.add_png()
 
-    if type(obj).__name__ == 'Image':
+    elif type(obj).__name__ == 'Image':
         pc.log(f"Processing of [bold blue]{obj.m_id}[/bold blue]")
         obj.slide_num = slide_num
         slide_num += 1
 
-    if type(obj).__name__ == 'XpsScan':
+    elif type(obj).__name__ == 'XpsScan':
         pc.log(f"Processing of [bold yellow]{obj.m_id}[/bold yellow]")
         if obj.xps == 'maxlab_hippie':
             obj.save_plain_data(files_dir)
