@@ -16,6 +16,7 @@ class Flm(Mul, Stm):
         self.basename = os.path.basename(self.filepath)
         self.dirname = os.path.dirname(self.filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
+        self.m_id = self.filename
         self.img_lst = self.read_mul(filepath)
         self.datetime = datetime.datetime.utcfromtimestamp(
             os.path.getmtime(filepath)).strftime('%Y-%m-%d %H:%M:%S')
