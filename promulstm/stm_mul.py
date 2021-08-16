@@ -20,13 +20,13 @@ class Mul:
         with open(filepath, 'rb') as f:
             nr = struct.unpack('h', f.read(2))[0]
             adr = struct.unpack('i', f.read(4))[0]
+            f.seek(0)
 
-        with open(filepath, 'rb') as f:
             block_counter = 0
             img_lst = []
 
             if adr == 3:
-                f.read(mul_block * adr)
+                f.seek(mul_block * adr)
                 block_counter += adr
 
             while block_counter*mul_block < filesize:
@@ -128,7 +128,8 @@ class Mul:
                 img_lst.append({
                     "filepath": filepath,
                     "basename": os.path.basename(filepath),
-                    "img_id": os.path.splitext(os.path.basename(filepath))[0] + "_" + str(img_num),
+                    "img_id": os.path.splitext(os.path.basename(filepath))[0]
+                                               + "_" + str(img_num),
                     "img_num": img_num,
                     "size": size,
                     "xres": xres,
