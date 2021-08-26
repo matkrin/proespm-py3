@@ -10,6 +10,7 @@ from stm_matrix import StmMatrix
 from image import Image
 from xps import XpsVtStm, XpsScan
 from xps_hippie import XpsHippie
+from qcmb import Qcmb
 from gui import prompt_folder, prompt_labj
 from html_rendering import create_html
 
@@ -17,7 +18,7 @@ from html_rendering import create_html
 c = Console()   # normal logging
 pc = Progress().console     # logging in loops with track()
 
-allowed_ftypes = ('.mul', '.png', '.txt', '.Z_mtrx', '.flm')
+allowed_ftypes = ('.mul', '.png', '.txt', '.Z_mtrx', '.flm', '.log')
 
 
 
@@ -96,6 +97,9 @@ for file in track(file_lst, description="> Importing Files  "):
         xps_hippie = XpsHippie(file)
         xps_hippie_scans = [XpsScan(scan_dict, file) for scan_dict in xps_hippie.data]
         cls_objs += xps_hippie_scans
+    elif file.endswith('.log') and check_filestart(file, 'Start Log'):
+        qcmb = Qcmb(file)
+        cls_objs.append(qcmb)
 
 
 #sort by datetime
@@ -145,6 +149,8 @@ for obj in track(cls_objs, description="> Processing"):
             obj.save_plain_data(files_dir)
             pc.log(f"Saved plain data as txt of {obj.m_id}")
 
+    elif type(obj).__name__ == 'Qcmb':
+        pc.log(f"Processing of [bold pink]{obj.m_id}[/bold pink]")
 
 create_html(cls_objs, files_dir)
 c.log("HTML-Report created " +  u"[bold green]\u2713[/bold green]")

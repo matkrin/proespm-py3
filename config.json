@@ -1,5 +1,5 @@
 {
     "use_labjournal": false,
-    "path_data": "./test/",
-    "path_labjournal": "./test/"
+    "path_data": "../test/",
+    "path_labjournal": "../test/"
 }
