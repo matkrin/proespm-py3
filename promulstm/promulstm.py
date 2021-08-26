@@ -150,7 +150,7 @@ for obj in track(cls_objs, description="> Processing"):
             pc.log(f"Saved plain data as txt of {obj.m_id}")
 
     elif type(obj).__name__ == 'Qcmb':
-        pc.log(f"Processing of [bold pink]{obj.m_id}[/bold pink]")
+        pc.log(f"Processing of [bold pink3]{obj.m_id}[/bold pink3]")
 
 create_html(cls_objs, files_dir)
 c.log("HTML-Report created " +  u"[bold green]\u2713[/bold green]")
