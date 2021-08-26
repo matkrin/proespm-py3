@@ -98,11 +98,11 @@ class XpsScan:
             y_axis_label = 'Intensity / arb. units',
             x_range = x_range,
             sizing_mode = 'scale_width',
-            tools = 'pan, wheel_zoom, box_zoom, crosshair, save, reset, hover'
+            tools = 'reset, save, wheel_zoom, pan, box_zoom, hover, crosshair',
+            active_drag = 'box_zoom',
+            active_scroll = 'wheel_zoom',
+            active_inspect = 'hover',
         )
-        plot.toolbar.active_drag = "auto"
-        plot.toolbar.active_scroll = "auto"
-        plot.toolbar.active_inspect = None
         plot.toolbar.logo = None
         plot.background_fill_alpha = 0
         #plot.circle(x, y, size=2)
