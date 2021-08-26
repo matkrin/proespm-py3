@@ -399,9 +399,40 @@
 
                 </div><!-- End row -->
 
+            {% elif check_type(obj, 'Qcmb')  %}
+                <div class="row">
+                  <div class="qcmb_plot">
+                    {{ obj.script }}
+                    {{ obj.div }}
+                  </div>
+
+                  <div class="table_column">
+                    <table style:"width=100%" >
+                      <tr>
+                        <th>ID</th>
+                        <td>{{ obj.m_id }}</td>
+                      </tr>
+                      <tr>
+                        <th>Datetime</th>
+                        <td>{{ obj.datetime }}</td>
+                      </tr>
+                      <tr>
+                    </table>
+                  </div>
+
+                  {% if obj.remark %}
+                  <div class="remark_column">
+                    <b>Remark</b>
+                    <p>{{ obj.remark }}</p>
+                  </div>
+                  {% endif %}
+
+                </div><!-- End row -->
+
             {% endif %}
         {% endfor %}
         <a href="#top">Back to Top</a>
+
         <!-- The Modal/Lightbox -->
         <div id="myModal" class="modal">
           <span class="close cursor" onclick="closeModal()">&times;</span>
@@ -420,11 +451,11 @@
                   {% elif check_type(obj, 'StmMatrix') %}
                       <div class="mySlides">
 
-                            <div class="numbertext">{{ obj.m_id }}</div>
-                          <img src="{{ obj.png_str_fw }}" width="100%"/>
+                        <div class="numbertext">{{ obj.m_id }}</div>
+                        <img src="{{ obj.png_str_fw }}" width="100%"/>
 
-                            <div class="numbertext">{{ obj.m_id }}</div>
-                          <img src="{{ obj.png_str_bw }}" width="100%"/>
+                        <div class="numbertext">{{ obj.m_id }}</div>
+                        <img src="{{ obj.png_str_bw }}" width="100%"/>
 
                         <!--
                         <div class="caption-container">

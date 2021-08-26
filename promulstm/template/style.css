@@ -52,6 +52,11 @@ tr:nth-child(even) {background-color: #f2f2f2;}
   width: 40%;
   padding: 20px;
 }
+.qcmb_plot {
+  float: left;
+  width: 50%;
+  padding: 20px;
+}
 .table_column {
   float: left;
   width: 20%;
