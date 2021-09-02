@@ -70,12 +70,7 @@ class XpsScan:
             setattr(self, key.lower(), value)
 
         self.m_id = f'{self.filename}_{self.region}'
-
-        if self.xps == 'vtstm':
-            self.e_pass = data['CAE/CRR']
-
-        if self.xps == 'maxlab_hippie':
-            self.datetime = f'{self.date} {self.time}'
+        self.e_pass = data['CAE/CRR']
 
         self.plot()
 
@@ -109,16 +104,3 @@ class XpsScan:
         plot.line(x, y)
         plot.toolbar.active_scroll = "auto"
         self.script, self.div = components(plot, wrap_script=True)
-
-
-    def save_plain_data(self, directory):
-        plain_data_dir = os.path.join(
-            directory,
-            self.filename.split('.')[0] + "_plain_data"
-        )
-        if not os.path.exists(plain_data_dir):
-            os.makedirs(plain_data_dir)
-        np.savetxt(
-            os.path.join(plain_data_dir, self.m_id + ".txt"),
-            self.xps_data
-        )
