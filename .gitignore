@@ -1,3 +1,6 @@
+*.mp4
+test_report.html
+test/*/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
