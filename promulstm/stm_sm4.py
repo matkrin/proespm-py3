@@ -2,9 +2,10 @@ import os
 import datetime
 import numpy as np
 import rhksm4
+from stm import Stm
 
 
-class StmRhk:
+class StmSm4(Stm):
 
     def __init__(self, filepath):
         self.filepath = filepath
@@ -12,6 +13,7 @@ class StmRhk:
         self.dirname = os.path.dirname(self.filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
         self.m_id = self.filename
+        self.png_save_dir = os.path.join(self.dirname, 'sm4_png')
 
         self.sm4 = rhksm4.load(filepath)
 
@@ -46,3 +48,21 @@ class StmRhk:
                 self.line_time = float(param.split('::')[1].split()[0]) *1e3 # in ms
 
         self.speed = self.line_time * self.yres / 1e3   # in s
+
+
+    def plot_fw(self, show=False, save=True)
+        self.stm_plot(
+            img_array = self.img_data_fw,
+            xsize = self.xsize,
+            ysize = self.ysize,
+            save_dir = self.png_save_dir,
+            save_name = self.m_id + '_fw',
+        )
+
+    def add_png(self):
+        self.png_str_fw = self.stm_add_png(save_dir=self.png_save_dir,
+                                           png_name=self.m_id + '_fw')
+
+        self.png_str_bw = self.stm_add_png(save_dir=self.png_save_dir,
+                                           png_name=self.m_id + '_bw')
+
