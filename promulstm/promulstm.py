@@ -7,6 +7,7 @@ import config
 from stm_mul import Mul, StmMul
 from stm_flm import Flm
 from stm_matrix import StmMatrix
+from stm_sm4 import StmSm4
 from image import Image
 from xps import XpsVtStm, XpsScan
 from qcmb import Qcmb
@@ -17,7 +18,7 @@ from html_rendering import create_html
 c = Console()   # normal logging
 pc = Progress().console     # logging in loops with track()
 
-allowed_ftypes = ('.mul', '.png', '.txt', '.Z_mtrx', '.flm', '.log')
+allowed_ftypes = ('.mul', '.png', '.txt', '.Z_mtrx', '.flm', '.log', '.SM4')
 
 
 
@@ -84,6 +85,9 @@ for file in track(file_lst, description="> Importing Files  "):
     elif file.endswith('.Z_mtrx'):
         stm_matrix = StmMatrix(file)
         cls_objs.append(stm_matrix)
+    elif file.endswith('.SM4'):
+        stm_sm4 = StmSm4(file)
+        cls_objs.append(stm_sm4)
     elif file.endswith('.png'):
         image = Image(file)
         cls_objs.append(image)
@@ -99,7 +103,7 @@ for file in track(file_lst, description="> Importing Files  "):
 #sort by datetime
 cls_objs = sorted(cls_objs, key=lambda x: str(x.datetime))
 
-slide_num = 1 # for js modal image slide show in html
+slide_num = 1  # for js modal image slide show in html
 for obj in track(cls_objs, description="> Processing"):
     if config.use_labjournal:
         extract_labj(labj, obj)
@@ -129,7 +133,19 @@ for obj in track(cls_objs, description="> Processing"):
         obj.corr_lines(obj.img_data_fw)
         obj.corr_lines(obj.img_data_bw)
         obj.plot_fw(save=True, show=False)
-        obj.plot_bw(save=True, show=False)
+        obj.plot_bw(save=True, show=False) 
+        obj.add_png()
+        
+    elif type(obj).__name__ == 'StmSm4':
+        pc.log(f"Processing of [bold cyan]{obj.m_id}[/bold cyan]")
+        obj.slide_num = slide_num
+        slide_num += 1
+        obj.corr_plane(obj.img_data_fw)
+        obj.corr_plane(obj.img_data_bw)
+        obj.corr_lines(obj.img_data_fw)
+        obj.corr_lines(obj.img_data_bw)
+        obj.plot_fw()
+        obj.plot_bw()
         obj.add_png()
 
     elif type(obj).__name__ == 'Image':

@@ -17,26 +17,26 @@ class StmSm4(Stm):
 
         self.sm4 = rhksm4.load(filepath)
 
-        self.img_fw = sm4[8]
-        self.img_bw = sm4[9]
+        self.img_fw = self.sm4[8]
+        self.img_bw = self.sm4[9]
 
-        self.datetime = self.img_topo_fw['RHK_DateTime']
+        self.datetime = self.img_fw.attrs['RHK_DateTime']
 
         self.img_data_fw = self.img_fw.data * 1e9       # in nm
         self.img_data_bw = self.img_bw.data * 1e9       # in nm
         
-        self.current = self.img_fw['RHK_Current']
-        self.bias = self.img_fw['RHK_Bias']
+        self.current = self.img_fw.attrs['RHK_Current']
+        self.bias = self.img_fw.attrs['RHK_Bias']
 
-        self.xsize = self.img_fw[''] * 1e9            # in nm
-        self.ysize = self.img_fw.height * 1e9           # in nm
+        #self.xsize = self.img_fw[''] * 1e9            # in nm
+        #self.ysize = self.img_fw.height * 1e9           # in nm
 
-        self.xoffset = self.img_fw['RHK_Xoffset'] * 1e9        # in nm
-        self.yoffset = self.img_fw['RHK_Yoffset'] * 1e9        # in nm
+        self.xoffset = self.img_fw.attrs['RHK_Xoffset'] * 1e9        # in nm
+        self.yoffset = self.img_fw.attrs['RHK_Yoffset'] * 1e9        # in nm
 
-        self.xres = self.img_fw['RHK_Xsize']
-        self.yres = self.img_fw['RHK_Ysize']
-        self.tilt = self.img_fw['RHK_Angle']                   # in deg
+        self.xres = self.img_fw.attrs['RHK_Xsize']
+        self.yres = self.img_fw.attrs['RHK_Ysize']
+        self.tilt = self.img_fw.attrs['RHK_Angle']                   # in deg
 
         for param in self.img_fw.attrs['RHK_PRMdata'].split('\n'):
             if param.startswith('<1322>\tScan size'):
@@ -50,13 +50,26 @@ class StmSm4(Stm):
         self.speed = self.line_time * self.yres / 1e3   # in s
 
 
-    def plot_fw(self, show=False, save=True)
-        self.stm_plot(
+    def plot_fw(self, save=True, show=False):
+        return self.stm_plot(
             img_array = self.img_data_fw,
             xsize = self.xsize,
             ysize = self.ysize,
             save_dir = self.png_save_dir,
             save_name = self.m_id + '_fw',
+            save = save,
+            show = show
+        )
+
+    def plot_bw(self, save=True, show=False):
+        return self.stm_plot(
+            img_array = self.img_data_bw,
+            xsize = self.xsize,
+            ysize = self.ysize,
+            save_dir = self.png_save_dir,
+            save_name = self.m_id + '_bw',
+            save = save,
+            show = show
         )
 
     def add_png(self):
