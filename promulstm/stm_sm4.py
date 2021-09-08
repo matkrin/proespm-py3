@@ -51,8 +51,8 @@ class StmSm4(Stm):
 
 
     def plot_fw(self, save=True, show=False):
-        return self.stm_plot(
-            img_array = self.img_data_fw,
+        return super().plot(
+            img_array = np.flip(self.img_data_fw),
             xsize = self.xsize,
             ysize = self.ysize,
             save_dir = self.png_save_dir,
@@ -62,8 +62,8 @@ class StmSm4(Stm):
         )
 
     def plot_bw(self, save=True, show=False):
-        return self.stm_plot(
-            img_array = self.img_data_bw,
+        return super().plot(
+            img_array = np.flip(self.img_data_bw),
             xsize = self.xsize,
             ysize = self.ysize,
             save_dir = self.png_save_dir,
@@ -73,9 +73,9 @@ class StmSm4(Stm):
         )
 
     def add_png(self):
-        self.png_str_fw = self.stm_add_png(save_dir=self.png_save_dir,
+        self.png_str_fw = super().add_png(save_dir=self.png_save_dir,
                                            png_name=self.m_id + '_fw')
 
-        self.png_str_bw = self.stm_add_png(save_dir=self.png_save_dir,
+        self.png_str_bw = super().add_png(save_dir=self.png_save_dir,
                                            png_name=self.m_id + '_bw')
 

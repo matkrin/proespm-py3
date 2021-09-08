@@ -176,18 +176,18 @@ class StmMul(Stm):
         self.png_save_dir = os.path.join(self.dirname, self.filename + '_png')
 
 
-    def plot(self, show, save):
+    def plot(self, save=True, show=False):
         """
         returns method from Stm with useful parameters for mul-file Images
         """
-        return self.stm_plot(
+        return super().plot(
                     img_array = self.img_data,
                     xsize = self.xsize,
                     ysize = self.ysize,
                     save_dir = self.png_save_dir,
                     save_name = self.m_id,
-                    show=show,
-                    save=save
+                    save=save,
+                    show=show
                     )
 
     def add_png(self):
@@ -195,5 +195,5 @@ class StmMul(Stm):
         adds base64 string as field, only possible if a plot was saved as
         png beforehand
         """
-        self.png_str = self.stm_add_png(save_dir=self.png_save_dir,
+        self.png_str = super().add_png(save_dir=self.png_save_dir,
                                         png_name=self.m_id)
