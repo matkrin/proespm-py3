@@ -29,5 +29,5 @@ def create_html(class_obj_lst, output_path):
         files_dir = output_path,
     )
 
-    with open(f'{output_path}_report.html', 'w') as f:
+    with open(f'{output_path}_report.html', 'w', encoding="utf-8") as f:
         f.write(output)
