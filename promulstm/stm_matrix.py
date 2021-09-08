@@ -45,35 +45,35 @@ class StmMatrix(Stm):
         self.speed = self.line_time * self.yres / 1e3               # in s
 
 
-    def plot_fw(self, show, save):
+    def plot_fw(self, save=True, show=False):
         """
         returns method from Stm with parameters to plot the forward image of a
         matrix-file
         """
-        self.stm_plot(
+        return super().plot(
             img_array = self.img_data_fw,
             xsize = self.xsize,
             ysize = self.ysize,
             save_dir = self.png_save_dir,
             save_name = self.m_id + '_fw',
-            show=show,
-            save=save
+            save=save,
+            show=show
             )
 
 
-    def plot_bw(self, show, save):
+    def plot_bw(self, save=True, show=False):
         """
         method from Stm with parameters to plot the backward image of a
         matrix-file
         """
-        self.stm_plot(
+        return super().plot(
             img_array = self.img_data_bw,
             xsize = self.xsize,
             ysize = self.ysize,
             save_dir = self.png_save_dir,
             save_name = self.m_id + '_bw',
-            show=show,
-            save=save
+            save=save,
+            show=show
         )
 
 
@@ -82,8 +82,8 @@ class StmMatrix(Stm):
         adds base64 string as field, only possible if a plot was saved as
         png beforehand
         """
-        self.png_str_fw = self.stm_add_png(save_dir=self.png_save_dir,
+        self.png_str_fw = super().add_png(save_dir=self.png_save_dir,
                                            png_name=self.m_id + '_fw')
 
-        self.png_str_bw = self.stm_add_png(save_dir=self.png_save_dir,
+        self.png_str_bw = super().add_png(save_dir=self.png_save_dir,
                                            png_name=self.m_id + '_bw')

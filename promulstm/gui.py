@@ -4,15 +4,6 @@ import tkinter.filedialog
 import config
 
 
-def retry_prompt(prompt_item, retry_fnc):
-    """prompt to retry a selection"""
-
-    prompt_retry = input(f"No {prompt_item} selected. Retry? [Y/n]: ")
-    if prompt_retry in ['Y', 'y', 'ye', 'yes', 'Ye', 'Yes', '']:
-        retry_fnc()
-    sys.exit("Exit Programm")
-
-
 def prompt_folder():
     """prompt to select a folder for data processing"""
 
@@ -20,8 +11,12 @@ def prompt_folder():
     root.withdraw()
     folder = tkinter.filedialog.askdirectory(initialdir=config.path_data)
     root.destroy()
-    if folder == ():
-        retry_prompt('folder', prompt_folder)
+    if folder == () or folder == '':
+        prompt_retry = input("No data folder selected. Retry? [Y/n] ")
+        if prompt_retry in ['Y', 'y', 'ye', 'yes', 'Ye', 'Yes', '']:
+            return prompt_folder()
+        else:
+            sys.exit("Exit Programm")
 
     return folder
 
@@ -36,7 +31,12 @@ def prompt_labj():
         filetypes=[("Excel files", '*.xlsx')]
     )
     root.destroy()
-    if labj_path == ():
-        retry_prompt("Labjournal", prompt_labj)
-
-    return labj_path
+    if labj_path == () or labj_path == '':
+        prompt_continue = input("No Labjournal selected. Continue without? [Y/n] ")
+        if prompt_continue in ['Y', 'y', 'ye', 'yes', 'Ye', 'Yes', '']:
+            labj_path = None
+            return labj_path
+        else:
+            return prompt_labj()
+    else:
+        return labj_path

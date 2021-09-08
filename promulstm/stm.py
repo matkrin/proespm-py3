@@ -12,7 +12,7 @@ from pySPM import SPM
 
 class Stm:
 
-    def stm_plot(self, img_array, xsize, ysize, save_dir, save_name, save=False, show=False):
+    def plot(self, img_array, xsize, ysize, save_dir, save_name, save=False, show=False):
         """
         Plot the image.
         """
@@ -56,7 +56,7 @@ class Stm:
         return fig
 
 
-    def stm_add_png(self, save_dir, png_name):
+    def add_png(self, save_dir, png_name):
         """
         adds the png encoded string to the image dictionary when save=True
         for plot
