@@ -45,6 +45,9 @@
             {% elif check_type(obj, 'StmMatrix') %}
                 {% include 'stm_matrix.jinja' %}
 
+            {% elif check_type(obj, 'StmSm4') %}
+                {% include 'stm_sm4.jinja' %}
+
             {% elif check_type(obj, 'Image') %}
                 {% include 'image.jinja' %}
 
@@ -75,6 +78,22 @@
                         </div>
 
                   {% elif check_type(obj, 'StmMatrix') %}
+                      <div class="mySlides">
+
+                        <div class="numbertext">{{ obj.m_id }}</div>
+                        <img src="{{ obj.png_str_fw }}" width="100%"/>
+
+                        <div class="numbertext">{{ obj.m_id }}</div>
+                        <img src="{{ obj.png_str_bw }}" width="100%"/>
+
+                        <!--
+                        <div class="caption-container">
+                          <p id="caption">{{ obj.m_id }}</p>
+                        </div>
+                      -->
+                      </div>
+
+                  {% elif check_type(obj, 'StmSm4') %}
                       <div class="mySlides">
 
                         <div class="numbertext">{{ obj.m_id }}</div>
