@@ -55,10 +55,10 @@ c.log(f"Selected folder:\n{files_dir}")
 
 # gui prompt for labjournal
 if config.use_labjournal:
-    labj_dir = prompt_labj()
-    c.log(f"Selected Labjournal:\n{labj_dir}")
-    labj = pd.read_excel(labj_dir, dtype=str)
-
+    labj_path = prompt_labj()
+    if labj_path is not None:
+        c.log(f"Selected Labjournal:\n{labj_path}")
+        labj = pd.read_excel(labj_path, dtype=str)
 
 # get filepaths for prompted folder
 file_lst = []   # full paths
@@ -70,7 +70,6 @@ for entry in os.scandir(files_dir):
         c.log(f"Unsupported File:\t[red]{os.path.basename(entry.path)}[/red]")
     elif not entry.is_file():
         c.log(f"Ignored Folder:\t\t[red]{os.path.basename(entry.path)}[/red]")
-
 
 # create class instances
 cls_objs = []
@@ -99,32 +98,31 @@ for file in track(file_lst, description="> Importing Files  "):
         qcmb = Qcmb(file)
         cls_objs.append(qcmb)
 
-
 #sort by datetime
 cls_objs = sorted(cls_objs, key=lambda x: str(x.datetime))
 
 slide_num = 1  # for js modal image slide show in html
 for obj in track(cls_objs, description="> Processing"):
-    if config.use_labjournal:
+    if config.use_labjournal and labj_path is not None:
         extract_labj(labj, obj)
 
-    if type(obj).__name__ == 'StmMul':
+    if isinstance(obj, StmMul):
         pc.log(f"Processing of [bold cyan]{obj.m_id}[/bold cyan]")
         obj.slide_num = slide_num
         slide_num += 1
         obj.corr_plane(obj.img_data)
         obj.corr_lines(obj.img_data)
-        obj.plot(save=True, show=False)
+        obj.plot()
         obj.add_png()
 
-    elif type(obj).__name__ == 'Flm':
+    elif isinstance(obj, Flm):
         pc.log(f"Processing of [bold cyan]{obj.basename}[/bold cyan]")
         for frame in obj.img_lst:
             obj.corr_plane(frame['img_data'])
             obj.corr_lines(frame['img_data'])
         obj.convert_to_mp4()
 
-    elif type(obj).__name__ == 'StmMatrix':
+    elif isinstance(obj, StmMatrix):
         pc.log(f"Processing of [bold cyan]{obj.m_id}[/bold cyan]")
         obj.slide_num = slide_num
         slide_num += 1
@@ -132,11 +130,11 @@ for obj in track(cls_objs, description="> Processing"):
         obj.corr_plane(obj.img_data_bw)
         obj.corr_lines(obj.img_data_fw)
         obj.corr_lines(obj.img_data_bw)
-        obj.plot_fw(save=True, show=False)
-        obj.plot_bw(save=True, show=False) 
+        obj.plot_fw()
+        obj.plot_bw() 
         obj.add_png()
         
-    elif type(obj).__name__ == 'StmSm4':
+    elif isinstance(obj, StmSm4):
         pc.log(f"Processing of [bold cyan]{obj.m_id}[/bold cyan]")
         obj.slide_num = slide_num
         slide_num += 1
@@ -148,18 +146,18 @@ for obj in track(cls_objs, description="> Processing"):
         obj.plot_bw()
         obj.add_png()
 
-    elif type(obj).__name__ == 'Image':
+    elif isinstance(obj, Image):
         pc.log(f"Processing of [bold blue]{obj.m_id}[/bold blue]")
         obj.slide_num = slide_num
         slide_num += 1
 
-    elif type(obj).__name__ == 'XpsScan':
+    elif isinstance(obj, XpsScan):
         pc.log(f"Processing of [bold yellow]{obj.m_id}[/bold yellow]")
         if obj.xps == 'maxlab_hippie':
             obj.save_plain_data(files_dir)
             pc.log(f"Saved plain data as txt of {obj.m_id}")
 
-    elif type(obj).__name__ == 'Qcmb':
+    elif isinstance(obj, Qcmb):
         pc.log(f"Processing of [bold pink3]{obj.m_id}[/bold pink3]")
 
 create_html(cls_objs, files_dir)
