@@ -10,6 +10,7 @@ from stm_matrix import StmMatrix
 from stm_sm4 import StmSm4
 from image import Image
 from xps import XpsVtStm, XpsScan
+from aes import Aes
 from qcmb import Qcmb
 from gui import prompt_folder, prompt_labj
 from html_rendering import create_html
@@ -18,7 +19,16 @@ from html_rendering import create_html
 c = Console()   # normal logging
 pc = Progress().console     # logging in loops with track()
 
-allowed_ftypes = ('.mul', '.png', '.txt', '.Z_mtrx', '.flm', '.log', '.SM4')
+allowed_ftypes = (
+    '.mul',
+    '.png',
+    '.txt',
+    '.Z_mtrx',
+    '.flm',
+    '.log',
+    '.SM4',
+    '.dat',
+)
 
 
 
@@ -94,6 +104,9 @@ for file in track(file_lst, description="> Importing Files  "):
         xps_vt = XpsVtStm(file)
         xps_vt_scans = [XpsScan(scan_dict, file) for scan_dict in xps_vt.data]
         cls_objs += xps_vt_scans
+    elif file.endswith('.dat') and check_filestart(file, 'Version'):
+        aes = Aes(file)
+        cls_objs.append(aes)
     elif file.endswith('.log') and check_filestart(file, 'Start Log'):
         qcmb = Qcmb(file)
         cls_objs.append(qcmb)
@@ -153,9 +166,9 @@ for obj in track(cls_objs, description="> Processing"):
 
     elif isinstance(obj, XpsScan):
         pc.log(f"Processing of [bold yellow]{obj.m_id}[/bold yellow]")
-        if obj.xps == 'maxlab_hippie':
-            obj.save_plain_data(files_dir)
-            pc.log(f"Saved plain data as txt of {obj.m_id}")
+
+    elif isinstance(obj, Aes):
+        pc.log(f"Processing of [bold yellow]{obj.m_id}[/bold yellow]")
 
     elif isinstance(obj, Qcmb):
         pc.log(f"Processing of [bold pink3]{obj.m_id}[/bold pink3]")

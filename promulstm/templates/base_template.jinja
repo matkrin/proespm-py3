@@ -54,6 +54,9 @@
             {% elif check_type(obj, 'XpsScan') and obj.xps == "vtstm" %}
                 {% include 'xps_scan.jinja' %}
 
+            {% elif check_type(obj, 'Aes') %}
+                {% include 'aes.jinja' %}
+
             {% elif check_type(obj, 'Qcmb')  %}
                 {% include 'qcmb.jinja' %}
 

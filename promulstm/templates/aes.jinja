@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="xps_plot">
+    {{ obj.script }}
+    {{ obj.div }}
+  </div>
+
+  <div class="table_column">
+    <table style:"width=100%" >
+      <tr>
+        <th>ID</th>
+        <td>{{ obj.m_id }}</td>
+      </tr>
+      <tr>
+        <th>Datetime</th>
+        <td>{{ obj.datetime }}</td>
+      </tr>
+      <tr>
+        <th>Mode</th>
+        <td>{{ obj.mode }}</td>
+      </tr>
+      <tr>
+        <th>Region</th>
+        <td>{{ "{:.0f}".format(obj.e_start) }} - {{ "{:.0f}".format(obj.e_stop) }} eV</td>
+      </tr>
+      <tr>
+        <th>Step</th>
+        <td>{{ "{:.0f}".format(obj.stepwidth) }} eV</td>
+      </tr>
+      <tr>
+        <th>Sweeps</th>
+        <td>{{ obj.scan_num }}</td>
+      </tr>
+      <tr>
+        <th>t<sub>dwell</sub></th>
+        <td>{{ obj.dwell_time }} ms</td>
+      </tr>
+      <tr>
+          <th>t<sub>retrace</sub></th>
+        <td>{{ obj.retrace_time }} ms</td>
+      </tr>
+      <tr>
+          <th>Resolution</sub></th>
+        <td>{{ obj.res }} %</td>
+      </tr>
+      <tr>
+          <th>Resolution Mode</sub></th>
+        <td>{{ obj.res_mode }}</td>
+      </tr>
+    </table>
+  </div>
+
+  {% if obj.remark %}
+  <div class="remark_column">
+    <b>Remark</b>
+    <p>{{ obj.remark }}</p>
+  </div>
+  {% endif %}
+
+</div><!-- End row -->
