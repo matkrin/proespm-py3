@@ -8,6 +8,7 @@ from stm_mul import Mul, StmMul
 from stm_flm import Flm
 from stm_matrix import StmMatrix
 from stm_sm4 import StmSm4
+from stm_sxm import StmSxm
 from image import Image
 from xps import XpsVtStm, XpsScan
 from aes import Aes
@@ -28,8 +29,8 @@ allowed_ftypes = (
     '.log',
     '.SM4',
     '.dat',
+    '.sxm',
 )
-
 
 
 def extract_labj(labjournal, obj):
@@ -97,6 +98,9 @@ for file in track(file_lst, description="> Importing Files  "):
     elif file.endswith('.SM4'):
         stm_sm4 = StmSm4(file)
         cls_objs.append(stm_sm4)
+    elif file.endswith('.sxm'):
+        stm_sxm = StmSxm(file)
+        cls_objs.append(stm_sxm)
     elif file.endswith('.png'):
         image = Image(file)
         cls_objs.append(image)
@@ -135,7 +139,7 @@ for obj in track(cls_objs, description="> Processing"):
             obj.corr_lines(frame['img_data'])
         obj.convert_to_mp4()
 
-    elif isinstance(obj, StmMatrix):
+    elif isinstance(obj, (StmMatrix, StmSm4, StmSxm)):
         pc.log(f"Processing of [bold cyan]{obj.m_id}[/bold cyan]")
         obj.slide_num = slide_num
         slide_num += 1
@@ -147,18 +151,6 @@ for obj in track(cls_objs, description="> Processing"):
         obj.plot_bw() 
         obj.add_png()
         
-    elif isinstance(obj, StmSm4):
-        pc.log(f"Processing of [bold cyan]{obj.m_id}[/bold cyan]")
-        obj.slide_num = slide_num
-        slide_num += 1
-        obj.corr_plane(obj.img_data_fw)
-        obj.corr_plane(obj.img_data_bw)
-        obj.corr_lines(obj.img_data_fw)
-        obj.corr_lines(obj.img_data_bw)
-        obj.plot_fw()
-        obj.plot_bw()
-        obj.add_png()
-
     elif isinstance(obj, Image):
         pc.log(f"Processing of [bold blue]{obj.m_id}[/bold blue]")
         obj.slide_num = slide_num
