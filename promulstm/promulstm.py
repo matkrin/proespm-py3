@@ -129,8 +129,7 @@ for obj in track(cls_objs, description="> Processing"):
         slide_num += 1
         obj.corr_plane(obj.img_data)
         obj.corr_lines(obj.img_data)
-        obj.plot()
-        obj.add_png()
+        obj.plot(save=config.save_stm_pngs)
 
     elif isinstance(obj, Flm):
         pc.log(f"Processing of [bold cyan]{obj.basename}[/bold cyan]")
@@ -147,9 +146,8 @@ for obj in track(cls_objs, description="> Processing"):
         obj.corr_plane(obj.img_data_bw)
         obj.corr_lines(obj.img_data_fw)
         obj.corr_lines(obj.img_data_bw)
-        obj.plot_fw()
-        obj.plot_bw() 
-        obj.add_png()
+        obj.plot_fw(save=config.save_stm_pngs)
+        obj.plot_bw(save=config.save_stm_pngs) 
         
     elif isinstance(obj, Image):
         pc.log(f"Processing of [bold blue]{obj.m_id}[/bold blue]")

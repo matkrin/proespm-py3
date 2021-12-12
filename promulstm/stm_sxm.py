@@ -37,8 +37,8 @@ class StmSxm(Stm):
         self.line_time = self.sxm.header['scan_time'][0] * 1e3  # in s?
         self.speed = self.line_time * self.yres / 1e3 # in s?
 
-    def plot_fw(self, save=True, show=False):
-        return super().plot(
+    def plot_fw(self, save=False, show=False):
+        self.png_str_fw = super().plot(
             img_array = self.img_data_fw,
             xsize = self.xsize,
             ysize = self.ysize,
@@ -48,8 +48,8 @@ class StmSxm(Stm):
             show = show
         )
 
-    def plot_bw(self, save=True, show=False):
-        return super().plot(
+    def plot_bw(self, save=False, show=False):
+        self.png_str_bw = super().plot(
             img_array = np.flip(self.img_data_bw, axis=1),
             xsize = self.xsize,
             ysize = self.ysize,
@@ -58,10 +58,3 @@ class StmSxm(Stm):
             save = save,
             show = show
         )
-
-    def add_png(self):
-        self.png_str_fw = super().add_png(save_dir=self.png_save_dir,
-                                           png_name=self.m_id + '_fw')
-
-        self.png_str_bw = super().add_png(save_dir=self.png_save_dir,
-                                           png_name=self.m_id + '_bw')

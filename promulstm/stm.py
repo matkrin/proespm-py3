@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import io
 import base64
 import datetime
 import matplotlib.pyplot as plt
@@ -7,7 +8,6 @@ plt.rcParams.update({'figure.max_open_warning': 0})
 from matplotlib import transforms
 from matplotlib_scalebar.scalebar import ScaleBar
 import seaborn as sns
-from pySPM import SPM
 
 
 class Stm:
@@ -44,6 +44,12 @@ class Stm:
         )
         plt.tight_layout()
 
+        png_bytes = io.BytesIO()
+        extent = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+        plt.savefig(png_bytes, bbox_inches=extent)
+        png_bytes.seek(0)
+        png_str = 'data:image/png;base64, ' + base64.b64encode(png_bytes.read()).decode('ascii')
+
         if save is True:
             if not os.path.exists(save_dir):
                 os.makedirs(save_dir)
@@ -53,71 +59,41 @@ class Stm:
 
         if show is True:
             plt.show()
-        return fig
-
-
-    def add_png(self, save_dir, png_name):
-        """
-        adds the png encoded string to the image dictionary when save=True
-        for plot
-        base64 encode: encodes png to bytes type
-        decode: makes a string out of byte type
-        """
-        png_dir = save_dir
-        with open(os.path.join(png_dir, png_name + ".png"), 'rb') as f:
-            png_str = 'data:image/png;base64, ' + base64.b64encode(f.read()).decode('ascii')
-
         return png_str
 
 
     def fix_zero(self, img_array):
         """
-        Shift all values so that the minimum becomes zero.
+        Subtracts the minimum value of the image array from the image array
         """
         img_array -= np.min(img_array)
         return self
 
 
-    def corr_plane(self, img_array):
-        """
-        Correct the image by subtracting a fitted 2D-plane on the data
-        """
-        return SPM.SPM_image(BIN=img_array).correct_plane()
-
-
-    def corr_median_diff(self, img_array):
-        """
-        Correct the image with the median difference
-        """
-        return SPM.SPM_image(BIN=img_array).correct_median_diff()
-
-
-    def corr_slope(self, img_array):
-        """
-        Correct the image by subtracting a fitted slope along the y-axis
-        """
-        return SPM.SPM_image(BIN=img_array).correct_slope()
-
-
     def corr_lines(self, img_array):
         """
-        Subtract the average of each line for the image.
+        Subtracts a plane of the average of each scan line from the image array
         """
-        return SPM.SPM_image(BIN=img_array).correct_lines()
+        mean = np.mean(img_array, axis=1)
+        correction = np.broadcast_to(mean, img_array.shape).T
+        img_array -= correction
+        return img_array
 
 
-    def corr_fit2d(self, img_array, nx=2, ny=2):
+    def corr_plane(self, img_array):
         """
-        Subtract a fitted 2D-polynom of nx and ny order from the data
-        Parameters
-        ----------
-        nx : int
-            the polynom order for the x-axis
-        ny : int
-            the polynom order for the y-axis
-        poly : bool
-            if True the polynom is returned as output
-        from https://github.com/scholi/pySPM/blob/master/pySPM/SPM.py
-        index: 0 for image nr. 1, etc.
+        Subtracts a fitted background plane from the image array
         """
-        return SPM.SPM_image(BIN=img_array).corr_fit2d(nx=nx, ny=ny)
+        x_shape, y_shape = img_array.shape
+        x_arr = np.broadcast_to(np.arange(x_shape), img_array.shape)
+        y_arr = np.repeat(np.arange(y_shape), y_shape).reshape(img_array.shape)
+        
+        stack = np.column_stack(
+            (np.ones(img_array.size), x_arr.flatten(), y_arr.flatten())
+        ) 
+        least_squares = np.linalg.lstsq(stack, img_array.flatten(), rcond=-1)[0]
+        correction = (least_squares[0] * np.ones(img_array.shape)
+               + least_squares[1] * x_arr
+               + least_squares[2] * y_arr)
+        img_array -= correction
+        return img_array
