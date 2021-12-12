@@ -1,5 +1,6 @@
 {
     "use_labjournal": true,
-    "path_data": "/////nas.ads.mwn.de/tuch/pc7/NAP-STM/data_STM",
-    "path_labjournal": "/////nas.ads.mwn.de/tuch/pc7/NAP-STM/data_STM/1_labjournals"
+    "path_data": "/Users/matthias/github/promulstm/test",
+    "path_labjournal": "/Users/matthias/github/promulstm/test",
+    "save_stm_pngs": true
 }
