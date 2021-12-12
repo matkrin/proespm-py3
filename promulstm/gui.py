@@ -10,8 +10,7 @@ def prompt_folder():
     root = tkinter.Tk()
     root.withdraw()
     folder = tkinter.filedialog.askdirectory(initialdir=config.path_data)
-    root.destroy()
-    if folder == () or folder == '':
+    if folder == () or folder == '' or folder == None:
         prompt_retry = input("No data folder selected. Retry? [Y/n] ")
         if prompt_retry in ['Y', 'y', 'ye', 'yes', 'Ye', 'Yes', '']:
             return prompt_folder()
@@ -30,8 +29,7 @@ def prompt_labj():
         initialdir=config.path_labjournal,
         filetypes=[("Excel files", '*.xlsx')]
     )
-    root.destroy()
-    if labj_path == () or labj_path == '':
+    if labj_path == () or labj_path == '' or labj_path == None:
         prompt_continue = input("No Labjournal selected. Continue without? [Y/n] ")
         if prompt_continue in ['Y', 'y', 'ye', 'yes', 'Ye', 'Yes', '']:
             labj_path = None
