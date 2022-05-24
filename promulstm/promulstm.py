@@ -3,8 +3,9 @@ import pandas as pd
 from rich import print
 from rich.console import Console
 from rich.progress import track, Progress
+from mulfile.mul import MulImage
 import config
-from stm_mul import Mul, StmMul
+from stm_mul import StmMul
 from stm_flm import Flm
 from stm_matrix import StmMatrix
 from stm_sm4 import StmSm4
@@ -17,28 +18,28 @@ from gui import prompt_folder, prompt_labj
 from html_rendering import create_html
 
 
-c = Console()   # normal logging
-pc = Progress().console     # logging in loops with track()
+c = Console()  # normal logging
+pc = Progress().console  # logging in loops with track()
 
 allowed_ftypes = (
-    '.mul',
-    '.png',
-    '.txt',
-    '.Z_mtrx',
-    '.flm',
-    '.log',
-    '.SM4',
-    '.dat',
-    '.sxm',
+    ".mul",
+    ".png",
+    ".txt",
+    ".Z_mtrx",
+    ".flm",
+    ".log",
+    ".SM4",
+    ".dat",
+    ".sxm",
 )
 
 
 def extract_labj(labjournal, obj):
-    """extract data of a labjournal excel file """
+    """extract data of a labjournal excel file"""
 
     try:
-        matched_row = labjournal[labjournal['ID'].str.match(obj.m_id)]
-        row_dict = matched_row.to_dict(orient='list')
+        matched_row = labjournal[labjournal["ID"].str.match(obj.m_id)]
+        row_dict = matched_row.to_dict(orient="list")
         for key, value in row_dict.items():
             setattr(obj, key, value[0])
 
@@ -72,7 +73,7 @@ if config.use_labjournal:
         labj = pd.read_excel(labj_path, dtype=str)
 
 # get filepaths for prompted folder
-file_lst = []   # full paths
+file_lst = []  # full paths
 for entry in os.scandir(files_dir):
     if entry.path.endswith(allowed_ftypes) and entry.is_file():
         file_lst.append(entry.path)
@@ -85,37 +86,39 @@ for entry in os.scandir(files_dir):
 # create class instances
 cls_objs = []
 for file in track(file_lst, description="> Importing Files  "):
-    if file.endswith('.mul'):
-        mul = Mul(file)
-        mul_stm_imgs = [StmMul(img_dic) for img_dic in mul.img_lst]
-        cls_objs += mul_stm_imgs
-    elif file.endswith('.flm'):
+    if file.endswith(".mul"):
+        mul = StmMul(file)
+        # mul_stm_imgs = [StmMul(img_dic) for img_dic in mul.img_lst]
+        # cls_objs += mul_stm_imgs
+        for image in mul:
+            cls_objs.append(image)
+    elif file.endswith(".flm"):
         flm = Flm(file)
         cls_objs.append(flm)
-    elif file.endswith('.Z_mtrx'):
+    elif file.endswith(".Z_mtrx"):
         stm_matrix = StmMatrix(file)
         cls_objs.append(stm_matrix)
-    elif file.endswith('.SM4'):
+    elif file.endswith(".SM4"):
         stm_sm4 = StmSm4(file)
         cls_objs.append(stm_sm4)
-    elif file.endswith('.sxm'):
+    elif file.endswith(".sxm"):
         stm_sxm = StmSxm(file)
         cls_objs.append(stm_sxm)
-    elif file.endswith('.png'):
+    elif file.endswith(".png"):
         image = Image(file)
         cls_objs.append(image)
-    elif file.endswith('.txt') and check_filestart(file, 'Region'):
+    elif file.endswith(".txt") and check_filestart(file, "Region"):
         xps_vt = XpsVtStm(file)
         xps_vt_scans = [XpsScan(scan_dict, file) for scan_dict in xps_vt.data]
         cls_objs += xps_vt_scans
-    elif file.endswith('.dat') and check_filestart(file, 'Version'):
+    elif file.endswith(".dat") and check_filestart(file, "Version"):
         aes = Aes(file)
         cls_objs.append(aes)
-    elif file.endswith('.log') and check_filestart(file, 'Start Log'):
+    elif file.endswith(".log") and check_filestart(file, "Start Log"):
         qcmb = Qcmb(file)
         cls_objs.append(qcmb)
 
-#sort by datetime
+# sort by datetime
 cls_objs = sorted(cls_objs, key=lambda x: str(x.datetime))
 
 slide_num = 1  # for js modal image slide show in html
@@ -123,32 +126,34 @@ for obj in track(cls_objs, description="> Processing"):
     if config.use_labjournal and labj_path is not None:
         extract_labj(labj, obj)
 
-    if isinstance(obj, StmMul):
+    if isinstance(obj, MulImage):
         pc.log(f"Processing of [bold cyan]{obj.m_id}[/bold cyan]")
         obj.slide_num = slide_num
         slide_num += 1
-        obj.corr_plane(obj.img_data)
-        obj.corr_lines(obj.img_data)
-        obj.plot(save=config.save_stm_pngs)
+        obj.img_data.corr_plane()
+        obj.img_data.corr_lines()
+        obj.img_data.plot()
 
     elif isinstance(obj, Flm):
         pc.log(f"Processing of [bold cyan]{obj.basename}[/bold cyan]")
-        for frame in obj.img_lst:
-            obj.corr_plane(frame['img_data'])
-            obj.corr_lines(frame['img_data'])
+        # for frame in obj:
+        #     frame.corr_plane()
+        #     frame.corr_lines()
         obj.convert_to_mp4()
 
     elif isinstance(obj, (StmMatrix, StmSm4, StmSxm)):
         pc.log(f"Processing of [bold cyan]{obj.m_id}[/bold cyan]")
         obj.slide_num = slide_num
         slide_num += 1
-        obj.corr_plane(obj.img_data_fw)
-        obj.corr_plane(obj.img_data_bw)
-        obj.corr_lines(obj.img_data_fw)
-        obj.corr_lines(obj.img_data_bw)
-        obj.plot_fw(save=config.save_stm_pngs)
-        obj.plot_bw(save=config.save_stm_pngs) 
-        
+        obj.img_data_fw.corr_plane()
+        obj.img_data_bw.corr_plane()
+
+        obj.img_data_fw.corr_lines()
+        obj.img_data_bw.corr_lines()
+
+        obj.img_data_fw.plot()
+        obj.img_data_bw.plot()
+
     elif isinstance(obj, Image):
         pc.log(f"Processing of [bold blue]{obj.m_id}[/bold blue]")
         obj.slide_num = slide_num
@@ -164,4 +169,4 @@ for obj in track(cls_objs, description="> Processing"):
         pc.log(f"Processing of [bold pink3]{obj.m_id}[/bold pink3]")
 
 create_html(cls_objs, files_dir)
-c.log("HTML-Report created " +  u"[bold green]\u2713[/bold green]")
+c.log("HTML-Report created " + "[bold green]\u2713[/bold green]")

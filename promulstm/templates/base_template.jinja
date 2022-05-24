@@ -11,7 +11,7 @@
     <style>{% include 'style.css' %}</style>
   </head>
   <body>
-    <button onclick="topFunction()" id="top_button" title="Go to top">Top</button> 
+    <button onclick="topFunction()" id="top_button" title="Go to top"><strong>▲</strong></button> 
     <h1>{{ title }} - Report</h1>
       <div>
           <ul class="navbar_ul">
@@ -21,7 +21,7 @@
       <div id="toc">
         <h2>Multi-Files and Movies</h2>
           {% for obj in cls_objs %}
-            {% if check_type(obj, 'StmMul') and obj.m_id.endswith('_1') %}
+            {% if check_type(obj, 'MulImage') and obj.m_id.endswith('_1') %}
                 <li><a href="#{{ obj.basename }}">{{ obj.basename }}</a>
                     (<strong>Sputtering:</strong> E = {{ obj.sp_E }} keV, p(Ar) = {{ obj.sp_p }} mbar, t = {{ obj.sp_t }} min;
                     <strong>Annealing:</strong> T = {{ obj.an_T }} K, p(O<sub>2</sub>) = {{ obj.an_p }} mbar, t = {{ obj.an_t}} min)
@@ -39,7 +39,7 @@
       </div>
 
         {% for obj in cls_objs %}
-            {% if check_type(obj, 'StmMul') %}
+            {% if check_type(obj, 'MulImage') %}
                 {% include 'stm_mul.jinja' %}
 
             {% elif check_type(obj, 'StmMatrix') %}

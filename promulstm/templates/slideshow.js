@@ -8,7 +8,7 @@ function closeModal() {
   document.getElementById("myModal").style.display = "none";
 }
 
-var slideIndex = 1;
+let slideIndex = 1;
 showSlides(slideIndex);
 
 // Next/previous controls
@@ -22,9 +22,9 @@ function currentSlide(n) {
 }
 
 function showSlides(n) {
-  var i;
-  var slides = document.getElementsByClassName("mySlides");
-  var captionText = document.getElementById("caption");
+  let i;
+  const slides = document.getElementsByClassName("mySlides");
+  const captionText = document.getElementById("caption");
   if (n > slides.length) {slideIndex = 1}
   if (n < 1) {slideIndex = slides.length}
   for (i = 0; i < slides.length; i++) {
@@ -41,26 +41,37 @@ document.onkeydown = function(e) {
         closeModal();
         break;
 
-        case 38: // up
+        case 20: // Caps-Lock
+        closeModal();
+        break;
+
+        case 81: // q
+        closeModal();
+        break;
+
+        case 38: // up-arrow
+        plusSlides(-1);
+        break;
+        
+        case 37: // left-arrow
+        plusSlides(-1);
+        break;
+        
+        case 72: // h
         plusSlides(-1);
         break;
 
-        case 40: // down
+        case 40: // down-arrow
         plusSlides(1);
         break;
 
-        case 37: // left
-        plusSlides(-1);
-        break;
-
-        case 38: // up
-        plusSlides(-2);
-        break;
-
-        case 39: // right
+        case 39: // right-arrow
         plusSlides(1);
         break;
-
+        
+        case 76: // l
+        plusSlides(1);
+        break;
 
         default: return; // exit this handler for other keys
     }
