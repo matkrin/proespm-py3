@@ -5,16 +5,16 @@ from bokeh.plotting import figure
 from bokeh.embed import components
 
 
-class XpsVtStm:
+class XpsEis:
     def __init__(self, filepath):
         self.filepath = filepath
         self.basename = os.path.basename(filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
         self.data = None
-        self.read_xps_vtstm(filepath)
+        self.read_xps_eis(filepath)
 
 
-    def read_xps_vtstm(self, filepath):
+    def read_xps_eis(self, filepath):
         """
         """
         with open(filepath) as f:
@@ -22,7 +22,7 @@ class XpsVtStm:
             f.seek(0)
 
             self.data = []
-            for i in range(scan_num):
+            for _ in range(scan_num):
                 scan_dict = dict(xps='vtstm')
                 line1 = f.readline().split('\t')
                 line1 = [x.rstrip('\n') for x in line1]
@@ -53,27 +53,39 @@ class XpsVtStm:
                     arr_line = np.array(line)
                     xps_data = np.vstack((xps_data, arr_line))
 
-                scan_dict.update(dict(xps_data=xps_data))
-
-                self.data.append(scan_dict)
+                self.data.append(
+                    XpsScan(
+                        self.filepath,
+                        xps_data,
+                        scan_dict["Region"],
+                        scan_dict["Start"],
+                        scan_dict["End"],
+                        scan_dict["Step"],
+                        scan_dict["Sweeps"],
+                        scan_dict["Dwell"],
+                        scan_dict["CAE/CRR"],
+                    )
+                )
 
 
 class XpsScan:
-    def __init__(self, data, filepath):
+    def __init__(self, filepath, xps_data, scan_number, start, end, step, sweeps, dwell, e_pass):
         self.filepath = filepath
         self.basename = os.path.basename(filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
         self.datetime = datetime.datetime.utcfromtimestamp(
             os.path.getmtime(filepath)).strftime('%Y-%m-%d %H:%M:%S')
 
-        for key, value in data.items():
-            setattr(self, key.lower(), value)
+        self.xps_data = xps_data
+        self.scan_number = scan_number
+        self.start = start
+        self.end = end
+        self.step = step
+        self.sweeps = sweeps
+        self.dwell = dwell
+        self.e_pass = e_pass
 
-        self.m_id = f'{self.filename}_{self.region}'
-        self.e_pass = data['CAE/CRR']
-
-        self.plot()
-
+        self.m_id = f'{self.filename}_{self.scan_number}'
 
     def plot(self):
         """
@@ -81,10 +93,7 @@ class XpsScan:
         x = self.xps_data[:,0]
         y = self.xps_data[:,1]
 
-        if self.xps == 'vtstm':
-            x_range = (x[-1], x[0])
-        elif self.xps == 'maxlab_hippie':
-            x_range = (x[0], x[-1])
+        x_range = (x[-1], x[0])
 
         plot = figure(
             plot_width = 1000,
@@ -100,7 +109,6 @@ class XpsScan:
         )
         plot.toolbar.logo = None
         plot.background_fill_alpha = 0
-        #plot.circle(x, y, size=2)
         plot.line(x, y)
         plot.toolbar.active_scroll = "auto"
         self.script, self.div = components(plot, wrap_script=True)

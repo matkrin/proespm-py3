@@ -16,24 +16,22 @@ class StmImage:
     Class for STM Images
     """
 
-    def __init__(self, img_data, save_dir, save_name):
-        self.img_data = img_data
-        self.xsize, self.ysize = img_data.shape
-        self.save_dir = save_dir
-        self.save_name = save_name
+    def __init__(self, arr):
+        self.arr = arr
+        self.xsize, self.ysize = arr.shape
 
     @property
     def shape(self):
-        return self.img_data.shape
+        return self.arr.shape
 
-    def plot(self, save=config.save_stm_pngs, show=False):
+    def plot(self, show=False, save=config.save_stm_pngs, save_dir="", save_name=""):
         """
         Plots the image.
         """
         rocket = sns.color_palette("rocket", as_cmap=True)
         fig, ax = plt.subplots(figsize=(5, 5))
         ax.imshow(
-            self.img_data,
+            self.arr,
             cmap=rocket,
             vmin=None,
             vmax=None,
@@ -67,54 +65,51 @@ class StmImage:
         ).decode("ascii")
 
         if save is True:
-            if not os.path.exists(self.save_dir):
-                os.makedirs(self.save_dir)
+            if not os.path.exists(save_dir):
+                os.makedirs(save_dir)
 
             extent = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-            plt.savefig(
-                os.path.join(self.save_dir, self.save_name + ".png"), bbox_inches=extent
-            )
+            plt.savefig(os.path.join(save_dir, save_name + ".png"), bbox_inches=extent)
 
         if show is True:
             plt.show()
 
-        return png_data_uri
+        self.data_uri = png_data_uri
+        return self
 
     def fix_zero(self):
         """
         Subtracts the minimum value of the image array from the image array
         """
-        self.img_data -= np.min(self.img_data)
+        self.arr -= np.min(self.arr)
         return self
 
     def corr_lines(self):
         """
         Subtracts a plane of the average of each scan line from the image array
         """
-        mean = np.mean(self.img_data, axis=1)
-        correction = np.broadcast_to(mean, self.img_data.shape).T
-        self.img_data -= correction
+        mean = np.mean(self.arr, axis=1)
+        correction = np.broadcast_to(mean, self.arr.shape).T
+        self.arr -= correction
         return self
 
     def corr_plane(self):
         """
         Subtracts a fitted background plane from the image array
         """
-        x_shape, y_shape = self.img_data.shape
-        x_coords = np.broadcast_to(np.arange(x_shape), self.img_data.shape)
-        y_coords = np.repeat(np.arange(y_shape), y_shape).reshape(self.img_data.shape)
+        x_shape, y_shape = self.arr.shape
+        x_coords = np.broadcast_to(np.arange(x_shape), self.arr.shape)
+        y_coords = np.repeat(np.arange(y_shape), y_shape).reshape(self.arr.shape)
 
         coeff_matrix = np.column_stack(
-            (np.ones(self.img_data.size), x_coords.flatten(), y_coords.flatten())
+            (np.ones(self.arr.size), x_coords.flatten(), y_coords.flatten())
         )
-        least_squares = np.linalg.lstsq(
-            coeff_matrix, self.img_data.flatten(), rcond=-1
-        )[0]
+        least_squares = np.linalg.lstsq(coeff_matrix, self.arr.flatten(), rcond=-1)[0]
 
         correction = (
-            least_squares[0] * np.ones(self.img_data.shape)
+            least_squares[0] * np.ones(self.arr.shape)
             + least_squares[1] * x_coords
             + least_squares[2] * y_coords
         )
-        self.img_data -= correction
+        self.arr -= correction
         return self

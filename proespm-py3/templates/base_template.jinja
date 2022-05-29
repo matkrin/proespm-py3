@@ -31,8 +31,8 @@
                 <li><a href="#{{ obj.basename }}">{{ obj.basename }}</a>
                 </li>
 
-            {% elif check_type(obj, 'Flm') %}
-                <li><a href="{{ obj.filepath }}">{{ obj.basename }}</a></li>
+            {% elif check_type(obj, 'StmFlm') %}
+                <li><a href="{{ obj.mp4_name }}">{{ obj.basename }}</a></li>
 
             {% endif %}
           {% endfor %}
@@ -42,19 +42,13 @@
             {% if check_type(obj, 'MulImage') %}
                 {% include 'stm_mul.jinja' %}
 
-            {% elif check_type(obj, 'StmMatrix') %}
-                {% include 'stm_matrix.jinja' %}
-
-            {% elif check_type(obj, 'StmSm4') %}
-                {% include 'stm_sm4.jinja' %}
-
-            {% elif check_type(obj, 'StmSxm') %}
-                {% include 'stm_sxm.jinja' %}
+            {% elif check_type(obj, 'StmMatrix') or check_type(obj, 'StmSm4') or check_type(obj, 'StmSxm') %}
+                {% include 'stm_fw_bw.jinja' %}
 
             {% elif check_type(obj, 'Image') %}
                 {% include 'image.jinja' %}
 
-            {% elif check_type(obj, 'XpsScan') and obj.xps == "vtstm" %}
+            {% elif check_type(obj, 'XpsScan') %}
                 {% include 'xps_scan.jinja' %}
 
             {% elif check_type(obj, 'Aes') %}
@@ -74,39 +68,23 @@
           <div class="modal-content">
 
                 {% for obj in cls_objs %}
-                    {% if check_type(obj, 'StmMul') %}
+                    {% if check_type(obj, 'MulImage') %}
                         <div class="mySlides">
                             <div class="numbertext">{{ obj.m_id }}</div>
-                          <img src="{{ obj.png_str }}" width="100%" />
+                          <img src="{{ obj.img_data.data_uri }}" width="100%" />
                           <div class="caption-container">
                             <p id="caption">{{ obj.m_id }}</p>
                           </div>
                         </div>
 
-                  {% elif check_type(obj, 'StmMatrix') %}
+                  {% elif check_type(obj, 'StmMatrix') or check_type(obj, 'StmSm4') or check_type(obj, 'StmSxm') %}
                       <div class="mySlides">
 
                         <div class="numbertext">{{ obj.m_id }}</div>
-                        <img src="{{ obj.png_str_fw }}" width="100%"/>
+                        <img src="{{ obj.img_data_fw.data_uri }}" width="100%"/>
 
                         <div class="numbertext">{{ obj.m_id }}</div>
-                        <img src="{{ obj.png_str_bw }}" width="100%"/>
-
-                        <!--
-                        <div class="caption-container">
-                          <p id="caption">{{ obj.m_id }}</p>
-                        </div>
-                      -->
-                      </div>
-
-                  {% elif check_type(obj, 'StmSm4') %}
-                      <div class="mySlides">
-
-                        <div class="numbertext">{{ obj.m_id }}</div>
-                        <img src="{{ obj.png_str_fw }}" width="100%"/>
-
-                        <div class="numbertext">{{ obj.m_id }}</div>
-                        <img src="{{ obj.png_str_bw }}" width="100%"/>
+                        <img src="{{ obj.img_data_bw.data_uri }}" width="100%"/>
 
                         <!--
                         <div class="caption-container">

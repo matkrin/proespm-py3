@@ -14,7 +14,6 @@ class Aes:
         self.filename, self.fileext = os.path.splitext(self.basename)
         self.m_id = self.filename
         self.read_staib_dat(filepath)
-        self.plot()
         
 
     def read_staib_dat(self, filepath):

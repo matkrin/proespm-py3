@@ -2,10 +2,10 @@
 <div class="row">
 
   <div class="stm_image">
-    <img id="{{ obj.m_id }}" src="{{ obj.png_str_fw }}" onclick="openModal();currentSlide({{ obj.slide_num }})" class="hover-shadow" width=100% />
+    <img id="{{ obj.m_id }}" src="{{ obj.img_data_fw.data_uri }}" onclick="openModal();currentSlide({{ obj.slide_num }})" class="hover-shadow" width=100% />
   </div>
   <div class="stm_image">
-    <img id="{{ obj.m_id }}" src="{{ obj.png_str_bw }}" onclick="openModal();currentSlide({{ obj.slide_num }})" class="hover-shadow" width=100% />
+    <img id="{{ obj.m_id }}" src="{{ obj.img_data_bw.data_uri }}" onclick="openModal();currentSlide({{ obj.slide_num }})" class="hover-shadow" width=100% />
   </div>
   <!-- IMAGE METADATA -->
   <div class="table_column">

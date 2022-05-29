@@ -1,7 +1,7 @@
 import os
 import datetime
 import access2thematrix
-from stm import StmImage
+from .stm import StmImage
 
 
 class StmMatrix:
@@ -25,17 +25,8 @@ class StmMatrix:
         self.img_fw = self.mtrx_data.select_image(self.traces[0])[0]
         self.img_bw = self.mtrx_data.select_image(self.traces[1])[0]
 
-        self.img_data_fw = StmImage(
-            self.img_fw.data * 1e9,  # in nm
-            self.png_save_dir,
-            self.m_id,
-        )
-
-        self.img_data_bw = StmImage(
-            self.img_bw.data * 1e9,  # in nm
-            self.png_save_dir,
-            self.m_id,
-        )
+        self.img_data_fw = StmImage(self.img_fw.data * 1e9)  # in nm
+        self.img_data_bw = StmImage(self.img_bw.data * 1e9)  # in nm
 
         self.yres, self.xres = self.img_data_fw.shape
         self.xsize = self.img_fw.width * 1e9  # in nm

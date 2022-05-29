@@ -18,7 +18,6 @@ class Qcmb:
         self.m_id = self.filename
 
         self.read_qcmb(filepath)
-        self.plot()
 
 
     def read_qcmb(self, filepath):

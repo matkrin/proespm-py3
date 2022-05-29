@@ -3,7 +3,7 @@ import datetime
 import numpy as np
 import rhksm4
 
-from stm import StmImage
+from .stm import StmImage
 
 
 class StmSm4:
@@ -47,14 +47,6 @@ class StmSm4:
 
         self.speed = self.line_time * self.yres / 1e3  # in s
 
-        self.img_data_fw = StmImage(
-            np.flip(self.img_fw.data * 1e9),
-            self.png_save_dir,
-            self.m_id,
-        )
+        self.img_data_fw = StmImage(np.flip(self.img_fw.data * 1e9))
 
-        self.img_data_bw = StmImage(
-            np.flip(self.img_bw.data * 1e9),
-            self.png_save_dir,
-            self.m_id,
-        )
+        self.img_data_bw = StmImage(np.flip(self.img_bw.data * 1e9))

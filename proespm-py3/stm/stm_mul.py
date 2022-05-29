@@ -2,10 +2,12 @@ import os
 
 import mulfile
 from mulfile.mul import Mul
-from stm import StmImage
+from .stm import StmImage
 
 
 class StmMul(Mul):
+    """Class for handling .mul files"""
+
     def __init__(self, filepath):
         super().__init__(mulfile.load(filepath))
 
@@ -18,9 +20,6 @@ class StmMul(Mul):
 
         for mul_image in self.data:
             mul_image.basename = self.basename
+            mul_image.png_save_dir = self.png_save_dir
             mul_image.m_id = mul_image.img_id
-            mul_image.img_data = StmImage(
-                mul_image.img_data,
-                self.png_save_dir,
-                mul_image.m_id,
-            )
+            mul_image.img_data = StmImage(mul_image.img_data)
