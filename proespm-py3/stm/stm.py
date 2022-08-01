@@ -14,11 +14,13 @@ plt.rcParams.update({"figure.max_open_warning": 0})
 class StmImage:
     """
     Class for STM Images
+    xsize: physicl dimension
     """
 
-    def __init__(self, arr):
+    def __init__(self, arr, xsize):
         self.arr = arr
-        self.xsize, self.ysize = arr.shape
+        self.yres, self.xres = arr.shape
+        self.xsize = xsize
 
     @property
     def shape(self):
@@ -36,13 +38,13 @@ class StmImage:
             vmin=None,
             vmax=None,
             origin="lower",
-            extent=(0, self.xsize, 0, self.ysize),
+            extent=(0, self.xres, 0, self.yres),
         )
         # plt.colorbar()
         scalebar = ScaleBar(
-            1,
+            self.xsize/self.xres,
             "nm",
-            length_fraction=0.3,
+            length_fraction=0.25,
             location="lower right",
             color="white",
             box_alpha=0,
@@ -89,7 +91,7 @@ class StmImage:
         Subtracts a plane of the average of each scan line from the image array
         """
         mean = np.mean(self.arr, axis=1)
-        correction = np.broadcast_to(mean, self.arr.shape).T
+        correction = np.broadcast_to(mean, (self.arr.shape[1], self.arr.shape[0])).T
         self.arr -= correction
         return self
 
@@ -97,9 +99,10 @@ class StmImage:
         """
         Subtracts a fitted background plane from the image array
         """
-        x_shape, y_shape = self.arr.shape
-        x_coords = np.broadcast_to(np.arange(x_shape), self.arr.shape)
-        y_coords = np.repeat(np.arange(y_shape), y_shape).reshape(self.arr.shape)
+        y_shape, x_shape = self.arr.shape
+        # x_coords = np.broadcast_to(np.arange(x_shape), self.arr.shape)
+        # y_coords = np.repeat(np.arange(y_shape), y_shape).reshape(self.arr.shape)
+        x_coords, y_coords = np.meshgrid(np.arange(x_shape), np.arange(y_shape))
 
         coeff_matrix = np.column_stack(
             (np.ones(self.arr.size), x_coords.flatten(), y_coords.flatten())

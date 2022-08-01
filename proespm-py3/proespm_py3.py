@@ -169,6 +169,9 @@ def main():
         if labj_path is not None:
             c.log(f"Selected Labjournal:\n{labj_path}")
             labj = pd.read_excel(labj_path, dtype=str)
+    else:
+        labj = None
+
 
     cls_objs = sorted(
         instantiate_data_objs(import_files(files_dir)), key=lambda x: str(x.datetime)

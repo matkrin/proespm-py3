@@ -36,5 +36,5 @@ class StmSxm:
         self.line_time = self.sxm.header["scan_time"][0] * 1e3  # in s?
         self.speed = self.line_time * self.yres / 1e3  # in s?
 
-        self.img_data_fw = StmImage(self.sxm.signals["Z"]["forward"])
-        self.img_data_bw = StmImage(np.flip(self.sxm.signals["Z"]["backward"], axis=1))
+        self.img_data_fw = StmImage(self.sxm.signals["Z"]["forward"], self.xsize)
+        self.img_data_bw = StmImage(np.flip(self.sxm.signals["Z"]["backward"], axis=1), self.xsize)

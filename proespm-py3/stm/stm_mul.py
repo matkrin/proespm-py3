@@ -22,4 +22,4 @@ class StmMul(Mul):
             mul_image.basename = self.basename
             mul_image.png_save_dir = self.png_save_dir
             mul_image.m_id = mul_image.img_id
-            mul_image.img_data = StmImage(mul_image.img_data)
+            mul_image.img_data = StmImage(mul_image.img_data, mul_image.xsize)

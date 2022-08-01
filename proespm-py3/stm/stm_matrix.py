@@ -25,10 +25,7 @@ class StmMatrix:
         self.img_fw = self.mtrx_data.select_image(self.traces[0])[0]
         self.img_bw = self.mtrx_data.select_image(self.traces[1])[0]
 
-        self.img_data_fw = StmImage(self.img_fw.data * 1e9)  # in nm
-        self.img_data_bw = StmImage(self.img_bw.data * 1e9)  # in nm
-
-        self.yres, self.xres = self.img_data_fw.shape
+        self.yres, self.xres = self.img_fw.data.shape
         self.xsize = self.img_fw.width * 1e9  # in nm
         self.ysize = self.img_fw.height * 1e9  # in nm
         self.xoffset = self.img_fw.x_offset  # in nm
@@ -45,3 +42,6 @@ class StmMatrix:
 
         self.line_time = self.raster_time * self.xres * 1e3  # in ms
         self.speed = self.line_time * self.yres / 1e3  # in s
+
+        self.img_data_fw = StmImage(self.img_fw.data * 1e9, self.xsize)  # in nm
+        self.img_data_bw = StmImage(self.img_bw.data * 1e9, self.xsize)  # in nm

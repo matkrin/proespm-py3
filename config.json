@@ -1,6 +1,6 @@
 {
-  "use_labjournal": true,
+  "use_labjournal": false,
   "path_data": "/Users/matthias/github/promulstm/test",
   "path_labjournal": "/Users/matthias/github/promulstm/test",
-  "save_stm_pngs": true
+  "save_stm_pngs": false
 }
