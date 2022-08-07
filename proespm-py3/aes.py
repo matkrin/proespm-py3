@@ -64,11 +64,6 @@ class Aes:
             num=data.num_y_values,
         )
         y_values = np.array(data.corresponding_variables[0].y_values)
-        print("num_y_values", data.num_y_values)
-        print("len y", len(y_values))
-        print("len x", len(x_values))
-        print("start x", data.x_start)
-        print("step x", data.x_step)
         self.aes_data = np.column_stack((x_values, y_values))
 
     def read_staib_dat(self, filepath: str) -> None:
