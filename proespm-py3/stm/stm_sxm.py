@@ -28,9 +28,6 @@ class StmSxm:
         time = self.sxm.header["rec_time"]
         self.datetime = parser.parse(f"{year}-{month}-{day} {time}")
 
-        self.img_data_fw = self.sxm.signals["Z"]["forward"]
-        self.img_data_bw = np.flip(self.sxm.signals["Z"]["backward"], axis=1)
-
         self.current = (
             float(self.sxm.header["z-controller"]["Setpoint"][0].split()[0])
             * 1e9

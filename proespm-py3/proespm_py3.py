@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union, Optional
 import os
 import pandas as pd
 from rich.console import Console
@@ -6,7 +6,14 @@ from rich.progress import track, Progress
 from rich import print
 from mulfile.mul import MulImage
 import config
-from stm import stm_factory, StmFlm, StmMatrix, StmMul, StmSm4, StmSxm
+from stm import (
+    stm_factory,
+    StmFlm,
+    StmMatrix,
+    StmMul,
+    StmSm4,
+    StmSxm,
+)
 from image import Image
 from xps import XpsEis, XpsScan
 from aes import Aes
@@ -14,6 +21,19 @@ from qcmb import Qcmb
 from gui import prompt_folder, prompt_labj
 from html_rendering import create_html
 
+
+DataObject = Union[
+    StmMul,
+    StmFlm,
+    StmMatrix,
+    StmSm4,
+    StmSxm,
+    Image,
+    XpsScan,
+    XpsEis,
+    Aes,
+    Qcmb,
+]
 
 c = Console()  # normal logging
 pc = Progress().console  # logging in loops with track()
@@ -93,7 +113,7 @@ def import_files(files_dir: str) -> List[str]:
     return file_lst
 
 
-def datafile_factory(file: str):
+def datafile_factory(file: str) -> Optional[DataObject]:
     """Instanciated a data object for the files
 
     For STM files the stm.stm_factory() function is used
@@ -120,9 +140,11 @@ def datafile_factory(file: str):
         return Aes(file)
     elif file.endswith(".log") and check_filestart(file, "Start Log"):
         return Qcmb(file)
+    else:
+        return
 
 
-def instantiate_data_objs(file_lst):
+def instantiate_data_objs(file_lst: List[str]) -> List[DataObject]:
     """Loop to instaciate data object
 
     Uses the datafile_factory to instaciate data object and adding them to a
@@ -137,12 +159,15 @@ def instantiate_data_objs(file_lst):
         List of data objects for each STM-Image, Spectrum, etc.
 
     """
-    data_objs = []
+    data_objs: List[DataObject] = []
     for file in track(file_lst, description="> Importing Files  "):
         obj = datafile_factory(file)
+        if obj is None:
+            continue
         if type(obj) is StmMul:
             data_objs.extend(obj)
         elif type(obj) is XpsEis:
+            assert obj.data is not None
             data_objs.extend(obj.data)
         else:
             data_objs.append(obj)
@@ -150,7 +175,7 @@ def instantiate_data_objs(file_lst):
     return [x for x in data_objs if x is not None]
 
 
-def data_processing(data_objs, labj):
+def data_processing(data_objs: List[DataObject], labj):
     """ """
     slide_num = 1  # for js modal image slide show in html
     for obj in track(data_objs, description="> Processing"):
