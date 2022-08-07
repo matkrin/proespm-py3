@@ -1,3 +1,4 @@
+from typing import List
 import os
 import pandas as pd
 from rich.console import Console
@@ -27,6 +28,7 @@ ALLOWED_FTYPES = (
     ".SM4",
     ".dat",
     ".sxm",
+    ".vms",
 )
 
 
@@ -43,14 +45,16 @@ def extract_labj(labjournal, obj):
         c.log(f"\nNo Labjournal Data for {obj.m_id}")
 
 
-def check_filestart(file, string_to_check):
+def check_filestart(file: str, string_to_check: str) -> bool:
     """Check if a file starts with a certain string
 
     Args:
         file (str): file to check
         string_to_check (str): string that is checked if file starts with it
+
     Returns:
         bool: True if file starts with string_to_check, False if not
+
     """
     with open(file) as f:
         first_line = f.readline()
@@ -58,8 +62,17 @@ def check_filestart(file, string_to_check):
 
 
 # get filepaths for prompted folder
-def import_files(files_dir):
-    """ """
+def import_files(files_dir: str) -> List[str]:
+    """Checks if filetype is supported and imports file accordingly
+
+    Args:
+        files_dir (str): Full path to the directory, containing the data files
+            to process
+
+    Returns:
+        List of full paths to data files to process
+
+    """
     file_lst = []  # full paths
     for entry in os.scandir(files_dir):
         if entry.path.endswith(ALLOWED_FTYPES) and entry.is_file():
@@ -80,22 +93,50 @@ def import_files(files_dir):
     return file_lst
 
 
-def datafile_factory(file):
-    """ """
+def datafile_factory(file: str):
+    """Instanciated a data object for the files
+
+    For STM files the stm.stm_factory() function is used
+
+    Args:
+        file (str): Full path to the data file from which an object is
+            instanciated
+
+    Returns:
+        The instanciated data object
+
+    """
     if file.endswith((".mul", ".flm", ".Z_mtrx", ".SM4", ".sxm")):
         return stm_factory(file)
     elif file.endswith(".png"):
         return Image(file)
     elif file.endswith(".txt") and check_filestart(file, "Region"):
         return XpsEis(file)
-    elif file.endswith(".dat") and check_filestart(file, "Version"):
+    elif (
+        file.endswith(".dat")
+        and check_filestart(file, "Version")
+        or file.endswith(".vms")
+    ):
         return Aes(file)
     elif file.endswith(".log") and check_filestart(file, "Start Log"):
         return Qcmb(file)
 
 
 def instantiate_data_objs(file_lst):
-    """ """
+    """Loop to instaciate data object
+
+    Uses the datafile_factory to instaciate data object and adding them to a
+    list. StmMul and XpsEis can contain multiple images or spectra,
+    respectively. For each of those a object is instaciated and added to the
+    list.
+
+    Args:
+        file_lst (List[str]): List with full paths to data files
+
+    Returns:
+        List of data objects for each STM-Image, Spectrum, etc.
+
+    """
     data_objs = []
     for file in track(file_lst, description="> Importing Files  "):
         obj = datafile_factory(file)

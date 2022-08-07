@@ -452,10 +452,18 @@ category = "main"
 optional = false
 python-versions = ">=3.7"
 
+[[package]]
+name = "vamas"
+version = "0.1.0"
+description = "Python package to read vamas (.vms) files"
+category = "main"
+optional = false
+python-versions = ">=3.7,<4.0"
+
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.12"
-content-hash = "35ca780c5347161258af71c3b435fd921952f8850fb11a45c2e46ccdeb0f1319"
+content-hash = "6beb19fe962db7bc14d9bb66ecc97998078094855138d489c52a272e7fae7d5a"
 
 [metadata.files]
 access2thematrix = [
@@ -877,3 +885,7 @@ tornado = [
     {file = "tornado-6.2.tar.gz", hash = "sha256:9b630419bde84ec666bfd7ea0a4cb2a8a651c2d5cccdbdd1972a0c859dfc3c13"},
 ]
 typing-extensions = []
+vamas = [
+    {file = "vamas-0.1.0-py3-none-any.whl", hash = "sha256:987fe6c8ec372ff1efe0ab6f4184c686473e78a76bf661ffa5a67ec9c8529f3d"},
+    {file = "vamas-0.1.0.tar.gz", hash = "sha256:138b74f8fb5b3f0131be5a10c9da1fa43ee2951168b39bb5fb1d354a4703cb6a"},
+]
