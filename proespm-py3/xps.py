@@ -86,7 +86,7 @@ class XpsScan:
         self.filename, self.fileext = os.path.splitext(self.basename)
         self.datetime = datetime.datetime.utcfromtimestamp(
             os.path.getmtime(filepath)
-        ).strftime("%Y-%m-%d %H:%M:%S")
+        )
 
         self.xps_data = xps_data
         self.scan_number = scan_number

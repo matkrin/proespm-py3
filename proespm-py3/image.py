@@ -15,7 +15,7 @@ class Image:
         self.encode_png()
         self.datetime = datetime.datetime.utcfromtimestamp(
             os.path.getmtime(filepath)
-        ).strftime("%Y-%m-%d %H:%M:%S")
+        )
 
     def encode_png(self):
         """

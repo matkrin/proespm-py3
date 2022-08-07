@@ -47,7 +47,7 @@ class Aes:
 
             self.datetime = datetime.datetime.strptime(
                 f.readline().split("    ")[-1].strip(), "%a %b %d %H:%M:%S %Y"
-            ).strftime("%Y-%m-%d %H:%M:%S")
+            )
 
             self.reserved_1 = read_header_line(f)
             self.reserved_2 = read_header_line(f)

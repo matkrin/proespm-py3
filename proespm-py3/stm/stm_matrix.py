@@ -5,7 +5,14 @@ from .stm import StmImage
 
 
 class StmMatrix:
-    def __init__(self, filepath):
+    """Class for handling Omicron .Z_mtrx files
+
+    Args:
+        filepath (str): Full path to the .Z_mtrx file
+
+    """
+
+    def __init__(self, filepath: str):
         self.filepath = filepath
         self.basename = os.path.basename(self.filepath)
         self.dirname = os.path.dirname(self.filepath)
@@ -16,7 +23,7 @@ class StmMatrix:
 
         self.datetime = datetime.datetime.utcfromtimestamp(
             os.path.getmtime(filepath)
-        ).strftime("%Y-%m-%d %H:%M:%S")
+        )
 
         self.mtrx_data = access2thematrix.MtrxData()
         self.traces = self.mtrx_data.open(filepath)[0]

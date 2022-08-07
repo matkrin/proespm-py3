@@ -12,9 +12,12 @@ plt.rcParams.update({"figure.max_open_warning": 0})
 
 
 class StmImage:
-    """
-    Class for STM Images
-    xsize: physicl dimension
+    """Class for STM Image Arrays
+
+    Args:
+        arr (numpy.ndarray): Pixel data of the STM image
+        xsize (float | int): Physical dimension of the STM image in x-direction
+
     """
 
     def __init__(self, arr, xsize):
@@ -110,8 +113,6 @@ class StmImage:
         Subtracts a fitted background plane from the image array
         """
         y_shape, x_shape = self.arr.shape
-        # x_coords = np.broadcast_to(np.arange(x_shape), self.arr.shape)
-        # y_coords = np.repeat(np.arange(y_shape), y_shape).reshape(self.arr.shape)
         x_coords, y_coords = np.meshgrid(
             np.arange(x_shape), np.arange(y_shape)
         )

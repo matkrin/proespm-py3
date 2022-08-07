@@ -1,8 +1,8 @@
 import os
 import pandas as pd
-from rich import print
 from rich.console import Console
 from rich.progress import track, Progress
+from rich import print
 from mulfile.mul import MulImage
 import config
 from stm import stm_factory, StmFlm, StmMatrix, StmMul, StmSm4, StmSxm
@@ -106,7 +106,7 @@ def instantiate_data_objs(file_lst):
         else:
             data_objs.append(obj)
 
-    return data_objs
+    return [x for x in data_objs if x is not None]
 
 
 def data_processing(data_objs, labj):
@@ -185,8 +185,9 @@ def main():
 
     cls_objs = sorted(
         instantiate_data_objs(import_files(files_dir)),
-        key=lambda x: str(x.datetime),
+        key=lambda x: x.datetime,
     )
+
     cls_objs = data_processing(cls_objs, labj)
     create_html(cls_objs, files_dir)
     c.log("HTML-Report created " + "[bold green]\u2713[/bold green]")

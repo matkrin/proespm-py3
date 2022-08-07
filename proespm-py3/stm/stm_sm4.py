@@ -1,14 +1,17 @@
 import os
-import datetime
 import numpy as np
 import rhksm4
+from dateutil import parser
 
 from .stm import StmImage
 
 
 class StmSm4:
-    """
-    Class for handling RHK SM4 files
+    """Class for handling RHK SM4 files
+
+    Args:
+        filepath (str): Full path to the .sm4 files
+
     """
 
     def __init__(self, filepath):
@@ -16,6 +19,7 @@ class StmSm4:
         self.basename = os.path.basename(self.filepath)
         self.dirname = os.path.dirname(self.filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
+
         self.m_id = self.filename
         self.png_save_dir = os.path.join(self.dirname, "sm4_png")
 
@@ -24,7 +28,7 @@ class StmSm4:
         self.img_fw = self.sm4[8]
         self.img_bw = self.sm4[9]
 
-        self.datetime = self.img_fw.attrs["RHK_DateTime"]
+        self.datetime = parser.parse(self.img_fw.attrs["RHK_DateTime"])
 
         self.current = self.img_fw.attrs["RHK_Current"]
         self.bias = self.img_fw.attrs["RHK_Bias"]

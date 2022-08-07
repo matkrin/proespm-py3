@@ -14,7 +14,7 @@ class Qcmb:
         self.filename, self.fileext = os.path.splitext(self.basename)
         self.datetime = datetime.datetime.utcfromtimestamp(
             os.path.getmtime(filepath)
-        ).strftime("%Y-%m-%d %H:%M:%S")
+        )
         self.m_id = self.filename
 
         self.read_qcmb(filepath)

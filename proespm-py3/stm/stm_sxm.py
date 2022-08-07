@@ -1,16 +1,24 @@
 import os
-import datetime
 import numpy as np
+from dateutil import parser
 import nanonispy as nap
 from .stm import StmImage
 
 
 class StmSxm:
+    """Class for handling Nanonis .sxm files
+
+    Args:
+        filepath (str): Full path to the .sxm file
+
+    """
+
     def __init__(self, filepath):
         self.filepath = filepath
         self.basename = os.path.basename(self.filepath)
         self.dirname = os.path.dirname(self.filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
+
         self.m_id = self.filename
         self.png_save_dir = os.path.join(self.dirname, "sxm_png")
 
@@ -18,7 +26,7 @@ class StmSxm:
 
         day, month, year = self.sxm.header["rec_date"].split(".")
         time = self.sxm.header["rec_time"]
-        self.datetime = f"{year}-{month}-{day} {time}"
+        self.datetime = parser.parse(f"{year}-{month}-{day} {time}")
 
         self.img_data_fw = self.sxm.signals["Z"]["forward"]
         self.img_data_bw = np.flip(self.sxm.signals["Z"]["backward"], axis=1)

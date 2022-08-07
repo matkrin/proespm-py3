@@ -9,7 +9,12 @@ for k, v in os.environ.items():
 
 
 class StmFlm(StmMul):
-    """Class for handling .flm files"""
+    """Class for handling Specs Aarhus STM .flm files
+
+    Args:
+        filepath (str): Full path to the .flm file
+
+    """
 
     def __init__(self, filepath):
         super().__init__(filepath)
@@ -19,7 +24,7 @@ class StmFlm(StmMul):
         self.mp4_name = os.path.join(self.mp4_save_dir, f"{self.filename}.mp4")
         self.datetime = datetime.datetime.utcfromtimestamp(
             os.path.getmtime(filepath)
-        ).strftime("%Y-%m-%d %H:%M:%S")
+        )
 
     def convert_to_mp4(self, fps=10):
         """

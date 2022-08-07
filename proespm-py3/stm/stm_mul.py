@@ -6,7 +6,12 @@ from .stm import StmImage
 
 
 class StmMul(Mul):
-    """Class for handling .mul files"""
+    """Class for handling .mul files
+
+    Args:
+        filepath (str): Full path to the .mul file
+
+    """
 
     def __init__(self, filepath):
         super().__init__(mulfile.load(filepath))
