@@ -38,10 +38,16 @@ class StmMatrix:
             elif param.startswith("GapVoltageControl.Voltage "):
                 self.bias = float(param.split()[1]) * 1e3  # in mV
             elif param.startswith("XYScanner.Raster_Time "):
-                self.raster_time = float(param.split()[1])  # in seconds! per pixel?
+                self.raster_time = float(
+                    param.split()[1]
+                )  # in seconds! per pixel?
 
         self.line_time = self.raster_time * self.xres * 1e3  # in ms
         self.speed = self.line_time * self.yres / 1e3  # in s
 
-        self.img_data_fw = StmImage(self.img_fw.data * 1e9, self.xsize)  # in nm
-        self.img_data_bw = StmImage(self.img_bw.data * 1e9, self.xsize)  # in nm
+        self.img_data_fw = StmImage(
+            self.img_fw.data * 1e9, self.xsize
+        )  # in nm
+        self.img_data_bw = StmImage(
+            self.img_bw.data * 1e9, self.xsize
+        )  # in nm

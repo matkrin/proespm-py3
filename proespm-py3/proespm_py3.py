@@ -64,11 +64,18 @@ def import_files(files_dir):
     for entry in os.scandir(files_dir):
         if entry.path.endswith(ALLOWED_FTYPES) and entry.is_file():
             file_lst.append(entry.path)
-            c.log(f"Detected File:\t\t[green]{os.path.basename(entry.path)}[/green]")
+            c.log(
+                "Detected"
+                f" File:\t\t[green]{os.path.basename(entry.path)}[/green]"
+            )
         elif not entry.path.endswith(ALLOWED_FTYPES) and entry.is_file():
-            c.log(f"Unsupported File:\t[red]{os.path.basename(entry.path)}[/red]")
+            c.log(
+                f"Unsupported File:\t[red]{os.path.basename(entry.path)}[/red]"
+            )
         elif not entry.is_file():
-            c.log(f"Ignored Folder:\t\t[red]{os.path.basename(entry.path)}[/red]")
+            c.log(
+                f"Ignored Folder:\t\t[red]{os.path.basename(entry.path)}[/red]"
+            )
 
     return file_lst
 
@@ -134,8 +141,12 @@ def data_processing(data_objs, labj):
             obj.img_data_fw.corr_lines()
             obj.img_data_bw.corr_lines()
 
-            obj.img_data_fw.plot(save_dir=obj.png_save_dir, save_name=f"{obj.m_id}_fw")
-            obj.img_data_bw.plot(save_dir=obj.png_save_dir, save_name=f"{obj.m_id}_bw")
+            obj.img_data_fw.plot(
+                save_dir=obj.png_save_dir, save_name=f"{obj.m_id}_fw"
+            )
+            obj.img_data_bw.plot(
+                save_dir=obj.png_save_dir, save_name=f"{obj.m_id}_bw"
+            )
 
         elif isinstance(obj, Image):
             pc.log(f"Processing of [bold blue]{obj.m_id}[/bold blue]")
@@ -172,9 +183,9 @@ def main():
     else:
         labj = None
 
-
     cls_objs = sorted(
-        instantiate_data_objs(import_files(files_dir)), key=lambda x: str(x.datetime)
+        instantiate_data_objs(import_files(files_dir)),
+        key=lambda x: str(x.datetime),
     )
     cls_objs = data_processing(cls_objs, labj)
     create_html(cls_objs, files_dir)
@@ -183,4 +194,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

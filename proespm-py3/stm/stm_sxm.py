@@ -24,7 +24,8 @@ class StmSxm:
         self.img_data_bw = np.flip(self.sxm.signals["Z"]["backward"], axis=1)
 
         self.current = (
-            float(self.sxm.header["z-controller"]["Setpoint"][0].split()[0]) * 1e9
+            float(self.sxm.header["z-controller"]["Setpoint"][0].split()[0])
+            * 1e9
         )  # in nA
 
         self.bias = self.sxm.header["bias"]  # in V
@@ -36,5 +37,9 @@ class StmSxm:
         self.line_time = self.sxm.header["scan_time"][0] * 1e3  # in s?
         self.speed = self.line_time * self.yres / 1e3  # in s?
 
-        self.img_data_fw = StmImage(self.sxm.signals["Z"]["forward"], self.xsize)
-        self.img_data_bw = StmImage(np.flip(self.sxm.signals["Z"]["backward"], axis=1), self.xsize)
+        self.img_data_fw = StmImage(
+            self.sxm.signals["Z"]["forward"], self.xsize
+        )
+        self.img_data_bw = StmImage(
+            np.flip(self.sxm.signals["Z"]["backward"], axis=1), self.xsize
+        )

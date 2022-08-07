@@ -38,14 +38,24 @@ class StmSm4:
 
         for param in self.img_fw.attrs["RHK_PRMdata"].split("\n"):
             if param.startswith("<1322>\tScan size"):
-                self.xsize = float(param.split("::")[1].split()[0]) * 1e9  # in nm
+                self.xsize = (
+                    float(param.split("::")[1].split()[0]) * 1e9
+                )  # in nm
                 self.ysize = self.xsize
             elif param.startswith("<1326>\tScan speed"):
-                self.speed_mps = float(param.split("::")[1].split()[0])  # in m/s !!
+                self.speed_mps = float(
+                    param.split("::")[1].split()[0]
+                )  # in m/s !!
             elif param.startswith("<1327>\tLine time"):
-                self.line_time = float(param.split("::")[1].split()[0]) * 1e3  # in ms
+                self.line_time = (
+                    float(param.split("::")[1].split()[0]) * 1e3
+                )  # in ms
 
         self.speed = self.line_time * self.yres / 1e3  # in s
 
-        self.img_data_fw = StmImage(np.flip(self.img_fw.data * 1e9), self.xsize)
-        self.img_data_bw = StmImage(np.flip(self.img_bw.data * 1e9), self.xsize)
+        self.img_data_fw = StmImage(
+            np.flip(self.img_fw.data * 1e9), self.xsize
+        )
+        self.img_data_bw = StmImage(
+            np.flip(self.img_bw.data * 1e9), self.xsize
+        )

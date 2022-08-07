@@ -3,7 +3,7 @@ import os
 import datetime
 
 
-class Image():
+class Image:
     def __init__(self, filepath):
         self.filepath = filepath
         self.basename = os.path.basename(self.filepath)
@@ -14,7 +14,8 @@ class Image():
         self.png_str = None
         self.encode_png()
         self.datetime = datetime.datetime.utcfromtimestamp(
-            os.path.getmtime(filepath)).strftime('%Y-%m-%d %H:%M:%S')
+            os.path.getmtime(filepath)
+        ).strftime("%Y-%m-%d %H:%M:%S")
 
     def encode_png(self):
         """
@@ -23,6 +24,8 @@ class Image():
         decode: makes a string out of byte type
         """
         for png_img in self.filepath:
-            with open(self.filepath , 'rb') as f:
-                self.png_str = 'data:image/png;base64, ' + base64.b64encode(f.read()).decode('ascii')
+            with open(self.filepath, "rb") as f:
+                self.png_str = "data:image/png;base64, " + base64.b64encode(
+                    f.read()
+                ).decode("ascii")
         return self.png_str
