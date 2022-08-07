@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "proespm-py3"
+version = "0.1.0"
+description = "Processing of surface science data"
+authors = ["matkrin <matkrin@protonmail.com>"]
+license = "GPL-3.0"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.12"
+numpy = "^1.23.1"
+matplotlib = "^3.5.2"
+matplotlib-scalebar = "^0.8.1"
+seaborn = "^0.11.2"
+pandas = "^1.4.3"
+bokeh = "2.4.3"
+Jinja2 = "^3.1.2"
+opencv-python = "^4.6.0"
+rich = "^12.5.1"
+openpyxl = "^3.0.10"
+scipy = "^1.9.0"
+access2theMatrix = "^0.4.2"
+mulfile = "^0.1.0"
+nanonispy = "^1.1.0"
+rhksm4 = "^0.3.5"
+vamas = "^0.1.0"
+
+[tool.poetry.dev-dependencies]
+black = "^22.6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 79
+preview = true
