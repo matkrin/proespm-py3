@@ -241,13 +241,12 @@ def main():
     c.log(f"Selected folder:\n{files_dir}")
 
     # gui prompt for labjournal
+    labj = None
     if config.use_labjournal:
         labj_path = prompt_labj()
         if labj_path is not None:
             c.log(f"Selected Labjournal:\n{labj_path}")
             labj = pd.read_excel(labj_path, dtype=str)
-    else:
-        labj = None
 
     cls_objs = sorted(
         instantiate_data_objs(import_files(files_dir)),
