@@ -1,7 +1,7 @@
 from .stm_mul import StmMul
 from .stm_flm import StmFlm
 from .stm_sm4 import StmSm4
-from .stm_matrix import StmMatrix
+from .stm_matrix import NoTracesError, StmMatrix
 from .stm_sxm import StmSxm
 
 
@@ -11,7 +11,11 @@ def stm_factory(file):
     elif file.endswith(".flm"):
         return StmFlm(file)
     elif file.endswith(".Z_mtrx"):
-        return StmMatrix(file)
+        try:
+            return StmMatrix(file)
+        except NoTracesError as e:
+            print("An error occurred: ", e)
+            return None
     elif file.endswith(".SM4"):
         return StmSm4(file)
     elif file.endswith(".sxm"):

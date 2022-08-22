@@ -4,6 +4,12 @@ import access2thematrix
 from .stm import StmImage
 
 
+class NoTracesError(Exception):
+    def __init__(self, filename) -> None:
+        message = f"{filename} contains no traces"
+        super().__init__(message)
+
+
 class StmMatrix:
     """Class for handling Omicron .Z_mtrx files
 
@@ -27,8 +33,13 @@ class StmMatrix:
 
         self.mtrx_data = access2thematrix.MtrxData()
         self.traces = self.mtrx_data.open(filepath)[0]
+        if self.traces == {}:
+            raise NoTracesError(self.filename)
+
         self.meta = self.mtrx_data.get_experiment_element_parameters()[1]
 
+        print(self.basename)
+        print(self.traces)
         self.img_fw = self.mtrx_data.select_image(self.traces[0])[0]
         self.img_bw = self.mtrx_data.select_image(self.traces[1])[0]
 
