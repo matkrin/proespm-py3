@@ -19,6 +19,11 @@
           </ul>
       </div>
       <div id="toc">
+      {% for obj in cls_objs %}
+            {% if check_type(obj, 'ErrorFile') %}
+                <div id="error-file">'{{ obj.basename }}' could not be processed!</div>
+            {% endif %}
+      {% endfor %}
         <h2>Multi-Files and Movies</h2>
           {% for obj in cls_objs %}
             {% if check_type(obj, 'MulImage') and obj.m_id.endswith('_1') %}

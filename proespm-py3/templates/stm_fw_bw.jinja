@@ -51,17 +51,21 @@
       </tr>
     </table>
   </div>
+
   <!-- LABJOURNAL DATA -->
-  <div class="table_column">
-    <table style:"width=100%" >
-      <tr>
-        <th>Surface</th><td>{{ obj.surface }}</td>
-      </tr>
-      <tr>
-        <th>Tip</th><td>{{ obj.tip }}</td>
-      </tr>
-    </table>
-  </div>
+  {% if obj.surface or obj.tip %}
+      <div class="table_column">
+        <table style:"width=100%" >
+          <tr>
+            <th>Surface</th><td>{{ obj.surface }}</td>
+          </tr>
+          <tr>
+            <th>Tip</th><td>{{ obj.tip }}</td>
+          </tr>
+        </table>
+      </div>
+  {% endif %}
+
   <!-- LABJOURNAL REMARK -->
   {% if obj.remark %}
   <div class="remark_column">
