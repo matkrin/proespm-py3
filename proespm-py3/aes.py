@@ -28,7 +28,7 @@ class Aes:
         else:
             self.read_staib_dat(filepath)
 
-    def read_staib_vamas(self, filepath: str):
+    def read_staib_vamas(self, filepath: str) -> None:
         """Uses vamas library to read AES Staib .vms files
 
         Args:
