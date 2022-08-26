@@ -38,8 +38,6 @@ class StmMatrix:
 
         self.meta = self.mtrx_data.get_experiment_element_parameters()[1]
 
-        print(self.basename)
-        print(self.traces)
         self.img_fw = self.mtrx_data.select_image(self.traces[0])[0]
         self.img_bw = self.mtrx_data.select_image(self.traces[1])[0]
 
