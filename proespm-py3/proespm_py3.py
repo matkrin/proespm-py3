@@ -248,13 +248,13 @@ def main():
             c.log(f"Selected Labjournal:\n{labj_path}")
             labj = pd.read_excel(labj_path, dtype=str)
 
-    cls_objs = sorted(
+    data_objs = sorted(
         instantiate_data_objs(import_files(files_dir)),
         key=lambda x: x.datetime,
     )
 
-    cls_objs = data_processing(cls_objs, labj)
-    create_html(cls_objs, files_dir)
+    data_objs = data_processing(data_objs, labj)
+    create_html(data_objs, files_dir)
     c.log("HTML-Report created " + "[bold green]\u2713[/bold green]")
 
 

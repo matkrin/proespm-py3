@@ -1,16 +1,40 @@
+from __future__ import annotations
+from typing import List, TYPE_CHECKING
 import os
 from jinja2 import Environment, FileSystemLoader
 
+if TYPE_CHECKING:
+    from proespm_py3 import DataObject
 
-def create_html(class_obj_lst, output_path):
-    """class_obj_lst: list with all class objects for the html report
-    output_name: name or full path of the html report
+
+def check_type(data_obj: DataObject, check_str: str) -> bool:
+    """Check if the name of the class data_obj instantiates from,
+    matches check_str
+
+    Used inside jinja templates as helper function as jinja does not support
+    much python logic inside templated.
+
+    Args:
+        data_obj (DataObject): Object to check
+        check_str (str): string to check
+
+    Returns:
+        bool: True if class name of data_obj matches check_str
     """
 
-    def check_type(class_obj, check_str):
-        """helper function as jinja does not support much python logic"""
-        if type(class_obj).__name__ == check_str:
-            return True
+    return True if type(data_obj).__name__ == check_str else False
+
+
+def create_html(data_objs: List[DataObject], output_path: str) -> None:
+    """Creates the HTML report
+
+    The list of data_objs get passed to the jinja environment and can be used
+    inside of templates.
+
+    Args:
+        data_objs (list[DataObject]): list with DataObjects for the html report
+        output_name (str): name or full path of the html report
+    """
 
     output_name = os.path.basename(output_path)
     template_dir = os.path.join(os.path.dirname(__file__), "templates")
@@ -21,7 +45,7 @@ def create_html(class_obj_lst, output_path):
     template = env.get_template("base_template.jinja")
 
     output = template.render(
-        cls_objs=class_obj_lst,
+        data_objs=data_objs,
         title=output_name,
         files_dir=output_path,
     )
