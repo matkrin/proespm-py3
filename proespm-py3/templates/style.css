@@ -198,3 +198,8 @@ img.hover-shadow {
   background-color: #40d1b6;
   color: white;
 }
+
+#error-file {
+    color: red;
+    font-size: 1.5em
+}

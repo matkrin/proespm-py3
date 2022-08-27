@@ -16,7 +16,7 @@ class Aes:
 
     """
 
-    def __init__(self, filepath: str):
+    def __init__(self, filepath: str) -> None:
         self.filepath = filepath
         self.basename = os.path.basename(self.filepath)
         self.dirname = os.path.dirname(self.filepath)
@@ -28,7 +28,7 @@ class Aes:
         else:
             self.read_staib_dat(filepath)
 
-    def read_staib_vamas(self, filepath: str):
+    def read_staib_vamas(self, filepath: str) -> None:
         """Uses vamas library to read AES Staib .vms files
 
         Args:

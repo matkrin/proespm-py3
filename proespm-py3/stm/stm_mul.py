@@ -13,7 +13,7 @@ class StmMul(Mul):
 
     """
 
-    def __init__(self, filepath):
+    def __init__(self, filepath: str) -> None:
         super().__init__(mulfile.load(filepath))
 
         self.filepath = filepath

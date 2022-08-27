@@ -7,7 +7,7 @@ from bokeh.embed import components
 
 
 class Qcmb:
-    def __init__(self, filepath):
+    def __init__(self, filepath: str) -> None:
         self.filepath = filepath
         self.basename = os.path.basename(self.filepath)
         self.dirname = os.path.dirname(self.filepath)
@@ -20,7 +20,7 @@ class Qcmb:
         self.read_qcmb(filepath)
 
     def read_qcmb(self, filepath):
-        """read the txt file produced by stm2 qcmb software"""
+        """Read the txt file produced by stm2 qcmb software"""
 
         arr = np.genfromtxt(
             filepath, delimiter=", ", skip_header=2, skip_footer=1
@@ -29,8 +29,8 @@ class Qcmb:
         self.rate = arr[:, 1]  # in A/s
         self.thickness = arr[:, 2]  # in A
 
-    def plot(self):
-        """ """
+    def plot(self) -> None:
+        """Plot with two subplots for thickness and rate """
 
         subplot_rate = figure(
             plot_width=1000,
