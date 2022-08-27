@@ -16,7 +16,7 @@ class StmFlm(StmMul):
 
     """
 
-    def __init__(self, filepath):
+    def __init__(self, filepath: str) -> None:
         super().__init__(filepath)
 
         self.m_id = self.filename

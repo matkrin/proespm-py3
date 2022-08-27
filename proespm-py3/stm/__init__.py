@@ -9,7 +9,7 @@ from .stm_sxm import StmSxm
 
 
 class ErrorFile:
-    def __init__(self, filepath):
+    def __init__(self, filepath: str) -> None:
         self.filepath = filepath
         self.basename = os.path.basename(self.filepath)
         self.dirname = os.path.dirname(self.filepath)

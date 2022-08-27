@@ -6,7 +6,7 @@ from bokeh.embed import components
 
 
 class XpsEis:
-    def __init__(self, filepath):
+    def __init__(self, filepath: str) -> None:
         self.filepath = filepath
         self.basename = os.path.basename(filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)

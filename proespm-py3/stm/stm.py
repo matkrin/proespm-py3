@@ -92,14 +92,14 @@ class StmImage:
 
     def fix_zero(self):
         """
-        Subtracts the minimum value of the image array from the image array
+        Subtract the minimum value of the image array from the image array
         """
         self.arr -= np.min(self.arr)
         return self
 
     def corr_lines(self):
         """
-        Subtracts a plane of the average of each scan line from the image array
+        Subtract a plane of the average of each scan line from the image array
         """
         mean = np.mean(self.arr, axis=1)
         correction = np.broadcast_to(
@@ -110,7 +110,7 @@ class StmImage:
 
     def corr_plane(self):
         """
-        Subtracts a fitted background plane from the image array
+        Subtract a fitted background plane from the image array
         """
         y_shape, x_shape = self.arr.shape
         x_coords, y_coords = np.meshgrid(

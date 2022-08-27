@@ -175,7 +175,7 @@ def instantiate_data_objs(file_lst: List[str]) -> List[DataObject]:
     return [x for x in data_objs if x is not None]
 
 
-def data_processing(data_objs: List[DataObject], labj):
+def data_processing(data_objs: List[DataObject], labj) -> List[DataObject]:
     """ """
     slide_num = 1  # for js modal image slide show in html
     for obj in track(data_objs, description="> Processing"):
