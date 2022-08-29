@@ -1,7 +1,7 @@
 test:
 	poetry run pytest
 typecheck:
-	poetry run mypy -p vamas
+	poetry run mypy -p proespm-py3
 typecheck-all:
 	poertry run mypy .
 format-check:

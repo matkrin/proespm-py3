@@ -1,4 +1,5 @@
 *.mp4
+*.html
 test_report.html
 test/*/
 # Byte-compiled / optimized / DLL files

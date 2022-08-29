@@ -1,10 +1,11 @@
 from typing import List, Union, Optional
-import os
 import pandas as pd
+import os
 from rich.console import Console
 from rich.progress import track, Progress
 from rich import print
 from mulfile.mul import MulImage
+
 import config
 from stm import (
     stm_factory,
@@ -13,11 +14,13 @@ from stm import (
     StmMul,
     StmSm4,
     StmSxm,
+    ErrorFile,
 )
 from image import Image
 from xps import XpsEis, XpsScan
 from aes import Aes
 from qcmb import Qcmb
+from file_import import import_files_day_mode, import_files_folder_mode
 from gui import prompt_folder, prompt_labj
 from html_rendering import create_html
 
@@ -28,6 +31,7 @@ DataObject = Union[
     StmMatrix,
     StmSm4,
     StmSxm,
+    ErrorFile,
     Image,
     XpsScan,
     XpsEis,
@@ -37,19 +41,6 @@ DataObject = Union[
 
 c = Console()  # normal logging
 pc = Progress().console  # logging in loops with track()
-
-ALLOWED_FTYPES = (
-    ".mul",
-    ".png",
-    ".txt",
-    ".Z_mtrx",
-    ".flm",
-    ".log",
-    ".SM4",
-    ".dat",
-    ".sxm",
-    ".vms",
-)
 
 
 def extract_labj(labjournal, obj):
@@ -79,38 +70,6 @@ def check_filestart(file: str, string_to_check: str) -> bool:
     with open(file) as f:
         first_line = f.readline()
     return True if first_line.startswith(string_to_check) else False
-
-
-# get filepaths for prompted folder
-def import_files(files_dir: str) -> List[str]:
-    """Checks if filetype is supported and imports file accordingly
-
-    Args:
-        files_dir (str): Full path to the directory, containing the data files
-            to process
-
-    Returns:
-        List of full paths to data files to process
-
-    """
-    file_lst = []  # full paths
-    for entry in os.scandir(files_dir):
-        if entry.path.endswith(ALLOWED_FTYPES) and entry.is_file():
-            file_lst.append(entry.path)
-            c.log(
-                "Detected"
-                f" File:\t\t[green]{os.path.basename(entry.path)}[/green]"
-            )
-        elif not entry.path.endswith(ALLOWED_FTYPES) and entry.is_file():
-            c.log(
-                f"Unsupported File:\t[red]{os.path.basename(entry.path)}[/red]"
-            )
-        elif not entry.is_file():
-            c.log(
-                f"Ignored Folder:\t\t[red]{os.path.basename(entry.path)}[/red]"
-            )
-
-    return file_lst
 
 
 def datafile_factory(file: str) -> Optional[DataObject]:
@@ -175,8 +134,17 @@ def instantiate_data_objs(file_lst: List[str]) -> List[DataObject]:
     return [x for x in data_objs if x is not None]
 
 
-def data_processing(data_objs: List[DataObject], labj) -> List[DataObject]:
-    """ """
+def data_processing(data_objs: List[DataObject], labj: Optional[pd.DataFrame]) -> List[DataObject]:
+    """Loop to process DataObjects
+
+    Args:
+        data_objs (List[DataObject]): DataObjects for processing
+        labj (pandas.DataFrame): Full path to the excel labjournal spreadsheet
+
+    Returns:
+        List[DataObject]: The processed DataObjects
+
+    """
     slide_num = 1  # for js modal image slide show in html
     for obj in track(data_objs, description="> Processing"):
         if config.use_labjournal and labj is not None:
@@ -236,26 +204,46 @@ def data_processing(data_objs: List[DataObject], labj) -> List[DataObject]:
 
 def main():
     """ """
-    # gui prompt for files
+    # Gui prompt for files
     files_dir = prompt_folder()
     c.log(f"Selected folder:\n{files_dir}")
 
-    # gui prompt for labjournal
-    labj = None
+    # Gui prompt for labjournal
+    labj: Optional[pd.DataFrame] = None
     if config.use_labjournal:
         labj_path = prompt_labj()
         if labj_path is not None:
             c.log(f"Selected Labjournal:\n{labj_path}")
             labj = pd.read_excel(labj_path, dtype=str)
 
+    # File import according to mode
+    if "day" in config.mode or "daily" in config.mode:
+        imported_files, day = import_files_day_mode(files_dir, c)
+    else:
+        imported_files = import_files_folder_mode(files_dir, c)
+
+    # Object instantiation from files and sorting
     data_objs = sorted(
-        instantiate_data_objs(import_files(files_dir)),
+        instantiate_data_objs(imported_files),
         key=lambda x: x.datetime,
     )
 
+    # Data processing
     data_objs = data_processing(data_objs, labj)
-    create_html(data_objs, files_dir)
-    c.log("HTML-Report created " + "[bold green]\u2713[/bold green]")
+
+    # Output path of the HTML report according to mode
+    if "day" in config.mode or "daily" in config.mode:
+        assert day
+        output_path = os.path.join(config.path_report_out, str(day.date()))
+    else:
+        output_path = files_dir
+
+    # HTML report creation and saving
+    create_html(data_objs, output_path)
+    c.log(
+        "[bold green]\u2713[/bold green] HTML-Report created at"
+        f" {output_path}_report"
+    )
 
 
 if __name__ == "__main__":
