@@ -8,7 +8,9 @@ config_file = os.path.join(
 with open(config_file) as f:
     config = json.load(f)
 
+mode = config["mode"]
 use_labjournal = config["use_labjournal"]
 path_data = config["path_data"]
 path_labjournal = config["path_labjournal"]
 save_stm_pngs = config["save_stm_pngs"]
+path_report_out = config["path_report_out"]
