@@ -1,8 +1,8 @@
 {
   "mode": "day-based",
-  "path_data": "/Users/matthias/github/proespm-py3/test",
-  "path_labjournal": "/Users/matthias/github/proespm-py3/test",
-  "path_report_out": "/Users/matthias/github/proespm-py3",
+  "path_data": "",
+  "path_labjournal": "",
+  "path_report_out": "",
   "use_labjournal": false,
   "save_stm_pngs": false
 }
