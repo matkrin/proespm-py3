@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 from matplotlib_scalebar.scalebar import ScaleBar
 import seaborn as sns
 
-import config
 
 plt.rcParams.update({"figure.max_open_warning": 0})
 
@@ -30,7 +29,7 @@ class StmImage:
         return self.arr.shape
 
     def plot(
-        self, show=False, save=config.save_stm_pngs, save_dir="", save_name=""
+        self, show=False, save=False, save_dir="", save_name=""
     ):
         """
         Plots the image.
