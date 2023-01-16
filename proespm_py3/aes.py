@@ -47,7 +47,7 @@ class Aes:
         self.scan_num = data.num_scans_to_compile_block
 
         self.e_start = data.x_start
-        self.e_stop = data.x_step * data.num_y_values
+        self.e_stop = (data.x_step * data.num_y_values + data.x_start) - data.x_step
         self.stepwidth = data.x_step
 
         for i in data.additional_numerical_params:
