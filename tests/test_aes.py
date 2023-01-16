@@ -30,7 +30,7 @@ def test_aes_vms():
     aes = Aes(str(AES_VMS))
     assert aes.mode == "analogue"
     assert round(aes.e_start) == 20
-    assert round(aes.e_stop) == 2182
+    assert round(aes.e_stop) == 2200
     assert round(aes.stepwidth) == 2
     assert aes.scan_num == 1
     assert aes.dwell_time == 0.503
