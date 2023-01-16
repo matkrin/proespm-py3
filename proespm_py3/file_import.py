@@ -99,7 +99,7 @@ def import_files_day_mode(
     file_lst: List[str] = []
     for dirpath, _, files in os.walk(files_dir):
         for f in files:
-            if f.endswith((".mul", ".vms")):
+            if f.endswith((".mul", ".vms", ".png")):
                 match = date_regex.search(f)
                 if (
                     match is not None
