@@ -28,8 +28,13 @@
           {% for obj in data_objs %}
             {% if check_type(obj, 'MulImage') and obj.m_id.endswith('_1') %}
                 <li><a href="#{{ obj.basename }}">{{ obj.basename }}</a>
-                    (<strong>Sputtering:</strong> E = {{ obj.sp_E }} keV, p(Ar) = {{ obj.sp_p }} mbar, t = {{ obj.sp_t }} min;
-                    <strong>Annealing:</strong> T = {{ obj.an_T }} K, p(O<sub>2</sub>) = {{ obj.an_p }} mbar, t = {{ obj.an_t}} min)
+                    {% if obj.nap_gas is defined %}
+                        <strong>NAP-Gas: </strong> {{ obj.nap_gas }}, 
+                        <strong>p<sub>NAP</sub></strong> = {{ obj.nap_p }}, 
+                        <strong>T</strong> = {{ obj.T }}
+                    {% endif %}
+                    <!-- (<strong>Sputtering:</strong> E = {{ obj.sp_E }} keV, p(Ar) = {{ obj.sp_p }} mbar, t = {{ obj.sp_t }} min; -->
+                    <!-- <strong>Annealing:</strong> T = {{ obj.an_T }} K, p(O<sub>2</sub>) = {{ obj.an_p }} mbar, t = {{ obj.an_t}} min) -->
                 </li>
 
             {% elif  check_type(obj, 'XpsScan') and obj.m_id.endswith('_1') %}
