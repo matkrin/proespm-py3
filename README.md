@@ -22,3 +22,5 @@ Python 3 implementation of [proespm](https://github.com/n-bock/proespm).
 - QCMB:
 
   - Inficon STM2 (.log)
+
+- png images, e.g. LEED images
