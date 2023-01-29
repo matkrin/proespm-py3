@@ -115,18 +115,16 @@ class StmImage:
         x_coords, y_coords = np.meshgrid(
             np.arange(x_shape), np.arange(y_shape)
         )
-
         coeff_matrix = np.column_stack(
-            (np.ones(self.arr.size), x_coords.flatten(), y_coords.flatten())
+            (np.ones(self.arr.size), x_coords.ravel(), y_coords.ravel())
         )
         least_squares = np.linalg.lstsq(
-            coeff_matrix, self.arr.flatten(), rcond=-1
+            coeff_matrix, self.arr.ravel(), rcond=-1
         )[0]
-
-        correction = (
+        background = (
             least_squares[0] * np.ones(self.arr.shape)
             + least_squares[1] * x_coords
             + least_squares[2] * y_coords
         )
-        self.arr -= correction
+        self.arr -= background
         return self
