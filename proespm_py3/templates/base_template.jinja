@@ -11,7 +11,6 @@
     <style>{% include 'style.css' %}</style>
   </head>
   <body>
-    <button onclick="topFunction()" id="top_button" title="Go to top"><strong>▲</strong></button> 
     <h1>{{ title }} - Report</h1>
       <div>
           <ul class="navbar_ul">
@@ -70,18 +69,19 @@
             {% endif %}
         {% endfor %}
 
-        <a href="#top">Back to Top</a>
-
         <!-- The Modal -->
         <div id="modal">
           <span id="close" class="close" >&times;</span>
             <span id="slide-info">info</span>
           <div class="modal-image-container">
               <a id="prev" class="prev-next" >&#10094;</a>
-                <div id="modal-image"><img src="" /></div>
+                <div id="modal-image"><p></p></div>
               <a id="next" class="prev-next" >&#10095;</a>
           </div>
         </div>
+
+        <!-- Top Button -->
+        <button onclick="topFunction()" id="top_button" title="Go to top"><strong>&#8679;</strong></button> 
 
     <script>{% include 'modal.js' %}</script>
     <script>{% include 'top_button.js' %}</script>

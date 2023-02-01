@@ -1,4 +1,4 @@
-const images = document.getElementsByClassName("stm_image");
+/* const images = document.getElementsByClassName("stm_image"); */
 const modal = document.getElementById("modal")
 const modalImage = document.getElementById("modal-image")
 const slideInfo = document.getElementById("slide-info");
@@ -10,35 +10,75 @@ prevButton.addEventListener("click", () => plusSlides(-1))
 nextButton.addEventListener("click", () => plusSlides(1))
 closeButton.addEventListener("click", () => closeModal())
 
-const imgs = []
-for (let i of images) {
-    imgs.push(i.firstElementChild)
-}
-const slides = imgs.map(i => {
-    const clone = i.cloneNode()
-    clone.className = '';
-    return clone
-})
+/* const imgs = [] */
+/* for (let i of images) { */
+/*     imgs.push(i.firstElementChild) */
+/* } */
+
 let slideIndex = 1;
 
-/* console.log(imgs) */
-imgs.forEach(i => {
-    i.addEventListener('click', () => {
+const imgs = document.getElementsByTagName("img")
+console.log(imgs);
+
+let num_slides = 0;
+for (let i = 0; i < imgs.length; ++i) {
+    imgs[i].addEventListener('click', () => {
         openModal();
-        showSlides(parseInt(i.dataset.slideNum));
+        showSlides(parseInt(imgs[i].dataset.slideNum))
     })
-})
+    if (parseInt(imgs[i].dataset.slideNum) > num_slides) {
+        num_slides = parseInt(imgs[i].dataset.slideNum);
+    }
+}
+console.log(num_slides)
+
+/* const slides = imgs.map(i => { */
+/*     const clone = i.cloneNode() */
+/*     clone.className = ''; */
+/*     return clone */
+/* }) */
+/* console.log(images) */
+/* console.log(slides) */
+
+/* console.log(imgs) */
+/* imgs.forEach(i => { */
+/*     i.addEventListener('click', () => { */
+/*         openModal(); */
+/*         showSlides(parseInt(i.dataset.slideNum)); */
+/*     }) */
+/* }) */
 
 
+function showSlides(n) {
+    slideIndex = n
+    if (n > num_slides) {slideIndex = 1}
+    if (n < 1) {slideIndex = num_slides}
+    let newChilds = [];
+    for (let i = 0; i < imgs.length; ++i) {
+        if (parseInt(imgs[i].dataset.slideNum) === slideIndex) { 
+            let clone = imgs[i].cloneNode();
+            clone.className = '';
+            clone.classList.add("modal-image");
+            newChilds.push(clone);
+        }
+    }
+    console.log(newChilds);
+    /* let newChild = slides[slideIndex-1] */
+    /* newChild.classList.add("modal-image"); */
+    modalImage.replaceChildren(...newChilds);
+    slideInfo.innerText = newChilds[0].id
+}
 
 // Open the Modal
 function openModal() {
   modal.style.display = "block";
+  document.getElementById("top_button").style.display = 'none';
 }
 
 // Close the Modal
 function closeModal() {
   modal.style.display = "none";
+  document.getElementById("top_button").style.display = 'block';
 }
 
 /* showSlides(slideIndex); */
@@ -54,15 +94,6 @@ function currentSlide(n) {
 }
 
 
-function showSlides(n) {
-    slideIndex = n
-    if (n > slides.length) {slideIndex = 1}
-    if (n < 1) {slideIndex = slides.length}
-    let newChild = slides[slideIndex-1]
-    newChild.classList.add("modal-image");
-    modalImage.replaceChildren(newChild);
-    slideInfo.innerText = slides[slideIndex-1].id
-}
 
 
 document.onkeydown = function(e) {
