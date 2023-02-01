@@ -61,6 +61,7 @@
   <!-- LABJOURNAL DATA -->
   <div class="table_column">
     <table style:"width=100%" >
+    <!--
       {% if obj.m_id.endswith('_1') %}
           <tr>
             <th colspan="2" style="text-align:center">Sputtering</th>
@@ -89,6 +90,13 @@
           </tr>
           <tr><td colspan="2"><hr></td></tr>
       {% endif %}
+    -->
+      <tr>
+        <th>Sample</th><td>{{ obj.sample }}</td>
+      </tr>
+      <tr>
+        <th>Title</th><td>{{ obj.title }}</td>
+      </tr>
       <tr>
         <th>Surface</th><td>{{ obj.surface }}</td>
       </tr>
@@ -99,7 +107,7 @@
         <th>NAP Gas</th><td>{{ obj.nap_gas }}</td>
       </tr>
       <tr>
-        <th>p(NAP)</th><td>{{ obj.nap_p }} mbar</td>
+        <th>p<sub>NAP</sub></th><td>{{ obj.nap_p }} mbar</td>
       </tr>
       <tr>
         <th>T</th><td>{{ obj.T }} </td>
