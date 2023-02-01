@@ -1,7 +1,24 @@
+:root {
+    --body-fg-color: black;
+    --body-bg-color: #f2f2f6;
+    --table-sec-color: #f2f2f2;
+    --navbar-color: #24292e;
+    --row-bg-color: white;
+}
+
+.dark-mode {
+    --body-fg-color: #cccccc;
+    --body-bg-color: rgba(28, 33, 38, 1);
+    --table-sec-color: rgba(28, 33, 38, 1);
+    --navbar-color: rgba(22, 21, 25, 1);
+    --row-bg-color: #24292e;
+}
+
 body {
   font-family: sans-serif;
   margin: 20px;
-  background-color: #f2f2f6;
+  color: var(--body-fg-color);
+  background-color: var(--body-bg-color);
 }
 h1 {
   text-align: center;
@@ -22,26 +39,34 @@ th, td {
   text-align: left;
   padding: 5px 15px;
 }
-tr:nth-child(even) {background-color: #f2f2f2;}
+
+tr:nth-child(even) {
+    background-color: var(--table-sec-color);
+}
  /* Three image containers (use 25% for four, and 50% for two, etc) */
 #toc {
   padding: 20px;
 }
 .navbar_ul{
+    display: flex;
+    justify-content: space-between;
     list-style-type: none;
     margin: 0;
     padding: 8px;
-    background-color: #24292E;
+    background-color: var(--navbar-color);
     border-radius: 20px;
 }
 .navbar_li{
+    cursor: pointer;
     display: inline;
+    padding: 0px 10px;
+    font-size: 18px;
+    line-height: 1.3;
+    color: white;
 }
 .navbar_a{
-    color:white;
-    padding: 0px 10px;
     text-decoration: none;
-    font-size: 18px;
+    color: white;
 }
 .row {
   margin-bottom: 15px;
@@ -49,7 +74,7 @@ tr:nth-child(even) {background-color: #f2f2f2;}
   border-width: 1px;
   border-color: grey;
   border-radius: 20px 20px 20px 20px;
-  background-color: white;
+  background-color: var(--row-bg-color);
 }
 .stm_image {
   cursor: pointer;
@@ -97,19 +122,16 @@ tr:nth-child(even) {background-color: #f2f2f2;}
   background-color: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(15px);
 }
-
 .modal-image-container {
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
 .modal-image {
     height: 80vh;
     width: auto;
     padding: 10px;
 }
-
 #slide-info {
     color: white;
     display: table;
@@ -153,7 +175,6 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 .prev-next:hover {
   background-color: rgba(255, 255, 255, 0.24);
 }
-
 
 .hover-shadow:hover {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
