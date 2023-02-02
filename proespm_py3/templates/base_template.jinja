@@ -50,6 +50,10 @@
             {% endif %}
           {% endfor %}
       </div>
+        <details open>
+            <summary>Overview</summary>
+            <div id="overview"></div>
+        </details>
 
         {% for obj in data_objs %}
             {% if check_type(obj, 'MulImage') %}
@@ -90,5 +94,6 @@
     <script>{% include 'modal.js' %}</script>
     <script>{% include 'top_button.js' %}</script>
     <script>{% include 'dark_mode.js' %}</script>
+    <script>{% include 'overview.js' %}</script>
   </body>
 </html>

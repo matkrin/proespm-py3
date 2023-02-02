@@ -10,44 +10,21 @@ prevButton.addEventListener("click", () => plusSlides(-1))
 nextButton.addEventListener("click", () => plusSlides(1))
 closeButton.addEventListener("click", () => closeModal())
 
-/* const imgs = [] */
-/* for (let i of images) { */
-/*     imgs.push(i.firstElementChild) */
-/* } */
 
+const imgs = document.getElementsByClassName("stm_image");
 let slideIndex = 1;
-
-const imgs = document.getElementsByTagName("img")
-console.log(imgs);
 
 let num_slides = 0;
 for (let i = 0; i < imgs.length; ++i) {
-    imgs[i].addEventListener('click', () => {
+    let img = imgs[i].firstElementChild
+    img.addEventListener('click', () => {
         openModal();
-        showSlides(parseInt(imgs[i].dataset.slideNum))
+        showSlides(parseInt(img.dataset.slideNum))
     })
-    if (parseInt(imgs[i].dataset.slideNum) > num_slides) {
-        num_slides = parseInt(imgs[i].dataset.slideNum);
+    if (parseInt(img.dataset.slideNum) > num_slides) {
+        num_slides = parseInt(img.dataset.slideNum);
     }
 }
-console.log(num_slides)
-
-/* const slides = imgs.map(i => { */
-/*     const clone = i.cloneNode() */
-/*     clone.className = ''; */
-/*     return clone */
-/* }) */
-/* console.log(images) */
-/* console.log(slides) */
-
-/* console.log(imgs) */
-/* imgs.forEach(i => { */
-/*     i.addEventListener('click', () => { */
-/*         openModal(); */
-/*         showSlides(parseInt(i.dataset.slideNum)); */
-/*     }) */
-/* }) */
-
 
 function showSlides(n) {
     slideIndex = n
@@ -55,8 +32,9 @@ function showSlides(n) {
     if (n < 1) {slideIndex = num_slides}
     let newChilds = [];
     for (let i = 0; i < imgs.length; ++i) {
-        if (parseInt(imgs[i].dataset.slideNum) === slideIndex) { 
-            let clone = imgs[i].cloneNode();
+        let img = imgs[i].firstElementChild
+        if (parseInt(img.dataset.slideNum) === slideIndex) { 
+            let clone = img.cloneNode();
             clone.className = '';
             clone.classList.add("modal-image");
             newChilds.push(clone);
@@ -92,8 +70,6 @@ function plusSlides(n) {
 function currentSlide(n) {
   showSlides(slideIndex = n);
 }
-
-
 
 
 document.onkeydown = function(e) {

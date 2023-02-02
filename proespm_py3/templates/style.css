@@ -4,6 +4,7 @@
     --table-sec-color: #f2f2f2;
     --navbar-color: #24292e;
     --row-bg-color: white;
+    --overview-hover-color: rgba(20, 75, 211, 1);
 }
 
 .dark-mode {
@@ -12,6 +13,7 @@
     --table-sec-color: rgba(28, 33, 38, 1);
     --navbar-color: rgba(22, 21, 25, 1);
     --row-bg-color: #24292e;
+    --overview-hover-color: rgba(25, 214, 255, 1);
 }
 
 body {
@@ -43,10 +45,7 @@ th, td {
 tr:nth-child(even) {
     background-color: var(--table-sec-color);
 }
- /* Three image containers (use 25% for four, and 50% for two, etc) */
-#toc {
-  padding: 20px;
-}
+ /* NAVBAR */
 .navbar_ul{
     display: flex;
     justify-content: space-between;
@@ -68,6 +67,51 @@ tr:nth-child(even) {
     text-decoration: none;
     color: white;
 }
+
+#toc {
+  padding: 20px;
+}
+
+/* OVERVIEW */
+details {
+    margin-bottom: 15px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: grey;
+    border-radius: 20px 20px 20px 20px;
+    background-color: var(--row-bg-color);
+}
+
+details > summary {
+    cursor: pointer;
+    padding: 15px 0 15px 20px;
+    font-size: 1.2em;
+}
+
+details > div {
+    margin: 15px 20px 15px 20px;
+}
+
+#overview {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.overview-entry {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.overview-entry:hover {
+    background-color: var(--overview-hover-color);
+}
+
+.overview-entry > p {
+    font-size: 12px;
+    margin: 0 0 7px 0;
+}
+
 .row {
   margin-bottom: 15px;
   border-style: solid;
