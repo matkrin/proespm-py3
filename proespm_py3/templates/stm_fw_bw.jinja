@@ -2,17 +2,17 @@
 <div class="row">
 
   <div class="stm_image">
-    <img id="{{ obj.m_id }}" src="{{ obj.img_data_fw.data_uri }}" onclick="openModal();currentSlide({{ obj.slide_num }})" class="hover-shadow" width=100% />
+    <img id="{{ obj.m_id }}" src="{{ obj.img_data_fw.data_uri }}" class="hover-shadow" data-slide-num="{{ obj.slide_num }}" />
   </div>
   <div class="stm_image">
-    <img id="{{ obj.m_id }}" src="{{ obj.img_data_bw.data_uri }}" onclick="openModal();currentSlide({{ obj.slide_num }})" class="hover-shadow" width=100% />
+    <img id="{{ obj.m_id }}" src="{{ obj.img_data_bw.data_uri }}" class="hover-shadow" data-slide-num="{{ obj.slide_num }}" />
   </div>
   <!-- IMAGE METADATA -->
   <div class="table_column">
     <table>
       <tr>
         <th>Image ID</th>
-        <td>{{ obj.m_id }}</td>
+        <td><a href="file:///{{ obj.filepath }}">{{ obj.m_id }}</td>
       </tr>
       <tr>
         <th>Number</th>

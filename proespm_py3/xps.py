@@ -10,16 +10,15 @@ class XpsEis:
         self.filepath = filepath
         self.basename = os.path.basename(filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
-        self.data = None
-        self.read_xps_eis(filepath)
+        self.data = self.read_xps_eis_txt(filepath)
 
-    def read_xps_eis(self, filepath):
-        """ """
+    def read_xps_eis_txt(self, filepath):
+        """Reads the data of a .txt file from Omicron EIS software"""
         with open(filepath) as f:
             scan_num = f.read().count("Region")
             f.seek(0)
 
-            self.data = []
+            data = []
             for _ in range(scan_num):
                 scan_dict = dict(xps="vtstm")
                 line1 = f.readline().split("\t")
@@ -53,7 +52,7 @@ class XpsEis:
                     arr_line = np.array(line)
                     xps_data = np.vstack((xps_data, arr_line))
 
-                self.data.append(
+                data.append(
                     XpsScan(
                         self.filepath,
                         xps_data,
@@ -66,6 +65,7 @@ class XpsEis:
                         scan_dict["CAE/CRR"],
                     )
                 )
+        return data
 
 
 class XpsScan:

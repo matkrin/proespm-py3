@@ -11,20 +11,14 @@
     <style>{% include 'style.css' %}</style>
   </head>
   <body>
-    <button onclick="topFunction()" id="top_button" title="Go to top"><strong>▲</strong></button> 
     <h1>{{ title }} - Report</h1>
       <div>
           <ul class="navbar_ul">
-          <li class="navbar_li"><a href="file:///{{ files_dir }}" class="navbar_a">Files</a></li>
+              <li class="navbar_li"><a href="file:///{{ files_dir }}" class="navbar_a">Files</a></li>
+              <li id="dark-mode-button" class="navbar_li">&#127763;</li>
           </ul>
       </div>
       <div id="toc">
-      {% for obj in data_objs %}
-            {% if check_type(obj, 'ErrorFile') %}
-                <div id="error-file">'{{ obj.basename }}' could not be processed!</div>
-            {% endif %}
-      {% endfor %}
-        <h2>Multi-Files and Movies</h2>
           {% for obj in data_objs %}
             {% if check_type(obj, 'MulImage') and obj.m_id.endswith('_1') %}
                 <li><a href="#{{ obj.basename }}">{{ obj.basename }}</a>
@@ -41,12 +35,25 @@
                 <li><a href="#{{ obj.basename }}">{{ obj.basename }}</a>
                 </li>
 
+            {% elif check_type(obj, 'Aes') %}
+                <li><a href="#{{ obj.m_id }}">{{ obj.basename }}</a></li>
+
+            {% elif check_type(obj, 'Image') %}
+                <li><a href="#{{ obj.m_id }}">{{ obj.basename }}</a></li>
+
             {% elif check_type(obj, 'StmFlm') %}
                 <li><a href="{{ obj.mp4_name }}">{{ obj.basename }}</a></li>
+
+            {% elif check_type(obj, 'ErrorFile') %}
+                <div id="error-file">'{{ obj.basename }}' could not be processed!</div>
 
             {% endif %}
           {% endfor %}
       </div>
+        <details open>
+            <summary>Overview</summary>
+            <div id="overview"></div>
+        </details>
 
         {% for obj in data_objs %}
             {% if check_type(obj, 'MulImage') %}
@@ -70,56 +77,23 @@
             {% endif %}
         {% endfor %}
 
-        <a href="#top">Back to Top</a>
-
-        <!-- The Modal/Lightbox -->
-        <div id="myModal" class="modal">
-          <span class="close cursor" onclick="closeModal()">&times;</span>
-          <div class="modal-content">
-
-                {% for obj in data_objs %}
-                    {% if check_type(obj, 'MulImage') %}
-                        <div class="mySlides">
-                            <div class="numbertext">{{ obj.m_id }}</div>
-                          <img src="{{ obj.img_data.data_uri }}" width="100%" />
-                          <div class="caption-container">
-                            <p id="caption">{{ obj.m_id }}</p>
-                          </div>
-                        </div>
-
-                  {% elif check_type(obj, 'StmMatrix') or check_type(obj, 'StmSm4') or check_type(obj, 'StmSxm') %}
-                      <div class="mySlides">
-
-                        <div class="numbertext">{{ obj.m_id }}</div>
-                        <img src="{{ obj.img_data_fw.data_uri }}" width="100%"/>
-
-                        <div class="numbertext">{{ obj.m_id }}</div>
-                        <img src="{{ obj.img_data_bw.data_uri }}" width="100%"/>
-
-                        <!--
-                        <div class="caption-container">
-                          <p id="caption">{{ obj.m_id }}</p>
-                        </div>
-                      -->
-                      </div>
-
-                    {% elif check_type(obj, 'Image') %}
-                        <div class="mySlides">
-                            <div class="numbertext">{{ obj.m_id }}</div>
-                          <img src="{{ obj.png_str }}" width="100%" />
-                          <div class="caption-container">
-                            <p id="caption">{{ obj.m_id }}</p>
-                          </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            <!-- Next/previous controls -->
-              <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-              <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        <!-- The Modal -->
+        <div id="modal">
+          <span id="close" class="close" >&times;</span>
+            <span id="slide-info">info</span>
+          <div class="modal-image-container">
+              <a id="prev" class="prev-next" >&#10094;</a>
+                <div id="modal-image"><p></p></div>
+              <a id="next" class="prev-next" >&#10095;</a>
           </div>
         </div>
 
-    <script>{% include 'slideshow.js' %}</script>
+        <!-- Top Button -->
+        <button onclick="topFunction()" id="top_button" title="Go to top"><strong>&#8679;</strong></button> 
+
+    <script>{% include 'modal.js' %}</script>
     <script>{% include 'top_button.js' %}</script>
+    <script>{% include 'dark_mode.js' %}</script>
+    <script>{% include 'overview.js' %}</script>
   </body>
 </html>

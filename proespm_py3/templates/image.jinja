@@ -1,14 +1,13 @@
 <div class="row">
   <div class="stm_image">
-    <img id="{{ obj.m_id }}" src="{{ obj.png_str }}"
-    onclick="openModal();currentSlide({{ obj.slide_num }})" class="hover-shadow" width=100% />
+    <img id="{{ obj.m_id }}" src="{{ obj.png_str }}" class="hover-shadow" data-slide-num="{{ obj.slide_num }}"/>
   </div>
 
   <div class="table_column">
     <table style:"width=100%" >
       <tr>
         <th>ID</th>
-        <td>{{ obj.m_id }}</td>
+        <td><a href="file:///{{ obj.filepath }}">{{ obj.m_id }}</td>
       </tr>
       <tr>
         <th>Datetime</th>
@@ -16,27 +15,6 @@
       </tr> <tr>
         <th>Surface</th>
         <td>{{ obj.surface }}</td>
-      </tr>
-      <tr>
-        <th>slide num</th>
-        <td>{{ obj.slide_num }}</td>
-      </tr>
-    </table>
-  </div>
-
-  <div class="table_column">
-    <table style:"width=100%" >
-      <tr>
-        <th>Labjournal Table</th>
-        <td>DAta</td>
-      </tr>
-      <tr>
-        <th>Labjournal Table</th>
-        <td>DAta</td>
-      </tr>
-      <tr>
-        <th>slide num</th>
-        <td>{{ obj.slide_num }}</td>
       </tr>
     </table>
   </div>
