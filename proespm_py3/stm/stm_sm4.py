@@ -1,9 +1,9 @@
 import os
 import numpy as np
-import rhksm4
 from dateutil import parser
 
 from .stm import StmImage
+from .sm4 import RHKsm4
 
 
 class StmSm4:
@@ -23,7 +23,7 @@ class StmSm4:
         self.m_id = self.filename
         self.png_save_dir = os.path.join(self.dirname, "sm4_png")
 
-        self.sm4 = rhksm4.load(filepath)
+        self.sm4 = RHKsm4(filepath)
 
         self.img_fw = self.sm4[8]
         self.img_bw = self.sm4[9]
