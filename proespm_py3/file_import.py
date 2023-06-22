@@ -95,7 +95,9 @@ def import_files_day_mode(
     """
     c.log("[bold]Day-based Mode[/bold]")
     date = prompt_date(c)
-    date_regex = re.compile(r"([0-9]{4})-?(1[0-2]|0[1-9])-?(3[01]|0[1-9]|[12][0-9])")
+    date_regex = re.compile(
+        r"([0-9]{4})-?(1[0-2]|0[1-9])-?(3[01]|0[1-9]|[12][0-9])"
+    )
     file_lst: List[str] = []
     for dirpath, _, files in os.walk(files_dir):
         for f in files:

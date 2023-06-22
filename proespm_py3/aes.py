@@ -47,7 +47,9 @@ class Aes:
         self.scan_num = data.num_scans_to_compile_block
 
         self.e_start = data.x_start
-        self.e_stop = (data.x_step * data.num_y_values + data.x_start) - data.x_step
+        self.e_stop = (
+            data.x_step * data.num_y_values + data.x_start
+        ) - data.x_step
         self.stepwidth = data.x_step
 
         for i in data.additional_numerical_params:
@@ -60,7 +62,7 @@ class Aes:
 
         x_values = np.linspace(
             data.x_start,
-            (data.x_step * data.num_y_values + data.x_start)-data.x_step,
+            (data.x_step * data.num_y_values + data.x_start) - data.x_step,
             num=data.num_y_values,
         )
         y_values = np.array(data.corresponding_variables[0].y_values)

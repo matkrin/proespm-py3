@@ -134,7 +134,9 @@ def instantiate_data_objs(file_lst: List[str]) -> List[DataObject]:
     return [x for x in data_objs if x is not None]
 
 
-def data_processing(data_objs: List[DataObject], labj: Optional[pd.DataFrame]) -> List[DataObject]:
+def data_processing(
+    data_objs: List[DataObject], labj: Optional[pd.DataFrame]
+) -> List[DataObject]:
     """Loop to process DataObjects
 
     Args:
@@ -156,7 +158,11 @@ def data_processing(data_objs: List[DataObject], labj: Optional[pd.DataFrame]) -
             slide_num += 1
             obj.img_data.corr_plane()
             obj.img_data.corr_lines()
-            obj.img_data.plot(save=config.save_stm_pngs, save_dir=obj.png_save_dir, save_name=obj.m_id)
+            obj.img_data.plot(
+                save=config.save_stm_pngs,
+                save_dir=obj.png_save_dir,
+                save_name=obj.m_id,
+            )
 
         elif isinstance(obj, StmFlm):
             pc.log(f"Processing of [bold cyan]{obj.basename}[/bold cyan]")
@@ -176,10 +182,14 @@ def data_processing(data_objs: List[DataObject], labj: Optional[pd.DataFrame]) -
             obj.img_data_bw.corr_lines()
 
             obj.img_data_fw.plot(
-                save=config.save_stm_pngs, save_dir=obj.png_save_dir, save_name=f"{obj.m_id}_fw"
+                save=config.save_stm_pngs,
+                save_dir=obj.png_save_dir,
+                save_name=f"{obj.m_id}_fw",
             )
             obj.img_data_bw.plot(
-                save=config.save_stm_pngs, save_dir=obj.png_save_dir, save_name=f"{obj.m_id}_bw"
+                save=config.save_stm_pngs,
+                save_dir=obj.png_save_dir,
+                save_name=f"{obj.m_id}_bw",
             )
 
         elif isinstance(obj, Image):

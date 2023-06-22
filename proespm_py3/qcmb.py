@@ -30,7 +30,7 @@ class Qcmb:
         self.thickness = arr[:, 2]  # in A
 
     def plot(self) -> None:
-        """Plot with two subplots for thickness and rate """
+        """Plot with two subplots for thickness and rate"""
 
         subplot_rate = figure(
             plot_width=1000,
