@@ -6,6 +6,7 @@ from .stm_flm import StmFlm
 from .stm_sm4 import StmSm4
 from .stm_matrix import NoTracesError, StmMatrix
 from .stm_sxm import StmSxm
+from .stm_nid import NanosurfNid
 
 
 class ErrorFile:
@@ -34,4 +35,6 @@ def stm_factory(file):
         return StmSm4(file)
     elif file.endswith(".sxm"):
         return StmSxm(file)
+    elif file.endswith(".nid"):
+        return NanosurfNid(file)
     pass

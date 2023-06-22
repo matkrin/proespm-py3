@@ -14,6 +14,7 @@ from stm import (
     StmMul,
     StmSm4,
     StmSxm,
+    NanosurfNid,
     ErrorFile,
 )
 from image import Image
@@ -31,6 +32,7 @@ DataObject = Union[
     StmMatrix,
     StmSm4,
     StmSxm,
+    NanosurfNid,
     ErrorFile,
     Image,
     XpsScan,
@@ -85,7 +87,7 @@ def datafile_factory(file: str) -> Optional[DataObject]:
         The instanciated data object
 
     """
-    if file.endswith((".mul", ".flm", ".Z_mtrx", ".SM4", ".sxm")):
+    if file.endswith((".mul", ".flm", ".Z_mtrx", ".SM4", ".sxm", ".nid")):
         return stm_factory(file)
     elif file.endswith(".png"):
         return Image(file)
@@ -171,7 +173,7 @@ def data_processing(
                 frame.img_data.corr_lines()
             obj.convert_to_mp4()
 
-        elif isinstance(obj, (StmMatrix, StmSm4, StmSxm)):
+        elif isinstance(obj, (StmMatrix, StmSm4, StmSxm, NanosurfNid)):
             pc.log(f"Processing of [bold cyan]{obj.m_id}[/bold cyan]")
             obj.slide_num = slide_num
             slide_num += 1

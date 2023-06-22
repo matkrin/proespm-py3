@@ -22,15 +22,29 @@
         <th>Datetime</th>
         <td>{{ obj.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
       </tr>
-      <tr>
-        <th>I<sub>tun</sub></th>
-        <td>{{ "{:.2f}".format(obj.current) }} nA</td>
-      </tr>
-      <tr>
-        <th>U<sub>tun</sub></th>
-        <td>{{ "{:.1f}".format(obj.bias) }} mV</td>
-      </tr>
-      <tr>
+      
+      {% if check_type(obj, 'NanosurfNid') and obj.op_mode == 'Dynamic Force' %}
+          <tr>
+            <th>Setpoint</sub></th>
+            <td>{{ "{:.2f}".format(obj.current) }} %</td>
+          </tr>
+          <tr>
+            <th>Tip Voltage</th>
+            <td>{{ "{:.1f}".format(obj.bias) }} mV</td>
+          </tr>
+          <tr>
+      {% else %}
+          <tr>
+            <th>I<sub>tun</sub></th>
+            <td>{{ "{:.2f}".format(obj.current) }} nA</td>
+          </tr>
+          <tr>
+            <th>U<sub>tun</sub></th>
+            <td>{{ "{:.1f}".format(obj.bias) }} mV</td>
+          </tr>
+          <tr>
+      {% endif %}
+      
         <th>Scan Size</th>
         <td>{{ "{:.0f}".format(obj.xsize) }} &#215; {{ "{:.0f}".format(obj.ysize) }} nm&#178;</td>
       </tr>

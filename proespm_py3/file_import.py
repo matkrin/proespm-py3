@@ -20,6 +20,7 @@ ALLOWED_FTYPES = (
     ".dat",
     ".sxm",
     ".vms",
+    ".nid",
 )
 
 

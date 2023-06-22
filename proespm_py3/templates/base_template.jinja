@@ -59,7 +59,7 @@
             {% if check_type(obj, 'MulImage') %}
                 {% include 'stm_mul.jinja' %}
 
-            {% elif check_type(obj, 'StmMatrix') or check_type(obj, 'StmSm4') or check_type(obj, 'StmSxm') %}
+            {% elif check_type(obj, 'StmMatrix') or check_type(obj, 'StmSm4') or check_type(obj, 'StmSxm') or check_type(obj, 'NanosurfNid') %}
                 {% include 'stm_fw_bw.jinja' %}
 
             {% elif check_type(obj, 'Image') %}

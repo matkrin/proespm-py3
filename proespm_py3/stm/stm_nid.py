@@ -1,7 +1,8 @@
 import numpy as np
 import os
-import pathlib
 import re
+from dateutil import parser
+from .stm import StmImage
 
 FLOAT_REGEX = re.compile(r"[+-]?([0-9]*[.])?[0-9]+")
 
@@ -22,7 +23,7 @@ class NanosurfNid:
         header = get_header(content_list)
 
         file_meta = get_file_meta(content_list)
-        self.mode = file_meta["Op. mode"]
+        self.op_mode = file_meta["Op. mode"]
         self.xsize = read_float_from_string(file_meta["Image size"])
         self.ysize = self.xsize
         scan_dir_up_down = file_meta["Scan direction"]
@@ -30,12 +31,10 @@ class NanosurfNid:
         self.yoffset = read_float_from_string(file_meta["Y-Pos"])
         self.tilt = read_float_from_string(file_meta["Rotation"])
         self.line_time = read_float_from_string(file_meta["Time/Line"])
-        self.speed = self.line_time * read_float_from_string(
-            file_meta["Lines"]
-        )
+        self.speed = self.line_time * read_float_from_string( file_meta["Lines"] ) / 1000
 
         # TODO make datetime out of it
-        self.datetime = file_meta["Date"] + " " + file_meta["Time"]
+        self.datetime = parser.parse(file_meta["Date"] + " " + file_meta["Time"])
         # STM and AFM
         self.bias = read_float_from_string(file_meta["Tip voltage"])
         # current; or setpoint AFM in %
@@ -73,12 +72,16 @@ class NanosurfNid:
 
         assert fw_idx is not None
         assert bw_idx is not None
-        self.img_data_fw = img_data_list[fw_idx].reshape(self.yres, self.xres)
-        self.img_data_bw = img_data_list[bw_idx].reshape(self.yres, self.xres)
+        img_data_fw = img_data_list[fw_idx].reshape(self.yres, self.xres).astype(np.float64)
+        img_data_bw = img_data_list[bw_idx].reshape(self.yres, self.xres).astype(np.float64)
 
-        if file_meta["Scan direction"] == "Up":
-            self.img_data_fw = np.flip(self.img_data_fw, axis=0)
-            self.img_data_bw = np.flip(self.img_data_bw, axis=0)
+        # Plotting is from bottom left corner
+        if file_meta["Scan direction"] == "Down":
+            img_data_fw = np.flip(img_data_fw, axis=0)
+            img_data_bw = np.flip(img_data_bw, axis=0)
+
+        self.img_data_fw = StmImage(img_data_fw, self.xsize)
+        self.img_data_bw = StmImage(img_data_bw, self.xsize)
 
 
 def get_header(content_list):
