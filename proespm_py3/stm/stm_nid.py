@@ -5,6 +5,7 @@ from dateutil import parser
 from .stm import StmImage
 
 FLOAT_REGEX = re.compile(r"[+-]?([0-9]*[.])?[0-9]+")
+UNITS_REGEX = re.compile(r"[a-zA-Zµ]+")
 
 
 class NanosurfNid:
@@ -24,8 +25,13 @@ class NanosurfNid:
 
         file_meta = get_file_meta(content_list)
         self.op_mode = file_meta["Op. mode"]
+        
         self.xsize = read_float_from_string(file_meta["Image size"])
+        xsize_units = read_units_from_string(file_meta["Image size"])
+        if xsize_units == "µm":
+            self.xsize *= 1000
         self.ysize = self.xsize
+        
         scan_dir_up_down = file_meta["Scan direction"]
         self.xoffset = read_float_from_string(file_meta["X-Pos"])
         self.yoffset = read_float_from_string(file_meta["Y-Pos"])
@@ -33,22 +39,18 @@ class NanosurfNid:
         self.line_time = read_float_from_string(file_meta["Time/Line"])
         self.speed = self.line_time * read_float_from_string( file_meta["Lines"] ) / 1000
 
-        # TODO make datetime out of it
         self.datetime = parser.parse(file_meta["Date"] + " " + file_meta["Time"])
-        # STM and AFM
         self.bias = read_float_from_string(file_meta["Tip voltage"])
         # current; or setpoint AFM in %
         self.current = read_float_from_string(file_meta["Setpoint"])
 
         channels = get_channels(header)
         channel_meta_list = get_channels_meta(content_list, channels)
-        # print(channel_meta_list)
         self.xres = int(channel_meta_list[0]["Points"])
         self.yres = int(channel_meta_list[0]["Lines"])
 
         # `Z-Axis` for topo AFM/STM, `Tip Current` for current STM, `Amplitude` for AFM
         scantype = channel_meta_list[0]["Dim2Name"]
-        print(scantype)
         datatype = (
             np.int16 if channel_meta_list[0]["SaveBits"] == "16" else np.int32
         )
@@ -56,7 +58,6 @@ class NanosurfNid:
         for channel in channel_meta_list:
             assert self.xres == int(channel["Points"])
             assert self.yres == int(channel["Lines"])
-            # channel["Frame"] give fw / bw
 
         img_data_block = get_img_data_block(content_list)
         img_data_list = read_img_data(img_data_block, datatype, 4)
@@ -121,9 +122,7 @@ def get_channels_meta(content_list, channels):
             split = block.split(b"\r\n")
             channels_meta = {}
             for s in split[1:]:
-                # print(s.decode().split("="))
                 ident, val = s.decode().split("=")
-                # print(ident)
                 channels_meta[ident] = val
 
             channels_meta_list.append(channels_meta)
@@ -145,3 +144,7 @@ def read_img_data(img_data_block, dtype, num_channels) -> list[np.array]:
 
 def read_float_from_string(text):
     return float(FLOAT_REGEX.match(text).group(0))
+
+
+def read_units_from_string(text):
+    return UNITS_REGEX.findall(text)[0]
