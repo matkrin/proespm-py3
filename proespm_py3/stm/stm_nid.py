@@ -25,21 +25,34 @@ class NanosurfNid:
 
         file_meta = get_file_meta(content_list)
         self.op_mode = file_meta["Op. mode"]
-        
+
         self.xsize = read_float_from_string(file_meta["Image size"])
         xsize_units = read_units_from_string(file_meta["Image size"])
         if xsize_units == "µm":
             self.xsize *= 1000
         self.ysize = self.xsize
-        
+
         scan_dir_up_down = file_meta["Scan direction"]
+
         self.xoffset = read_float_from_string(file_meta["X-Pos"])
+        xoffset_units = read_units_from_string(file_meta["X-Pos"])
+        if xoffset_units == "µm":
+            self.xoffset *= 1000
+
         self.yoffset = read_float_from_string(file_meta["Y-Pos"])
+        y_offset_units = read_units_from_string(file_meta["Y-Pos"])
+        if y_offset_units == "µm":
+            self.yoffset *= 1000
+
         self.tilt = read_float_from_string(file_meta["Rotation"])
         self.line_time = read_float_from_string(file_meta["Time/Line"])
-        self.speed = self.line_time * read_float_from_string( file_meta["Lines"] ) / 1000
+        self.speed = (
+            self.line_time * read_float_from_string(file_meta["Lines"]) / 1000
+        )
 
-        self.datetime = parser.parse(file_meta["Date"] + " " + file_meta["Time"])
+        self.datetime = parser.parse(
+            file_meta["Date"] + " " + file_meta["Time"]
+        )
         self.bias = read_float_from_string(file_meta["Tip voltage"])
         # current; or setpoint AFM in %
         self.current = read_float_from_string(file_meta["Setpoint"])
@@ -73,8 +86,16 @@ class NanosurfNid:
 
         assert fw_idx is not None
         assert bw_idx is not None
-        img_data_fw = img_data_list[fw_idx].reshape(self.yres, self.xres).astype(np.float64)
-        img_data_bw = img_data_list[bw_idx].reshape(self.yres, self.xres).astype(np.float64)
+        img_data_fw = (
+            img_data_list[fw_idx]
+            .reshape(self.yres, self.xres)
+            .astype(np.float64)
+        )
+        img_data_bw = (
+            img_data_list[bw_idx]
+            .reshape(self.yres, self.xres)
+            .astype(np.float64)
+        )
 
         # Plotting is from bottom left corner
         if file_meta["Scan direction"] == "Down":
