@@ -67,6 +67,14 @@
         <th>Offset</th>
         <td>{{ "{:.2f}".format(obj.xoffset) }} nm, {{ "{:.2f}".format(obj.yoffset) }} nm</td>
       </tr>
+
+      {% if obj.p_gain %}
+          <tr>
+            <th>P / I</th>
+            <td>{{ "{:.2f}".format(obj.p_gain) }} / {{ "{:.2f}".format(obj.i_gain) }}</td>
+          </tr>
+      {% endif %}
+      
     </table>
   </div>
 

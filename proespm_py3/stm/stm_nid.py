@@ -56,6 +56,8 @@ class NanosurfNid:
         self.bias = read_float_from_string(file_meta["Tip voltage"])
         # current; or setpoint AFM in %
         self.current = read_float_from_string(file_meta["Setpoint"])
+        self.p_gain = read_float_from_string(file_meta["P-Gain"])
+        self.i_gain = read_float_from_string(file_meta["I-Gain"])
 
         channels = get_channels(header)
         channel_meta_list = get_channels_meta(content_list, channels)
