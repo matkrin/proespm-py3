@@ -10,7 +10,12 @@ Python 3 implementation of [proespm](https://github.com/n-bock/proespm).
   - Omicron MATRIX (.mtrx)
   - RHK SM4 (.sm4)
   - Nanonis SXM (.sxm)
+  - Nanosurf (.nid)
 
+- AFM:
+
+  - Nanosurf (.nid)
+ 
 - XPS:
 
   - Omicron EIS (.txt)

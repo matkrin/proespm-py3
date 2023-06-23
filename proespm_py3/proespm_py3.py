@@ -14,6 +14,7 @@ from stm import (
     StmMul,
     StmSm4,
     StmSxm,
+    NanosurfNid,
     ErrorFile,
 )
 from image import Image
@@ -31,6 +32,7 @@ DataObject = Union[
     StmMatrix,
     StmSm4,
     StmSxm,
+    NanosurfNid,
     ErrorFile,
     Image,
     XpsScan,
@@ -85,7 +87,7 @@ def datafile_factory(file: str) -> Optional[DataObject]:
         The instanciated data object
 
     """
-    if file.endswith((".mul", ".flm", ".Z_mtrx", ".SM4", ".sxm")):
+    if file.endswith((".mul", ".flm", ".Z_mtrx", ".SM4", ".sxm", ".nid")):
         return stm_factory(file)
     elif file.endswith(".png"):
         return Image(file)
@@ -134,7 +136,9 @@ def instantiate_data_objs(file_lst: List[str]) -> List[DataObject]:
     return [x for x in data_objs if x is not None]
 
 
-def data_processing(data_objs: List[DataObject], labj: Optional[pd.DataFrame]) -> List[DataObject]:
+def data_processing(
+    data_objs: List[DataObject], labj: Optional[pd.DataFrame]
+) -> List[DataObject]:
     """Loop to process DataObjects
 
     Args:
@@ -156,7 +160,11 @@ def data_processing(data_objs: List[DataObject], labj: Optional[pd.DataFrame]) -
             slide_num += 1
             obj.img_data.corr_plane()
             obj.img_data.corr_lines()
-            obj.img_data.plot(save=config.save_stm_pngs, save_dir=obj.png_save_dir, save_name=obj.m_id)
+            obj.img_data.plot(
+                save=config.save_stm_pngs,
+                save_dir=obj.png_save_dir,
+                save_name=obj.m_id,
+            )
 
         elif isinstance(obj, StmFlm):
             pc.log(f"Processing of [bold cyan]{obj.basename}[/bold cyan]")
@@ -165,7 +173,7 @@ def data_processing(data_objs: List[DataObject], labj: Optional[pd.DataFrame]) -
                 frame.img_data.corr_lines()
             obj.convert_to_mp4()
 
-        elif isinstance(obj, (StmMatrix, StmSm4, StmSxm)):
+        elif isinstance(obj, (StmMatrix, StmSm4, StmSxm, NanosurfNid)):
             pc.log(f"Processing of [bold cyan]{obj.m_id}[/bold cyan]")
             obj.slide_num = slide_num
             slide_num += 1
@@ -176,10 +184,14 @@ def data_processing(data_objs: List[DataObject], labj: Optional[pd.DataFrame]) -
             obj.img_data_bw.corr_lines()
 
             obj.img_data_fw.plot(
-                save=config.save_stm_pngs, save_dir=obj.png_save_dir, save_name=f"{obj.m_id}_fw"
+                save=config.save_stm_pngs,
+                save_dir=obj.png_save_dir,
+                save_name=f"{obj.m_id}_fw",
             )
             obj.img_data_bw.plot(
-                save=config.save_stm_pngs, save_dir=obj.png_save_dir, save_name=f"{obj.m_id}_bw"
+                save=config.save_stm_pngs,
+                save_dir=obj.png_save_dir,
+                save_name=f"{obj.m_id}_bw",
             )
 
         elif isinstance(obj, Image):

@@ -28,9 +28,7 @@ class StmImage:
     def shape(self):
         return self.arr.shape
 
-    def plot(
-        self, show=False, save=False, save_dir="", save_name=""
-    ):
+    def plot(self, show=False, save=False, save_dir="", save_name=""):
         """
         Plots the image.
         """

@@ -6,6 +6,7 @@ test_files = Path(__file__).parent / "test_files"
 AES_DAT = test_files / "aes-staib-dat.dat"
 AES_VMS = test_files / "aes-staib-vms.vms"
 
+
 def test_aes():
     parsed = Aes(str(AES_DAT))
     assert isinstance(parsed, Aes)
