@@ -1,13 +1,16 @@
-from typing import List, Union, Optional
+from typing import Annotated, List, Union, Optional
+
+from numpy.compat import Path
 import pandas as pd
 import os
 from rich.console import Console
 from rich.progress import track, Progress
 from rich import print
+import typer
 from mulfile.mul import MulImage
 
-import config
-from stm import (
+from .config import config
+from .stm import (
     stm_factory,
     StmFlm,
     StmMatrix,
@@ -17,14 +20,15 @@ from stm import (
     NanosurfNid,
     ErrorFile,
 )
-from image import Image
-from xps import XpsEis, XpsScan
-from aes import Aes
-from qcmb import Qcmb
-from file_import import import_files_day_mode, import_files_folder_mode
-from gui import prompt_folder, prompt_labj
-from html_rendering import create_html
+from .image import Image
+from .xps import XpsEis, XpsScan
+from .aes import Aes
+from .qcmb import Qcmb
+from .file_import import import_files_day_mode, import_files_folder_mode
+from .gui import prompt_folder, prompt_labj
+from .html_rendering import create_html
 
+app = typer.Typer()
 
 DataObject = Union[
     StmMul,
@@ -256,6 +260,26 @@ def main():
         "[bold green]\u2713[/bold green] HTML-Report created at"
         f" {output_path}_report"
     )
+
+@app.command()
+def cli(testing: Annotated[bool, typer.Option("--test", "-t")] = False):
+    if not testing:
+        main()
+    else:
+        files_dir = Path(__file__).parent.parent / "tests" / "test_files"
+        print(files_dir)
+        imported_files = import_files_folder_mode(str(files_dir), c)
+        data_objs = sorted(
+            instantiate_data_objs(imported_files),
+            key=lambda x: x.datetime,
+        )
+        data_objs = data_processing(data_objs, None)
+        output_path = files_dir
+        create_html(data_objs, str(output_path))
+        c.log(
+            "[bold green]\u2713[/bold green] HTML-Report created at"
+            f" {output_path}_report"
+        )
 
 
 if __name__ == "__main__":
