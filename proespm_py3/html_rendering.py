@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import List, TYPE_CHECKING
 import os
+import sys
 from jinja2 import Environment, FileSystemLoader
 
 if TYPE_CHECKING:
@@ -37,7 +38,11 @@ def create_html(data_objs: List[DataObject], output_path: str) -> None:
     """
 
     output_name = os.path.basename(output_path)
-    template_dir = os.path.join(os.path.dirname(__file__), "templates")
+    
+    if getattr(sys, 'frozen', False):
+        template_dir = os.path.join(sys._MEIPASS, 'templates')
+    else:
+        template_dir = os.path.join(os.path.dirname(__file__), "templates")
 
     env = Environment(loader=FileSystemLoader(template_dir))
     env.globals["check_type"] = check_type  # adds function to jinja env

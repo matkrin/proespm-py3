@@ -2,7 +2,7 @@ from typing import Optional
 import sys
 import tkinter
 import tkinter.filedialog
-import config
+from .config import config
 
 
 def prompt_folder() -> str:
