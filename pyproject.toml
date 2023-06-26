@@ -22,10 +22,17 @@ access2theMatrix = "^0.4.2"
 mulfile = "^0.2.0"
 vamas = "^0.1.0"
 nanonispy = {git = "https://github.com/matkrin/nanonispy.git"}
+typer = "^0.9.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"
 pytest = "^7.2.0"
+
+[tool.poetry.scripts]
+proespm = "proespm_py3.proespm_py3:app"
+
+[tool.poetry.group.dev.dependencies]
+pyinstaller = "^5.12.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

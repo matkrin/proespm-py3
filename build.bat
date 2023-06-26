@@ -1,0 +1,1 @@
+poetry run pyinstaller --onefile --name proespm --add-data=proespm_py3\templates;templates -- pyinstaller_main.py
