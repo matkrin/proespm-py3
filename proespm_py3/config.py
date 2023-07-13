@@ -25,7 +25,7 @@ try:
     config = Config(**config_dict)
     
 except FileNotFoundError:
-    config = Config("folder-based", False, "", "", False, "")
+    config = Config("folder-based", True, "", "", False, "")
     
     
 # mode = config_dict["mode"]

@@ -26,7 +26,9 @@ def check_type(data_obj: DataObject, check_str: str) -> bool:
     return True if type(data_obj).__name__ == check_str else False
 
 
-def create_html(data_objs: List[DataObject], output_path: str) -> None:
+def create_html(
+    data_objs: List[DataObject], output_path: str, output_name: str
+) -> None:
     """Creates the HTML report
 
     The list of data_objs get passed to the jinja environment and can be used
@@ -37,10 +39,8 @@ def create_html(data_objs: List[DataObject], output_path: str) -> None:
         output_name (str): name or full path of the html report
     """
 
-    output_name = os.path.basename(output_path)
-    
-    if getattr(sys, 'frozen', False):
-        template_dir = os.path.join(sys._MEIPASS, 'templates')
+    if getattr(sys, "frozen", False):
+        template_dir = os.path.join(sys._MEIPASS, "templates")
     else:
         template_dir = os.path.join(os.path.dirname(__file__), "templates")
 
