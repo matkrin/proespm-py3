@@ -8,3 +8,5 @@ format-check:
 	poetry run black --check .
 format:
 	poetry run black .
+build:
+	poetry run pyinstaller --onefile --name proespm --add-data=proespm_py3/templates:templates -- pyinstaller_main.py
