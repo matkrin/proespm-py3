@@ -107,8 +107,8 @@ class XpsScan:
         x_range = (x[-1], x[0])
 
         plot = figure(
-            plot_width=1000,
-            plot_height=540,
+            width=1000,
+            height=540,
             x_axis_label="E_b / eV",
             y_axis_label="Intensity / arb. units",
             x_range=x_range,

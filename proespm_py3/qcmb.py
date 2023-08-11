@@ -33,8 +33,8 @@ class Qcmb:
         """Plot with two subplots for thickness and rate"""
 
         subplot_rate = figure(
-            plot_width=1000,
-            plot_height=700,
+            width=1000,
+            height=700,
             x_axis_label="Time / s",
             y_axis_label="Rate / A/s",
             sizing_mode="scale_width",
@@ -50,8 +50,8 @@ class Qcmb:
         subplot_rate.toolbar.active_scroll = "auto"
 
         subplot_thick = figure(
-            plot_width=1000,
-            plot_height=700,
+            width=1000,
+            height=700,
             x_axis_label="Time / s",
             y_axis_label="Thickness / A",
             sizing_mode="scale_width",
@@ -68,6 +68,6 @@ class Qcmb:
         )
         subplot_thick.toolbar.active_scroll = "auto"
 
-        plot = row(subplot_rate, subplot_thick)
+        plot = row(subplot_rate, subplot_thick, sizing_mode="scale_width")
 
         self.script, self.div = components(plot, wrap_script=True)

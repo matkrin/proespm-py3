@@ -142,8 +142,8 @@ class Aes:
         y = self.aes_data[:, 1]
 
         plot = figure(
-            plot_width=1000,
-            plot_height=540,
+            width=1000,
+            height=540,
             x_axis_label="E / eV",
             y_axis_label="dN / dE [arb. units]",
             x_range=(x[0], x[-1]),
