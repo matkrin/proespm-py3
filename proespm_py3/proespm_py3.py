@@ -25,7 +25,7 @@ from .xps import XpsEis, XpsScan
 from .aes import Aes
 from .qcmb import Qcmb
 from .file_import import import_files_day_mode, import_files_folder_mode
-from .gui import prompt_folder, prompt_labj
+from .prompts import prompt_folder, prompt_labj
 from .html_rendering import create_html
 
 app = typer.Typer()
@@ -155,7 +155,7 @@ def data_processing(
     """
     slide_num = 1  # for js modal image slide show in html
     for obj in track(data_objs, description="> Processing"):
-        if config.use_labjournal and labj is not None:
+        if  labj is not None:
             extract_labj(labj, obj)
 
         if isinstance(obj, MulImage):
@@ -255,7 +255,9 @@ def main():
         output_path = files_dir
 
     # HTML report creation and saving
-    create_html(data_objs, output_path)
+
+    output_name = os.path.basename(output_path)
+    create_html(data_objs, output_path, output_name)
     c.log(
         "[bold green]\u2713[/bold green] HTML-Report created at"
         f" {output_path}_report"
@@ -267,15 +269,19 @@ def cli(testing: Annotated[bool, typer.Option("--test", "-t")] = False):
         main()
     else:
         files_dir = Path(__file__).parent.parent / "tests" / "test_files"
-        print(files_dir)
         imported_files = import_files_folder_mode(str(files_dir), c)
         data_objs = sorted(
             instantiate_data_objs(imported_files),
             key=lambda x: x.datetime,
         )
-        data_objs = data_processing(data_objs, None)
+
+        labj_path = Path(__file__).parent.parent / "tests"/ "test_files" / "1_lab_journal.xlsx"
+        c.log(f"Selected Labjournal:\n{labj_path}")
+        labj = pd.read_excel(labj_path, dtype=str)
+        data_objs = data_processing(data_objs, labj)
         output_path = files_dir
-        create_html(data_objs, str(output_path))
+        output_name = os.path.basename(output_path)
+        create_html(data_objs, str(output_path), output_name)
         c.log(
             "[bold green]\u2713[/bold green] HTML-Report created at"
             f" {output_path}_report"

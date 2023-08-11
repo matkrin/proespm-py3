@@ -1,51 +1,159 @@
-from typing import Optional
+import os
 import sys
-import tkinter
+import tkinter as tk
+import tkinter.ttk as ttk
 import tkinter.filedialog
-from .config import config
+import pathlib
+from typing import Optional
+
+import pandas as pd
+from rich.console import Console
+
+from .file_import import import_files_folder_mode
+from .proespm_py3 import instantiate_data_objs, data_processing
+from .html_rendering import create_html
 
 
-def prompt_folder() -> str:
-    """Prompt to select a folder for data processing
-
-    Returns:
-        str: path to the folder
-
-    """
-    root = tkinter.Tk()
-    root.withdraw()
-    folder = tkinter.filedialog.askdirectory(initialdir=config.path_data)
-    if folder == () or folder == "" or folder is None:
-        prompt_retry = input("No data folder selected. Retry? [Y/n] ")
-        if prompt_retry in ["Y", "y", "ye", "yes", "Ye", "Yes", ""]:
-            return prompt_folder()
-        else:
-            sys.exit("Exit Programm")
-
-    return folder
+ENTRY_WIDTH = 75
 
 
-def prompt_labj() -> Optional[str]:
-    """Prompt to select a labjournal
+class App:
+    def __init__(self):
+        self.root = tk.Tk()
 
-    Returns:
-        Optional[str]: path to the labjournal or None
+        self.data_dir = tk.StringVar()
+        self.output_dir = tk.StringVar()
+        self.labj = tk.StringVar()
 
-    """
-    root = tkinter.Tk()
-    root.withdraw()
-    labj_path = tkinter.filedialog.askopenfilename(
-        initialdir=config.path_labjournal,
-        filetypes=[("Excel files", "*.xlsx")],
-    )
-    if labj_path == () or labj_path == "" or labj_path is None:
-        prompt_continue = input(
-            "No Labjournal selected. Continue without? [Y/n] "
+        self.checked = tk.BooleanVar()
+        self.is_disabled = tk.StringVar(value="disabled")
+
+        self.frame_data = ttk.LabelFrame(self.root, text="Data")
+        # Data
+        self.lbl_data = ttk.Label(master=self.frame_data, text="Data Path: ")
+        self.ent_data = ttk.Entry(
+            master=self.frame_data,
+            width=ENTRY_WIDTH,
+            #state="readonly",
+            textvariable=self.data_dir,
         )
-        if prompt_continue in ["Y", "y", "ye", "yes", "Ye", "Yes", ""]:
-            labj_path = None
-            return labj_path
-        else:
-            return prompt_labj()
-    else:
-        return labj_path
+        self.btn_data = ttk.Button(
+            master=self.frame_data, text="Browse", command=self.prompt_data_dir
+        )
+        # Output
+        self.lbl_output = ttk.Label(master=self.frame_data, text="Output Path: ")
+        self.ent_output = ttk.Entry(
+            master=self.frame_data, width=ENTRY_WIDTH, textvariable=self.output_dir
+        )
+        self.btn_output = ttk.Button(
+            master=self.frame_data, text="Browse", command=self.prompt_output_dir
+        )
+        # Spreadsheet
+        self.frame_labj = ttk.LabelFrame(self.root, text="Spreadsheet")
+        self.lbl_labj = ttk.Label(
+            master=self.frame_labj, text="Spreadsheet: ", state=self.is_disabled.get()
+        )
+        self.ent_labj = ttk.Entry(
+            master=self.frame_labj,
+            width=ENTRY_WIDTH,
+            state=self.is_disabled.get(),
+            textvariable=self.labj,
+        )
+        self.btn_labj = ttk.Button(
+            master=self.frame_labj,
+            text="Browse",
+
+            state=self.is_disabled.get(),
+            command=self.prompt_labj,
+        )
+        self.check_use_labj = ttk.Checkbutton(
+            master=self.frame_labj,
+            text="Use Spreadsheet?",
+            variable=self.checked,
+            command=self.toggle_labj,
+        )
+        # Run controls
+        self.run_frame = ttk.Frame(self.root)
+        self.run_btn = ttk.Button(master=self.run_frame, text="Run", default="active", command=self.run_processing)
+        self.quit_btn = ttk.Button(master=self.run_frame, text="Quit", command=self.quit)
+
+        self.create_layout()
+
+    def run(self):
+        self.root.mainloop()
+
+    def quit(self):
+        self.root.destroy()
+
+    def create_layout(self):
+        opts = {"padx": 5, "pady": 5, "sticky": "w"}
+        self.frame_data.grid(column=0, row=0, **opts)
+        self.lbl_data.grid(column=0, row=0, **opts)
+        self.ent_data.grid(column=1, row=0, **opts)
+        self.btn_data.grid(column=2, row=0, **opts)
+        self.lbl_output.grid(column=0, row=1, **opts)
+        self.ent_output.grid(column=1, row=1, **opts)
+        self.btn_output.grid(column=2, row=1, **opts)
+
+        self.frame_labj.grid(column=0, row=1, **opts)
+        self.lbl_labj.grid(column=0, row=1, **opts)
+        self.ent_labj.grid(column=1, row=1, **opts)
+        self.btn_labj.grid(column=2, row=1, **opts)
+        self.check_use_labj.grid(column=0, row=0, columnspan=2, **opts)
+
+        self.run_frame.grid(column=0, row=2)
+        self.run_btn.grid(column=0, row=0, padx="5", pady="5")
+        self.quit_btn.grid(column=1, row=0, padx="5", pady="5")
+
+    def toggle_labj(self):
+        state = "normal" if self.checked.get() else "disabled"
+        self.is_disabled.set(state)
+        self.ent_labj.configure(state=state)
+        self.btn_labj.configure(state=state)
+        self.lbl_labj.configure(state=state)
+
+    def prompt_data_dir(self):
+        dir = tkinter.filedialog.askdirectory()
+        parent = pathlib.Path(dir).parent
+        self.data_dir.set(dir)
+        self.output_dir.set(str(parent))
+
+    def prompt_output_dir(self):
+        dir = tkinter.filedialog.askdirectory()
+        self.output_dir.set(dir)
+
+
+    def prompt_labj(self):
+        labj = tkinter.filedialog.askopenfilename(
+            # initialdir=config.path_labjournal,
+            filetypes=[("Excel files", "*.xlsx")],
+        )
+        self.labj.set(labj)
+
+    def run_processing(self):
+        c = Console() 
+        labj: Optional[pd.DataFrame] = None
+
+        # Gui prompt for labjournal
+        if self.checked.get():
+            labj = pd.read_excel(self.labj.get(), dtype=str)
+
+        imported_files = import_files_folder_mode(self.data_dir.get(), c)
+
+        # Object instantiation from files and sorting
+        data_objs = sorted(
+            instantiate_data_objs(imported_files),
+            key=lambda x: x.datetime,
+        )
+
+        # Data processing
+        data_objs = data_processing(data_objs, labj)
+
+        # HTML report creation and saving
+        output_name = os.path.basename(self.data_dir.get())
+        output_path = os.path.join(self.output_dir.get(), output_name)
+        create_html(data_objs, output_path, output_name)
+        c.log(
+            "[bold green]\u2713[/bold green] HTML-Report created at"
+            f" {output_path}_report"
+        )
