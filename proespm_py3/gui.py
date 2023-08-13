@@ -1,5 +1,4 @@
 import os
-import sys
 import tkinter as tk
 import tkinter.ttk as ttk
 import tkinter.filedialog
