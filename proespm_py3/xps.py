@@ -10,6 +10,9 @@ class XpsEis:
         self.filepath = filepath
         self.basename = os.path.basename(filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
+        self.datetime = datetime.datetime.utcfromtimestamp(
+            os.path.getmtime(filepath)
+        )
         self.data = self.read_xps_eis_txt(filepath)
 
     def read_xps_eis_txt(self, filepath):
