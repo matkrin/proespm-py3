@@ -1,3 +1,4 @@
+from typing import Optional
 import numpy as np
 import os
 import re
@@ -16,6 +17,7 @@ class NanosurfNid:
         self.png_save_dir = os.path.join(self.dirname, "nanonis_nid")
 
         self.m_id = self.filename
+        self.slide_num: Optional[int] = None
 
         with open(filepath, "rb") as f:
             content = f.read()

@@ -68,6 +68,6 @@ class Qcmb:
         )
         subplot_thick.toolbar.active_scroll = "auto"
 
-        plot = row(subplot_rate, subplot_thick, sizing_mode="scale_width")
+        plot = row(subplot_rate, subplot_thick, sizing_mode="scale_width")  # type: ignore
 
         self.script, self.div = components(plot, wrap_script=True)

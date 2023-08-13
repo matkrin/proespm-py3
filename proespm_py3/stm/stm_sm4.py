@@ -1,6 +1,7 @@
 import os
 import numpy as np
 from dateutil import parser
+from typing import Optional
 
 from .stm import StmImage
 from .sm4 import RHKsm4
@@ -19,6 +20,7 @@ class StmSm4:
         self.basename = os.path.basename(self.filepath)
         self.dirname = os.path.dirname(self.filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
+        self.slide_num: Optional[int] = None
 
         self.m_id = self.filename
         self.png_save_dir = os.path.join(self.dirname, "sm4_png")

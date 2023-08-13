@@ -5,7 +5,7 @@ import sys
 from jinja2 import Environment, FileSystemLoader
 
 if TYPE_CHECKING:
-    from proespm_py3 import DataObject
+    from proespm_py3.proespm_py3 import DataObject
 
 
 def check_type(data_obj: DataObject, check_str: str) -> bool:
@@ -40,7 +40,7 @@ def create_html(
     """
 
     if getattr(sys, "frozen", False):
-        template_dir = os.path.join(sys._MEIPASS, "templates")
+        template_dir = os.path.join(sys._MEIPASS, "templates")  # type: ignore
     else:
         template_dir = os.path.join(os.path.dirname(__file__), "templates")
 

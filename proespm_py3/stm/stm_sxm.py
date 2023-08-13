@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 import numpy as np
 from dateutil import parser
 import nanonispy as nap
@@ -18,6 +19,7 @@ class StmSxm:
         self.basename = os.path.basename(self.filepath)
         self.dirname = os.path.dirname(self.filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
+        self.slide_num: Optional[int] = None
 
         self.m_id = self.filename
         self.png_save_dir = os.path.join(self.dirname, "sxm_png")

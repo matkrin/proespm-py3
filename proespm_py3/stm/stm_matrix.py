@@ -1,5 +1,6 @@
 import os
 import datetime
+from typing import Optional
 import access2thematrix
 from .stm import StmImage
 
@@ -23,6 +24,7 @@ class StmMatrix:
         self.basename = os.path.basename(self.filepath)
         self.dirname = os.path.dirname(self.filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
+        self.slide_num: Optional[int] = None
 
         self.m_id = self.filename
         self.png_save_dir = os.path.join(self.dirname, "matrix_png")

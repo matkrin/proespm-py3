@@ -158,7 +158,7 @@ def data_processing(
         if  labj is not None:
             extract_labj(labj, obj)
 
-        if isinstance(obj, MulImage):
+        if type(obj) == MulImage:
             pc.log(f"Processing of [bold cyan]{obj.m_id}[/bold cyan]")
             obj.slide_num = slide_num
             slide_num += 1
@@ -237,6 +237,7 @@ def main():
         imported_files, day = import_files_day_mode(files_dir, c)
     else:
         imported_files = import_files_folder_mode(files_dir, c)
+        day = None
 
     # Object instantiation from files and sorting
     data_objs = sorted(
@@ -249,7 +250,7 @@ def main():
 
     # Output path of the HTML report according to mode
     if "day" in config.mode or "daily" in config.mode:
-        assert day
+        assert day is not None
         output_path = os.path.join(config.path_report_out, str(day.date()))
     else:
         output_path = files_dir

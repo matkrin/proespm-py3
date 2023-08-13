@@ -5,7 +5,7 @@ import datetime
 import numpy as np
 from bokeh.plotting import figure
 from bokeh.embed import components
-from vamas import Vamas
+from vamas.vamas import Vamas
 
 
 class Aes:

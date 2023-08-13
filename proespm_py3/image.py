@@ -1,6 +1,7 @@
 import base64
 import os
 import datetime
+from typing import Optional
 
 
 class Image:
@@ -16,6 +17,7 @@ class Image:
         )
 
         self.png_str = self.encode_png()
+        self.slide_num: Optional[int] = None
 
     def encode_png(self) -> str:
         """Encodes an image to base64
