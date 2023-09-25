@@ -36,7 +36,7 @@ class NanosurfNid:
             self.xsize *= 1000
         self.ysize = self.xsize
 
-        scan_dir_up_down = file_meta["Scan direction"]
+        # scan_dir_up_down = file_meta["Scan direction"]
 
         self.xoffset = read_float_from_string(file_meta["X-Pos"])
         xoffset_units = read_units_from_string(file_meta["X-Pos"])
@@ -69,7 +69,7 @@ class NanosurfNid:
         self.yres = int(channel_meta_list[0]["Lines"])
 
         # `Z-Axis` for topo AFM/STM, `Tip Current` for current STM, `Amplitude` for AFM
-        scantype = channel_meta_list[0]["Dim2Name"]
+        # scantype = channel_meta_list[0]["Dim2Name"]
         datatype = (
             np.int16 if channel_meta_list[0]["SaveBits"] == "16" else np.int32
         )
