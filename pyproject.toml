@@ -44,3 +44,4 @@ preview = true
 
 [tool.pyright]
 reportUnusedImport = true
+ignore = ["proespm_py3/stm/sm4.py"]
