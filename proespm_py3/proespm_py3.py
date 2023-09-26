@@ -5,7 +5,8 @@ import pandas as pd
 import os
 from rich.console import Console
 from rich.progress import track, Progress
-from rich import print
+
+# from rich import print
 import typer
 from mulfile.mul import MulImage
 
@@ -24,6 +25,7 @@ from .image import Image
 from .xps import XpsEis, XpsScan
 from .aes import Aes
 from .qcmb import Qcmb
+from .ec4 import Ec4
 from .file_import import import_files_day_mode, import_files_folder_mode
 from .prompts import prompt_folder, prompt_labj
 from .html_rendering import create_html
@@ -43,6 +45,7 @@ DataObject = Union[
     XpsEis,
     Aes,
     Qcmb,
+    Ec4,
 ]
 
 c = Console()  # normal logging
@@ -75,7 +78,7 @@ def check_filestart(file: str, string_to_check: str) -> bool:
     """
     with open(file) as f:
         first_line = f.readline()
-    return True if first_line.startswith(string_to_check) else False
+    return True if string_to_check in first_line else False
 
 
 def datafile_factory(file: str) -> Optional[DataObject]:
@@ -105,6 +108,8 @@ def datafile_factory(file: str) -> Optional[DataObject]:
         return Aes(file)
     elif file.endswith(".log") and check_filestart(file, "Start Log"):
         return Qcmb(file)
+    elif file.endswith(".txt") and check_filestart(file, "EC4 File"):
+        return Ec4(file)
     else:
         return
 
@@ -154,8 +159,9 @@ def data_processing(
 
     """
     slide_num = 1  # for js modal image slide show in html
+    last_ec4: Optional[Ec4] = None
     for obj in track(data_objs, description="> Processing"):
-        if  labj is not None:
+        if labj is not None:
             extract_labj(labj, obj)
 
         if type(obj) == MulImage:
@@ -213,9 +219,23 @@ def data_processing(
 
         elif isinstance(obj, Qcmb):
             obj.plot()
-            pc.log(f"Processing of [bold pink3]{obj.m_id}[/bold pink3]")
+            pc.log(f"Processing of [bold white]{obj.m_id}[/bold white]")
 
-    return data_objs
+        elif isinstance(obj, Ec4):
+            pc.log(f"Processing of [bold pink3]{obj.m_id}[/bold pink3]")
+            if obj.filename.endswith("1"):
+                last_ec4 = obj
+            else:
+                assert last_ec4 is not None
+                last_ec4.push_cv_data(obj)
+
+            last_ec4.plot()
+
+    return [
+        x
+        for x in data_objs
+        if not (isinstance(x, Ec4) and not x.filename.endswith("1"))
+    ]
 
 
 def main():
@@ -264,6 +284,7 @@ def main():
         f" {output_path}_report"
     )
 
+
 @app.command()
 def cli(testing: Annotated[bool, typer.Option("--test", "-t")] = False):
     if not testing:
@@ -276,7 +297,12 @@ def cli(testing: Annotated[bool, typer.Option("--test", "-t")] = False):
             key=lambda x: x.datetime,
         )
 
-        labj_path = Path(__file__).parent.parent / "tests"/ "test_files" / "1_lab_journal.xlsx"
+        labj_path = (
+            Path(__file__).parent.parent
+            / "tests"
+            / "test_files"
+            / "1_lab_journal.xlsx"
+        )
         c.log(f"Selected Labjournal:\n{labj_path}")
         labj = pd.read_excel(labj_path, dtype=str)
         data_objs = data_processing(data_objs, labj)
