@@ -14,40 +14,22 @@
         <th>Datetime</th>
         <td>{{ obj.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
       </tr>
-{% if obj.mode %}
       <tr>
-        <th>Mode</th>
-        <td>{{ obj.mode }}</td>
+        <th>U<sub>start</sub></th>
+        <td>{{ "{:.3f}".format(obj.u_start) }} V</td>
       </tr>
       <tr>
-        <th>Region</th>
-        <td>{{ "{:.0f}".format(obj.e_start) }} - {{ "{:.0f}".format(obj.e_stop) }} eV</td>
+        <th>U<sub>1</sub></th>
+        <td>{{ "{:.3f}".format(obj.u_1) }} V</td>
       </tr>
       <tr>
-        <th>Step</th>
-        <td>{{ "{:.2f}".format(obj.stepwidth) }} eV</td>
+        <th>U<sub>2</sub></th>
+        <td>{{ "{:.3f}".format(obj.u_2) }} V</td>
       </tr>
       <tr>
-        <th>Sweeps</th>
-        <td>{{ obj.scan_num }}</td>
+        <th>Rate</th>
+        <td>{{ "{:.3f}".format(obj.rate) }} V</td>
       </tr>
-      <tr>
-        <th>t<sub>dwell</sub></th>
-        <td>{{ obj.dwell_time }} ms</td>
-      </tr>
-      <tr>
-          <th>t<sub>retrace</sub></th>
-        <td>{{ obj.retrace_time }} ms</td>
-      </tr>
-      <tr>
-          <th>Resolution</sub></th>
-        <td>{{ obj.res }} %</td>
-      </tr>
-      <tr>
-          <th>Resolution Mode</sub></th>
-        <td>{{ obj.res_mode }}</td>
-      </tr>
-{% endif %}
     </table>
   </div>
 
