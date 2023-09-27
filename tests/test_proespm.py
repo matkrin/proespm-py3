@@ -1,5 +1,6 @@
 from pathlib import Path
 from proespm_py3.aes import Aes
+from proespm_py3.ec4 import Ec4
 from proespm_py3.image import Image
 from proespm_py3.proespm_py3 import datafile_factory, instantiate_data_objs
 from proespm_py3.qcmb import Qcmb
@@ -27,6 +28,11 @@ TEST_FILES = {
     "qcmb_log": test_file_path / "qcmb-test.log",
     "xps_eis": test_file_path / "xps-eis.txt",
     "wrong_txt": test_file_path / "wrong-txt.txt",
+    "cv_ec4": test_file_path / r"CV_153505_ 1.txt",
+    "cv_ec4_2": test_file_path / r"CV_153605_ 2.txt",
+    "lsv_ec4": test_file_path / r"CV_185158_ 1.txt",
+    "ca_ec4": test_file_path / r"CV_103244_ 1.txt",
+    "ca_ec4_2": test_file_path / r"CV_103345_ 2.txt",
 }
 
 def test_datafile_factory():
@@ -76,6 +82,17 @@ def test_datafile_factory():
 
     data_obj = datafile_factory(str(TEST_FILES["wrong_txt"]))
     assert data_obj is None
+
+    data_obj = datafile_factory(str(TEST_FILES["cv_ec4"]))
+    assert isinstance(data_obj, Ec4)
+    data_obj = datafile_factory(str(TEST_FILES["cv_ec4_2"]))
+    assert isinstance(data_obj, Ec4)
+    data_obj = datafile_factory(str(TEST_FILES["lsv_ec4"]))
+    assert isinstance(data_obj, Ec4)
+    data_obj = datafile_factory(str(TEST_FILES["ca_ec4"]))
+    assert isinstance(data_obj, Ec4)
+    data_obj = datafile_factory(str(TEST_FILES["ca_ec4_2"]))
+    assert isinstance(data_obj, Ec4)
 
 
 def test_instantiate_data_objs():
