@@ -10,6 +10,7 @@ from numpy._typing import NDArray
 from bokeh.plotting import figure
 from bokeh.embed import components
 from bokeh.palettes import Category10_10
+from bokeh.models import LinearAxis, Range1d
 
 
 DATETIME_REGEX = re.compile(r"dateTime\s+[\d\s:-]+")
@@ -54,6 +55,10 @@ class Ec4:
 
 
     def plot(self):
+        if self.type == "ca_ec4":
+            self.plot_ca()
+            return
+
         colors = itertools.cycle(Category10_10)
         plot = figure(
             width=1000,
@@ -70,17 +75,60 @@ class Ec4:
         plot.toolbar.logo = None
         plot.background_fill_alpha = 0
         plot.toolbar.active_scroll = "auto"
+
         for i, arr in enumerate(self.data):
-            if self.type == "ca_ec4":
-                x = arr[:, 0]
-                y = arr[:, 2]
-            else:
-                x = arr[:, 1]
-                y = arr[:, 2]
+            x = arr[:, 1]  # volage
+            y = arr[:, 2]  # current
 
             plot.circle(
                 x, y, size=2, legend_label=f"Cycle {i + 1}", color=next(colors)
             )
-            # plot.line(x, y)
+
+        plot.legend.location = "bottom_right"
+        self.script, self.div = components(plot, wrap_script=True)
+
+    def plot_ca(self):
+        colors = itertools.cycle(Category10_10)
+        current_min = np.min([np.min(arr[:, 2]) for arr in self.data])
+        current_min = current_min - (abs(current_min * 5))
+        current_max = np.max([np.max(arr[:, 2]) for arr in self.data]) * 1.05
+
+        plot = figure(
+            width=1000,
+            height=540,
+            x_axis_label="Time [s]",
+            y_axis_label="I [A]",
+            # x_range=(x[0], x[-1]),
+            y_range=(current_min, current_max),
+            sizing_mode="scale_width",
+            tools="reset, save, wheel_zoom, pan, box_zoom, hover, crosshair",
+            active_drag="box_zoom",
+            active_scroll="wheel_zoom",
+            active_inspect="hover",
+        )
+        plot.toolbar.logo = None
+        plot.background_fill_alpha = 0
+        plot.toolbar.active_scroll = "auto"
+
+        voltage_min = np.min([np.min(arr[:, 1]) for arr in self.data])
+        voltage_min = voltage_min - (abs(voltage_min * 0.05))
+        voltage_max = np.max([np.max(arr[:, 1]) for arr in self.data]) * 1.05
+
+        plot.extra_y_ranges["voltage"] = Range1d(voltage_min, voltage_max)
+        ax2 = LinearAxis(y_range_name="voltage", axis_label="U [V]")
+        ax2.axis_label_text_color ="black"
+        plot.add_layout(ax2, 'right')
+
+        for i, arr in enumerate(self.data):
+            x = arr[:, 0]  # time
+            y = arr[:, 2]  # current
+            y2 = arr[:, 1]  # voltage
+
+            plot.circle(
+                x, y, size=2, legend_label=f"I {i + 1}", color=next(colors)
+            )
+            plot.circle(
+                x, y2, size=2, legend_label=f"U {i + 1}", color=next(colors), y_range_name="voltage"
+            )
 
         self.script, self.div = components(plot, wrap_script=True)
