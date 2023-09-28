@@ -28,4 +28,8 @@ Python 3 implementation of [proespm](https://github.com/n-bock/proespm).
 
   - Inficon STM2 (.log)
 
+- Cyclic Voltammetry, Chronoamperometry, Linear Sweep Voltammetry:
+
+    - Nordic Electrochemistry EC4
+
 - png images, e.g. LEED images
