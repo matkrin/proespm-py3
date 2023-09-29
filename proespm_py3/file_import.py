@@ -21,6 +21,8 @@ ALLOWED_FTYPES = (
     ".sxm",
     ".vms",
     ".nid",
+    ".jpg",
+    ".jpeg",
 )
 
 

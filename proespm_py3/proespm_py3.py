@@ -96,7 +96,7 @@ def datafile_factory(file: str) -> Optional[DataObject]:
     """
     if file.endswith((".mul", ".flm", ".Z_mtrx", ".SM4", ".sxm", ".nid")):
         return stm_factory(file)
-    elif file.endswith(".png"):
+    elif file.endswith((".png", ".jpg", ".jpeg")):
         return Image(file)
     elif file.endswith(".txt") and check_filestart(file, "Region"):
         return XpsEis(file)
