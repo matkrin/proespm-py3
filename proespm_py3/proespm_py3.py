@@ -10,6 +10,7 @@ from rich.progress import track, Progress
 import typer
 from mulfile.mul import MulImage
 
+
 from .config import config
 from .stm import (
     stm_factory,
@@ -26,6 +27,7 @@ from .xps import XpsEis, XpsScan
 from .aes import Aes
 from .qcmb import Qcmb
 from .ec4 import Ec4
+from .ec_labview import CvLabview
 from .file_import import import_files_day_mode, import_files_folder_mode
 from .prompts import prompt_folder, prompt_labj
 from .html_rendering import create_html
@@ -65,20 +67,22 @@ def extract_labj(labjournal, obj):
         c.log(f"\nNo Labjournal Data for {obj.m_id}")
 
 
-def check_filestart(file: str, string_to_check: str) -> bool:
+def check_file_for_str(file: str, string_to_check: str, line_num: int) -> bool:
     """Check if a file starts with a certain string
 
     Args:
         file (str): file to check
-        string_to_check (str): string that is checked if file starts with it
+        string_to_check (str): string that is checked if file contains it
+        line_num (int): line number which is checked
 
     Returns:
         bool: True if file starts with string_to_check, False if not
 
     """
     with open(file) as f:
-        first_line = f.readline()
-    return True if string_to_check in first_line else False
+        [next(f) for _ in range(line_num - 1)]
+        line = f.readline()
+    return string_to_check in line
 
 
 def datafile_factory(file: str) -> Optional[DataObject]:
@@ -98,18 +102,26 @@ def datafile_factory(file: str) -> Optional[DataObject]:
         return stm_factory(file)
     elif file.endswith((".png", ".jpg", ".jpeg")):
         return Image(file)
-    elif file.endswith(".txt") and check_filestart(file, "Region"):
+    elif file.endswith(".txt") and check_file_for_str(file, "Region", 1):
         return XpsEis(file)
     elif (
         file.endswith(".dat")
-        and check_filestart(file, "Version")
+        and check_file_for_str(file, "Version", 1)
         or file.endswith(".vms")
     ):
         return Aes(file)
-    elif file.endswith(".log") and check_filestart(file, "Start Log"):
+    elif file.endswith(".log") and check_file_for_str(file, "Start Log", 1):
         return Qcmb(file)
-    elif file.endswith(".txt") and check_filestart(file, "EC4 File"):
+    elif file.endswith(".txt") and check_file_for_str(file, "EC4 File", 1):
         return Ec4(file)
+    elif file.endswith(".txt") and check_file_for_str(file, "LabVIEW", 1):
+        print("CA_Pulse_Time")
+    elif file.endswith(".lvm") and check_file_for_str(file, "Bias RHK", 22):
+        return CvLabview(file)
+    elif file.endswith(".lvm") and check_file_for_str(
+        file, "Leistungsspektrum", 23
+    ):
+        print("FFT_test.lvm")
     else:
         return
 
@@ -230,6 +242,10 @@ def data_processing(
                 last_ec4.push_cv_data(obj)
 
             last_ec4.plot()
+
+        elif isinstance(obj, CvLabview):
+            pc.log(f"Processing of [bold pink3]{obj.m_id}[/bold pink3]")
+            obj.plot()
 
     return [
         x
