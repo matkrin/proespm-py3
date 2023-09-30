@@ -27,12 +27,12 @@ class StmSm4:
 
         self.sm4 = RHKsm4(filepath)
 
-        self.img_fw = self.sm4[8]
-        self.img_bw = self.sm4[9]
+        self.img_fw = self.sm4[-2]
+        self.img_bw = self.sm4[-1]
 
         self.datetime = parser.parse(self.img_fw.attrs["RHK_DateTime"])
 
-        self.current = self.img_fw.attrs["RHK_Current"]
+        self.current = self.img_fw.attrs["RHK_Current"] * 1e9  # in nA
         self.bias = self.img_fw.attrs["RHK_Bias"]
 
         self.xoffset = self.img_fw.attrs["RHK_Xoffset"] * 1e9  # in nm
@@ -60,8 +60,8 @@ class StmSm4:
         self.speed = self.line_time * self.yres / 1e3  # in s
 
         self.img_data_fw = StmImage(
-            np.flip(self.img_fw.data * 1e9), self.xsize
+            np.flip(self.img_fw.data * 1e9, axis=0), self.xsize
         )
         self.img_data_bw = StmImage(
-            np.flip(self.img_bw.data * 1e9), self.xsize
+            np.flip(self.img_bw.data * 1e9, axis=0), self.xsize
         )
