@@ -13,11 +13,11 @@ from bokeh.palettes import Category10_10
 from bokeh.models import LinearAxis, Range1d
 
 
-DATETIME_REGEX = re.compile(r"dateTime\s+[\d\s:-]+")
-U_START_REGEX = re.compile(r"Start\s+[\d.-]+")
-U1_REGEX = re.compile(r"V1\s+[\d.-]+")
-U2_REGEX = re.compile(r"V2\s+[\d.-]+")
-RATE_REGEX = re.compile(r"Rate\s+[\d.-]+")
+DATETIME_REGEX = re.compile(r"dateTime(\s+[\d\s:-]+)")
+U_START_REGEX = re.compile(r"Start(\s+[\d.-]+)")
+U1_REGEX = re.compile(r"V1(\s+[\d.-]+)")
+U2_REGEX = re.compile(r"V2(\s+[\d.-]+)")
+RATE_REGEX = re.compile(r"Rate(\s+[\d.-]+)")
 
 
 class Ec4:
@@ -30,7 +30,7 @@ class Ec4:
 
         self.read_params()
         self.type: Optional[str] = None
-        self.data: list[NDArray] = [self.read_cv_data(filepath)]
+        self.data: list[NDArray[np.float32]] = [self.read_cv_data(filepath)]
 
     def read_cv_data(self, filepath: str | Path) -> NDArray:
         return np.loadtxt(filepath, skiprows=96)
@@ -47,11 +47,11 @@ class Ec4:
             u1_match = U1_REGEX.search(content)
             u2_match = U2_REGEX.search(content)
             rate_match = RATE_REGEX.search(content)
-            self.datetime = parser.parse(datetime_match.group(0).split("\t")[1].strip())  # type: ignore
-            self.u_start = float(u_start_match.group(0).split("\t")[1].strip())  # type: ignore
-            self.u_1 = float(u1_match.group(0).split("\t")[1].strip())  # type: ignore
-            self.u_2 = float(u2_match.group(0).split("\t")[1].strip()) # type: ignore
-            self.rate = float(rate_match.group(0).split("\t")[1].strip())  # type: ignore
+            self.datetime = parser.parse(datetime_match.group(1).strip())  # type: ignore
+            self.u_start = float(u_start_match.group(1).strip())  # type: ignore
+            self.u_1 = float(u1_match.group(1).strip())  # type: ignore
+            self.u_2 = float(u2_match.group(1).strip()) # type: ignore
+            self.rate = float(rate_match.group(1).strip())  # type: ignore
 
 
     def plot(self):
