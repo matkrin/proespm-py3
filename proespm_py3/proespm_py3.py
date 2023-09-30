@@ -27,7 +27,7 @@ from .xps import XpsEis, XpsScan
 from .aes import Aes
 from .qcmb import Qcmb
 from .ec4 import Ec4
-from .ec_labview import CvLabview
+from .ec_labview import CaLabview, CvLabview, FftLabview
 from .file_import import import_files_day_mode, import_files_folder_mode
 from .prompts import prompt_folder, prompt_labj
 from .html_rendering import create_html
@@ -48,6 +48,9 @@ DataObject = Union[
     Aes,
     Qcmb,
     Ec4,
+    CvLabview,
+    CaLabview,
+    FftLabview,
 ]
 
 c = Console()  # normal logging
@@ -115,13 +118,13 @@ def datafile_factory(file: str) -> Optional[DataObject]:
     elif file.endswith(".txt") and check_file_for_str(file, "EC4 File", 1):
         return Ec4(file)
     elif file.endswith(".txt") and check_file_for_str(file, "LabVIEW", 1):
-        print("CA_Pulse_Time")
+        return CaLabview(file)
     elif file.endswith(".lvm") and check_file_for_str(file, "Bias RHK", 22):
         return CvLabview(file)
     elif file.endswith(".lvm") and check_file_for_str(
         file, "Leistungsspektrum", 23
     ):
-        print("FFT_test.lvm")
+        return FftLabview(file)
     else:
         return
 
@@ -243,7 +246,7 @@ def data_processing(
 
             last_ec4.plot()
 
-        elif isinstance(obj, CvLabview):
+        elif isinstance(obj, (CvLabview, CaLabview, FftLabview)):
             pc.log(f"Processing of [bold pink3]{obj.m_id}[/bold pink3]")
             obj.plot()
 

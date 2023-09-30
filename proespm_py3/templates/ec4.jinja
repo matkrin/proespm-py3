@@ -14,22 +14,24 @@
         <th>Datetime</th>
         <td>{{ obj.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
       </tr>
-      <tr>
-        <th>U<sub>start</sub></th>
-        <td>{{ "{:.3f}".format(obj.u_start) }} V</td>
-      </tr>
-      <tr>
-        <th>U<sub>1</sub></th>
-        <td>{{ "{:.3f}".format(obj.u_1) }} V</td>
-      </tr>
-      <tr>
-        <th>U<sub>2</sub></th>
-        <td>{{ "{:.3f}".format(obj.u_2) }} V</td>
-      </tr>
-      <tr>
-        <th>Rate</th>
-        <td>{{ "{:.3f}".format(obj.rate) }} V</td>
-      </tr>
+      {% if obj.u_start %}
+          <tr>
+            <th>U<sub>start</sub></th>
+            <td>{{ "{:.3f}".format(obj.u_start) }} V</td>
+          </tr>
+          <tr>
+            <th>U<sub>1</sub></th>
+            <td>{{ "{:.3f}".format(obj.u_1) }} V</td>
+          </tr>
+          <tr>
+            <th>U<sub>2</sub></th>
+            <td>{{ "{:.3f}".format(obj.u_2) }} V</td>
+          </tr>
+          <tr>
+            <th>Rate</th>
+            <td>{{ "{:.3f}".format(obj.rate) }} V</td>
+          </tr>
+    {% endif %}
     </table>
   </div>
 
