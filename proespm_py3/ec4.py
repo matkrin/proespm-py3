@@ -50,9 +50,8 @@ class Ec4:
             self.datetime = parser.parse(datetime_match.group(1).strip())  # type: ignore
             self.u_start = float(u_start_match.group(1).strip())  # type: ignore
             self.u_1 = float(u1_match.group(1).strip())  # type: ignore
-            self.u_2 = float(u2_match.group(1).strip()) # type: ignore
+            self.u_2 = float(u2_match.group(1).strip())  # type: ignore
             self.rate = float(rate_match.group(1).strip())  # type: ignore
-
 
     def plot(self):
         if self.type == "ca_ec4":
@@ -116,8 +115,8 @@ class Ec4:
 
         plot.extra_y_ranges["voltage"] = Range1d(voltage_min, voltage_max)
         ax2 = LinearAxis(y_range_name="voltage", axis_label="U [V]")
-        ax2.axis_label_text_color ="black"
-        plot.add_layout(ax2, 'right')
+        ax2.axis_label_text_color = "black"
+        plot.add_layout(ax2, "right")
 
         for i, arr in enumerate(self.data):
             x = arr[:, 0]  # time
@@ -128,7 +127,12 @@ class Ec4:
                 x, y, size=2, legend_label=f"I {i + 1}", color=next(colors)
             )
             plot.circle(
-                x, y2, size=2, legend_label=f"U {i + 1}", color=next(colors), y_range_name="voltage"
+                x,
+                y2,
+                size=2,
+                legend_label=f"U {i + 1}",
+                color=next(colors),
+                y_range_name="voltage",
             )
 
         self.script, self.div = components(plot, wrap_script=True)

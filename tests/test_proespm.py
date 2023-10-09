@@ -35,6 +35,7 @@ TEST_FILES = {
     "ca_ec4_2": test_file_path / r"CV_103345_ 2.txt",
 }
 
+
 def test_datafile_factory():
     data_obj = datafile_factory(str(TEST_FILES["stm_mul_a"]))
     assert data_obj is not None

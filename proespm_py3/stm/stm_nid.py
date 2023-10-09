@@ -138,7 +138,9 @@ def get_file_meta(content_list: list[bytes]) -> dict[str, str]:
     return file_meta
 
 
-def get_channels_meta(content_list: list[bytes], channels: list[bytes]) -> list[dict[str, str]]:
+def get_channels_meta(
+    content_list: list[bytes], channels: list[bytes]
+) -> list[dict[str, str]]:
     channels_meta_list: list[dict[str, str]] = []
     k = 0
     for block in content_list:

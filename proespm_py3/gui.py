@@ -33,24 +33,32 @@ class App:
         self.ent_data = ttk.Entry(
             master=self.frame_data,
             width=ENTRY_WIDTH,
-            #state="readonly",
+            # state="readonly",
             textvariable=self.data_dir,
         )
         self.btn_data = ttk.Button(
             master=self.frame_data, text="Browse", command=self.prompt_data_dir
         )
         # Output
-        self.lbl_output = ttk.Label(master=self.frame_data, text="Output Path: ")
+        self.lbl_output = ttk.Label(
+            master=self.frame_data, text="Output Path: "
+        )
         self.ent_output = ttk.Entry(
-            master=self.frame_data, width=ENTRY_WIDTH, textvariable=self.output_dir
+            master=self.frame_data,
+            width=ENTRY_WIDTH,
+            textvariable=self.output_dir,
         )
         self.btn_output = ttk.Button(
-            master=self.frame_data, text="Browse", command=self.prompt_output_dir
+            master=self.frame_data,
+            text="Browse",
+            command=self.prompt_output_dir,
         )
         # Spreadsheet
         self.frame_labj = ttk.LabelFrame(self.root, text="Spreadsheet")
         self.lbl_labj = ttk.Label(
-            master=self.frame_labj, text="Spreadsheet: ", state=self.is_disabled.get()
+            master=self.frame_labj,
+            text="Spreadsheet: ",
+            state=self.is_disabled.get(),
         )
         self.ent_labj = ttk.Entry(
             master=self.frame_labj,
@@ -61,7 +69,6 @@ class App:
         self.btn_labj = ttk.Button(
             master=self.frame_labj,
             text="Browse",
-
             state=self.is_disabled.get(),
             command=self.prompt_labj,
         )
@@ -73,8 +80,15 @@ class App:
         )
         # Run controls
         self.run_frame = ttk.Frame(self.root)
-        self.run_btn = ttk.Button(master=self.run_frame, text="Run", default="active", command=self.run_processing)
-        self.quit_btn = ttk.Button(master=self.run_frame, text="Quit", command=self.quit)
+        self.run_btn = ttk.Button(
+            master=self.run_frame,
+            text="Run",
+            default="active",
+            command=self.run_processing,
+        )
+        self.quit_btn = ttk.Button(
+            master=self.run_frame, text="Quit", command=self.quit
+        )
 
         self.create_layout()
 
@@ -121,7 +135,6 @@ class App:
         dir = tkinter.filedialog.askdirectory()
         self.output_dir.set(dir)
 
-
     def prompt_labj(self):
         labj = tkinter.filedialog.askopenfilename(
             # initialdir=config.path_labjournal,
@@ -130,7 +143,7 @@ class App:
         self.labj.set(labj)
 
     def run_processing(self):
-        c = Console() 
+        c = Console()
         labj: Optional[pd.DataFrame] = None
 
         # Gui prompt for labjournal

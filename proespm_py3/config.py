@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 @dataclass
 class Config:
-    mode:str
+    mode: str
     use_labjournal: bool
     path_data: str
     path_labjournal: str
@@ -17,17 +17,16 @@ try:
     config_file = os.path.join(
         os.path.join(os.path.dirname(__file__), ".."), "config.json"
     )
-    
+
     with open(config_file) as f:
         config_dict = json.load(f)
 
-
     config = Config(**config_dict)
-    
+
 except FileNotFoundError:
     config = Config("folder-based", True, "", "", False, "")
-    
-    
+
+
 # mode = config_dict["mode"]
 # use_labjournal = config_dict["use_labjournal"]
 # path_data = config_dict["path_data"]

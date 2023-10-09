@@ -136,11 +136,18 @@ class CaLabview:
 
         plot.extra_y_ranges["voltage"] = Range1d(voltage_min, voltage_max)
         ax2 = LinearAxis(y_range_name="voltage", axis_label="U [V]")
-        ax2.axis_label_text_color ="black"
-        plot.add_layout(ax2, 'right')
+        ax2.axis_label_text_color = "black"
+        plot.add_layout(ax2, "right")
 
         plot.circle(x, y, size=2, legend_label="I")
-        plot.circle( x, y2, size=2, legend_label="U", color="orange", y_range_name="voltage")
+        plot.circle(
+            x,
+            y2,
+            size=2,
+            legend_label="U",
+            color="orange",
+            y_range_name="voltage",
+        )
 
         self.script, self.div = components(plot, wrap_script=True)
 
