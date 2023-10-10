@@ -1,10 +1,9 @@
 import os
 import numpy as np
-from dateutil import parser
 from typing import Optional
 
+from sm4file import Sm4
 from .stm import StmImage
-from .sm4 import RHKsm4
 
 
 class StmSm4:
@@ -25,39 +24,26 @@ class StmSm4:
         self.m_id = self.filename
         self.png_save_dir = os.path.join(self.dirname, "sm4_png")
 
-        self.sm4 = RHKsm4(filepath)
+        self.sm4 = Sm4(filepath)
 
-        self.img_fw = self.sm4[-2]
-        self.img_bw = self.sm4[-1]
+        for channel in self.sm4:
+            if channel.scan_direction == "right":
+                self.img_fw = channel
+            elif channel.scan_direction == "left":
+                self.img_bw = channel
 
-        self.datetime = parser.parse(self.img_fw.attrs["RHK_DateTime"])
-
-        self.current = self.img_fw.attrs["RHK_Current"] * 1e9  # in nA
-        self.bias = self.img_fw.attrs["RHK_Bias"]
-
-        self.xoffset = self.img_fw.attrs["RHK_Xoffset"] * 1e9  # in nm
-        self.yoffset = self.img_fw.attrs["RHK_Yoffset"] * 1e9  # in nm
-
-        self.xres = self.img_fw.attrs["RHK_Xsize"]
-        self.yres = self.img_fw.attrs["RHK_Ysize"]
-        self.tilt = self.img_fw.attrs["RHK_Angle"]  # in deg
-
-        for param in self.img_fw.attrs["RHK_PRMdata"].split("\n"):
-            if param.startswith("<1322>\tScan size"):
-                self.xsize = (
-                    float(param.split("::")[1].split()[0]) * 1e9
-                )  # in nm
-                self.ysize = self.xsize
-            elif param.startswith("<1326>\tScan speed"):
-                self.speed_mps = float(
-                    param.split("::")[1].split()[0]
-                )  # in m/s !!
-            elif param.startswith("<1327>\tLine time"):
-                self.line_time = (
-                    float(param.split("::")[1].split()[0]) * 1e3
-                )  # in ms
-
-        self.speed = self.line_time * self.yres / 1e3  # in s
+        self.datetime = self.img_fw.datetime
+        self.current = self.img_fw.current * 1e9  # in nA
+        self.bias = self.img_fw.bias
+        self.xoffset = self.img_fw.x_offset * 1e9  # in nm
+        self.yoffset = self.img_fw.y_offset * 1e9  # in nm
+        self.xres = self.img_fw.xres
+        self.yres = self.img_fw.yres
+        self.tilt = self.img_fw.angle  # in deg
+        self.xsize = self.img_fw.xsize * 1e9  # in nm
+        self.ysize = self.img_fw.ysize * 1e9  # in nm
+        self.speed = self.img_fw.period * self.xres * self.yres
+        self.line_time = self.img_fw.period * self.xres * 1e3  # in ms
 
         self.img_data_fw = StmImage(
             np.flip(self.img_fw.data * 1e9, axis=0), self.xsize
