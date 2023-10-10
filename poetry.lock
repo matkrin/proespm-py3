@@ -1202,6 +1202,20 @@ files = [
 ]
 
 [[package]]
+name = "sm4file"
+version = "0.1.0a1"
+description = "Python package to read .sm4 files"
+optional = false
+python-versions = ">=3.9,<3.13"
+files = [
+    {file = "sm4file-0.1.0a1-py3-none-any.whl", hash = "sha256:636489b156c94b0eadde17a39f0c498bd3b0e28903475d1a43cc053879eb563d"},
+    {file = "sm4file-0.1.0a1.tar.gz", hash = "sha256:7bb400292463019ed4bcf3ef0a1893307eefd883461bb79ffa03f3fbed2a1344"},
+]
+
+[package.dependencies]
+numpy = ">=1.26.0,<2.0.0"
+
+[[package]]
 name = "tornado"
 version = "6.3.3"
 description = "Tornado is a Python web framework and asynchronous networking library, originally developed at FriendFeed."
@@ -1289,4 +1303,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "80bc5bd99f8cfa1f80e8600d20f4594914a06661ec913803efc6d0ba097b76f5"
+content-hash = "5a44f9512b365b2aec9d04318acd3a965d569d427c72c0c01856064fbd63a4a8"
