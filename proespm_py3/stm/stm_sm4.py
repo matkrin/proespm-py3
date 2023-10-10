@@ -26,7 +26,7 @@ class StmSm4:
 
         self.sm4 = Sm4(filepath)
 
-        for channel in self.sm4:
+        for channel in self.sm4.topography_channels():
             if channel.scan_direction == "right":
                 self.img_fw = channel
             elif channel.scan_direction == "left":
