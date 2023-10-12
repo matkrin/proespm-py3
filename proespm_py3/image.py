@@ -26,7 +26,7 @@ class Image:
             str: data uri of the image
         """
         with open(self.filepath, "rb") as f:
-            png_str = "data:image/png;base64, " + base64.b64encode(
+            png_str = f"data:image/{self.fileext};base64, " + base64.b64encode(
                 f.read()
             ).decode("ascii")
         return png_str

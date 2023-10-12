@@ -74,6 +74,9 @@
             {% elif check_type(obj, 'Qcmb')  %}
                 {% include 'qcmb.jinja' %}
 
+            {% elif check_type(obj, 'Ec4') or check_type(obj, 'CvLabview') or check_type(obj, 'CaLabview') or check_type(obj, 'FftLabview') %}
+                {% include 'ec4.jinja' %}
+
             {% endif %}
         {% endfor %}
 

@@ -1,4 +1,5 @@
 import os
+import datetime
 
 import mulfile
 from mulfile.mul import Mul
@@ -14,12 +15,15 @@ class StmMul(Mul):
     """
 
     def __init__(self, filepath: str) -> None:
-        super().__init__(mulfile.load(filepath))
+        super().__init__([*mulfile.load(filepath)])
 
         self.filepath = filepath
         self.basename = os.path.basename(self.filepath)
         self.dirname = os.path.dirname(self.filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
+        self.datetime = datetime.datetime.utcfromtimestamp(
+            os.path.getmtime(filepath)
+        )
 
         self.png_save_dir = os.path.join(self.dirname, self.filename + "_png")
 

@@ -6,23 +6,24 @@ authors = ["matkrin <matkrin@protonmail.com>"]
 license = "GPL-3.0"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.12"
-numpy = "^1.23.1"
-matplotlib = "^3.5.2"
+python = "~3.11"
+numpy = "^1.26"
+matplotlib = "^3.8"
 matplotlib-scalebar = "^0.8.1"
-seaborn = "^0.12.2"
-pandas = "^1.4.3"
+seaborn = "^0.13"
+pandas = "^2.1.1"
 bokeh = "3.2.1"
 Jinja2 = "^3.1.2"
 opencv-python = "^4.6.0"
-rich = "^12.5.1"
-openpyxl = "^3.0.10"
-scipy = "^1.9.0"
+rich = "^13.5.3"
+openpyxl = "^3.1.2"
+scipy = "^1.11.3"
 access2theMatrix = "^0.4.2"
-mulfile = "^0.2.0"
+mulfile = "^0.3.0"
 vamas = "^0.1.0"
 nanonispy = {git = "https://github.com/matkrin/nanonispy.git"}
 typer = "^0.9.0"
+sm4file = "^0.1.0a1"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"
@@ -44,3 +45,4 @@ preview = true
 
 [tool.pyright]
 reportUnusedImport = true
+ignore = ["proespm_py3/stm/sm4.py"]

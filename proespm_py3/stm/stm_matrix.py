@@ -64,8 +64,8 @@ class StmMatrix:
         self.speed = self.line_time * self.yres / 1e3  # in s
 
         self.img_data_fw = StmImage(
-            self.img_fw.data * 1e9, self.xsize
+            self.img_fw.data * 1e9, self.xsize  # type: ignore
         )  # in nm
         self.img_data_bw = StmImage(
-            self.img_bw.data * 1e9, self.xsize
+            self.img_bw.data * 1e9, self.xsize  # type: ignore
         )  # in nm

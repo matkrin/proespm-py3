@@ -34,7 +34,7 @@ class StmImage:
         """
         rocket = sns.color_palette("rocket", as_cmap=True)
         fig, ax = plt.subplots(figsize=(5, 5))
-        ax.imshow(
+        ax.imshow(  # type: ignore
             self.arr,
             cmap=rocket,
             vmin=None,
@@ -51,8 +51,8 @@ class StmImage:
             color="white",
             box_alpha=0,
         )
-        ax.add_artist(scalebar)
-        ax.tick_params(
+        ax.add_artist(scalebar)  # type: ignore
+        ax.tick_params(  # type: ignore
             left=False,
             bottom=False,
             labelleft=False,
@@ -61,8 +61,8 @@ class StmImage:
         plt.tight_layout()
 
         png_bytes = io.BytesIO()
-        extent = ax.get_window_extent().transformed(
-            fig.dpi_scale_trans.inverted()
+        extent = ax.get_window_extent().transformed(  # type: ignore
+            fig.dpi_scale_trans.inverted()  # type: ignore
         )
         plt.savefig(png_bytes, bbox_inches=extent)
         png_bytes.seek(0)
@@ -74,8 +74,8 @@ class StmImage:
             if not os.path.exists(save_dir):
                 os.makedirs(save_dir)
 
-            extent = ax.get_window_extent().transformed(
-                fig.dpi_scale_trans.inverted()
+            extent = ax.get_window_extent().transformed(  # type: ignore
+                fig.dpi_scale_trans.inverted()  # type: ignore
             )
             plt.savefig(
                 os.path.join(save_dir, save_name + ".png"), bbox_inches=extent

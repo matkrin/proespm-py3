@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="xps_plot">
+    {{ obj.script }}
+    {{ obj.div }}
+  </div>
+
+  <div class="table_column">
+    <table style:"width=100%" >
+      <tr>
+        <th id="{{ obj.m_id }}">ID</th>
+        <td>{{ obj.m_id }}</td>
+      </tr>
+      <tr>
+        <th>Datetime</th>
+        <td>{{ obj.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+      </tr>
+      {% if obj.u_start %}
+          <tr>
+            <th>U<sub>start</sub></th>
+            <td>{{ "{:.3f}".format(obj.u_start) }} V</td>
+          </tr>
+          <tr>
+            <th>U<sub>1</sub></th>
+            <td>{{ "{:.3f}".format(obj.u_1) }} V</td>
+          </tr>
+          <tr>
+            <th>U<sub>2</sub></th>
+            <td>{{ "{:.3f}".format(obj.u_2) }} V</td>
+          </tr>
+          <tr>
+            <th>Rate</th>
+            <td>{{ "{:.3f}".format(obj.rate) }} V</td>
+          </tr>
+    {% endif %}
+    </table>
+  </div>
+
+  {% if obj.remark %}
+  <div class="remark_column">
+    <b>Remark</b>
+    <p>{{ obj.remark }}</p>
+  </div>
+  {% endif %}
+
+</div><!-- End row -->

@@ -33,7 +33,7 @@ class StmFlm(StmMul):
         normalizes them from 0 to 255 and outputs them as mp4-file
         """
         dimensions = self.data[0].img_data.shape
-        fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+        fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # type: ignore
         output = os.path.join(self.mp4_save_dir, self.filename)
 
         if not os.path.exists(self.mp4_save_dir):
@@ -45,11 +45,11 @@ class StmFlm(StmMul):
         for frame, img in enumerate(self.data):
             img_norm = cv2.normalize(
                 img.img_data.arr,
-                None,
+                None,  # type: ignore
                 255,
                 0,
                 norm_type=cv2.NORM_MINMAX,
-                dtype=cv2.CV_8U,
+                dtype=cv2.CV_8U,  # type: ignore
             )
             img_color = cv2.applyColorMap(img_norm, cv2.COLORMAP_HOT)
 

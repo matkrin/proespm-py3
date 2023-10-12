@@ -3,14 +3,16 @@ import numpy as np
 import os
 import re
 from dateutil import parser
+from numpy._typing import NDArray
 from .stm import StmImage
+
 
 FLOAT_REGEX = re.compile(r"[+-]?([0-9]*[.])?[0-9]+")
 UNITS_REGEX = re.compile(r"[a-zA-Zµ]+")
 
 
 class NanosurfNid:
-    def __init__(self, filepath):
+    def __init__(self, filepath: str):
         self.basename = os.path.basename(filepath)
         self.dirname = os.path.dirname(filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
@@ -34,7 +36,7 @@ class NanosurfNid:
             self.xsize *= 1000
         self.ysize = self.xsize
 
-        scan_dir_up_down = file_meta["Scan direction"]
+        # scan_dir_up_down = file_meta["Scan direction"]
 
         self.xoffset = read_float_from_string(file_meta["X-Pos"])
         xoffset_units = read_units_from_string(file_meta["X-Pos"])
@@ -67,7 +69,7 @@ class NanosurfNid:
         self.yres = int(channel_meta_list[0]["Lines"])
 
         # `Z-Axis` for topo AFM/STM, `Tip Current` for current STM, `Amplitude` for AFM
-        scantype = channel_meta_list[0]["Dim2Name"]
+        # scantype = channel_meta_list[0]["Dim2Name"]
         datatype = (
             np.int16 if channel_meta_list[0]["SaveBits"] == "16" else np.int32
         )
@@ -110,12 +112,12 @@ class NanosurfNid:
         self.img_data_bw = StmImage(img_data_bw, self.xsize)
 
 
-def get_header(content_list):
+def get_header(content_list: list[bytes]) -> list[bytes]:
     return content_list[0].split(b"\r\n")
 
 
-def get_channels(header):
-    channels = []
+def get_channels(header: list[bytes]) -> list[bytes]:
+    channels: list[bytes] = []
     for i in header:
         if b"Ch" in i:
             channels.append(i.split(b"=")[1])
@@ -123,8 +125,8 @@ def get_channels(header):
     return channels
 
 
-def get_file_meta(content_list):
-    file_meta = {}
+def get_file_meta(content_list: list[bytes]) -> dict[str, str]:
+    file_meta: dict[str, str] = {}
     for block in content_list:
         if block.startswith(b"[DataSet-Info"):
             split = block.split(b"\r\n")
@@ -136,8 +138,10 @@ def get_file_meta(content_list):
     return file_meta
 
 
-def get_channels_meta(content_list, channels):
-    channels_meta_list = []
+def get_channels_meta(
+    content_list: list[bytes], channels: list[bytes]
+) -> list[dict[str, str]]:
+    channels_meta_list: list[dict[str, str]] = []
     k = 0
     for block in content_list:
         if k == len(channels):
@@ -145,7 +149,7 @@ def get_channels_meta(content_list, channels):
         channel = b"[" + channels[k] + b"]"
         if block.startswith(channel):
             split = block.split(b"\r\n")
-            channels_meta = {}
+            channels_meta: dict[str, str] = {}
             for s in split[1:]:
                 ident, val = s.decode().split("=")
                 channels_meta[ident] = val
@@ -155,21 +159,21 @@ def get_channels_meta(content_list, channels):
     return channels_meta_list
 
 
-def get_img_data_block(content_list):
+def get_img_data_block(content_list: list[bytes]) -> bytes:
     data_block = content_list[-1]
     # first 4 bytes are some identifier
     assert data_block[:4] == b"\r\n#!"
     return data_block[4:]
 
 
-def read_img_data(img_data_block, dtype, num_channels) -> list[np.array]:
+def read_img_data(img_data_block, dtype, num_channels) -> list[NDArray]:
     img_data = np.frombuffer(img_data_block, dtype=dtype)
     return np.array_split(img_data, num_channels)
 
 
-def read_float_from_string(text):
-    return float(FLOAT_REGEX.match(text).group(0))
+def read_float_from_string(text: str) -> float:
+    return float(FLOAT_REGEX.match(text).group(0))  # type: ignore
 
 
-def read_units_from_string(text):
-    return UNITS_REGEX.findall(text)[0]
+def read_units_from_string(text: str) -> str:
+    return UNITS_REGEX.findall(text)[0]  # type: ignore
