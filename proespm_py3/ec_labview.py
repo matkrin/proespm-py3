@@ -108,8 +108,6 @@ class CaLabview:
         plot.background_fill_alpha = 0
         plot.toolbar.active_scroll = "auto"
 
-        print(self.filepath)
-        print(self.data)
         x = self.data[:, 0]  # time
         y = self.data[:, 2]  # current
         y2 = self.data[:, 1]  # TODO voltage ? not sure

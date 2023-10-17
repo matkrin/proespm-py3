@@ -256,26 +256,21 @@ def data_processing(
     ]
 
 
-def main():
-    """ """
-    # Gui prompt for files
-    files_dir = prompt_folder()
-    c.log(f"Selected folder:\n{files_dir}")
+def main_loop_folder_mode(
+    import_files_dir: str,
+    output_dir: str,
+    use_labjournal: bool,
+    labjournal_path: str | None = None,
+):
+    c = Console()
+    labj: Optional[LabJournal] = None
 
     # Gui prompt for labjournal
-    labj: Optional[pd.DataFrame] = None
-    if config.use_labjournal:
-        labj_path = prompt_labj()
-        if labj_path is not None:
-            c.log(f"Selected Labjournal:\n{labj_path}")
-            labj = pd.read_excel(labj_path, dtype=str)
+    if use_labjournal and labjournal_path is not None:
+        labj = LabJournal(labjournal_path)
+        c.log(f"Selected Labjournal:\n{labjournal_path}")
 
-    # File import according to mode
-    if "day" in config.mode or "daily" in config.mode:
-        imported_files, day = import_files_day_mode(files_dir, c)
-    else:
-        imported_files = import_files_folder_mode(files_dir, c)
-        day = None
+    imported_files = import_files_folder_mode(import_files_dir, c)
 
     # Object instantiation from files and sorting
     data_objs = sorted(
@@ -284,17 +279,45 @@ def main():
     )
 
     # Data processing
-    data_objs = data_processing(data_objs, labj)
-
-    # Output path of the HTML report according to mode
-    if "day" in config.mode or "daily" in config.mode:
-        assert day is not None
-        output_path = os.path.join(config.path_report_out, str(day.date()))
-    else:
-        output_path = files_dir
+    data_objs = cast(list[ExportObject], data_processing(data_objs, labj))
+    if use_labjournal and labj is not None:
+        data_objs.extend(labj.read_header())
+        labj.close()
 
     # HTML report creation and saving
+    output_name = os.path.basename(import_files_dir)
+    output_path = os.path.join(output_dir, output_name)
+    create_html(data_objs, output_path, output_name)
+    c.log(
+        "[bold green]\u2713[/bold green] HTML-Report created at"
+        f" {output_path}_report"
+    )
 
+
+def main_loop_day_mode(
+    import_files_dir: str,
+    output_dir: str,
+    use_labjournal: bool,
+    labjournal_path: str | None = None,
+):
+    imported_files, day = import_files_day_mode(import_files_dir, c)
+
+    # Object instantiation from files and sorting
+    data_objs = sorted(
+        instantiate_data_objs(imported_files),
+        key=lambda x: x.datetime,
+    )
+
+    # Data processing
+    labj: LabJournal | None = None
+    if use_labjournal and labjournal_path is not None:
+        labj = LabJournal(labjournal_path)
+    data_objs = cast(list[ExportObject], data_processing(data_objs, labj))
+    if use_labjournal and labj is not None:
+        data_objs.extend(labj.read_header())
+        labj.close()
+
+    output_path = os.path.join(output_dir, str(day.date()))
     output_name = os.path.basename(output_path)
     create_html(data_objs, output_path, output_name)
     c.log(
@@ -303,33 +326,42 @@ def main():
     )
 
 
+def main():
+    """ """
+    # Gui prompt for files
+    files_dir = prompt_folder()
+    c.log(f"Selected folder:\n{files_dir}")
+
+    # Gui prompt for labjournal
+    labj_path: str | None = None
+    if config.use_labjournal:
+        labj_path = prompt_labj()
+
+    # File import according to mode
+    if "day" in config.mode or "daily" in config.mode:
+        main_loop_day_mode(
+            files_dir, config.path_report_out, config.use_labjournal, labj_path
+        )
+    else:
+        main_loop_folder_mode(
+            files_dir, files_dir, config.use_labjournal, labj_path
+        )
+
+
 @app.command()
 def cli(testing: Annotated[bool, typer.Option("--test", "-t")] = False):
     if not testing:
         main()
     else:
         files_dir = Path(__file__).parent.parent / "tests" / "test_files"
-        imported_files = import_files_folder_mode(str(files_dir), c)
-        data_objs = sorted(
-            instantiate_data_objs(imported_files),
-            key=lambda x: x.datetime,
-        )
-
         labj_path = (
             Path(__file__).parent.parent
             / "tests"
             / "test_files"
-            / "1_lab_journal.xlsx"
+            / "1_lab_journal_new.xlsx"
         )
-        c.log(f"Selected Labjournal:\n{labj_path}")
-        labj = pd.read_excel(labj_path, dtype=str)
-        data_objs = data_processing(data_objs, labj)
-        output_path = files_dir
-        output_name = os.path.basename(output_path)
-        create_html(data_objs, str(output_path), output_name)
-        c.log(
-            "[bold green]\u2713[/bold green] HTML-Report created at"
-            f" {output_path}_report"
+        main_loop_folder_mode(
+            str(files_dir), str(files_dir), True, str(labj_path)
         )
 
 

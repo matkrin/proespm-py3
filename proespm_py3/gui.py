@@ -1,17 +1,10 @@
-import os
 import tkinter as tk
 import tkinter.ttk as ttk
 import tkinter.filedialog
 import pathlib
-from typing import Optional
+import sys
 
-from rich.console import Console
-
-from .labjournal import LabJournal
-
-from .file_import import import_files_folder_mode
-from .proespm_py3 import instantiate_data_objs, data_processing
-from .html_rendering import create_html
+from .proespm_py3 import main_loop_folder_mode
 
 
 ENTRY_WIDTH = 75
@@ -98,6 +91,7 @@ class App:
 
     def quit(self):
         self.root.destroy()
+        sys.exit(0)
 
     def create_layout(self):
         opts = {"padx": 5, "pady": 5, "sticky": "w"}
@@ -144,32 +138,10 @@ class App:
         self.labj.set(labj)
 
     def run_processing(self):
-        c = Console()
-        labj: Optional[LabJournal] = None
-
-        # Gui prompt for labjournal
-        if self.checked.get():
-            labj = LabJournal(self.labj.get())
-
-        imported_files = import_files_folder_mode(self.data_dir.get(), c)
-
-        # Object instantiation from files and sorting
-        data_objs = sorted(
-            instantiate_data_objs(imported_files),
-            key=lambda x: x.datetime,
-        )
-
-        # Data processing
-        data_objs = data_processing(data_objs, labj)
-        data_objs.extend(labj.read_header())
-        if labj is not None:
-            labj.close()
-
-        # HTML report creation and saving
-        output_name = os.path.basename(self.data_dir.get())
-        output_path = os.path.join(self.output_dir.get(), output_name)
-        create_html(data_objs, output_path, output_name)
-        c.log(
-            "[bold green]\u2713[/bold green] HTML-Report created at"
-            f" {output_path}_report"
+        import_files_dir = self.data_dir.get()
+        output_dir = self.output_dir.get()
+        labjournal_path = self.labj.get()
+        use_labjournal = self.checked.get()
+        main_loop_folder_mode(
+            import_files_dir, output_dir, use_labjournal, labjournal_path
         )
