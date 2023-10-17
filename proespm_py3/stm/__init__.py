@@ -1,5 +1,7 @@
+from __future__ import annotations
 import os
 import datetime
+from typing import Union
 
 from .stm_mul import StmMul
 from .stm_flm import StmFlm
@@ -9,7 +11,7 @@ from .stm_sxm import StmSxm
 from .stm_nid import NanosurfNid
 
 
-class ErrorFile:
+class StmErrorFile:
     def __init__(self, filepath: str) -> None:
         self.filepath = filepath
         self.basename = os.path.basename(self.filepath)
@@ -18,9 +20,21 @@ class ErrorFile:
         self.datetime = datetime.datetime.utcfromtimestamp(
             os.path.getmtime(filepath)
         )
+        self.m_id = "Error File"
 
 
-def stm_factory(file):
+StmType = Union[
+    StmMul,
+    StmFlm,
+    StmSm4,
+    StmMatrix,
+    StmSxm,
+    NanosurfNid,
+    StmErrorFile,
+]
+
+
+def stm_factory(file) -> StmType | None:
     if file.endswith(".mul"):
         return StmMul(file)
     elif file.endswith(".flm"):
@@ -30,11 +44,10 @@ def stm_factory(file):
             return StmMatrix(file)
         except NoTracesError as e:
             print("An error occurred: ", e)
-            return ErrorFile(file)
+            return StmErrorFile(file)
     elif file.endswith(".SM4"):
         return StmSm4(file)
     elif file.endswith(".sxm"):
         return StmSxm(file)
     elif file.endswith(".nid"):
         return NanosurfNid(file)
-    pass
