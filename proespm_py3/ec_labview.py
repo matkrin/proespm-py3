@@ -1,19 +1,11 @@
 import os
-import re
 from typing import Optional
-from dateutil import parser
+import datetime
 
 import numpy as np
 from bokeh.plotting import figure
 from bokeh.embed import components
 from bokeh.models import LinearAxis, Range1d
-
-
-CV_LV_HEADER_LENGTH = 22
-CA_LV_HEADER_LENGTH = 23
-FFT_LV_HEADER_LENGTH = 23
-DATE_REGEX = re.compile(r"Date\s+([\d\s\/]+)")
-TIME_REGEX = re.compile(r"Time\s+([\d\s:\.]+)")
 
 
 class CvLabview:
@@ -23,22 +15,18 @@ class CvLabview:
         self.dirname = os.path.dirname(filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
         self.m_id = self.filename
+        self.datetime = datetime.datetime.utcfromtimestamp(
+            os.path.getmtime(filepath)
+        )
 
         self.type: Optional[str] = None
         self.data = self.read_cv_data(filepath)
         self.read_params()
 
     def read_cv_data(self, filepath):
-        return np.loadtxt(filepath, skiprows=CV_LV_HEADER_LENGTH)
+        return np.loadtxt(filepath, skiprows=1)
 
     def read_params(self):
-        with open(self.filepath) as f:
-            content = f.read()
-
-        date_match = DATE_REGEX.search(content)
-        time_match = TIME_REGEX.search(content)
-        self.datetime = parser.parse(f"{date_match.group(1).strip()} {time_match.group(1).strip()}")  # type: ignore
-
         self.u_start = self.data[0, 1]
 
         self.u_1 = np.max(self.data[:, 1])
@@ -81,25 +69,19 @@ class CaLabview:
         self.dirname = os.path.dirname(filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
         self.m_id = self.filename
+        self.datetime = datetime.datetime.utcfromtimestamp(
+            os.path.getmtime(filepath)
+        )
 
         self.type: Optional[str] = None
         self.data = self.read_ca_data(filepath)
         self.read_params()
 
     def read_ca_data(self, filepath):
-        converter = lambda x: float(x.replace(b",", b"."))
-        return np.loadtxt(
-            filepath, converters=converter, skiprows=CA_LV_HEADER_LENGTH  # type: ignore
-        )
+        # converter = lambda x: float(x.replace(b",", b"."))
+        return np.loadtxt( filepath, skiprows=1)  # type: ignore
 
     def read_params(self):
-        with open(self.filepath) as f:
-            content = f.read()
-
-        date_match = DATE_REGEX.search(content)
-        time_match = TIME_REGEX.search(content)
-        self.datetime = parser.parse(f"{date_match.group(1).strip()} {time_match.group(1).strip()}")  # type: ignore
-
         self.u_start = self.data[0, 1]
 
         self.u_1 = np.max(self.data[:, 1])
@@ -126,9 +108,11 @@ class CaLabview:
         plot.background_fill_alpha = 0
         plot.toolbar.active_scroll = "auto"
 
+        print(self.filepath)
+        print(self.data)
         x = self.data[:, 0]  # time
-        y = self.data[:, 5]  # current
-        y2 = self.data[:, 4]  # TODO voltage ? not sure
+        y = self.data[:, 2]  # current
+        y2 = self.data[:, 1]  # TODO voltage ? not sure
 
         voltage_min = np.min(self.data[:, 4])
         voltage_min = voltage_min - (abs(voltage_min * 0.05))
@@ -159,21 +143,15 @@ class FftLabview:
         self.dirname = os.path.dirname(filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
         self.m_id = self.filename
+        self.datetime = datetime.datetime.utcfromtimestamp(
+            os.path.getmtime(filepath)
+        )
 
         self.type: Optional[str] = None
         self.data = self.read_fft_data(filepath)
-        self.read_params()
 
     def read_fft_data(self, filepath):
-        return np.loadtxt(filepath, skiprows=CA_LV_HEADER_LENGTH)
-
-    def read_params(self):
-        with open(self.filepath) as f:
-            content = f.read()
-
-        date_match = DATE_REGEX.search(content)
-        time_match = TIME_REGEX.search(content)
-        self.datetime = parser.parse(f"{date_match.group(1).strip()} {time_match.group(1).strip()}")  # type: ignore
+        return np.loadtxt(filepath, skiprows=1)
 
     def plot(self):
         plot = figure(
