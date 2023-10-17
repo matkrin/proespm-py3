@@ -23,7 +23,7 @@ ALLOWED_FTYPES = (
     ".nid",
     ".jpg",
     ".jpeg",
-    ".lvm",
+    ".csv",
 )
 
 
