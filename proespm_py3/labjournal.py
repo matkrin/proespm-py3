@@ -5,6 +5,7 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 
+
 if TYPE_CHECKING:
     from .proespm_py3 import DataObject
 
@@ -22,7 +23,6 @@ class LabJournal:
         self.read_entries()
 
     def read_header(self) -> list[LabJournalHeader]:
-        print(self.used_sheets)
         return [
             LabJournalHeader(self.excel, used_sheet)
             for used_sheet in set(self.used_sheets)
@@ -81,7 +81,6 @@ class LabJournalHeader:
             header=None,
             sheet_name=sheet_name,
         )
-        print(df)
         if type(df) == pd.DataFrame:
             day_str = (
                 df.loc["day"]
@@ -108,7 +107,6 @@ class LabJournalHeader:
                 if type(df.loc["identifier"]) != pd.Series
                 else df.loc["identifier"][1]
             )
-            print(day_str, type(day_str))
             self.day = parse(day_str)
             self.title = title
             self.experimenters = experimenters

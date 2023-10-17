@@ -4,7 +4,9 @@ import os
 import sys
 from jinja2 import Environment, FileSystemLoader
 
+
 if TYPE_CHECKING:
+    from proespm_py3.proespm_py3 import ExportObject
     from proespm_py3.proespm_py3 import DataObject
 
 
@@ -27,7 +29,7 @@ def check_type(data_obj: DataObject, check_str: str) -> bool:
 
 
 def create_html(
-    data_objs: List[DataObject], output_path: str, output_name: str
+    data_objs: List[ExportObject], output_path: str, output_name: str
 ) -> None:
     """Creates the HTML report
 

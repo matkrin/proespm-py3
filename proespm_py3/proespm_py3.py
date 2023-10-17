@@ -1,7 +1,6 @@
-from typing import Annotated, List, Union, Optional
+from typing import Annotated, List, Union, Optional, cast
 
 from numpy.compat import Path
-import pandas as pd
 import os
 from rich.console import Console
 from rich.progress import track, Progress
@@ -20,7 +19,7 @@ from .stm import (
     StmSm4,
     StmSxm,
     NanosurfNid,
-    ErrorFile,
+    StmType,
 )
 from .image import Image
 from .xps import XpsEis, XpsScan
@@ -31,27 +30,31 @@ from .ec_labview import CaLabview, CvLabview, FftLabview
 from .file_import import import_files_day_mode, import_files_folder_mode
 from .prompts import prompt_folder, prompt_labj
 from .html_rendering import create_html
-from .labjournal import LabJournal
+from .labjournal import LabJournal, LabJournalHeader
 
 app = typer.Typer()
 
 DataObject = Union[
-    StmMul,
-    StmFlm,
-    StmMatrix,
-    StmSm4,
-    StmSxm,
-    NanosurfNid,
-    ErrorFile,
+    StmType,
     Image,
     XpsScan,
-    XpsEis,
     Aes,
     Qcmb,
     Ec4,
     CvLabview,
     CaLabview,
     FftLabview,
+]
+
+ImportObject = Union[
+    DataObject,
+    StmMul,
+    XpsEis,
+]
+
+ExportObject = Union[
+    DataObject,
+    LabJournalHeader,
 ]
 
 c = Console()  # normal logging
@@ -89,7 +92,7 @@ def check_file_for_str(file: str, string_to_check: str, line_num: int) -> bool:
     return string_to_check in line
 
 
-def datafile_factory(file: str) -> Optional[DataObject]:
+def datafile_factory(file: str) -> Optional[ImportObject]:
     """Instanciated a data object for the files
 
     For STM files the stm.stm_factory() function is used
@@ -118,7 +121,11 @@ def datafile_factory(file: str) -> Optional[DataObject]:
         return Qcmb(file)
     elif file.endswith(".txt") and check_file_for_str(file, "EC4 File", 1):
         return Ec4(file)
-    elif file.endswith(".csv") and not check_file_for_str(file, "Scan rate", 1) and not check_file_for_str(file, "Freq_Hz", 1):
+    elif (
+        file.endswith(".csv")
+        and not check_file_for_str(file, "Scan rate", 1)
+        and not check_file_for_str(file, "Freq_Hz", 1)
+    ):
         return CaLabview(file)
     elif file.endswith(".csv") and check_file_for_str(file, "Scan rate ", 1):
         return CvLabview(file)
@@ -154,7 +161,7 @@ def instantiate_data_objs(file_lst: List[str]) -> List[DataObject]:
             assert obj.data is not None
             data_objs.extend(obj.data)
         else:
-            data_objs.append(obj)
+            data_objs.append(cast(DataObject, obj))
 
     return [x for x in data_objs if x is not None]
 
@@ -176,7 +183,7 @@ def data_processing(
     last_ec4: Optional[Ec4] = None
     for obj in track(data_objs, description="> Processing"):
         if labj is not None:
-            labj.extract_entry(obj) 
+            labj.extract_entry(obj)
 
         if type(obj) == MulImage:
             pc.log(f"Processing of [bold cyan]{obj.m_id}[/bold cyan]")
