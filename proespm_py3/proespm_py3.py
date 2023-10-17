@@ -31,6 +31,7 @@ from .ec_labview import CaLabview, CvLabview, FftLabview
 from .file_import import import_files_day_mode, import_files_folder_mode
 from .prompts import prompt_folder, prompt_labj
 from .html_rendering import create_html
+from .labjournal import LabJournal
 
 app = typer.Typer()
 
@@ -117,13 +118,11 @@ def datafile_factory(file: str) -> Optional[DataObject]:
         return Qcmb(file)
     elif file.endswith(".txt") and check_file_for_str(file, "EC4 File", 1):
         return Ec4(file)
-    elif file.endswith(".txt") and check_file_for_str(file, "LabVIEW", 1):
+    elif file.endswith(".csv") and not check_file_for_str(file, "Scan rate", 1) and not check_file_for_str(file, "Freq_Hz", 1):
         return CaLabview(file)
-    elif file.endswith(".lvm") and check_file_for_str(file, "Bias RHK", 22):
+    elif file.endswith(".csv") and check_file_for_str(file, "Scan rate ", 1):
         return CvLabview(file)
-    elif file.endswith(".lvm") and check_file_for_str(
-        file, "Leistungsspektrum", 23
-    ):
+    elif file.endswith(".csv") and check_file_for_str(file, "Freq_Hz", 1):
         return FftLabview(file)
     else:
         return
@@ -161,7 +160,7 @@ def instantiate_data_objs(file_lst: List[str]) -> List[DataObject]:
 
 
 def data_processing(
-    data_objs: List[DataObject], labj: Optional[pd.DataFrame]
+    data_objs: List[DataObject], labj: Optional[LabJournal]
 ) -> List[DataObject]:
     """Loop to process DataObjects
 
@@ -177,7 +176,7 @@ def data_processing(
     last_ec4: Optional[Ec4] = None
     for obj in track(data_objs, description="> Processing"):
         if labj is not None:
-            extract_labj(labj, obj)
+            labj.extract_entry(obj) 
 
         if type(obj) == MulImage:
             pc.log(f"Processing of [bold cyan]{obj.m_id}[/bold cyan]")

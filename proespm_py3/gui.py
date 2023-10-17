@@ -5,8 +5,9 @@ import tkinter.filedialog
 import pathlib
 from typing import Optional
 
-import pandas as pd
 from rich.console import Console
+
+from .labjournal import LabJournal
 
 from .file_import import import_files_folder_mode
 from .proespm_py3 import instantiate_data_objs, data_processing
@@ -144,11 +145,11 @@ class App:
 
     def run_processing(self):
         c = Console()
-        labj: Optional[pd.DataFrame] = None
+        labj: Optional[LabJournal] = None
 
         # Gui prompt for labjournal
         if self.checked.get():
-            labj = pd.read_excel(self.labj.get(), dtype=str)
+            labj = LabJournal(self.labj.get())
 
         imported_files = import_files_folder_mode(self.data_dir.get(), c)
 
@@ -160,6 +161,9 @@ class App:
 
         # Data processing
         data_objs = data_processing(data_objs, labj)
+        data_objs.extend(labj.read_header())
+        if labj is not None:
+            labj.close()
 
         # HTML report creation and saving
         output_name = os.path.basename(self.data_dir.get())
