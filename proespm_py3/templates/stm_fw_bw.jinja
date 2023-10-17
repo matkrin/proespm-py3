@@ -79,24 +79,27 @@
   </div>
 
   <!-- LABJOURNAL DATA -->
-  {% if obj.surface or obj.tip %}
+  {% if obj.surface or obj.tip or obj.par1 or obj.par2 or obj.par3 %}
       <div class="table_column">
         <table style:"width=100%" >
-          <tr>
-            <th>Surface</th><td>{{ obj.surface }}</td>
-          </tr>
-          <tr>
-            <th>Tip</th><td>{{ obj.tip }}</td>
-          </tr>
+          <tr><th>Surface</th><td>{{ obj.surface }}</td></tr>
+          <tr><th>Tip</th><td>{{ obj.par1 }}</td></tr>
+          <tr><th>Gas Ambient</th><td>{{ obj.par2 }}</td></tr>
+          <tr><th>Electrolyte</th><td>{{ obj.par3 }}</td></tr>
+          <tr><th>Reference Electrode</th><td>{{ obj.par4 }}</td></tr>
+          <tr><th>Picostat current range</th><td>{{ obj.par5 }} µA/V</td></tr>
+          <tr><th>Observations</th><td>{{ obj.observations }} µA/V</td></tr>
+          <tr><th>Sample short</th><td>{{ obj.sample_sh }}</td></tr>
+          <tr><th>Support</th><td>{{ obj.support }}</td></tr>
         </table>
       </div>
   {% endif %}
 
   <!-- LABJOURNAL REMARK -->
-  {% if obj.remark %}
+  {% if obj.remarks %}
   <div class="remark_column">
       <b>Remark</b>
-      <p>{{ obj.remark }}</p>
+      <p>{{ obj.remarks }}</p>
   </div>
   {% endif %}
 

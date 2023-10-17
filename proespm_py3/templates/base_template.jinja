@@ -20,6 +20,20 @@
       </div>
       <div id="toc">
           {% for obj in data_objs %}
+              {% if check_type(obj, 'LabJournalHeader') %}
+              <div>
+                  <h2>{{ obj.day.date() }}</h2>
+                  <h3>{{ obj.title }}</h3>
+                  <p>Experimenters: {{ obj.experimenters }}</p>
+                  <p>Comment: {{ obj.comment }}</p>
+                  <p>Identifier: {{ obj.identifier }}</p>
+              </div>
+              {% endif %}
+            {% endfor %}
+
+
+
+          {% for obj in data_objs %}
             {% if check_type(obj, 'MulImage') and obj.m_id.endswith('_1') %}
                 <li><a href="#{{ obj.basename }}">{{ obj.basename }}</a>
                     {% if obj.nap_gas is defined %}
