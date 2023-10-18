@@ -7,6 +7,22 @@
   <div class="stm_image">
     <img id="{{ obj.m_id }}" src="{{ obj.img_data_bw.data_uri }}" class="hover-shadow" data-slide-num="{{ obj.slide_num }}" />
   </div>
+
+  <!-- ECSTM specific data -->
+  <div class="ecstm-plot">
+      {% if obj.voltage_div and obj.voltage_script %}
+        {{ obj.voltage_script }}
+        {{ obj.voltage_div }}
+      {% endif %}
+  </div>
+
+  <div class="ecstm-plot">
+      {% if obj.current_div and obj.current_script %}
+        {{ obj.current_script }}
+        {{ obj.current_div }}
+      {% endif %}
+  </div>
+
   <!-- IMAGE METADATA -->
   <div class="table_column">
     <table>
@@ -77,6 +93,7 @@
       
     </table>
   </div>
+
 
   <!-- LABJOURNAL DATA -->
   {% if obj.surface or obj.tip or obj.par1 or obj.par2 or obj.par3 %}

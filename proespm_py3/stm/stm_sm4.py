@@ -1,8 +1,14 @@
 import os
 import numpy as np
 from typing import Optional
+from numpy._typing import NDArray
 
 from sm4file import Sm4
+from bokeh.plotting import figure
+from bokeh.embed import components
+
+from proespm_py3.ec.ec import EcPlot
+
 from .stm import StmImage
 
 
@@ -51,3 +57,37 @@ class StmSm4:
         self.img_data_bw = StmImage(
             np.flip(self.img_bw.data * 1e9, axis=0), self.xsize
         )
+
+        e_cell_imgs = [ch for ch in self.sm4 if "VEC" in ch.label]
+        u_tun_imgs = [ch for ch in self.sm4 if "Utun" in ch.label]
+
+        if len(e_cell_imgs) != 0:
+            e_cell_avg = np.average(e_cell_imgs[0].data, axis=0)
+            u_tun_avg = np.average(u_tun_imgs[0].data, axis=0)
+            x = np.arange(1, len(e_cell_avg) + 1)
+            plot = EcPlot()
+            plot.set_x_axis_label("ECSTM Line")
+            plot.set_y_axis_label("U [V vs pt pseudo]")
+            plot.plot_circle(x, e_cell_avg, legend_label="E_cell")
+            plot.plot_circle(x, u_tun_avg, legend_label="U_tun")
+            plot.fig.width = 500
+            plot.fig.height = 500
+            self.voltage_script, self.voltage_div = components(
+                plot.fig, wrap_script=True
+            )
+
+        i_cell_imgs = [ch for ch in self.sm4 if "IEC" in ch.label]
+
+        if len(i_cell_imgs) != 0:
+            i_cell_avg = np.average(i_cell_imgs[0].data, axis=0)
+            x = np.arange(1, len(i_cell_avg) + 1)
+            plot = EcPlot()
+            plot.set_x_axis_label("ECSTM Line")
+            plot.set_y_axis_label("I [A]")
+            plot.plot_circle(x, i_cell_avg)
+            plot.show_legend(False)
+            plot.fig.width = 500
+            plot.fig.height = 500
+            self.current_script, self.current_div = components(
+                plot.fig, wrap_script=True
+            )

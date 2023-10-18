@@ -131,6 +131,11 @@ details > div {
   width: 40%;
   padding: 20px;
 }
+.ecstm-plot {
+    float: left;
+    width: 20%;
+    padding: 20px;
+}
 .qcmb_plot {
   float: left;
   width: 50%;
