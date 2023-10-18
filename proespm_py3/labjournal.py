@@ -1,9 +1,11 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
-from dateutil.parser import parse
+from dateutil.parser import ParserError, parse
 from datetime import datetime
 import numpy as np
 import pandas as pd
+
+from proespm_py3.ec.ec4 import Ec4
 
 
 if TYPE_CHECKING:
@@ -58,9 +60,13 @@ class LabJournal:
         return pd.concat([entries, *new_entries])
 
     def extract_entry(self, data_obj: DataObject) -> None:
+        m_id = data_obj.m_id
+        if type(data_obj) == Ec4:
+            m_id = m_id.rsplit("_", 1)[0]
+
         for sheet in self.sheet_names:
             df = self.entries[sheet]
-            matched_row = df[df["first_ID"].str.match(data_obj.m_id, na=False)]
+            matched_row = df[df["first_ID"].str.match(m_id, na=False)]
             if len(matched_row.index) == 0:
                 continue
             if type(matched_row) == pd.DataFrame:
@@ -107,7 +113,10 @@ class LabJournalHeader:
                 if type(df.loc["identifier"]) != pd.Series
                 else df.loc["identifier"][1]
             )
-            self.day = parse(day_str)
+            try:
+                self.day = parse(day_str)
+            except ParserError:
+                self.day = datetime(1970, 1, 1)
             self.title = title
             self.experimenters = experimenters
             self.comment = comment
