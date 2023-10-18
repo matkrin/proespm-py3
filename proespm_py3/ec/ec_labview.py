@@ -67,8 +67,7 @@ class CaLabview:
         self.read_params()
 
     def read_ca_data(self, filepath):
-        # converter = lambda x: float(x.replace(b",", b"."))
-        return np.loadtxt( filepath, skiprows=1)  # type: ignore
+        return np.loadtxt(filepath, skiprows=1)
 
     def read_params(self):
         self.u_start = self.data[0, 1]
