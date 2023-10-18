@@ -1,6 +1,6 @@
 from pathlib import Path
 from proespm_py3.aes import Aes
-from proespm_py3.ec4 import Ec4
+from proespm_py3.ec.ec4 import Ec4
 from proespm_py3.image import Image
 from proespm_py3.proespm_py3 import datafile_factory, instantiate_data_objs
 from proespm_py3.qcmb import Qcmb

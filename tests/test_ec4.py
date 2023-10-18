@@ -1,5 +1,5 @@
 from pathlib import Path
-from proespm_py3.ec4 import Ec4
+from proespm_py3.ec.ec4 import Ec4
 
 
 test_files = Path(__file__).parent / "test_files"
