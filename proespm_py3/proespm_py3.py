@@ -25,7 +25,8 @@ from .image import Image
 from .xps import XpsEis, XpsScan
 from .aes import Aes
 from .qcmb import Qcmb
-from .ec import Ec4, CaLabview, CvLabview, FftLabview
+from .ec.ec4 import Ec4
+from .ec.ec_labview import CaLabview, CvLabview, FftLabview
 from .file_import import import_files_day_mode, import_files_folder_mode
 from .prompts import prompt_folder, prompt_labj
 from .html_rendering import create_html

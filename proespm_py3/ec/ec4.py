@@ -7,10 +7,8 @@ from pathlib import Path
 from typing import Optional
 import numpy as np
 from numpy._typing import NDArray
-from bokeh.plotting import figure
 from bokeh.embed import components
 from bokeh.palettes import Category10_10
-from bokeh.models import LinearAxis, Range1d
 
 from .ec import EcPlot
 
@@ -68,7 +66,7 @@ class Ec4:
             x = arr[:, 1]  # volage
             y = arr[:, 2]  # current
 
-            plot.plot_circle( x, y, legend_label=f"Cycle {i + 1}")
+            plot.plot_circle(x, y, legend_label=f"Cycle {i + 1}")
 
         plot.set_legend_location("bottom_right")
         self.script, self.div = components(plot.fig, wrap_script=True)
@@ -106,14 +104,16 @@ class Ec4:
         voltage_min = voltage_min - (abs(voltage_min * 0.05))
         voltage_max = np.max([np.max(arr[:, 1]) for arr in self.data]) * 1.05
 
-        plot.add_second_axis("voltage", voltage_min, voltage_max, axis_label="U [V]")
+        plot.add_second_axis(
+            "voltage", voltage_min, voltage_max, axis_label="U [V]"
+        )
 
         for i, arr in enumerate(self.data):
             x = arr[:, 0]  # time
             y = arr[:, 2]  # current
             y2 = arr[:, 1]  # voltage
 
-            plot.plot_circle( x, y, legend_label=f"I {i + 1}" )
+            plot.plot_circle(x, y, legend_label=f"I {i + 1}")
             plot.plot_second_axis(
                 x,
                 y2,
