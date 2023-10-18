@@ -150,6 +150,7 @@ def instantiate_data_objs(file_lst: List[str]) -> List[DataObject]:
         List of data objects for each STM-Image, Spectrum, etc.
 
     """
+    file_lst.sort(key=lambda x: os.path.getmtime(x))
     data_objs: List[DataObject] = []
     for file in track(file_lst, description="> Importing Files  "):
         obj = datafile_factory(file)
