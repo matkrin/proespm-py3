@@ -43,8 +43,7 @@ def prompt_labj() -> Optional[str]:
             "No Labjournal selected. Continue without? [Y/n] "
         )
         if prompt_continue in ["Y", "y", "ye", "yes", "Ye", "Yes", ""]:
-            labj_path = None
-            return labj_path
+            return None
         else:
             return prompt_labj()
     else:

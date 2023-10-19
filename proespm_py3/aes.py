@@ -153,9 +153,9 @@ class Aes:
             active_scroll="wheel_zoom",
             active_inspect="hover",
         )
-        plot.toolbar.logo = None
+        plot.toolbar.logo = None  # type: ignore
         plot.background_fill_alpha = 0
         # plot.circle(x, y, size=2)
         plot.line(x, y)
-        plot.toolbar.active_scroll = "auto"
+        plot.toolbar.active_scroll = "auto"  # type: ignore
         self.script, self.div = components(plot, wrap_script=True)

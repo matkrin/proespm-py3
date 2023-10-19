@@ -51,3 +51,5 @@ def stm_factory(file) -> StmType | None:
         return StmSxm(file)
     elif file.endswith(".nid"):
         return NanosurfNid(file)
+    else:
+        return None

@@ -43,11 +43,11 @@ class Qcmb:
             active_scroll="wheel_zoom",
             active_inspect="hover",
         )
-        subplot_rate.toolbar.logo = None
+        subplot_rate.toolbar.logo = None  # type: ignore
         subplot_rate.background_fill_alpha = 0
         # plot.circle(x, y, size=2)
         subplot_rate.line(self.time, self.rate, line_width=2)
-        subplot_rate.toolbar.active_scroll = "auto"
+        subplot_rate.toolbar.active_scroll = "auto"  # type: ignore
 
         subplot_thick = figure(
             width=1000,
@@ -60,13 +60,13 @@ class Qcmb:
             active_scroll="wheel_zoom",
             active_inspect="hover",
         )
-        subplot_thick.toolbar.logo = None
+        subplot_thick.toolbar.logo = None  # type: ignore
         subplot_thick.background_fill_alpha = 0
         # plot.circle(x, y, size=2)
         subplot_thick.line(
             self.time, self.thickness, line_color="seagreen", line_width=2
         )
-        subplot_thick.toolbar.active_scroll = "auto"
+        subplot_thick.toolbar.active_scroll = "auto"  # type: ignore
 
         plot = row(subplot_rate, subplot_thick, sizing_mode="scale_width")  # type: ignore
 

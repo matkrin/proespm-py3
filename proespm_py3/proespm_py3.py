@@ -132,7 +132,7 @@ def datafile_factory(file: str) -> Optional[ImportObject]:
     elif file.endswith(".csv") and check_file_for_str(file, "Freq_Hz", 1):
         return FftLabview(file)
     else:
-        return
+        return None
 
 
 def instantiate_data_objs(file_lst: List[str]) -> List[DataObject]:
