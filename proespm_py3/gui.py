@@ -11,14 +11,16 @@ ENTRY_WIDTH = 75
 
 
 class App:
-    def __init__(self):
+    """Class handeling the gui"""
+
+    def __init__(self) -> None:
         self.root = tk.Tk()
 
         self.data_dir = tk.StringVar()
         self.output_dir = tk.StringVar()
         self.labj = tk.StringVar()
 
-        self.checked = tk.BooleanVar()
+        self.use_labj_checked = tk.BooleanVar()
         self.is_disabled = tk.StringVar(value="disabled")
 
         self.frame_data = ttk.LabelFrame(self.root, text="Data")
@@ -69,7 +71,7 @@ class App:
         self.check_use_labj = ttk.Checkbutton(
             master=self.frame_labj,
             text="Use Spreadsheet?",
-            variable=self.checked,
+            variable=self.use_labj_checked,
             command=self.toggle_labj,
         )
         # Run controls
@@ -114,7 +116,7 @@ class App:
         self.quit_btn.grid(column=1, row=0, padx="5", pady="5")
 
     def toggle_labj(self):
-        state = "normal" if self.checked.get() else "disabled"
+        state = "normal" if self.use_labj_checked.get() else "disabled"
         self.is_disabled.set(state)
         self.ent_labj.configure(state=state)
         self.btn_labj.configure(state=state)
@@ -141,7 +143,7 @@ class App:
         import_files_dir = self.data_dir.get()
         output_dir = self.output_dir.get()
         labjournal_path = self.labj.get()
-        use_labjournal = self.checked.get()
+        use_labjournal = self.use_labj_checked.get()
         main_loop_folder_mode(
             import_files_dir, output_dir, use_labjournal, labjournal_path
         )

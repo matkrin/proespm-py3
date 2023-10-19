@@ -269,7 +269,7 @@ def main_loop_folder_mode(
     output_dir: str,
     use_labjournal: bool,
     labjournal_path: str | None = None,
-):
+) -> None:
     c = Console()
     labj: Optional[LabJournal] = None
 
@@ -287,9 +287,9 @@ def main_loop_folder_mode(
     )
 
     # Data processing
-    data_objs = cast(list[ExportObject], data_processing(data_objs, labj))
+    export_objs = cast(list[ExportObject], data_processing(data_objs, labj))
     if use_labjournal and labj is not None:
-        data_objs.extend(labj.read_header())
+        export_objs.extend(labj.read_header())
         labj.close()
 
     # HTML report creation and saving
@@ -307,7 +307,7 @@ def main_loop_day_mode(
     output_dir: str,
     use_labjournal: bool,
     labjournal_path: str | None = None,
-):
+) -> None:
     imported_files, day = import_files_day_mode(import_files_dir, c)
 
     # Object instantiation from files and sorting
@@ -320,9 +320,9 @@ def main_loop_day_mode(
     labj: LabJournal | None = None
     if use_labjournal and labjournal_path is not None:
         labj = LabJournal(labjournal_path)
-    data_objs = cast(list[ExportObject], data_processing(data_objs, labj))
+    export_objs = cast(list[ExportObject], data_processing(data_objs, labj))
     if use_labjournal and labj is not None:
-        data_objs.extend(labj.read_header())
+        export_objs.extend(labj.read_header())
         labj.close()
 
     output_path = os.path.join(output_dir, str(day.date()))
@@ -334,8 +334,8 @@ def main_loop_day_mode(
     )
 
 
-def main():
-    """ """
+def main() -> None:
+    """Main function used in the CLI """
     # Gui prompt for files
     files_dir = prompt_folder()
     c.log(f"Selected folder:\n{files_dir}")
@@ -357,7 +357,7 @@ def main():
 
 
 @app.command()
-def cli(testing: Annotated[bool, typer.Option("--test", "-t")] = False):
+def cli(testing: Annotated[bool, typer.Option("--test", "-t")] = False) -> None:
     if not testing:
         main()
     else:

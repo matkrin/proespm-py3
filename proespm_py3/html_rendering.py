@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import List, TYPE_CHECKING
+from typing import TYPE_CHECKING, Sequence
 import os
 import sys
 from jinja2 import Environment, FileSystemLoader
@@ -29,7 +29,7 @@ def check_type(data_obj: DataObject, check_str: str) -> bool:
 
 
 def create_html(
-    data_objs: List[ExportObject], output_path: str, output_name: str
+    data_objs: Sequence[ExportObject], output_path: str, output_name: str
 ) -> None:
     """Creates the HTML report
 

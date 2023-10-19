@@ -4,12 +4,15 @@ import datetime
 
 import numpy as np
 from bokeh.embed import components
+from numpy._typing import NDArray
 
 from proespm_py3.ec.ec import EcPlot
 
 
 class CvLabview:
-    def __init__(self, filepath):
+    """Class handeling the CV files from self-written LabView software"""
+
+    def __init__(self, filepath) -> None:
         self.filepath = filepath
         self.basename = os.path.basename(filepath)
         self.dirname = os.path.dirname(filepath)
@@ -24,9 +27,11 @@ class CvLabview:
         self.read_params()
 
     def read_cv_data(self, filepath):
+        """Read the numeric data as numpy array"""
         return np.loadtxt(filepath, skiprows=1)
 
-    def read_params(self):
+    def read_params(self) -> None:
+        """Calculate relevent parameters"""
         self.u_start = self.data[0, 1]
 
         self.u_1 = np.max(self.data[:, 1])
@@ -37,7 +42,8 @@ class CvLabview:
         total_time = self.data[-1, 0]
         self.rate = 2 * (abs(self.u_1) + abs(self.u_2)) / total_time
 
-    def plot(self):
+    def plot(self) -> None:
+        """Create a plot for use in the html-report"""
         plot = EcPlot()
         plot.set_x_axis_label("U vs. ref [V] ")
         plot.set_y_axis_label("I [A]")
@@ -52,7 +58,9 @@ class CvLabview:
 
 
 class CaLabview:
-    def __init__(self, filepath):
+    """Class handeling the CA files from self-written LabView software"""
+
+    def __init__(self, filepath) -> None:
         self.filepath = filepath
         self.basename = os.path.basename(filepath)
         self.dirname = os.path.dirname(filepath)
@@ -63,13 +71,15 @@ class CaLabview:
         )
 
         self.type: Optional[str] = None
-        self.data = self.read_ca_data(filepath)
+        self.data = self.read_ca_data()
         self.read_params()
 
-    def read_ca_data(self, filepath):
-        return np.loadtxt(filepath, skiprows=1)
+    def read_ca_data(self) -> NDArray[np.float64]:
+        """Read the numeric data as numpy array"""
+        return np.loadtxt(self.filepath, skiprows=1)
 
-    def read_params(self):
+    def read_params(self) -> None:
+        """Calculate relevent parameters"""
         self.u_start = self.data[0, 1]
 
         self.u_1 = np.max(self.data[:, 1])
@@ -80,7 +90,8 @@ class CaLabview:
         total_time = self.data[-1, 0]
         self.rate = 2 * (abs(self.u_1) + abs(self.u_2)) / total_time
 
-    def plot(self):
+    def plot(self) -> None:
+        """Create a plot for use in the html-report"""
         plot = EcPlot()
         plot.set_x_axis_label("Time [s] ???")
         plot.set_y_axis_label("I [A]")
@@ -103,7 +114,9 @@ class CaLabview:
 
 
 class FftLabview:
-    def __init__(self, filepath):
+    """Class handeling the FFT files from self-written LabView software"""
+
+    def __init__(self, filepath) -> None:
         self.filepath = filepath
         self.basename = os.path.basename(filepath)
         self.dirname = os.path.dirname(filepath)
@@ -114,12 +127,14 @@ class FftLabview:
         )
 
         self.type: Optional[str] = None
-        self.data = self.read_fft_data(filepath)
+        self.data = self.read_fft_data()
 
-    def read_fft_data(self, filepath):
-        return np.loadtxt(filepath, skiprows=1)
+    def read_fft_data(self):
+        """Read the numeric data as numpy array"""
+        return np.loadtxt(self.filepath, skiprows=1)
 
-    def plot(self):
+    def plot(self) -> None:
+        """Create a plot for use in the html-report"""
         plot = EcPlot()
         plot.set_x_axis_label("Frequence [Hz]")
         plot.set_y_axis_label("Amplitude")

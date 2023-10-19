@@ -21,10 +21,11 @@ class LabJournal:
     def __init__(self, xls_file: str) -> None:
         self.excel = pd.ExcelFile(xls_file)
         self.sheet_names = self.excel.sheet_names
-        self.used_sheets = []
+        self.used_sheets: list[str] = []
         self.read_entries()
 
     def read_header(self) -> list[LabJournalHeader]:
+        """Return the labjournal headers that were in use in extraction"""
         return [
             LabJournalHeader(self.excel, used_sheet)
             for used_sheet in set(self.used_sheets)
@@ -41,6 +42,9 @@ class LabJournal:
 
     @staticmethod
     def expand_entries(entries: pd.DataFrame) -> pd.DataFrame:
+        """Expand the labjournal entries to cover all files that were just
+        mentioned via last_ID
+        """
         new_entries = []
         for first_id, last_id in zip(entries["first_ID"], entries["last_ID"]):
             if not pd.isna(last_id) and not pd.isna(first_id):
@@ -60,6 +64,11 @@ class LabJournal:
         return pd.concat([entries, *new_entries])
 
     def extract_entry(self, data_obj: DataObject) -> None:
+        """Extract labjournal entries for data_obj
+
+        Args:
+            data_obj: The DataObject for which is extracted
+        """
         m_id = data_obj.m_id
         if type(data_obj) == Ec4:
             m_id = m_id.rsplit("_", 1)[0]
@@ -71,15 +80,18 @@ class LabJournal:
                 continue
             if type(matched_row) == pd.DataFrame:
                 row_dict = matched_row.to_dict(orient="list")
-                self.used_sheets.append(sheet)
+                self.used_sheets.append(str(sheet))
                 for key, value in row_dict.items():
                     setattr(data_obj, key, value[0])
 
     def close(self):
+        """Close the excel file"""
         self.excel.close()
 
 
 class LabJournalHeader:
+    """Class for the labjournal header (first lines of a spreadsheet)"""
+
     def __init__(self, excel: pd.ExcelFile, sheet_name: str) -> None:
         df = excel.parse(
             nrows=NUM_HEADER_ROWS,
@@ -114,6 +126,7 @@ class LabJournalHeader:
                 else df.loc["identifier"][1]
             )
             try:
+                assert type(day_str) == str  # for typing
                 self.day = parse(day_str)
             except ParserError:
                 self.day = datetime(1970, 1, 1)
