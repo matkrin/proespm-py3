@@ -34,6 +34,9 @@ proespm = "proespm_py3.proespm_py3:app"
 
 [tool.poetry.group.dev.dependencies]
 pyinstaller = "^5.12.0"
+mypy = "^1.6.1"
+pandas-stubs = "^2.1.1.230928"
+types-python-dateutil = "^2.8.19.14"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
