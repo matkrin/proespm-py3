@@ -81,6 +81,7 @@ class LabJournal:
             if type(matched_row) == pd.DataFrame:
                 row_dict = matched_row.to_dict(orient="list")
                 self.used_sheets.append(str(sheet))
+                data_obj.sheet_id = str(sheet)
                 for key, value in row_dict.items():
                     setattr(data_obj, key, value[0])
 
@@ -93,6 +94,7 @@ class LabJournalHeader:
     """Class for the labjournal header (first lines of a spreadsheet)"""
 
     def __init__(self, excel: pd.ExcelFile, sheet_name: str) -> None:
+        self.sheet_id = str(sheet_name)
         df = excel.parse(
             nrows=NUM_HEADER_ROWS,
             index_col=0,
