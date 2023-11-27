@@ -139,9 +139,8 @@ class FftLabview:
         plot.set_x_axis_label("Frequence [Hz]")
         plot.set_y_axis_label("Amplitude")
 
-        data = self.data[self.data[:, 0] < 2000]
-        x = data[:, 0]  # frequency
-        y = data[:, 1]  # amplitude
+        x = self.data[:, 0]  # frequency
+        y = self.data[:, 1]  # amplitude
 
         plot.plot_line(x, y)
 
