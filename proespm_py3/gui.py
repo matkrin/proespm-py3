@@ -4,7 +4,7 @@ import tkinter.filedialog
 import pathlib
 import sys
 
-from .proespm_py3 import main_loop_folder_mode
+from .proespm_py3 import main_loop_folder_mode_data_driven
 
 
 ENTRY_WIDTH = 75
@@ -144,6 +144,6 @@ class App:
         output_dir = self.output_dir.get()
         labjournal_path = self.labj.get()
         use_labjournal = self.use_labj_checked.get()
-        main_loop_folder_mode(
+        main_loop_folder_mode_data_driven(
             import_files_dir, output_dir, use_labjournal, labjournal_path
         )

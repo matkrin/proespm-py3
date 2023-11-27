@@ -265,7 +265,7 @@ def data_processing(
     ]
 
 
-def main_loop_folder_mode(
+def main_loop_folder_mode_data_driven(
     import_files_dir: str,
     output_dir: str,
     use_labjournal: bool,
@@ -303,12 +303,55 @@ def main_loop_folder_mode(
     )
 
 
+def main_loop_folder_mode_labjournal_driven(
+    import_files_dir: str,
+    output_dir: str,
+    use_labjournal: bool,
+    labjournal_path: str | None = None,
+) -> None:
+    c = Console()
+    labj: Optional[LabJournal] = None
+
+    # Gui prompt for labjournal
+    if labjournal_path is None:
+        c.log("[bold red]Labjournal driven mode needs a labjournal[/bold red]")
+        return
+
+    labj = LabJournal(labjournal_path)
+    c.log(f"Selected Labjournal:\n{labjournal_path}")
+
+    imported_files = import_files_folder_mode(import_files_dir, c)
+
+    # Object instantiation from files and sorting
+    data_objs = sorted(
+        instantiate_data_objs(imported_files),
+        key=lambda x: x.datetime,
+    )
+
+    # Data processing
+    export_objs = cast(list[ExportObject], data_processing(data_objs, labj))
+    if use_labjournal and labj is not None:
+        export_objs.extend(labj.read_header())
+        labj.close()
+
+    # HTML report creation and saving
+    output_name = os.path.basename(import_files_dir)
+    output_path = os.path.join(output_dir, output_name)
+    create_html(export_objs, output_path, output_name)
+    c.log(
+        "[bold green]\u2713[/bold green] HTML-Report created at"
+        f" {output_path}_report"
+    )
+
+
 def main_loop_day_mode(
     import_files_dir: str,
     output_dir: str,
     use_labjournal: bool,
     labjournal_path: str | None = None,
 ) -> None:
+    """This mode is experimental and does not appear in the gui"""
+
     imported_files, day = import_files_day_mode(import_files_dir, c)
 
     # Object instantiation from files and sorting
@@ -352,7 +395,7 @@ def main() -> None:
             files_dir, config.path_report_out, config.use_labjournal, labj_path
         )
     else:
-        main_loop_folder_mode(
+        main_loop_folder_mode_data_driven(
             files_dir, files_dir, config.use_labjournal, labj_path
         )
 
@@ -369,7 +412,7 @@ def cli(testing: Annotated[bool, typer.Option("--test", "-t")] = False) -> None:
             / "test_files"
             / "1_lab_journal_new.xlsx"
         )
-        main_loop_folder_mode(
+        main_loop_folder_mode_data_driven(
             str(files_dir), str(files_dir), True, str(labj_path)
         )
 
