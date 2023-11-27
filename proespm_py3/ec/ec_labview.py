@@ -18,6 +18,7 @@ class CvLabview:
         self.dirname = os.path.dirname(filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
         self.m_id = self.filename
+        self.sheet_id: str | None = None
         self.datetime = datetime.datetime.utcfromtimestamp(
             os.path.getmtime(filepath)
         )
@@ -66,6 +67,7 @@ class CaLabview:
         self.dirname = os.path.dirname(filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
         self.m_id = self.filename
+        self.sheet_id: str | None = None
         self.datetime = datetime.datetime.utcfromtimestamp(
             os.path.getmtime(filepath)
         )
@@ -122,6 +124,7 @@ class FftLabview:
         self.dirname = os.path.dirname(filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
         self.m_id = self.filename
+        self.sheet_id: str | None = None
         self.datetime = datetime.datetime.utcfromtimestamp(
             os.path.getmtime(filepath)
         )

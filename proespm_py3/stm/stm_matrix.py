@@ -27,6 +27,7 @@ class StmMatrix:
         self.slide_num: Optional[int] = None
 
         self.m_id = self.filename
+        self.sheet_id: str | None = None
         self.png_save_dir = os.path.join(self.dirname, "matrix_png")
 
         self.datetime = datetime.datetime.utcfromtimestamp(

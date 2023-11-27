@@ -16,6 +16,7 @@ class Qcmb:
             os.path.getmtime(filepath)
         )
         self.m_id = self.filename
+        self.sheet_id: str | None = None
 
         self.read_qcmb(filepath)
 

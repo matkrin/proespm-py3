@@ -25,6 +25,7 @@ class StmSm4:
         self.slide_num: Optional[int] = None
 
         self.m_id = self.filename
+        self.sheet_id: str | None = None
         self.png_save_dir = os.path.join(self.dirname, "sm4_png")
 
         self.sm4 = Sm4(filepath)

@@ -101,6 +101,7 @@ class XpsScan:
         self.e_pass = e_pass
 
         self.m_id = f"{self.filename}_{self.scan_number}"
+        self.sheet_id: str | None = None
 
     def plot(self):
         """ """

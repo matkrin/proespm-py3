@@ -20,6 +20,7 @@ class StmFlm(StmMul):
         super().__init__(filepath)
 
         self.m_id = self.filename
+        self.sheet_id: str | None = None
         self.mp4_save_dir = os.path.join(self.dirname, "movies")
         self.mp4_name = os.path.join(self.mp4_save_dir, f"{self.filename}.mp4")
         self.datetime = datetime.datetime.utcfromtimestamp(

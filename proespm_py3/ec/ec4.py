@@ -27,6 +27,7 @@ class Ec4:
         self.dirname = os.path.dirname(filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
         self.m_id = self.filename
+        self.sheet_id: str | None = None
 
         self.read_params()
         self.type: Optional[str] = None

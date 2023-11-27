@@ -22,6 +22,7 @@ class StmMul(Mul):
         self.dirname = os.path.dirname(self.filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
         self.m_id = os.path.splitext(self.filename)[0]
+        self.sheet_id: str | None = None
         self.datetime = datetime.datetime.utcfromtimestamp(
             os.path.getmtime(filepath)
         )

@@ -22,6 +22,7 @@ class Aes:
         self.dirname = os.path.dirname(self.filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
         self.m_id = self.filename
+        self.sheet_id: str | None = None
 
         if self.fileext == ".vms":
             self.read_staib_vamas(filepath)

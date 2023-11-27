@@ -21,6 +21,7 @@ class StmErrorFile:
             os.path.getmtime(filepath)
         )
         self.m_id = "Error File"
+        self.sheet_id: str | None = None
 
 
 StmType = Union[
