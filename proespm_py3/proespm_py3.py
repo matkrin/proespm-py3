@@ -183,7 +183,6 @@ def data_processing(
     slide_num = 1  # for js modal image slide show in html
     last_ec4: Optional[Ec4] = None
     for obj in track(data_objs, description="> Processing"):
-
         if labj is not None:
             labj.extract_entry(obj)
 
@@ -296,7 +295,13 @@ def main_loop_folder_mode_data_driven(
     # HTML report creation and saving
     output_name = os.path.basename(import_files_dir)
     output_path = os.path.join(output_dir, output_name)
-    create_html(export_objs, output_path, output_name)
+    create_html(
+        data_objs=export_objs,
+        output_path=output_path,
+        output_name=output_name,
+        is_labjournal_driven=False,
+        labj_sheets=None,
+    )
     c.log(
         "[bold green]\u2713[/bold green] HTML-Report created at"
         f" {output_path}_report"
@@ -335,9 +340,15 @@ def main_loop_folder_mode_labjournal_driven(
         labj.close()
 
     # HTML report creation and saving
-    output_name = os.path.basename(import_files_dir)
+    output_name = os.path.splitext(os.path.basename(labjournal_path))[0]
     output_path = os.path.join(output_dir, output_name)
-    create_html(export_objs, output_path, output_name)
+    create_html(
+        data_objs=export_objs,
+        output_path=output_path,
+        output_name=output_name,
+        is_labjournal_driven=True,
+        labj_sheets=list(set(labj.used_sheets)),
+    )
     c.log(
         "[bold green]\u2713[/bold green] HTML-Report created at"
         f" {output_path}_report"
@@ -371,7 +382,13 @@ def main_loop_day_mode(
 
     output_path = os.path.join(output_dir, str(day.date()))
     output_name = os.path.basename(output_path)
-    create_html(export_objs, output_path, output_name)
+    create_html(
+        data_objs=export_objs,
+        output_path=output_path,
+        output_name=output_name,
+        is_labjournal_driven=False,
+        labj_sheets=None,
+    )
     c.log(
         "[bold green]\u2713[/bold green] HTML-Report created at"
         f" {output_path}_report"
@@ -379,7 +396,7 @@ def main_loop_day_mode(
 
 
 def main() -> None:
-    """Main function used in the CLI """
+    """Main function used in the CLI"""
     # Gui prompt for files
     files_dir = prompt_folder()
     c.log(f"Selected folder:\n{files_dir}")
@@ -401,7 +418,9 @@ def main() -> None:
 
 
 @app.command()
-def cli(testing: Annotated[bool, typer.Option("--test", "-t")] = False) -> None:
+def cli(
+    testing: Annotated[bool, typer.Option("--test", "-t")] = False
+) -> None:
     if not testing:
         main()
     else:
@@ -412,7 +431,7 @@ def cli(testing: Annotated[bool, typer.Option("--test", "-t")] = False) -> None:
             / "test_files"
             / "1_lab_journal_new.xlsx"
         )
-        main_loop_folder_mode_data_driven(
+        main_loop_folder_mode_labjournal_driven(
             str(files_dir), str(files_dir), True, str(labj_path)
         )
 
