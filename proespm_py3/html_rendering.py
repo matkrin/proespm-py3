@@ -29,7 +29,11 @@ def check_type(data_obj: DataObject, check_str: str) -> bool:
 
 
 def create_html(
-    data_objs: Sequence[ExportObject], output_path: str, output_name: str
+    data_objs: Sequence[ExportObject],
+    output_path: str,
+    output_name: str,
+    is_labjournal_driven: bool,
+    labj_sheets: list[str] | None,
 ) -> None:
     """Creates the HTML report
 
@@ -55,6 +59,8 @@ def create_html(
         data_objs=data_objs,
         title=output_name,
         files_dir=output_path,
+        is_labjournal_driven=is_labjournal_driven,
+        labj_sheets=labj_sheets,
     )
 
     with open(f"{output_path}_report.html", "w", encoding="utf-8") as f:
