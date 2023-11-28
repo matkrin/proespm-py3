@@ -1,3 +1,80 @@
+
+{% macro labjournal_header(data_objs) -%}
+    {% for obj in data_objs %}
+        {% if check_type(obj, 'LabJournalHeader') %}
+            <div>
+                <h2>{{ obj.day.date() }}</h2>
+                <h3>{{ obj.title }}</h3>
+                <p>Experimenters: {{ obj.experimenters }}</p>
+                <p>Comment: {{ obj.comment }}</p>
+                <p>Identifier: {{ obj.identifier }}</p>
+            </div>
+        {% endif %}
+    {% endfor %}
+{%- endmacro %}
+
+
+{% macro list_overview(data_objs) -%}
+    {% for obj in data_objs %}
+        {% if check_type(obj, 'MulImage') and obj.m_id.endswith('_1') %}
+            <li><a href="#{{ obj.basename }}">{{ obj.basename }}</a>
+                {% if obj.nap_gas is defined %}
+                    <strong>NAP-Gas: </strong> {{ obj.nap_gas }}, 
+                    <strong>p<sub>NAP</sub></strong> = {{ obj.nap_p }} mbar, 
+                    <strong>T</strong> = {{ obj.T }}
+                {% endif %}
+                    <!-- (<strong>Sputtering:</strong> E = {{ obj.sp_E }} keV, p(Ar) = {{ obj.sp_p }} mbar, t = {{ obj.sp_t }} min; -->
+                    <!-- <strong>Annealing:</strong> T = {{ obj.an_T }} K, p(O<sub>2</sub>) = {{ obj.an_p }} mbar, t = {{ obj.an_t}} min) -->
+            </li>
+        {% elif  check_type(obj, 'XpsScan') and obj.m_id.endswith('_1') %}
+            <li><a href="#{{ obj.basename }}">{{ obj.basename }}</a> </li>
+        {% elif check_type(obj, 'Aes') %}
+            <li><a href="#{{ obj.m_id }}">{{ obj.basename }}</a></li>
+        {% elif check_type(obj, 'Image') %}
+            <li><a href="#{{ obj.m_id }}">{{ obj.basename }}</a></li>
+        {% elif check_type(obj, 'StmFlm') %}
+            <li><a href="{{ obj.mp4_name }}">{{ obj.basename }}</a></li>
+        {% elif check_type(obj, 'ErrorFile') %}
+            <div id="error-file">'{{ obj.basename }}' could not be processed!</div>
+        {% endif %}
+    {% endfor %}
+{%- endmacro %}
+
+
+{% macro image_overview() -%}
+        <details open>
+            <summary>Overview</summary>
+            <div id="overview"></div>
+        </details>
+{%- endmacro %}
+
+
+{% macro data_obj_entry(obj) -%}
+    {% if check_type(obj, 'MulImage') %}
+        {% include 'stm_mul.jinja' %}
+
+    {% elif check_type(obj, 'StmMatrix') or check_type(obj, 'StmSm4') or check_type(obj, 'StmSxm') or check_type(obj, 'NanosurfNid') %}
+        {% include 'stm_fw_bw.jinja' %}
+
+    {% elif check_type(obj, 'Image') %}
+        {% include 'image.jinja' %}
+
+    {% elif check_type(obj, 'XpsScan') %}
+        {% include 'xps_scan.jinja' %}
+
+    {% elif check_type(obj, 'Aes') %}
+        {% include 'aes.jinja' %}
+
+    {% elif check_type(obj, 'Qcmb')  %}
+        {% include 'qcmb.jinja' %}
+
+    {% elif check_type(obj, 'Ec4') or check_type(obj, 'CvLabview') or check_type(obj, 'CaLabview') or check_type(obj, 'FftLabview') %}
+        {% include 'ec4.jinja' %}
+
+    {% endif %}
+{%- endmacro %}
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,81 +95,44 @@
               <li id="dark-mode-button" class="navbar_li">&#127763;</li>
           </ul>
       </div>
-      <div id="toc">
-          {% for obj in data_objs %}
-              {% if check_type(obj, 'LabJournalHeader') %}
-              <div>
-                  <h2>{{ obj.day.date() }}</h2>
-                  <h3>{{ obj.title }}</h3>
-                  <p>Experimenters: {{ obj.experimenters }}</p>
-                  <p>Comment: {{ obj.comment }}</p>
-                  <p>Identifier: {{ obj.identifier }}</p>
-              </div>
-              {% endif %}
+
+
+        {% if is_labjournal_driven %}
+            <div id="toc">
+                {{ list_overview(data_objs) }}
+            </div>
+
+            {{ image_overview() }}
+
+            {% for sheet in labj_sheets %}
+                <details open>
+                    <summary>{{ sheet }}</summary>
+                    {{ labjournal_header(data_objs) }}
+                    {% for obj in data_objs %}
+                        {% if obj.sheet_id == sheet %}
+                            {{ data_obj_entry(obj) }}
+                        {% endif %}
+
+                    {% endfor %}
+                </details>
             {% endfor %}
 
+        {% else %}
+
+            {{ labjournal_header(data_objs) }}
+
+            <div id="toc">
+                {{ list_overview(data_objs) }}
+            </div>
+            {{ image_overview() }}
+
+            {% for obj in data_objs %}
+                {{ data_obj_entry(obj) }}
+            {% endfor %}
+
+        {% endif %}
 
 
-          {% for obj in data_objs %}
-            {% if check_type(obj, 'MulImage') and obj.m_id.endswith('_1') %}
-                <li><a href="#{{ obj.basename }}">{{ obj.basename }}</a>
-                    {% if obj.nap_gas is defined %}
-                        <strong>NAP-Gas: </strong> {{ obj.nap_gas }}, 
-                        <strong>p<sub>NAP</sub></strong> = {{ obj.nap_p }} mbar, 
-                        <strong>T</strong> = {{ obj.T }}
-                    {% endif %}
-                    <!-- (<strong>Sputtering:</strong> E = {{ obj.sp_E }} keV, p(Ar) = {{ obj.sp_p }} mbar, t = {{ obj.sp_t }} min; -->
-                    <!-- <strong>Annealing:</strong> T = {{ obj.an_T }} K, p(O<sub>2</sub>) = {{ obj.an_p }} mbar, t = {{ obj.an_t}} min) -->
-                </li>
-
-            {% elif  check_type(obj, 'XpsScan') and obj.m_id.endswith('_1') %}
-                <li><a href="#{{ obj.basename }}">{{ obj.basename }}</a>
-                </li>
-
-            {% elif check_type(obj, 'Aes') %}
-                <li><a href="#{{ obj.m_id }}">{{ obj.basename }}</a></li>
-
-            {% elif check_type(obj, 'Image') %}
-                <li><a href="#{{ obj.m_id }}">{{ obj.basename }}</a></li>
-
-            {% elif check_type(obj, 'StmFlm') %}
-                <li><a href="{{ obj.mp4_name }}">{{ obj.basename }}</a></li>
-
-            {% elif check_type(obj, 'ErrorFile') %}
-                <div id="error-file">'{{ obj.basename }}' could not be processed!</div>
-
-            {% endif %}
-          {% endfor %}
-      </div>
-        <details open>
-            <summary>Overview</summary>
-            <div id="overview"></div>
-        </details>
-
-        {% for obj in data_objs %}
-            {% if check_type(obj, 'MulImage') %}
-                {% include 'stm_mul.jinja' %}
-
-            {% elif check_type(obj, 'StmMatrix') or check_type(obj, 'StmSm4') or check_type(obj, 'StmSxm') or check_type(obj, 'NanosurfNid') %}
-                {% include 'stm_fw_bw.jinja' %}
-
-            {% elif check_type(obj, 'Image') %}
-                {% include 'image.jinja' %}
-
-            {% elif check_type(obj, 'XpsScan') %}
-                {% include 'xps_scan.jinja' %}
-
-            {% elif check_type(obj, 'Aes') %}
-                {% include 'aes.jinja' %}
-
-            {% elif check_type(obj, 'Qcmb')  %}
-                {% include 'qcmb.jinja' %}
-
-            {% elif check_type(obj, 'Ec4') or check_type(obj, 'CvLabview') or check_type(obj, 'CaLabview') or check_type(obj, 'FftLabview') %}
-                {% include 'ec4.jinja' %}
-
-            {% endif %}
-        {% endfor %}
 
         <!-- The Modal -->
         <div id="modal">
