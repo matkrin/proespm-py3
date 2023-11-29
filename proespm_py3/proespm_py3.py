@@ -301,6 +301,7 @@ def main_loop_folder_mode_data_driven(
         output_name=output_name,
         is_labjournal_driven=False,
         labj_sheets=None,
+        missing_files=None,
     )
     c.log(
         "[bold green]\u2713[/bold green] HTML-Report created at"
@@ -338,6 +339,8 @@ def main_loop_folder_mode_labjournal_driven(
     if use_labjournal and labj is not None:
         export_objs.extend(labj.read_header())
         labj.close()
+    
+    missing_files = labj.detect_missing_files(data_objs)
 
     # HTML report creation and saving
     output_name = os.path.splitext(os.path.basename(labjournal_path))[0]
@@ -348,6 +351,7 @@ def main_loop_folder_mode_labjournal_driven(
         output_name=output_name,
         is_labjournal_driven=True,
         labj_sheets=list(set(labj.used_sheets)),
+        missing_files=missing_files,
     )
     c.log(
         "[bold green]\u2713[/bold green] HTML-Report created at"
@@ -388,6 +392,7 @@ def main_loop_day_mode(
         output_name=output_name,
         is_labjournal_driven=False,
         labj_sheets=None,
+        missing_files=None,
     )
     c.log(
         "[bold green]\u2713[/bold green] HTML-Report created at"
@@ -431,7 +436,7 @@ def cli(
             / "test_files"
             / "1_lab_journal_new.xlsx"
         )
-        main_loop_folder_mode_data_driven(
+        main_loop_folder_mode_labjournal_driven(
             str(files_dir), str(files_dir), True, str(labj_path)
         )
 

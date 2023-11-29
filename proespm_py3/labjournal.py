@@ -89,6 +89,16 @@ class LabJournal:
         """Close the excel file"""
         self.excel.close()
 
+    def detect_missing_files(self, data_objs: list[DataObject]) -> list[str]:
+        """Detects files for which entries exist but that are missing"""
+        missing_files: list[str] = []
+        for sheet in set(self.used_sheets):
+            for entry_id in self.entries[sheet]["first_ID"]:
+                if entry_id not in [obj.m_id for obj in data_objs]:
+                    missing_files.append(entry_id)
+
+        return missing_files
+
 
 class LabJournalHeader:
     """Class for the labjournal header (first lines of a spreadsheet)"""

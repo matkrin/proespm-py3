@@ -34,6 +34,7 @@ def create_html(
     output_name: str,
     is_labjournal_driven: bool,
     labj_sheets: list[str] | None,
+    missing_files: list[str] | None,
 ) -> None:
     """Creates the HTML report
 
@@ -61,6 +62,7 @@ def create_html(
         files_dir=output_path,
         is_labjournal_driven=is_labjournal_driven,
         labj_sheets=labj_sheets,
+        missing_files=missing_files,
     )
 
     with open(f"{output_path}_report.html", "w", encoding="utf-8") as f:
