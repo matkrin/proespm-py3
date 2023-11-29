@@ -72,6 +72,10 @@ tr:nth-child(even) {
   padding: 20px;
 }
 
+.missing-files > ul {
+    color: red;
+}
+
 /* OVERVIEW */
 details {
     margin-bottom: 15px;

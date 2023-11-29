@@ -90,6 +90,17 @@
 
         {% if is_labjournal_driven %}
 
+            {% if missing_files is not none %}
+                <div class="missing-files">
+                    <p>No file found for labjournal entry:</p>
+                        <ul>
+                            {% for missing_file in missing_files %}
+                                <li>{{ missing_file }}</li>
+                            {% endfor %}
+                        </ul>
+                </div>
+            {% endif %}
+
             {{ image_overview() }}
 
             {% for sheet in labj_sheets %}
