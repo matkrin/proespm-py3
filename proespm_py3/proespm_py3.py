@@ -431,7 +431,7 @@ def cli(
             / "test_files"
             / "1_lab_journal_new.xlsx"
         )
-        main_loop_folder_mode_labjournal_driven(
+        main_loop_folder_mode_data_driven(
             str(files_dir), str(files_dir), True, str(labj_path)
         )
 

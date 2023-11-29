@@ -83,7 +83,7 @@ class LabJournal:
                 self.used_sheets.append(str(sheet))
                 data_obj.sheet_id = str(sheet)
                 for key, value in row_dict.items():
-                    setattr(data_obj, key, value[0])
+                    setattr(data_obj, key, value[0])  # type: ignore
 
     def close(self):
         """Close the excel file"""
