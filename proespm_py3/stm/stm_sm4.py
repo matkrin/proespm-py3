@@ -23,6 +23,7 @@ class StmSm4:
         self.dirname = os.path.dirname(self.filepath)
         self.filename, self.fileext = os.path.splitext(self.basename)
         self.slide_num: Optional[int] = None
+        self.par5: Optional[str] = None
 
         self.m_id = self.filename
         self.sheet_id: str | None = None
@@ -56,8 +57,12 @@ class StmSm4:
             np.flip(self.img_bw.data * 1e9, axis=0), self.xsize
         )
 
-        e_cell_imgs = [ch for ch in self.sm4 if "VEC" in ch.label]
-        u_tun_imgs = [ch for ch in self.sm4 if "Utun" in ch.label]
+        e_cell_imgs = [
+            ch for ch in self.sm4 if "VEC" in ch.label or "E_WE" in ch.label
+        ]
+        u_tun_imgs = [
+            ch for ch in self.sm4 if "U_Tun" in ch.label or "Utun" in ch.label
+        ]
 
         if len(e_cell_imgs) != 0:
             e_cell_avg = np.average(e_cell_imgs[0].data, axis=0)
@@ -74,10 +79,14 @@ class StmSm4:
                 plot.fig, wrap_script=True
             )
 
-        i_cell_imgs = [ch for ch in self.sm4 if "IEC" in ch.label]
+        i_cell_imgs = [
+            ch for ch in self.sm4 if "I_WE" in ch.label or "IEC" in ch.label
+        ]
 
         if len(i_cell_imgs) != 0:
-            i_cell_avg = np.average(i_cell_imgs[0].data, axis=0)
+            i_cell_avg = np.average(i_cell_imgs[0].data, axis=1)
+            if self.par5 is not None:
+                i_cell_avg = i_cell_avg * float(self.par5)
             x = np.arange(1, len(i_cell_avg) + 1)
             plot = EcPlot()
             plot.set_x_axis_label("Pixels average lines")
