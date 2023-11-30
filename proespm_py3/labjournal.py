@@ -94,7 +94,7 @@ class LabJournal:
         missing_files: list[str] = []
         for sheet in set(self.used_sheets):
             for entry_id in self.entries[sheet]["first_ID"]:
-                if entry_id not in [obj.m_id for obj in data_objs]:
+                if entry_id not in [obj.m_id for obj in data_objs] and entry_id is not np.nan:
                     missing_files.append(entry_id)
 
         return missing_files
