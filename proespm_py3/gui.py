@@ -3,11 +3,17 @@ import tkinter.ttk as ttk
 import tkinter.filedialog
 import pathlib
 import sys
+from enum import Enum, auto
 
-from .proespm_py3 import main_loop_folder_mode_data_driven
+from .proespm_py3 import main_loop_folder_mode_data_driven, main_loop_folder_mode_labjournal_driven
 
 
 ENTRY_WIDTH = 75
+
+
+class LabjournalRunMode(Enum):
+    DATA_DRIVEN = auto()
+    LABJOURNAL_DRIVEN = auto()
 
 
 class App:
@@ -74,6 +80,26 @@ class App:
             variable=self.use_labj_checked,
             command=self.toggle_labj,
         )
+
+        self.labj_runmode = tk.Variable(
+            self.root, value=LabjournalRunMode.DATA_DRIVEN
+        )
+        self.radio_data_driven = ttk.Radiobutton(
+            master=self.frame_labj,
+            text="Data-driven",
+            variable=self.labj_runmode,
+            state=self.is_disabled.get(),
+            value=LabjournalRunMode.DATA_DRIVEN,
+        )
+
+        self.radio_labj_driven = ttk.Radiobutton(
+            master=self.frame_labj,
+            text="Labjournal-driven",
+            variable=self.labj_runmode,
+            state=self.is_disabled.get(),
+            value=LabjournalRunMode.LABJOURNAL_DRIVEN,
+        )
+
         # Run controls
         self.run_frame = ttk.Frame(self.root)
         self.run_btn = ttk.Button(
@@ -106,10 +132,12 @@ class App:
         self.btn_output.grid(column=2, row=1, **opts)
 
         self.frame_labj.grid(column=0, row=1, **opts)
-        self.lbl_labj.grid(column=0, row=1, **opts)
-        self.ent_labj.grid(column=1, row=1, **opts)
-        self.btn_labj.grid(column=2, row=1, **opts)
         self.check_use_labj.grid(column=0, row=0, columnspan=2, **opts)
+        self.radio_data_driven.grid(column=0, row=1, **opts)
+        self.radio_labj_driven.grid(column=1, row=1, **opts)
+        self.lbl_labj.grid(column=0, row=2, **opts)
+        self.ent_labj.grid(column=1, row=2, **opts)
+        self.btn_labj.grid(column=2, row=2, **opts)
 
         self.run_frame.grid(column=0, row=2)
         self.run_btn.grid(column=0, row=0, padx="5", pady="5")
@@ -121,6 +149,8 @@ class App:
         self.ent_labj.configure(state=state)
         self.btn_labj.configure(state=state)
         self.lbl_labj.configure(state=state)
+        self.radio_data_driven.configure(state=state)
+        self.radio_labj_driven.configure(state=state)
 
     def prompt_data_dir(self):
         dir = tkinter.filedialog.askdirectory()
@@ -144,6 +174,19 @@ class App:
         output_dir = self.output_dir.get()
         labjournal_path = self.labj.get()
         use_labjournal = self.use_labj_checked.get()
-        main_loop_folder_mode_data_driven(
-            import_files_dir, output_dir, use_labjournal, labjournal_path
-        )
+
+        labj_runmode = self.labj_runmode.get()
+        print(labj_runmode, type(labj_runmode))
+        match labj_runmode:
+            case "LabjournalRunMode.DATA_DRIVEN":
+                print("data driven")
+                main_loop_folder_mode_data_driven(
+                    import_files_dir, output_dir, use_labjournal, labjournal_path
+                )
+            case "LabjournalRunMode.LABJOURNAL_DRIVEN":
+                print("labj driven")
+                main_loop_folder_mode_labjournal_driven(
+                    import_files_dir, output_dir, use_labjournal, labjournal_path
+                )
+            case _:
+                print("WHY")
