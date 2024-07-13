@@ -5,7 +5,19 @@ description = "Add your description here"
 authors = [
     { name = "matkrin", email = "matkrin@protonmail.com" }
 ]
-dependencies = []
+dependencies = [
+    "access2thematrix>=0.4.4",
+    "mulfile @ git+https://github.com/matkrin/mulfile@v0.4.0",
+    "numpy>=2.0.0",
+    "vamas>=0.1.1",
+    "sm4file @ git+https://github.com/matkrin/sm4file@v0.1.0",
+    "rich>=13.7.1",
+    "jinja2>=3.1.4",
+    "matplotlib>=3.9.1",
+    "matplotlib-scalebar>=0.8.1",
+    "bokeh>=3.5.0",
+    "pyqt6>=6.7.0",
+]
 readme = "README.md"
 requires-python = ">= 3.12"
 
@@ -15,10 +27,16 @@ build-backend = "hatchling.build"
 
 [tool.rye]
 managed = true
-dev-dependencies = []
+dev-dependencies = [
+    "pytest>=8.2.2",
+    "mypy>=1.10.1",
+]
 
 [tool.hatch.metadata]
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/prosurf"]
+
+[tool.ruff]
+line-length = 80
