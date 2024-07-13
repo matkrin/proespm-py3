@@ -1,0 +1,156 @@
+from PyQt6.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QWidget,
+    QVBoxLayout,
+    QGridLayout,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QFileDialog,
+    QTextEdit,
+    QHBoxLayout,
+)
+from PyQt6.QtCore import Qt
+from PyQt6.QtCore import pyqtSlot  # type: ignore[reportUnknownVariableType]
+
+
+class MainGui(QMainWindow):
+    """Main GUI app"""
+
+    def __init__(self) -> None:
+        super().__init__()
+
+        self.setWindowTitle("prosurf")
+        self.setGeometry(100, 100, 800, 300)
+
+        self.central_widget = QWidget()
+        self.setCentralWidget(self.central_widget)
+        self.central_layout = QVBoxLayout()
+        self.central_widget.setLayout(self.central_layout)
+
+        # Create the grid layout
+        grid_layout = QGridLayout()
+
+        # Create label, text input, and button for the first row
+        process_dir_label = QLabel("Choose folder: ")
+        self.process_dir_input = QLineEdit()
+        self.process_dir_button = QPushButton("Browse")
+
+        # Add widgets to the grid layout
+        grid_layout.addWidget(
+            process_dir_label, 0, 0, Qt.AlignmentFlag.AlignLeft
+        )
+        grid_layout.addWidget(self.process_dir_input, 0, 1)
+        grid_layout.addWidget(self.process_dir_button, 0, 2)
+
+        # Create label, text input, and button for the second row
+        output_label = QLabel("Output: ")
+        self.output_input = QLineEdit()
+        self.output_button = QPushButton("Save As")
+
+        # Add widgets to the grid layout
+        grid_layout.addWidget(output_label, 1, 0, Qt.AlignmentFlag.AlignLeft)
+        grid_layout.addWidget(self.output_input, 1, 1)
+        grid_layout.addWidget(self.output_button, 1, 2)
+
+        # Set the column stretch to make the text inputs equal in size
+        grid_layout.setColumnStretch(1, 1)
+
+        # Add the grid layout to the main layout
+        self.central_layout.addLayout(grid_layout)
+
+        # Create the log area
+        self.log_area = QTextEdit()
+        self.log_area.setReadOnly(True)
+        self.central_layout.addWidget(self.log_area)
+
+        # Horizontal layout for the save log button
+        log_button_layout = QHBoxLayout()
+        self.save_log_button = QPushButton("Save Log")
+        log_button_layout.addStretch()  # Pushes button to the right
+        log_button_layout.addWidget(self.save_log_button)
+        self.central_layout.addLayout(log_button_layout)
+
+        # Horizontal layout for the start and exit buttons
+        start_exit_button_layout = QHBoxLayout()
+        self.start_button = QPushButton("Start")
+        self.exit_button = QPushButton("Exit")
+        start_exit_button_layout.addStretch()
+        start_exit_button_layout.addWidget(self.start_button)
+        start_exit_button_layout.addWidget(self.exit_button)
+        start_exit_button_layout.addStretch()
+        self.central_layout.addLayout(start_exit_button_layout)
+
+        # Connect button clicks to their respective functions
+        _ = self.process_dir_button.clicked.connect(self.choose_directory)  # type: ignore[reportUnknownMemberType] `pyqtSlot` seems to be not typed
+        _ = self.output_button.clicked.connect(self.save_file)  # type: ignore[reportUnknownMemberType]
+        _ = self.save_log_button.clicked.connect(self.save_log)  # type: ignore[reportUnknownMemberType]
+        _ = self.exit_button.clicked.connect(self.exit_app)  # type: ignore[reportUnknownMemberType]
+        _ = self.start_button.clicked.connect(self.start_app)  # type: ignore[reportUnknownMemberType]
+
+    @pyqtSlot()
+    def choose_directory(self) -> None:
+        """Handler for `process_dir_button`"""
+        # Open a file dialog to choose a directory
+        dirname = QFileDialog.getExistingDirectory(
+            self,
+            caption="Choose folder to process",
+            directory="",
+            options=QFileDialog.Option.ShowDirsOnly,
+        )
+
+        # If a directory is chosen, display the path in the text input field
+        if dirname:
+            self.process_dir_input.setText(dirname)
+            self.log(f"Directory chosen: {dirname}")
+        else:
+            self.log("No directory chosen.")
+
+    @pyqtSlot()
+    def save_file(self) -> None:
+        """Handler for `output_button`"""
+        # Open a file dialog to save a file
+        file_path, _ = QFileDialog.getSaveFileName(
+            self,
+            caption="Save HTML report as...",
+            directory="",
+            filter="All Files (*)",
+        )
+
+        # If a file is chosen, display the path in the text input field
+        if file_path:
+            self.output_input.setText(file_path)
+            self.log(f"File saved as: {file_path}")
+        else:
+            self.log("No file chosen.")
+
+    @pyqtSlot()
+    def save_log(self) -> None:
+        """Handler for `save_log_button`"""
+        # Open a file dialog to save the log
+        file_path, _ = QFileDialog.getSaveFileName(
+            self,
+            caption="Save Log",
+            directory="",
+            filter="Text Files (*.txt);;All Files (*)",
+        )
+
+        # If a file path is chosen, save the log content to the file
+        if file_path:
+            with open(file_path, "w") as file:
+                _ = file.write(self.log_area.toPlainText())
+            self.log(f"Log saved to: {file_path}")
+
+    @pyqtSlot()
+    def start_app(self) -> None:
+        self.log("Start button clicked.")
+
+    @pyqtSlot()
+    def exit_app(self) -> None:
+        """Handler for `exit_button`. Exits the app."""
+        QApplication.quit()
+
+    def log(self, message: str) -> None:
+        """Append `message` to the `log_area`"""
+        self.log_area.append(message)
