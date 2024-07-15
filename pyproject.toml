@@ -40,3 +40,6 @@ packages = ["src/prosurf"]
 
 [tool.ruff]
 line-length = 80
+
+[tool.basedpyright]
+typeCheckingMode = "all"

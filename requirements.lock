@@ -78,7 +78,7 @@ rich==13.7.1
 six==1.16.0
     # via access2thematrix
     # via python-dateutil
-sm4file @ git+https://github.com/matkrin/sm4file@036089fa806612c4ccf5310b678eb1e3d8a96e20
+sm4file @ git+https://github.com/matkrin/sm4file@a9e59a262859ba0fbed328bea4cd26dc3c562bb7
     # via prosurf
 tornado==6.4.1
     # via bokeh

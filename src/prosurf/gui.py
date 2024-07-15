@@ -1,22 +1,25 @@
+from PyQt6.QtCore import (
+    Qt,
+    pyqtSlot,  # type: ignore[reportUnknownVariableType]
+)
+from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
     QApplication,
-    QMainWindow,
-    QWidget,
-    QVBoxLayout,
+    QFileDialog,
     QGridLayout,
+    QHBoxLayout,
     QLabel,
     QLineEdit,
+    QMainWindow,
     QPushButton,
-    QFileDialog,
     QTextEdit,
-    QHBoxLayout,
+    QVBoxLayout,
+    QWidget,
 )
-from PyQt6.QtCore import Qt
-from PyQt6.QtCore import pyqtSlot  # type: ignore[reportUnknownVariableType]
 
 
 class MainGui(QMainWindow):
-    """Main GUI app"""
+    """Main GUI"""
 
     def __init__(self) -> None:
         super().__init__()
@@ -60,9 +63,13 @@ class MainGui(QMainWindow):
         # Add the grid layout to the main layout
         self.central_layout.addLayout(grid_layout)
 
-        # Create the log area
+        # Logging area
         self.log_area = QTextEdit()
         self.log_area.setReadOnly(True)
+        font = QFont("Monospace")
+        font.setStyleHint(QFont.StyleHint.TypeWriter)
+        font.setPointSize(10)
+        self.log_area.setCurrentFont(font)
         self.central_layout.addWidget(self.log_area)
 
         # Horizontal layout for the save log button
