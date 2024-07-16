@@ -1,13 +1,23 @@
 import os
-from pathlib import Path
 from datetime import datetime
-import access2thematrix
+import numpy as np
+import access2thematrix  # type: ignore[reportMissingTypeStubs]
+
+from prosurf.spm.spm import SpmImage
 
 
 class NoTracesError(Exception):
     def __init__(self, filename: str) -> None:
         message = f"{filename} contains no traces"
         super().__init__(message)
+
+
+class Fileinfo:
+    def __init__(self, filepath: str) -> None:
+        self.filepath = filepath
+        self.basename = os.path.basename(self.filepath)
+        self.dirname = os.path.dirname(self.filepath)
+        self.filename, self.fileext = os.path.splitext(self.basename)
 
 
 class StmMatrix:
@@ -19,61 +29,52 @@ class StmMatrix:
     """
 
     def __init__(self, filepath: str) -> None:
-        self.filepath = filepath
-        self.basename = os.path.basename(self.filepath)
-        self.dirname = os.path.dirname(self.filepath)
-        self.filename, self.fileext = os.path.splitext(self.basename)
+        self.fileinfo = Fileinfo(filepath)
         self.slide_num: int | None = None
 
-        self.m_id = self.filename
+        self.m_id: str = self.fileinfo.filename
         self.sheet_id: str | None = None
-        self.png_save_dir = os.path.join(self.dirname, "matrix_png")
 
-        # self.datetime = datetime.utcfromtimestamp(
-        #     os.path.getmtime(filepath)
-        # )
-        self.datetime = datetime.fromtimestamp( os.path.getmtime(filepath))
+        self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
-        self.mtrx_data = access2thematrix.MtrxData()
-        print(self.mtrx_data)
-        print(f"{self.mtrx_data.creation_comment=}")
-        self.traces = self.mtrx_data.open(filepath)
-        print(self.traces)
-        self.traces = self.traces[0]
-        print(self.traces)
-        if self.traces == {}:
-            raise NoTracesError(self.filename)
+        mtrx_data = access2thematrix.MtrxData()
+        self.creation_comment = mtrx_data.creation_comment
+        self.data_set_name = mtrx_data.data_set_name
+        self.sample_name = mtrx_data.sample_name
 
+        self.traces, _ = mtrx_data.open(filepath)  # type: ignore[unknownMemberType]
+        if self.traces == {}:  # type: ignore[unknownMemberType]
+            raise NoTracesError(self.fileinfo.filename)
 
-        self.meta = self.mtrx_data.get_experiment_element_parameters()[1]
+        img_fw = mtrx_data.select_image(self.traces[0])[0]  # type: ignore[unknownMemberType]
+        img_bw = mtrx_data.select_image(self.traces[1])[0]  # type: ignore[unknownMemberType]
 
-        self.img_fw = self.mtrx_data.select_image(self.traces[0])[0]
-        self.img_bw = self.mtrx_data.select_image(self.traces[1])[0]
+        self.yres, self.xres = img_fw.data.shape  # type: ignore[unknownMemberType]
+        self.xsize = img_fw.width * 1e9  # in nm
+        self.ysize = img_fw.height * 1e9  # in nm
+        self.xoffset = img_fw.x_offset  # in nm
+        self.yoffset = img_fw.y_offset  # in nm
+        self.rotation = img_fw.angle  # in deg
 
-        self.yres, self.xres = self.img_fw.data.shape
-        self.xsize = self.img_fw.width * 1e9  # in nm
-        self.ysize = self.img_fw.height * 1e9  # in nm
-        self.xoffset = self.img_fw.x_offset  # in nm
-        self.yoffset = self.img_fw.y_offset  # in nm
-        self.tilt = self.img_fw.angle  # in deg
-
-        for param in self.meta.split("\n"):
-            print(f"{param=}")
+        meta = mtrx_data.get_experiment_element_parameters()[1]
+        for param in meta.split("\n"):
+            # print(f"{param=}")
             if param.startswith("Regulator.Setpoint_1"):
                 self.current = float(param.split()[1]) * 1e9  # in nA
             elif param.startswith("GapVoltageControl.Voltage "):
                 self.bias = float(param.split()[1]) * 1e3  # in mV
             elif param.startswith("XYScanner.Raster_Time "):
-                self.raster_time = float(
-                    param.split()[1]
-                )  # in seconds! per pixel?
+                # in seconds, per pixel?
+                self.raster_time = float(param.split()[1])
 
-        # self.line_time = self.raster_time * self.xres * 1e3  # in ms
-        # self.speed = self.line_time * self.yres / 1e3  # in s
-        #
-        # self.img_data_fw = StmImage(
-        #     self.img_fw.data * 1e9, self.xsize  # type: ignore
-        # )  # in nm
-        # self.img_data_bw = StmImage(
-        #     self.img_bw.data * 1e9, self.xsize  # type: ignore
-        # )  # in nm
+        self.line_time = self.raster_time * self.xres * 1e3  # in ms
+        self.scan_duration = self.line_time * self.yres / 1e3  # in s
+
+        row_fw = np.flip(img_fw.data, axis=0) * 1e9  # type: ignore[reportUnknownMember] # in nm
+        row_bw = np.flip(img_bw.data, axis=0) * 1e9  # type: ignore[reportUnknownMember] # in nm
+        self.img_data_fw = SpmImage(row_fw, self.xsize)
+        self.img_data_bw = SpmImage(row_bw, self.xsize)
+
+    def process(self):
+        _ = self.img_data_fw.corr_plane().corr_lines().plot()
+        _ = self.img_data_bw.corr_plane().corr_lines().plot()
