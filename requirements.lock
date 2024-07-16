@@ -33,6 +33,7 @@ markupsafe==2.1.5
 matplotlib==3.9.1
     # via matplotlib-scalebar
     # via prosurf
+    # via seaborn
 matplotlib-scalebar==0.8.1
     # via prosurf
 mdurl==0.1.2
@@ -47,12 +48,14 @@ numpy==2.0.0
     # via mulfile
     # via pandas
     # via prosurf
+    # via seaborn
     # via sm4file
 packaging==24.1
     # via bokeh
     # via matplotlib
 pandas==2.2.2
     # via bokeh
+    # via seaborn
 pillow==10.4.0
     # via bokeh
     # via matplotlib
@@ -75,10 +78,12 @@ pyyaml==6.0.1
     # via bokeh
 rich==13.7.1
     # via prosurf
+seaborn==0.13.2
+    # via prosurf
 six==1.16.0
     # via access2thematrix
     # via python-dateutil
-sm4file @ git+https://github.com/matkrin/sm4file@a9e59a262859ba0fbed328bea4cd26dc3c562bb7
+sm4file @ git+https://github.com/matkrin/sm4file@cd80b559c989b89a611ac28b9109f7a52d2d8b1a
     # via prosurf
 tornado==6.4.1
     # via bokeh
