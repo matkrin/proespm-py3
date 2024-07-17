@@ -29,6 +29,7 @@ class StmMatrix:
     """
 
     def __init__(self, filepath: str) -> None:
+        self.ident = "MTRX"
         self.fileinfo = Fileinfo(filepath)
         self.slide_num: int | None = None
 
