@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>{{ title }} - Report</title>
+    <!-- The CDN scripts must match the bokeh version used -->
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-3.5.0.min.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.5.0.min.js" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.5.0.min.js" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://cdn.bokeh.org/bokeh/release/bokeh-gl-3.5.0.min.js" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-3.5.0.min.js" crossorigin="anonymous"></script> -->
+    <style>{% include 'style.css' %}</style>
+</head>
+  <body>
+    <div class="navbar">
+          <ul class="navbar_ul">
+              <li class="navbar_li"><a href="file:///{{ files_dir }}" class="navbar_a">Files</a></li>
+              <li class="navbar_li">{{ title }} - Report</li>
+          </ul>
+    </div>
+
+    <!-- The collapsable overview grid, handeled by `overview.js` -->
+    <details open>
+        <summary>Overview</summary>
+        <div id="overview"></div>
+    </details>
+
+    <!-- Loop through the `process_objs` and choose the according template -->
+    {% for entry in process_objs %}
+        {% if entry.ident == "MTRX" %}
+            {% include "mtrx.j2" %}
+        {% endif %}
+    {% endfor %}
+
+
+    <!--  Modal -->
+    <div id="modal">
+      <span id="close" class="close" >&times;</span>
+        <span id="slide-info">info</span>
+      <div class="modal-image-container">
+          <a id="prev" class="prev-next" >&#10094;</a>
+            <div id="modal-image"><p></p></div>
+          <a id="next" class="prev-next" >&#10095;</a>
+      </div>
+    </div>
+
+    <!-- Top Button -->
+    <button onclick="topFunction()" id="top_button" title="Go to top"><strong>&#8679;</strong></button>
+
+    <script>{% include 'overview.js' %}</script>
+    <script>{% include 'modal.js' %}</script>
+  </body>
