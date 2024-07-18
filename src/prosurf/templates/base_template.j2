@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial scale=1.0" />
@@ -11,14 +12,17 @@
     <!-- <script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.5.0.min.js" crossorigin="anonymous"></script> -->
     <!-- <script src="https://cdn.bokeh.org/bokeh/release/bokeh-gl-3.5.0.min.js" crossorigin="anonymous"></script> -->
     <!-- <script src="https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-3.5.0.min.js" crossorigin="anonymous"></script> -->
+    <script src="https://unpkg.com/feather-icons"></script>
     <style>{% include 'style.css' %}</style>
 </head>
-  <body>
+
+<body>
     <div class="navbar">
-          <ul class="navbar_ul">
-              <li class="navbar_li"><a href="file:///{{ files_dir }}" class="navbar_a">Files</a></li>
-              <li class="navbar_li">{{ title }} - Report</li>
-          </ul>
+        <ul>
+            <li id="menu"><i data-feather="menu"></i></li>
+            <li ><a href="file:///{{ files_dir }}" >{{ title }}</a></li>
+            <!-- <li class="navbar_li">{{ title }} - Report</li> -->
+        </ul>
     </div>
 
     <!-- The collapsable overview grid, handeled by `overview.js` -->
@@ -37,18 +41,36 @@
 
     <!--  Modal -->
     <div id="modal">
-      <span id="close" class="close" >&times;</span>
+        <span id="close" class="close">&times;</span>
         <span id="slide-info">info</span>
-      <div class="modal-image-container">
-          <a id="prev" class="prev-next" >&#10094;</a>
-            <div id="modal-image"><p></p></div>
-          <a id="next" class="prev-next" >&#10095;</a>
-      </div>
+        <div class="modal-image-container">
+            <a id="prev" class="prev-next">&#10094;</a>
+            <div id="modal-image">
+                <p></p>
+            </div>
+            <a id="next" class="prev-next">&#10095;</a>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-content"
+            <ul>
+                {% for entry in process_objs %}
+                    <li><a href="#{{ entry.m_id }}">{{ entry.m_id }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 
     <!-- Top Button -->
     <button onclick="topFunction()" id="top_button" title="Go to top"><strong>&#8679;</strong></button>
 
+    <!-- Script to activate feather icons -->
+    <script>feather.replace()</script>
+    <!-- Scripts used for interactive functionality -->
     <script>{% include 'overview.js' %}</script>
     <script>{% include 'modal.js' %}</script>
-  </body>
+    <script>{% include 'top_button.js' %}</script>
+    <script>{% include 'sidebar.js' %}</script>
+</body>
