@@ -39,9 +39,6 @@ class StmMatrix:
         self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
         mtrx_data = access2thematrix.MtrxData()
-        self.creation_comment = mtrx_data.creation_comment
-        self.data_set_name = mtrx_data.data_set_name
-        self.sample_name = mtrx_data.sample_name
 
         self.traces, _ = mtrx_data.open(filepath)  # type: ignore[unknownMemberType]
         if self.traces == {}:  # type: ignore[unknownMemberType]
@@ -49,6 +46,10 @@ class StmMatrix:
 
         img_fw = mtrx_data.select_image(self.traces[0])[0]  # type: ignore[unknownMemberType]
         img_bw = mtrx_data.select_image(self.traces[1])[0]  # type: ignore[unknownMemberType]
+
+        self.creation_comment = mtrx_data.creation_comment
+        self.data_set_name = mtrx_data.data_set_name
+        self.sample_name = mtrx_data.sample_name
 
         self.yres, self.xres = img_fw.data.shape  # type: ignore[unknownMemberType]
         self.xsize = img_fw.width * 1e9  # in nm
