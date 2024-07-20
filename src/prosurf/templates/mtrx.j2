@@ -24,6 +24,15 @@
         <td>{{ entry.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
       </tr>
       <tr>
+      <tr>
+        <th>I<sub>tun</sub></th>
+        <td>{{ "{:.2f}".format(entry.current) }} nA</td>
+      </tr>
+      <tr>
+        <th>U<sub>tun</sub></th>
+        <td>{{ "{:.1f}".format(entry.bias) }} mV</td>
+      </tr>
+      <tr>
         <th>Scan Size</th>
         <td>{{ "{:.0f}".format(entry.xsize) }} &#215; {{ "{:.0f}".format(entry.ysize) }} nm&#178;</td>
       </tr>
