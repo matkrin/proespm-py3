@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from PyQt6.QtCore import (
     Qt,
     pyqtSlot,  # type: ignore[reportUnknownVariableType]
@@ -25,7 +27,7 @@ class MainGui(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("prosurf")
-        self.setGeometry(100, 100, 800, 300)
+        self.setGeometry(100, 100, 700, 400)
 
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
@@ -38,6 +40,7 @@ class MainGui(QMainWindow):
         # Create label, text input, and button for the first row
         process_dir_label = QLabel("Choose folder: ")
         self.process_dir_input = QLineEdit()
+        self.process_dir_input.setReadOnly(True)
         self.process_dir_button = QPushButton("Browse")
 
         # Add widgets to the grid layout
@@ -50,6 +53,7 @@ class MainGui(QMainWindow):
         # Create label, text input, and button for the second row
         output_label = QLabel("Output: ")
         self.output_input = QLineEdit()
+        self.output_input.setReadOnly(True)
         self.output_button = QPushButton("Save As")
 
         # Add widgets to the grid layout
@@ -82,6 +86,7 @@ class MainGui(QMainWindow):
         # Horizontal layout for the start and exit buttons
         start_exit_button_layout = QHBoxLayout()
         self.start_button = QPushButton("Start")
+        self.start_button.setDefault(True)
         self.exit_button = QPushButton("Exit")
         start_exit_button_layout.addStretch()
         start_exit_button_layout.addWidget(self.start_button)
@@ -99,7 +104,6 @@ class MainGui(QMainWindow):
     @pyqtSlot()
     def choose_directory(self) -> None:
         """Handler for `process_dir_button`"""
-        # Open a file dialog to choose a directory
         dirname = QFileDialog.getExistingDirectory(
             self,
             caption="Choose folder to process",
@@ -107,25 +111,23 @@ class MainGui(QMainWindow):
             options=QFileDialog.Option.ShowDirsOnly,
         )
 
-        # If a directory is chosen, display the path in the text input field
         if dirname:
             self.process_dir_input.setText(dirname)
             self.log(f"Directory chosen: {dirname}")
+            self.output_input.setText(dirname + "_report.html")
         else:
             self.log("No directory chosen.")
 
     @pyqtSlot()
     def save_file(self) -> None:
         """Handler for `output_button`"""
-        # Open a file dialog to save a file
         file_path, _ = QFileDialog.getSaveFileName(
             self,
             caption="Save HTML report as...",
             directory="",
-            filter="All Files (*)",
+            filter="HTML Files (*.html)",
         )
 
-        # If a file is chosen, display the path in the text input field
         if file_path:
             self.output_input.setText(file_path)
             self.log(f"File saved as: {file_path}")
@@ -135,18 +137,18 @@ class MainGui(QMainWindow):
     @pyqtSlot()
     def save_log(self) -> None:
         """Handler for `save_log_button`"""
-        # Open a file dialog to save the log
         file_path, _ = QFileDialog.getSaveFileName(
             self,
             caption="Save Log",
             directory="",
-            filter="Text Files (*.txt);;All Files (*)",
+            filter="Log Files(*.log);;Text Files (*.txt);;All Files (*)",
         )
 
         # If a file path is chosen, save the log content to the file
         if file_path:
             with open(file_path, "w") as file:
                 _ = file.write(self.log_area.toPlainText())
+
             self.log(f"Log saved to: {file_path}")
 
     @pyqtSlot()
@@ -160,4 +162,6 @@ class MainGui(QMainWindow):
 
     def log(self, message: str) -> None:
         """Append `message` to the `log_area`"""
-        self.log_area.append(message)
+        dt = datetime.now()
+        dt_info = dt.strftime("[%Y-%m-%d, %H:%M:%S]:")
+        self.log_area.append(f"{dt_info} {message}")
