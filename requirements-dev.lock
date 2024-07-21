@@ -12,6 +12,9 @@
 -e file:.
 access2thematrix==0.4.4
     # via prosurf
+altgraph==0.17.4
+    # via macholib
+    # via pyinstaller
 bokeh==3.5.0
     # via prosurf
 contourpy==1.2.1
@@ -28,6 +31,8 @@ jinja2==3.1.4
     # via prosurf
 kiwisolver==1.4.5
     # via matplotlib
+macholib==1.16.3
+    # via pyinstaller
 markdown-it-py==3.0.0
     # via rich
 markupsafe==2.1.5
@@ -58,6 +63,8 @@ numpy==2.0.0
 packaging==24.1
     # via bokeh
     # via matplotlib
+    # via pyinstaller
+    # via pyinstaller-hooks-contrib
     # via pytest
 pandas==2.2.2
     # via bokeh
@@ -69,6 +76,9 @@ pluggy==1.5.0
     # via pytest
 pygments==2.18.0
     # via rich
+pyinstaller==6.9.0
+pyinstaller-hooks-contrib==2024.7
+    # via pyinstaller
 pyparsing==3.1.2
     # via matplotlib
 pyqt6==6.7.0
@@ -89,6 +99,9 @@ rich==13.7.1
     # via prosurf
 seaborn==0.13.2
     # via prosurf
+setuptools==71.0.4
+    # via pyinstaller
+    # via pyinstaller-hooks-contrib
 six==1.16.0
     # via access2thematrix
     # via python-dateutil

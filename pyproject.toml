@@ -31,6 +31,7 @@ managed = true
 dev-dependencies = [
     "pytest>=8.2.2",
     "mypy>=1.10.1",
+    "pyinstaller>=6.9.0",
 ]
 
 [tool.hatch.metadata]
