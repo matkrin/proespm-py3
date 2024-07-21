@@ -1,4 +1,6 @@
 from datetime import datetime
+import os
+import traceback
 
 from PyQt6.QtCore import (
     Qt,
@@ -13,11 +15,14 @@ from PyQt6.QtWidgets import (
     QLabel,
     QLineEdit,
     QMainWindow,
+    QMessageBox,
     QPushButton,
     QTextEdit,
     QVBoxLayout,
     QWidget,
 )
+
+from prosurf.processing import create_html, process_loop
 
 
 class MainGui(QMainWindow):
@@ -99,7 +104,7 @@ class MainGui(QMainWindow):
         _ = self.output_button.clicked.connect(self.save_file)  # type: ignore[reportUnknownMemberType]
         _ = self.save_log_button.clicked.connect(self.save_log)  # type: ignore[reportUnknownMemberType]
         _ = self.exit_button.clicked.connect(self.exit_app)  # type: ignore[reportUnknownMemberType]
-        _ = self.start_button.clicked.connect(self.start_app)  # type: ignore[reportUnknownMemberType]
+        _ = self.start_button.clicked.connect(self.start_processing)  # type: ignore[reportUnknownMemberType]
 
     @pyqtSlot()
     def choose_directory(self) -> None:
@@ -152,8 +157,28 @@ class MainGui(QMainWindow):
             self.log(f"Log saved to: {file_path}")
 
     @pyqtSlot()
-    def start_app(self) -> None:
-        self.log("Start button clicked.")
+    def start_processing(self) -> None:
+        process_dir = self.process_dir_input.text()
+        output_path = self.output_input.text()
+        report_name = os.path.basename(process_dir)
+
+        if not os.path.isdir(process_dir):
+            _ = QMessageBox.warning(
+                self,
+                "Error",
+                "Please select a valid directory for processing",
+            )
+            return
+
+        try:
+            self.log(f"Start processing of {process_dir}")
+            processed = process_loop(process_dir, self.log)
+            processed.sort(key=lambda x: x.datetime)
+            create_html(processed, output_path, report_name)
+            self.log(f"HTML created at {output_path}")
+
+        except Exception:
+            self.log(f"An Error occured:\n{traceback.format_exc()}")
 
     @pyqtSlot()
     def exit_app(self) -> None:
