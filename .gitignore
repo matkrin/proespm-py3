@@ -9,5 +9,11 @@ wheels/
 # venv
 .venv
 
+# mac-os
 .DS_Store
+
+# created reports
 *.html
+
+# pyinstaller
+*.spec
