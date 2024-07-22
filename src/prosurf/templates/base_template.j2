@@ -56,6 +56,7 @@
     <div class="sidebar">
         <div class="sidebar-content"
             <ul>
+                <li><a href="#overview">Overview</a></li>
                 {% for entry in process_objs %}
                     <li><a href="#{{ entry.m_id }}">{{ entry.m_id }}</a></li>
                 {% endfor %}
@@ -64,7 +65,9 @@
     </div>
 
     <!-- Top Button -->
-    <button onclick="topFunction()" id="top_button" title="Go to top"><strong>&#8679;</strong></button>
+    <button onclick="topFunction()" id="top_button" title="Go to top">
+        <i id="top-button-icon" data-feather="arrow-up-circle"></i>
+    </button>
 
     <!-- Script to activate feather icons -->
     <script>feather.replace()</script>

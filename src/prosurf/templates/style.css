@@ -3,6 +3,7 @@
     --body-bg-color: #f2f2f6;
     --table-sec-color: #f2f2f2;
     --navbar-color: #24292e;
+    --navbar-color: rgba(36, 41, 46, 0.8);
     --row-bg-color: white;
     --overview-hover-color: rgba(20, 75, 211, 1);
 }
@@ -55,6 +56,7 @@ tr:nth-child(even) {
     margin: 0;
     padding: 5px;
     background-color: var(--navbar-color);
+    backdrop-filter: blur(15px);
 }
 
 .navbar li {
@@ -110,6 +112,8 @@ details>div {
 .overview-entry>p {
     font-size: 12px;
     margin: 0 0 7px 0;
+    max-width: 200px;
+    text-align: center;
 }
 
 .row {
@@ -288,19 +292,21 @@ details>div {
     z-index: 99;
     border: none;
     outline: none;
-    background-color: rgba(172, 0, 66, 0.3);
-    backdrop-filter: blur(10px);
+    background-color: transparent;
     color: black;
     cursor: pointer;
-    padding: 13px 17px;
     border-radius: 20%;
     font-size: 25px;
 }
 
-#top_button:hover {
-    color: white;
-    background-color: rgba(64, 209, 182, 0.5);
-    backdrop-filter: blur(10px);
+/* #top_button:hover { */
+/*     color: rgb(255, 255, 0); */
+/*     background-color: rgb(48, 23, 61) */
+/* } */
+
+#top-button-icon {
+    width: 50px;
+    height: 50px;
 }
 
 #error-file {
