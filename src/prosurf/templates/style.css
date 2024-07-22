@@ -19,6 +19,10 @@ h1 {
     text-align: center;
 }
 
+h2 {
+    margin: 15px 20px;
+}
+
 table {
     border-spacing: 0;
 }

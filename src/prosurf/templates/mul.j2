@@ -1,0 +1,64 @@
+{% for img in entry.mulimages %}
+
+    {% if img.m_id.endswith('_1') %}
+        <h2 id="{{ entry.m_id }}">{{ img.basename }}</h2>
+    {% endif %}
+
+    <div class="row">
+      <div class="stm_image_fw">
+        <img id="{{ img.m_id }}" src="{{ img.img_data.data_uri }}" class="hover-shadow" data-slide-num="{{ img.slide_num }}" />
+      </div>
+      <!-- IMAGE METADATA -->
+      <div class="table_column">
+        <table>
+          <tr>
+            <th>Image ID</th>
+            <td><a href="file:///{{ img.filepath }}">{{ img.m_id}}</a></td>
+          </tr>
+          <tr>
+            <th>Datetime</th>
+            <td>{{ img.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+          </tr>
+          <tr>
+            <th>I<sub>tun</sub></th>
+            <td>{{ "{:.2f}".format(img.current) }} nA</td>
+          </tr>
+          <tr>
+            <th>U<sub>tun</sub></th>
+            <td>{{ "{:.1f}".format(img.bias) }} mV</td>
+          </tr>
+          <tr>
+            <th>Scan Size</th>
+            <td>{{ "{:.0f}".format(img.xsize) }} &#215; {{ "{:.0f}".format(img.ysize) }} nm&#178;</td>
+          </tr>
+          <tr>
+            <th>Resolution</th>
+            <td>{{ img.xres }} &#215; {{ img.yres }}</td>
+          </tr>
+          <tr>
+            <th>Rotation</th>
+            <td>{{ img.tilt }}&#176;</td>
+          <tr>
+            <th>Scan Duration</th>
+            <td>{{ "{:.2f}".format(img.speed) }} s</td>
+          </tr>
+          <tr>
+            <th>Line Time</th>
+            <td>{{ "{:.2f}".format(img.line_time) }} ms</td>
+          </tr>
+          <tr>
+            <th>Offset</th>
+            <td>{{ "{:.2f}".format(img.xoffset) }} nm, {{ "{:.2f}".format(img.yoffset) }} nm</td>
+          </tr>
+          <tr>
+            <th>Gain</th>
+            <td>{{ img.gain }}</td>
+          </tr>
+          <tr>
+            <th>Mode</th>
+            <td>{{ img.mode }}</td>
+          </tr>
+        </table>
+      </div>
+    </div><!-- End of one row -->
+{% endfor %}

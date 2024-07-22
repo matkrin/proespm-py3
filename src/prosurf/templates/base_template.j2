@@ -35,6 +35,8 @@
     {% for entry in process_objs %}
         {% if entry.ident == "MTRX" %}
             {% include "mtrx.j2" %}
+        {% elif entry.ident == "MUL" %}
+            {% include "mul.j2" %}
         {% endif %}
     {% endfor %}
 
