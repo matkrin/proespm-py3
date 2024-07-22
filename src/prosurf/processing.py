@@ -1,10 +1,11 @@
 import os
 import sys
-from typing import Callable
+from typing import Callable, TypeAlias
 
 from jinja2 import Environment, FileSystemLoader
 
 from prosurf.spm.mtrx import StmMatrix
+from prosurf.spm.mul import StmMul
 
 
 ALLOWED_FILE_TYPES = (
@@ -24,7 +25,7 @@ ALLOWED_FILE_TYPES = (
     ".csv",
 )
 
-ProcessObject = StmMatrix
+ProcessObject: TypeAlias = StmMatrix | StmMul
 
 
 def process_loop(
@@ -37,12 +38,22 @@ def process_loop(
         file_path = entry.path
         if file_path.endswith(ALLOWED_FILE_TYPES) and entry.is_file():
             log(f"Processing of {file_path}")
-            if file_path.endswith("Z_mtrx"):
+            if file_path.endswith(".Z_mtrx"):
                 obj = StmMatrix(file_path)
                 obj.process()
                 obj.slide_num = slide_num
                 slide_num += 1
                 processed.append(obj)
+
+            elif file_path.endswith(".mul"):
+                obj = StmMul(file_path)
+                obj.process()
+                obj.slide_num = slide_num
+                for mul_image in obj.mulimages:  # type: ignore[reportUnknownVariableType]
+                    mul_image.slide_num = slide_num
+                    slide_num += 1
+                processed.append(obj)
+
 
     return processed
 
