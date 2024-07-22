@@ -3,6 +3,7 @@ from datetime import datetime
 import numpy as np
 import access2thematrix  # type: ignore[reportMissingTypeStubs]
 
+from prosurf.fileinfo import Fileinfo
 from prosurf.spm.spm import SpmImage
 
 
@@ -12,20 +13,11 @@ class NoTracesError(Exception):
         super().__init__(message)
 
 
-class Fileinfo:
-    def __init__(self, filepath: str) -> None:
-        self.filepath = filepath
-        self.basename = os.path.basename(self.filepath)
-        self.dirname = os.path.dirname(self.filepath)
-        self.filename, self.fileext = os.path.splitext(self.basename)
-
-
 class StmMatrix:
     """Class for handling Omicron .Z_mtrx files
 
     Args:
         filepath (str): Full path to the .Z_mtrx file
-
     """
 
     def __init__(self, filepath: str) -> None:
