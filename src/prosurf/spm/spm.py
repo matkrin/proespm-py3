@@ -1,13 +1,12 @@
-from typing import Any, Self  # type: ignore[reportAny]
-import numpy as np
-import io
 import base64
+import io
+from typing import Any, Self  # type: ignore[reportAny]
+
 import matplotlib.pyplot as plt
-from matplotlib_scalebar.scalebar import ScaleBar  # type: ignore[missingTypeStubs]
-
-from numpy._typing import NDArray
+import numpy as np
 import seaborn as sns
-
+from matplotlib_scalebar.scalebar import ScaleBar  # type: ignore[missingTypeStubs]
+from numpy._typing import NDArray
 
 plt.rcParams.update({"figure.max_open_warning": 0})
 

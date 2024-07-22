@@ -1,9 +1,14 @@
 from datetime import datetime
 import os
 import traceback
+from typing import override
 
 from PyQt6.QtCore import (
+    QObject,
+    QRunnable,
+    QThreadPool,
     Qt,
+    pyqtSignal,
     pyqtSlot,  # type: ignore[reportUnknownVariableType]
 )
 from PyQt6.QtGui import QFont
@@ -23,6 +28,47 @@ from PyQt6.QtWidgets import (
 )
 
 from prosurf.processing import create_html, process_loop
+
+
+class ProcessingWorker(QRunnable):
+    """Worker thread for the data processing"""
+
+    def __init__(self, process_dir: str, output_path: str) -> None:
+        super().__init__()
+        self.process_dir = process_dir
+        self.output_path = output_path
+        self.signals = WorkerSignals()
+
+    def log(self, message: str) -> None:
+        self.signals.message.emit(message)
+
+    @override
+    @pyqtSlot()
+    def run(self):
+        process_dir = self.process_dir
+        output_path = self.output_path
+        report_name = os.path.basename(self.process_dir)
+
+        try:
+            self.log(f"Start processing of {process_dir}")
+            processed = process_loop(process_dir, self.log)
+            processed.sort(key=lambda x: x.datetime)
+            create_html(processed, output_path, report_name)
+            self.log(f"HTML created at {output_path}")
+            self.signals.finished.emit()
+
+        except Exception:
+            self.log(f"An Error occured:\n{traceback.format_exc()}")
+            self.signals.finished.emit()
+
+
+class WorkerSignals(QObject):
+    """Class holding the signal.
+    Custom signal needs a class derived from QObject!
+    """
+
+    message = pyqtSignal(str)
+    finished = pyqtSignal()
 
 
 class MainGui(QMainWindow):
@@ -99,7 +145,12 @@ class MainGui(QMainWindow):
         start_exit_button_layout.addStretch()
         self.central_layout.addLayout(start_exit_button_layout)
 
-        # Connect button clicks to their respective functions
+        self.threadpool = QThreadPool()
+
+        self.connect_signals()
+
+    def connect_signals(self):
+        """Connect button clicks to their respective function"""
         _ = self.process_dir_button.clicked.connect(self.choose_directory)  # type: ignore[reportUnknownMemberType] `pyqtSlot` seems to be not typed
         _ = self.output_button.clicked.connect(self.save_file)  # type: ignore[reportUnknownMemberType]
         _ = self.save_log_button.clicked.connect(self.save_log)  # type: ignore[reportUnknownMemberType]
@@ -158,9 +209,9 @@ class MainGui(QMainWindow):
 
     @pyqtSlot()
     def start_processing(self) -> None:
+        self.start_button.setEnabled(False)
         process_dir = self.process_dir_input.text()
         output_path = self.output_input.text()
-        report_name = os.path.basename(process_dir)
 
         if not os.path.isdir(process_dir):
             _ = QMessageBox.warning(
@@ -170,15 +221,15 @@ class MainGui(QMainWindow):
             )
             return
 
-        try:
-            self.log(f"Start processing of {process_dir}")
-            processed = process_loop(process_dir, self.log)
-            processed.sort(key=lambda x: x.datetime)
-            create_html(processed, output_path, report_name)
-            self.log(f"HTML created at {output_path}")
+        processing_worker = ProcessingWorker(process_dir, output_path)
+        _ = processing_worker.signals.message.connect(self.log)  # type: ignore[reportUnknownMemberType]
+        _ = processing_worker.signals.finished.connect(self.processing_finished)  # type: ignore[reportUnknownMemberType]
+        self.threadpool.start(processing_worker)
 
-        except Exception:
-            self.log(f"An Error occured:\n{traceback.format_exc()}")
+    @pyqtSlot()
+    def processing_finished(self):
+        self.start_button.setEnabled(True)
+        self.log_area.append("-" * 40)
 
     @pyqtSlot()
     def exit_app(self) -> None:
