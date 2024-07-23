@@ -13,7 +13,6 @@ class StmSm4:
 
     Args:
         filepath (str): Full path to the .sm4 files
-
     """
 
     def __init__(self, filepath: str) -> None:
@@ -49,6 +48,13 @@ class StmSm4:
         self.img_data_bw = SpmImage(self.img_bw.data * 1e9, self.xsize)
 
         # Electrochemistry specific stuff (EC-STM)
+        self.voltage_script = None
+        self.voltage_div = None
+        self.current_script = None
+        self.current_div = None
+        self.init_ec_data()
+
+    def init_ec_data(self) -> None:
         e_cell_imgs = [
             ch for ch in self.sm4 if "VEC" in ch.label or "E_WE" in ch.label
         ]
@@ -68,8 +74,8 @@ class StmSm4:
             plot = EcPlot()
             plot.set_x_axis_label("Pixels average lines")
             plot.set_y_axis_label("U [V vs pt pseudo]")
-            plot.plot_circle(x, e_cell_avg, legend_label="E_cell")
-            plot.plot_circle(x, u_tun_avg, legend_label="U_tun")
+            plot.plot_scatter(x, e_cell_avg, legend_label="E_cell")
+            plot.plot_scatter(x, u_tun_avg, legend_label="U_tun")
             plot.fig.width = 500
             plot.fig.height = 500
             self.voltage_script, self.voltage_div = components(
@@ -90,7 +96,7 @@ class StmSm4:
             plot = EcPlot()
             plot.set_x_axis_label("Pixels average lines")
             plot.set_y_axis_label("I [A]")
-            plot.plot_circle(x, i_cell_avg)
+            plot.plot_scatter(x, i_cell_avg)
             plot.show_legend(False)
             plot.fig.width = 500
             plot.fig.height = 500

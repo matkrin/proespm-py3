@@ -38,13 +38,13 @@ class EcPlot:
     def set_legend_location(self, location: str) -> None:
         self.fig.legend.location = location
 
-    def plot_circle(
+    def plot_scatter(
         self,
         x_values: NDArray[np.int32],
         y_values: NDArray[np.float32],
         legend_label: str = "",
     ) -> None:
-        _ = self.fig.circle(
+        _ = self.fig.scatter(
             x_values,
             y_values,
             size=2,
@@ -75,7 +75,7 @@ class EcPlot:
         y_values: NDArray[np.float32],
         legend_label: str = "",
     ):
-        _ = self.fig.circle(
+        _ = self.fig.scatter(
             x_values,
             y_values,
             size=2,
