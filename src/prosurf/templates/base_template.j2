@@ -37,6 +37,8 @@
             {% include "mtrx.j2" %}
         {% elif entry.ident == "MUL" %}
             {% include "mul.j2" %}
+        {% elif entry.ident == "SM4" %}
+            {% include "sm4.j2" %}
         {% endif %}
     {% endfor %}
 

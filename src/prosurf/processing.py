@@ -6,6 +6,7 @@ from jinja2 import Environment, FileSystemLoader
 
 from prosurf.spm.mtrx import StmMatrix
 from prosurf.spm.mul import StmMul
+from prosurf.spm.sm4 import StmSm4
 
 
 ALLOWED_FILE_TYPES = (
@@ -25,7 +26,7 @@ ALLOWED_FILE_TYPES = (
     ".csv",
 )
 
-ProcessObject: TypeAlias = StmMatrix | StmMul
+ProcessObject: TypeAlias = StmMatrix | StmMul | StmSm4
 
 
 def process_loop(
@@ -54,6 +55,12 @@ def process_loop(
                     slide_num += 1
                 processed.append(obj)
 
+            elif file_path.lower().endswith(".sm4"):
+                obj = StmSm4(file_path)
+                obj.process()
+                obj.slide_num = slide_num
+                slide_num += 1
+                processed.append(obj)
 
     return processed
 
