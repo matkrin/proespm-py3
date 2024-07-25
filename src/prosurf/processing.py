@@ -4,6 +4,7 @@ from typing import Callable, TypeAlias
 
 from jinja2 import Environment, FileSystemLoader
 
+from prosurf.spectroscopy.aes_staib import AesStaib
 from prosurf.spm.mtrx import StmMatrix
 from prosurf.spm.mul import StmMul
 from prosurf.spm.sm4 import StmSm4
@@ -26,7 +27,7 @@ ALLOWED_FILE_TYPES = (
     ".csv",
 )
 
-ProcessObject: TypeAlias = StmMatrix | StmMul | StmSm4
+ProcessObject: TypeAlias = StmMatrix | StmMul | StmSm4 | AesStaib
 
 
 def process_loop(
@@ -60,6 +61,11 @@ def process_loop(
                 obj.process()
                 obj.slide_num = slide_num
                 slide_num += 1
+                processed.append(obj)
+
+            elif file_path.endswith(".vms") or file_path.endswith(".dat"):
+                obj = AesStaib(file_path)
+                obj.process()
                 processed.append(obj)
 
     return processed
