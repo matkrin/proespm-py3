@@ -8,6 +8,7 @@ from prosurf.spectroscopy.aes_staib import AesStaib
 from prosurf.spm.mtrx import StmMatrix
 from prosurf.spm.mul import StmMul
 from prosurf.spm.sm4 import StmSm4
+from prosurf.spm.sxm import StmSxm
 
 
 ALLOWED_FILE_TYPES = (
@@ -27,7 +28,7 @@ ALLOWED_FILE_TYPES = (
     ".csv",
 )
 
-ProcessObject: TypeAlias = StmMatrix | StmMul | StmSm4 | AesStaib
+ProcessObject: TypeAlias = StmMatrix | StmMul | StmSm4 | AesStaib | StmSxm
 
 
 def process_loop(
@@ -58,6 +59,13 @@ def process_loop(
 
             elif file_path.lower().endswith(".sm4"):
                 obj = StmSm4(file_path)
+                obj.process()
+                obj.slide_num = slide_num
+                slide_num += 1
+                processed.append(obj)
+
+            elif file_path.endswith(".sxm"):
+                obj = StmSxm(file_path)
                 obj.process()
                 obj.slide_num = slide_num
                 slide_num += 1
