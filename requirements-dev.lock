@@ -50,12 +50,15 @@ mulfile @ git+https://github.com/matkrin/mulfile@b2918905627f1b90671baeecf8347cf
 mypy==1.10.1
 mypy-extensions==1.0.0
     # via mypy
+nanonispy @ git+https://github.com/matkrin/nanonispy@ed67b592d6b6b23e42d8860974c1e9e15802465a
+    # via prosurf
 numpy==2.0.0
     # via access2thematrix
     # via bokeh
     # via contourpy
     # via matplotlib
     # via mulfile
+    # via nanonispy
     # via pandas
     # via prosurf
     # via seaborn
