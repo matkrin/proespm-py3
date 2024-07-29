@@ -1,0 +1,82 @@
+<div class="row">
+
+  <div class="stm_image_fw">
+    <img id="{{ entry.m_id }}" src="{{ entry.img_data_fw.data_uri }}" class="hover-shadow" data-slide-num="{{ entry.slide_num }}" />
+  </div>
+  <div class="stm_image_bw">
+    <img id="{{ entry.m_id }}" src="{{ entry.img_data_bw.data_uri }}" class="hover-shadow" data-slide-num="{{ entry.slide_num }}" />
+  </div>
+
+
+  <!-- IMAGE METADATA -->
+  <div class="table_column">
+    <table>
+      <tr>
+        <th>Image ID</th>
+        <td><a href="file:///{{ entry.fileinfo.filepath }}">{{ entry.m_id }}</td>
+      </tr>
+      <tr>
+        <th>Datetime</th>
+        <td>{{ entry.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+      </tr>
+      <tr>
+
+      {% if entry.op_mode == 'Dynamic Force' %}
+          <tr>
+            <th>Setpoint</sub></th>
+            <td>{{ "{:.2f}".format(entry.current) }} %</td>
+          </tr>
+          <tr>
+            <th>Tip Voltage</th>
+            <td>{{ "{:.1f}".format(entry.bias) }} mV</td>
+          </tr>
+          <tr>
+      {% else %}
+          <tr>
+            <th>I<sub>tun</sub></th>
+            <td>{{ "{:.2f}".format(entry.current) }} nA</td>
+          </tr>
+          <tr>
+            <th>U<sub>tun</sub></th>
+            <td>{{ "{:.1f}".format(entry.bias) }} mV</td>
+          </tr>
+          <tr>
+      {% endif %}
+
+      <tr>
+        <th>Scan Size</th>
+        <td>{{ "{:.0f}".format(entry.xsize) }} &#215; {{ "{:.0f}".format(entry.ysize) }} nm&#178;</td>
+      </tr>
+      <tr>
+        <th>Resolution</th>
+        <td>{{ entry.xres }} &#215; {{ entry.yres }}</td>
+      </tr>
+      <tr>
+        <th>Rotation</th>
+        <td>{{ entry.rotation }}&#176;</td>
+      <tr>
+        <th>Scan Duration</th>
+        <td>{{ "{:.2f}".format(entry.scan_duration) }} s</td>
+      </tr>
+      <tr>
+        <th>Line Time</th>
+        <td>{{ "{:.2f}".format(entry.line_time) }} ms</td>
+      </tr>
+      <tr>
+        <th>Offset</th>
+        <td>{{ "{:.2f}".format(entry.xoffset) }} nm, {{ "{:.2f}".format(entry.yoffset) }} nm</td>
+      </tr>
+
+      {% if entry.p_gain %}
+          <tr>
+            <th>P / I</th>
+            <td>{{ "{:.2f}".format(entry.p_gain) }} / {{ "{:.2f}".format(entry.i_gain) }}</td>
+          </tr>
+      {% endif %}
+
+    </table>
+  </div>
+
+
+
+</div><!-- End of one row -->
