@@ -11,6 +11,7 @@ from prosurf.spm.mul import StmMul
 from prosurf.spm.nid import SpmNid
 from prosurf.spm.sm4 import StmSm4
 from prosurf.spm.sxm import StmSxm
+from prosurf.spectroscopy.xps_eis import XpsEis
 
 
 ALLOWED_FILE_TYPES = (
@@ -31,7 +32,7 @@ ALLOWED_FILE_TYPES = (
 )
 
 ProcessObject: TypeAlias = (
-    StmMatrix | StmMul | StmSm4 | AesStaib | StmSxm | SpmNid | Qcmb
+    StmMatrix | StmMul | StmSm4 | AesStaib | StmSxm | SpmNid | Qcmb | XpsEis
 )
 
 
@@ -83,11 +84,19 @@ def process_loop(
                 processed.append(obj)
 
             elif file_path.endswith(".vms") or file_path.endswith(".dat"):
+                # TODO: check if vamas or dat file is really from Staib AES
                 obj = AesStaib(file_path)
                 obj.process()
                 processed.append(obj)
 
+            elif file_path.endswith(".txt"):
+                # TODO: check if txt file is really Omicron EIS
+                obj = XpsEis(file_path)
+                obj.process()
+                processed.append(obj)
+
             elif file_path.endswith(".log"):
+                # TODO: check if valid qcmb file
                 obj = Qcmb(file_path)
                 obj.process()
                 processed.append(obj)
