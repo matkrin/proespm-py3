@@ -4,6 +4,7 @@ from typing import Callable, TypeAlias
 
 from jinja2 import Environment, FileSystemLoader
 
+from prosurf.qcmb import Qcmb
 from prosurf.spectroscopy.aes_staib import AesStaib
 from prosurf.spm.mtrx import StmMatrix
 from prosurf.spm.mul import StmMul
@@ -30,7 +31,7 @@ ALLOWED_FILE_TYPES = (
 )
 
 ProcessObject: TypeAlias = (
-    StmMatrix | StmMul | StmSm4 | AesStaib | StmSxm | SpmNid
+    StmMatrix | StmMul | StmSm4 | AesStaib | StmSxm | SpmNid | Qcmb
 )
 
 
@@ -83,6 +84,11 @@ def process_loop(
 
             elif file_path.endswith(".vms") or file_path.endswith(".dat"):
                 obj = AesStaib(file_path)
+                obj.process()
+                processed.append(obj)
+
+            elif file_path.endswith(".log"):
+                obj = Qcmb(file_path)
                 obj.process()
                 processed.append(obj)
 

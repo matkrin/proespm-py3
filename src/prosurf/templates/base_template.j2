@@ -45,6 +45,8 @@
             {% include "nid.j2" %}
         {% elif entry.ident == "AES" %}
             {% include "aes.j2" %}
+        {% elif entry.ident == "QCMB" %}
+            {% include "qcmb.j2" %}
         {% endif %}
     {% endfor %}
 
