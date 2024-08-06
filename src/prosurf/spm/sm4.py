@@ -1,3 +1,4 @@
+from typing import Self
 import numpy as np
 from bokeh.embed import components
 from numpy.typing import NDArray
@@ -104,6 +105,7 @@ class StmSm4:
                 plot.fig, wrap_script=True
             )
 
-    def process(self):
+    def process(self) -> Self:
         _ = self.img_data_fw.corr_plane().corr_lines().plot()
         _ = self.img_data_bw.corr_plane().corr_lines().plot()
+        return self

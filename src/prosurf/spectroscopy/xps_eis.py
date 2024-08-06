@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 from datetime import datetime
-from typing import Any
+from typing import Any, Self
 
 import numpy as np
 from bokeh.embed import components
@@ -77,9 +77,10 @@ class XpsEis:
                 )
         return data
 
-    def process(self) -> None:
+    def process(self) -> Self:
         for xps_scan in self.data:
             xps_scan.plot()
+        return self
 
 
 class XpsScan:

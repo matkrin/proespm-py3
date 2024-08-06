@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from typing import Self
 
 import mulfile
 import numpy as np
@@ -33,6 +34,8 @@ class StmMul:
                 mul_image.xsize,  # type: ignore[reportUnknownMemeberType]
             )
 
-    def process(self):
+    def process(self) -> Self:
         for mul_image in self.mulimages:  # type: ignore[reportUnknownMemeberType]
             mul_image.img_data.corr_plane().corr_lines().plot()  # type: ignore[reportUnknownMemeberType]
+
+        return self

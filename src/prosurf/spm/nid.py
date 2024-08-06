@@ -1,4 +1,5 @@
 import re
+from typing import Self
 
 import numpy as np
 from dateutil import parser
@@ -109,9 +110,11 @@ class SpmNid:
         self.img_data_fw = SpmImage(np.flip(img_data_fw, axis=0), self.xsize)
         self.img_data_bw = SpmImage(np.flip(img_data_bw, axis=0), self.xsize)
 
-    def process(self):
+    def process(self) -> Self:
         _ = self.img_data_fw.corr_plane().corr_lines().plot()
         _ = self.img_data_bw.corr_plane().corr_lines().plot()
+
+        return self
 
 
 def get_header(content_list: list[bytes]) -> list[bytes]:

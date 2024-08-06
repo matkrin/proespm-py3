@@ -1,3 +1,4 @@
+from typing import Self
 import numpy as np
 from dateutil import parser
 import nanonispy as nap  # type: ignore[reportMissingStubs]
@@ -46,6 +47,7 @@ class StmSxm:
             np.flip(self.sxm.signals["Z"]["backward"], axis=(0, 1)), self.xsize,  # type:ignore[reportUnknownArgumentType]
         )
 
-    def process(self):
+    def process(self) -> Self:
         _ = self.img_data_fw.corr_plane().corr_lines().plot()
         _ = self.img_data_bw.corr_plane().corr_lines().plot()
+        return self

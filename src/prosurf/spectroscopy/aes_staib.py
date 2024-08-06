@@ -1,5 +1,5 @@
 import datetime
-from typing import TextIO
+from typing import Self, TextIO
 
 import numpy as np
 from bokeh.embed import components
@@ -174,5 +174,6 @@ class AesStaib:
         plot.toolbar.active_scroll = "auto"  # type: ignore[reportAttributeAccessIssue]
         self.script, self.div = components(plot, wrap_script=True)
 
-    def process(self) -> None:
+    def process(self) -> Self:
         self.plot()
+        return self

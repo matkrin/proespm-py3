@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from typing import Self
 import numpy as np
 import access2thematrix  # type: ignore[reportMissingTypeStubs]
 
@@ -69,6 +70,7 @@ class StmMatrix:
         self.img_data_fw = SpmImage(row_fw, self.xsize)
         self.img_data_bw = SpmImage(row_bw, self.xsize)
 
-    def process(self):
+    def process(self) -> Self:
         _ = self.img_data_fw.corr_plane().corr_lines().plot()
         _ = self.img_data_bw.corr_plane().corr_lines().plot()
+        return self
