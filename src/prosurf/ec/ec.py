@@ -40,8 +40,8 @@ class EcPlot:
 
     def plot_scatter(
         self,
-        x_values: NDArray[np.int32],
-        y_values: NDArray[np.float32],
+        x_values: NDArray[np.int32 | np.float64],
+        y_values: NDArray[np.float32 | np.float64],
         legend_label: str = "",
     ) -> None:
         _ = self.fig.scatter(
@@ -71,8 +71,8 @@ class EcPlot:
 
     def plot_second_axis(
         self,
-        x_values: NDArray[np.float32],
-        y_values: NDArray[np.float32],
+        x_values: NDArray[np.float32 | np.float64],
+        y_values: NDArray[np.float32 | np.float64],
         legend_label: str = "",
     ):
         _ = self.fig.scatter(

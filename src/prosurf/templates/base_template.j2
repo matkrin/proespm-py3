@@ -49,6 +49,8 @@
             {% include "xps_eis.j2" %}
         {% elif entry.ident == "QCMB" %}
             {% include "qcmb.j2" %}
+        {% elif entry.ident == "EC4" %}
+            {% include "ec4.j2" %}
         {% endif %}
     {% endfor %}
 
