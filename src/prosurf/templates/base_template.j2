@@ -49,7 +49,11 @@
             {% include "xps_eis.j2" %}
         {% elif entry.ident == "QCMB" %}
             {% include "qcmb.j2" %}
-        {% elif entry.ident == "EC4" %}
+        {% elif entry.ident == "EC4"
+            or entry.ident == "CV_LABVIEW"
+            or entry.ident == "CA_LABVIEW"
+            or entry.ident == "FFT_LABVIEW"
+        %}
             {% include "ec4.j2" %}
         {% endif %}
     {% endfor %}

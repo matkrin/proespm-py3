@@ -53,7 +53,9 @@ class EcPlot:
         )
 
     def plot_line(
-        self, x_values: NDArray[np.float32], y_values: NDArray[np.float32]
+        self,
+        x_values: NDArray[np.float32 | np.float64],
+        y_values: NDArray[np.float32 | np.float64],
     ) -> None:
         _ = self.fig.line(x_values, y_values)
 
