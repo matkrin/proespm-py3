@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 from typing import Self
 import numpy as np
-import access2thematrix  # type: ignore[reportMissingTypeStubs]
+import access2thematrix  # pyright: ignore[reportMissingTypeStubs]
 
 from prosurf.fileinfo import Fileinfo
 from prosurf.spm.spm import SpmImage
@@ -33,18 +33,18 @@ class StmMatrix:
 
         mtrx_data = access2thematrix.MtrxData()
 
-        self.traces, _ = mtrx_data.open(filepath)  # type: ignore[unknownMemberType]
-        if self.traces == {}:  # type: ignore[unknownMemberType]
+        self.traces, _ = mtrx_data.open(filepath)  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
+        if self.traces == {}:  # pyright: ignore[reportUnknownMemberType]
             raise NoTracesError(self.fileinfo.filename)
 
-        img_fw = mtrx_data.select_image(self.traces[0])[0]  # type: ignore[unknownMemberType]
-        img_bw = mtrx_data.select_image(self.traces[1])[0]  # type: ignore[unknownMemberType]
+        img_fw = mtrx_data.select_image(self.traces[0])[0]  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
+        img_bw = mtrx_data.select_image(self.traces[1])[0]  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
 
         self.creation_comment = mtrx_data.creation_comment
         self.data_set_name = mtrx_data.data_set_name
         self.sample_name = mtrx_data.sample_name
 
-        self.yres, self.xres = img_fw.data.shape  # type: ignore[unknownMemberType]
+        self.yres, self.xres = img_fw.data.shape  # pyright: ignore[reportUnknownMemberType]
         self.xsize = img_fw.width * 1e9  # in nm
         self.ysize = img_fw.height * 1e9  # in nm
         self.xoffset = img_fw.x_offset  # in nm
@@ -65,8 +65,8 @@ class StmMatrix:
         self.line_time = self.raster_time * self.xres * 1e3  # in ms
         self.scan_duration = self.line_time * self.yres / 1e3  # in s
 
-        row_fw = np.flip(img_fw.data, axis=0) * 1e9  # type: ignore[reportUnknownMember] # in nm
-        row_bw = np.flip(img_bw.data, axis=0) * 1e9  # type: ignore[reportUnknownMember] # in nm
+        row_fw = np.flip(img_fw.data, axis=0) * 1e9  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType] # in nm
+        row_bw = np.flip(img_bw.data, axis=0) * 1e9  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType] # in nm
         self.img_data_fw = SpmImage(row_fw, self.xsize)
         self.img_data_bw = SpmImage(row_bw, self.xsize)
 

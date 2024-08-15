@@ -78,7 +78,7 @@ class SpmNid:
             assert self.yres == int(channel["Lines"])
 
         img_data_block = get_img_data_block(content_list)
-        img_data_list = read_img_data(img_data_block, datatype, 4)  # type: ignore[reportArgumentType]
+        img_data_list = read_img_data(img_data_block, datatype, 4)  # pyright: ignore[reportArgumentType]
 
         fw_idx = None
         bw_idx = None
@@ -179,8 +179,8 @@ def read_img_data(
 
 
 def read_float_from_string(text: str) -> float:
-    return float(FLOAT_REGEX.match(text).group(0))  # type: ignore[reportOptionalMemberAcess]
+    return float(FLOAT_REGEX.match(text).group(0))  # pyright: ignore[reportOptionalMemberAccess]
 
 
 def read_units_from_string(text: str) -> str:
-    return UNITS_REGEX.findall(text)[0]  # type: ignore[reportOptionalMemberAcess]
+    return UNITS_REGEX.findall(text)[0]  # pyright: ignore[reportAny]

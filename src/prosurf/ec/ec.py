@@ -20,9 +20,9 @@ class EcPlot:
             active_scroll="wheel_zoom",
             active_inspect="hover",
         )
-        self.fig.toolbar.logo = None  # type: ignore[reportAttributeIssue]
+        self.fig.toolbar.logo = None  # pyright: ignore[reportAttributeAccessIssue]
         self.fig.background_fill_alpha = 0
-        self.fig.toolbar.active_scroll = "auto"  # type: ignore[reportAttributeIssue]
+        self.fig.toolbar.active_scroll = "auto"  # pyright: ignore[reportAttributeAccessIssue]
         self.colors = itertools.cycle(Category10_10)
         self.y_range_name = ""
 
@@ -67,7 +67,7 @@ class EcPlot:
         axis_label: str,
     ) -> None:
         self.y_range_name = y_range_name
-        self.fig.extra_y_ranges[y_range_name] = Range1d(range_min, range_max)  # type: ignore[reportIndexIssure]
+        self.fig.extra_y_ranges[y_range_name] = Range1d(range_min, range_max)  # pyright: ignore[reportIndexIssue]
         ax2 = LinearAxis(y_range_name=y_range_name, axis_label=axis_label)
         self.fig.add_layout(ax2, "right")
 

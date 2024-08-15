@@ -35,7 +35,7 @@ class AesStaib:
         self.retrace_time = None
         self.res_mode = None
         self.res = None
-        self.aes_data = None  # type: ignore[reportAttributeAccessIssue]
+        self.aes_data = None  # pyright: ignore[reportAttributeAccessIssue]
         self.script, self.div = None, None
 
         if self.fileinfo.fileext == ".vms":
@@ -142,7 +142,7 @@ class AesStaib:
                     (self.aes_data, arr_line)
                 )
 
-            for i, x in enumerate(self.aes_data[:, 0]):  # type: ignore[reportAny]
+            for i, x in enumerate(self.aes_data[:, 0]):  # pyright: ignore[reportAny]
                 self.aes_data[i, 0] = x / 1000
 
     def plot(self) -> None:
@@ -167,11 +167,11 @@ class AesStaib:
             active_scroll="wheel_zoom",
             active_inspect="hover",
         )
-        plot.toolbar.logo = None  # type: ignore[reportAttributeAccessIssue]
+        plot.toolbar.logo = None  # pyright: ignore[reportAttributeAccessIssue]
         plot.background_fill_alpha = 0
         # plot.circle(x, y, size=2)
         _ = plot.line(x, y)
-        plot.toolbar.active_scroll = "auto"  # type: ignore[reportAttributeAccessIssue]
+        plot.toolbar.active_scroll = "auto"  # pyright: ignore[reportAttributeAccessIssue]
         self.script, self.div = components(plot, wrap_script=True)
 
     def process(self) -> Self:

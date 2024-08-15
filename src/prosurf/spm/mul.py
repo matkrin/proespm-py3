@@ -26,16 +26,16 @@ class StmMul:
 
         self.mulimages = mulfile.load(filepath)
 
-        for mul_image in self.mulimages:  # type: ignore[reportUnknownMemeberType]
+        for mul_image in self.mulimages:  # pyright: ignore[reportUnknownVariableType]
             mul_image.basename = self.fileinfo.basename
-            mul_image.m_id = mul_image.img_id  # type: ignore[reportUnknownMemeberType]
+            mul_image.m_id = mul_image.img_id  # pyright: ignore[reportUnknownMemberType]
             mul_image.img_data = SpmImage(
-                np.flip(mul_image.img_data, axis=0),   # type: ignore[reportUnknownMemeberType]
-                mul_image.xsize,  # type: ignore[reportUnknownMemeberType]
+                np.flip(mul_image.img_data, axis=0),   # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
+                mul_image.xsize,  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
             )
 
     def process(self) -> Self:
-        for mul_image in self.mulimages:  # type: ignore[reportUnknownMemeberType]
-            mul_image.img_data.corr_plane().corr_lines().plot()  # type: ignore[reportUnknownMemeberType]
+        for mul_image in self.mulimages:  # pyright: ignore[reportUnknownVariableType]
+            mul_image.img_data.corr_plane().corr_lines().plot()  # pyright: ignore[reportUnknownMemberType]
 
         return self

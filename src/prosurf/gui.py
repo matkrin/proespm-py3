@@ -9,7 +9,7 @@ from PyQt6.QtCore import (
     QThreadPool,
     Qt,
     pyqtSignal,
-    pyqtSlot,  # type: ignore[reportUnknownVariableType]
+    pyqtSlot,  # pyright: ignore[reportUnknownVariableType]
 )
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
@@ -151,11 +151,11 @@ class MainGui(QMainWindow):
 
     def connect_signals(self):
         """Connect button clicks to their respective function"""
-        _ = self.process_dir_button.clicked.connect(self.choose_directory)  # type: ignore[reportUnknownMemberType] `pyqtSlot` seems to be not typed
-        _ = self.output_button.clicked.connect(self.save_file)  # type: ignore[reportUnknownMemberType]
-        _ = self.save_log_button.clicked.connect(self.save_log)  # type: ignore[reportUnknownMemberType]
-        _ = self.exit_button.clicked.connect(self.exit_app)  # type: ignore[reportUnknownMemberType]
-        _ = self.start_button.clicked.connect(self.start_processing)  # type: ignore[reportUnknownMemberType]
+        _ = self.process_dir_button.clicked.connect(self.choose_directory)  # pyright: ignore[reportUnknownMemberType] `pyqtSlot` seems to be not typed
+        _ = self.output_button.clicked.connect(self.save_file)  # pyright: ignore[reportUnknownMemberType]
+        _ = self.save_log_button.clicked.connect(self.save_log)  # pyright: ignore[reportUnknownMemberType]
+        _ = self.exit_button.clicked.connect(self.exit_app)  # pyright: ignore[reportUnknownMemberType]
+        _ = self.start_button.clicked.connect(self.start_processing)  # pyright: ignore[reportUnknownMemberType]
 
     @pyqtSlot()
     def choose_directory(self) -> None:
@@ -222,8 +222,8 @@ class MainGui(QMainWindow):
             return
 
         processing_worker = ProcessingWorker(process_dir, output_path)
-        _ = processing_worker.signals.message.connect(self.log)  # type: ignore[reportUnknownMemberType]
-        _ = processing_worker.signals.finished.connect(self.processing_finished)  # type: ignore[reportUnknownMemberType]
+        _ = processing_worker.signals.message.connect(self.log)  # pyright: ignore[reportUnknownMemberType]
+        _ = processing_worker.signals.finished.connect(self.processing_finished)  # pyright: ignore[reportUnknownMemberType]
         self.threadpool.start(processing_worker)
 
     @pyqtSlot()

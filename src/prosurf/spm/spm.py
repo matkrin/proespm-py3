@@ -1,11 +1,11 @@
 import base64
 import io
-from typing import Any, Self  # type: ignore[reportAny]
+from typing import Any, Self
 
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from matplotlib_scalebar.scalebar import ScaleBar  # type: ignore[missingTypeStubs]
+from matplotlib_scalebar.scalebar import ScaleBar  # pyright: ignore[reportMissingTypeStubs]
 from numpy._typing import NDArray
 
 plt.rcParams.update({"figure.max_open_warning": 0})
@@ -29,8 +29,8 @@ class SpmImage:
     def plot(self, show: bool = False) -> Self:
         """Plots the image in"""
         rocket = sns.color_palette("rocket", as_cmap=True)
-        fig, ax = plt.subplots(figsize=(5, 5))  # type: ignore[unknownMemberType]
-        ax.imshow(  # type: ignore[unknownMemberType]
+        fig, ax = plt.subplots(figsize=(5, 5))  # pyright: ignore[reportUnknownMemberType]
+        _ = ax.imshow(  # pyright: ignore[reportUnknownMemberType]
             self.arr,
             cmap=rocket,
             vmin=None,
@@ -47,7 +47,7 @@ class SpmImage:
             box_alpha=0,
         )
         _ = ax.add_artist(scalebar)
-        ax.tick_params(  # type: ignore[unknownMemberType]
+        ax.tick_params(  # pyright: ignore[reportUnknownMemberType]
             left=False,
             bottom=False,
             labelleft=False,
@@ -59,7 +59,7 @@ class SpmImage:
         extent = ax.get_window_extent().transformed(
             fig.dpi_scale_trans.inverted()
         )
-        plt.savefig(png_bytes, bbox_inches=extent)  # type: ignore[unknownMemberType]
+        plt.savefig(png_bytes, bbox_inches=extent)  # pyright: ignore[reportUnknownMemberType]
         _ = png_bytes.seek(0)
 
         png_data_uri = "data:image/png;base64, " + base64.b64encode(
@@ -67,7 +67,7 @@ class SpmImage:
         ).decode("ascii")
 
         if show is True:
-            plt.show()  # type: ignore[unknownMemberType]
+            plt.show()  # pyright: ignore[reportUnknownMemberType]
 
         self.data_uri = png_data_uri
 

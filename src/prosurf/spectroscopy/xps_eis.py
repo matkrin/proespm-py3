@@ -135,8 +135,8 @@ class XpsScan:
             active_scroll="wheel_zoom",
             active_inspect="hover",
         )
-        plot.toolbar.logo = None  # type: ignore[reportAttributeAccessIssure]
+        plot.toolbar.logo = None  # pyright: ignore[reportAttributeAccessIssue]
         plot.background_fill_alpha = 0
         _ = plot.line(x, y)
-        plot.toolbar.active_scroll = "auto"  # type: ignore[reportAttributeAccessIssure]
+        plot.toolbar.active_scroll = "auto"  # pyright: ignore[reportAttributeAccessIssue]
         self.script, self.div = components(plot, wrap_script=True)
