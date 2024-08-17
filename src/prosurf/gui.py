@@ -14,6 +14,7 @@ from PyQt6.QtCore import (
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
     QApplication,
+    QCheckBox,
     QFileDialog,
     QGridLayout,
     QHBoxLayout,
@@ -33,10 +34,13 @@ from prosurf.processing import create_html, process_loop
 class ProcessingWorker(QRunnable):
     """Worker thread for the data processing"""
 
-    def __init__(self, process_dir: str, output_path: str) -> None:
+    def __init__(
+        self, process_dir: str, output_path: str, labj_path: str | None
+    ) -> None:
         super().__init__()
         self.process_dir = process_dir
         self.output_path = output_path
+        self.labj_path = labj_path
         self.signals = WorkerSignals()
 
     def log(self, message: str) -> None:
@@ -47,7 +51,8 @@ class ProcessingWorker(QRunnable):
     def run(self):
         process_dir = self.process_dir
         output_path = self.output_path
-        report_name = os.path.basename(self.process_dir)
+        labj_path = self.labj_path
+        report_name = os.path.basename(process_dir)
 
         try:
             self.log(f"Start processing of {process_dir}")
@@ -118,6 +123,20 @@ class MainGui(QMainWindow):
         # Add the grid layout to the main layout
         self.central_layout.addLayout(grid_layout)
 
+        # Labjournal Spreadsheet
+        labj_layout = QHBoxLayout()
+        self.labj_checkbox = QCheckBox(text="Spreadsheet")
+        self.labj_checkbox.setCheckState(Qt.CheckState.Unchecked)
+
+        self.labj_input = QLineEdit()
+        self.labj_input.setReadOnly(True)
+        self.labj_button = QPushButton("Browse")
+        self.labj_button.setEnabled(False)
+        labj_layout.addWidget(self.labj_checkbox)
+        labj_layout.addWidget(self.labj_input)
+        labj_layout.addWidget(self.labj_button)
+        self.central_layout.addLayout(labj_layout)
+
         # Logging area
         self.log_area = QTextEdit()
         self.log_area.setReadOnly(True)
@@ -156,6 +175,8 @@ class MainGui(QMainWindow):
         _ = self.save_log_button.clicked.connect(self.save_log)  # pyright: ignore[reportUnknownMemberType]
         _ = self.exit_button.clicked.connect(self.exit_app)  # pyright: ignore[reportUnknownMemberType]
         _ = self.start_button.clicked.connect(self.start_processing)  # pyright: ignore[reportUnknownMemberType]
+        _ = self.labj_checkbox.stateChanged.connect(self.toggle_labj_button)  # pyright: ignore[reportUnknownMemberType]
+        _ = self.labj_button.clicked.connect(self.choose_labjournal)  # pyright: ignore[reportUnknownMemberType]
 
     @pyqtSlot()
     def choose_directory(self) -> None:
@@ -212,6 +233,11 @@ class MainGui(QMainWindow):
         self.start_button.setEnabled(False)
         process_dir = self.process_dir_input.text()
         output_path = self.output_input.text()
+        is_labj_checked = self.labj_checkbox.isChecked()
+
+        labj_path = None
+        if is_labj_checked and os.path.isfile(self.labj_input.text()):
+            labj_path = self.labj_input.text()
 
         if not os.path.isdir(process_dir):
             _ = QMessageBox.warning(
@@ -221,10 +247,37 @@ class MainGui(QMainWindow):
             )
             return
 
-        processing_worker = ProcessingWorker(process_dir, output_path)
+        processing_worker = ProcessingWorker(
+            process_dir, output_path, labj_path
+        )
         _ = processing_worker.signals.message.connect(self.log)  # pyright: ignore[reportUnknownMemberType]
         _ = processing_worker.signals.finished.connect(self.processing_finished)  # pyright: ignore[reportUnknownMemberType]
         self.threadpool.start(processing_worker)
+
+    @pyqtSlot()
+    def toggle_labj_button(self) -> None:
+        """Handler for labj_checkbox. Toggles labj_button depending on labj_checkbox state"""
+        is_checked = self.labj_checkbox.isChecked()
+        if is_checked:
+            self.labj_button.setEnabled(True)
+        else:
+            self.labj_button.setEnabled(False)
+
+    @pyqtSlot()
+    def choose_labjournal(self) -> None:
+        """Handler for `labj_button`"""
+        labj_path = QFileDialog.getOpenFileName(
+            self,
+            caption="Choose Labjournal Spreadsheet",
+            directory="",
+            filter="Excel files (*.xlsx)",
+        )[0]
+
+        if labj_path:
+            self.labj_input.setText(labj_path)
+            self.log(f"Labjournal chosen: {labj_path}")
+        else:
+            self.log("No Labjournal chosen.")
 
     @pyqtSlot()
     def processing_finished(self):
