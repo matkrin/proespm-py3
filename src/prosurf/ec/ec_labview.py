@@ -8,6 +8,7 @@ from numpy._typing import NDArray
 
 from prosurf.ec.ec import EcPlot
 from prosurf.fileinfo import Fileinfo
+from prosurf.labjournal import Labjournal
 
 
 class CvLabview:
@@ -18,6 +19,7 @@ class CvLabview:
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.m_id = self.fileinfo.filename
+        self.labjournal_data: dict[str, str] | None = None
         self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
         self.type: str | None = None
@@ -65,6 +67,9 @@ class CvLabview:
         self.plot()
         return self
 
+    def set_labjournal_data(self, labjournal: Labjournal) -> None:
+        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)
+
 
 class CaLabview:
     """Class handeling the CA files from self-written LabView software"""
@@ -74,6 +79,7 @@ class CaLabview:
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.m_id = self.fileinfo.filename
+        self.labjournal_data: dict[str, str] | None = None
         self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
         self.type: str | None = None
@@ -131,6 +137,9 @@ class CaLabview:
         self.plot()
         return self
 
+    def set_labjournal_data(self, labjournal: Labjournal) -> None:
+        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)
+
 
 class FftLabview:
     """Class handeling the FFT files from self-written LabView software"""
@@ -140,6 +149,7 @@ class FftLabview:
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.m_id = self.fileinfo.filename
+        self.labjournal_data: dict[str, str] | None = None
         self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
         self.type: str | None = None
@@ -168,3 +178,6 @@ class FftLabview:
     def process(self) -> Self:
         self.plot()
         return self
+
+    def set_labjournal_data(self, labjournal: Labjournal) -> None:
+        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)

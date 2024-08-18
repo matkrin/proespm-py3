@@ -4,6 +4,7 @@ from dateutil import parser
 import nanonispy as nap  # pyright: ignore[reportMissingTypeStubs]
 
 from prosurf.fileinfo import Fileinfo
+from prosurf.labjournal import Labjournal
 from prosurf.spm.spm import SpmImage
 
 
@@ -19,6 +20,7 @@ class StmSxm:
         self.fileinfo = Fileinfo(filepath)
         self.m_id = self.fileinfo.filename
         self.slide_num: int | None = None
+        self.labjournal_data: dict[str, str] | None = None
 
         self.sxm = nap.read.Scan(filepath)
 
@@ -51,3 +53,6 @@ class StmSxm:
         _ = self.img_data_fw.corr_plane().corr_lines().plot()
         _ = self.img_data_bw.corr_plane().corr_lines().plot()
         return self
+
+    def set_labjournal_data(self, labjournal: Labjournal) -> None:
+        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)

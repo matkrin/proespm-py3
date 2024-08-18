@@ -6,6 +6,7 @@ from sm4file import Sm4
 
 from prosurf.ec.ec import EcPlot
 from prosurf.fileinfo import Fileinfo
+from prosurf.labjournal import Labjournal
 from prosurf.spm.spm import SpmImage
 
 
@@ -23,6 +24,7 @@ class StmSm4:
         self.par5: str | None = None
 
         self.m_id = self.fileinfo.filename
+        self.labjournal_data: dict[str, str] | None = None
 
         self.sm4 = Sm4(filepath)
 
@@ -109,3 +111,6 @@ class StmSm4:
         _ = self.img_data_fw.corr_plane().corr_lines().plot()
         _ = self.img_data_bw.corr_plane().corr_lines().plot()
         return self
+
+    def set_labjournal_data(self, labjournal: Labjournal) -> None:
+        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)

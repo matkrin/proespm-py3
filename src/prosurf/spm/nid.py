@@ -6,6 +6,7 @@ from dateutil import parser
 from numpy._typing import NDArray
 
 from prosurf.fileinfo import Fileinfo
+from prosurf.labjournal import Labjournal
 from prosurf.spm.spm import SpmImage
 
 FLOAT_REGEX = re.compile(r"[+-]?([0-9]*[.])?[0-9]+")
@@ -19,6 +20,7 @@ class SpmNid:
 
         self.m_id = self.fileinfo.filename
         self.slide_num: int | None = None
+        self.labjournal_data: dict[str, str] | None = None
 
         with open(filepath, "rb") as f:
             content = f.read()
@@ -115,6 +117,9 @@ class SpmNid:
         _ = self.img_data_bw.corr_plane().corr_lines().plot()
 
         return self
+
+    def set_labjournal_data(self, labjournal: Labjournal) -> None:
+        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)
 
 
 def get_header(content_list: list[bytes]) -> list[bytes]:

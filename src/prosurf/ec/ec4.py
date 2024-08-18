@@ -13,6 +13,7 @@ from numpy._typing import NDArray
 
 from prosurf.ec.ec import EcPlot
 from prosurf.fileinfo import Fileinfo
+from prosurf.labjournal import Labjournal
 
 
 DATETIME_REGEX = re.compile(r"dateTime(\s+[\d\s:-]+)")
@@ -30,6 +31,7 @@ class Ec4:
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.m_id = self.fileinfo.filename
+        self.labjournal_data: dict[str, str] | None = None
 
         self.datetime: datetime | None = None
         self.u_start: float | None = None
@@ -147,3 +149,6 @@ class Ec4:
     def process(self) -> Self:
         self.plot()
         return self
+
+    def set_labjournal_data(self, labjournal: Labjournal) -> None:
+        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)

@@ -6,6 +6,7 @@ import mulfile
 import numpy as np
 
 from prosurf.fileinfo import Fileinfo
+from prosurf.labjournal import Labjournal
 from prosurf.spm.spm import SpmImage
 
 
@@ -28,14 +29,24 @@ class StmMul:
 
         for mul_image in self.mulimages:  # pyright: ignore[reportUnknownVariableType]
             mul_image.basename = self.fileinfo.basename
+            mul_image.fileinfo = self.fileinfo
             mul_image.m_id = mul_image.img_id  # pyright: ignore[reportUnknownMemberType]
             mul_image.img_data = SpmImage(
                 np.flip(mul_image.img_data, axis=0),   # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
                 mul_image.xsize,  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
             )
+            mul_image.labjournal_data = None
 
     def process(self) -> Self:
         for mul_image in self.mulimages:  # pyright: ignore[reportUnknownVariableType]
             mul_image.img_data.corr_plane().corr_lines().plot()  # pyright: ignore[reportUnknownMemberType]
 
         return self
+
+    def set_labjournal_data(self, labjournal: Labjournal) -> None:
+        for mul_image in self.mulimages:   # pyright: ignore[reportUnknownVariableType]
+            mul_image.labjournal_data = labjournal.extract_metadata_for_m_id(mul_image.m_id)   # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
+
+
+
+

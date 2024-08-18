@@ -7,6 +7,7 @@ from bokeh.layouts import row
 from bokeh.plotting import figure
 
 from prosurf.fileinfo import Fileinfo
+from prosurf.labjournal import Labjournal
 
 
 class Qcmb:
@@ -15,6 +16,7 @@ class Qcmb:
         self.fileinfo = Fileinfo(filepath)
         self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
         self.m_id = self.fileinfo.filename
+        self.labjournal_data: dict[str, str] | None = None
 
         arr = np.genfromtxt(
             filepath, delimiter=", ", skip_header=2, skip_footer=1
@@ -70,3 +72,6 @@ class Qcmb:
 
     def process(self):
         self.plot()
+
+    def set_labjournal_data(self, labjournal: Labjournal) -> None:
+        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)

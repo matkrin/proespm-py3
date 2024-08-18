@@ -5,6 +5,7 @@ import numpy as np
 import access2thematrix  # pyright: ignore[reportMissingTypeStubs]
 
 from prosurf.fileinfo import Fileinfo
+from prosurf.labjournal import Labjournal
 from prosurf.spm.spm import SpmImage
 
 
@@ -27,7 +28,7 @@ class StmMatrix:
         self.slide_num: int | None = None
 
         self.m_id: str = self.fileinfo.filename
-        self.sheet_id: str | None = None
+        self.labjournal_data: dict[str, str] | None = None
 
         self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
@@ -74,3 +75,6 @@ class StmMatrix:
         _ = self.img_data_fw.corr_plane().corr_lines().plot()
         _ = self.img_data_bw.corr_plane().corr_lines().plot()
         return self
+
+    def set_labjournal_data(self, labjournal: Labjournal) -> None:
+        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)

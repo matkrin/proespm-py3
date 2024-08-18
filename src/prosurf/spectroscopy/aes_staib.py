@@ -9,6 +9,7 @@ from numpy._typing import NDArray
 from vamas.vamas import Vamas
 
 from prosurf.fileinfo import Fileinfo
+from prosurf.labjournal import Labjournal
 
 
 class AesStaib:
@@ -22,6 +23,7 @@ class AesStaib:
         self.ident = "AES"
         self.fileinfo = Fileinfo(filepath)
         self.m_id = self.fileinfo.filename
+        self.labjournal_data: dict[str, str] | None = None
 
         self.datetime = None
         self.mode = None
@@ -177,3 +179,6 @@ class AesStaib:
     def process(self) -> Self:
         self.plot()
         return self
+
+    def set_labjournal_data(self, labjournal: Labjournal) -> None:
+        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)

@@ -28,7 +28,8 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-from prosurf.processing import create_html, process_loop
+from prosurf.labjournal import Labjournal
+from prosurf.processing import create_html, create_process_objs, process_loop
 
 
 class ProcessingWorker(QRunnable):
@@ -51,14 +52,17 @@ class ProcessingWorker(QRunnable):
     def run(self):
         process_dir = self.process_dir
         output_path = self.output_path
-        labj_path = self.labj_path
+        labjournal = (
+            Labjournal(self.labj_path) if self.labj_path is not None else None
+        )
         report_name = os.path.basename(process_dir)
 
         try:
             self.log(f"Start processing of {process_dir}")
-            processed = process_loop(process_dir, self.log)
-            processed.sort(key=lambda x: x.datetime)
-            create_html(processed, output_path, report_name)
+            process_objs = create_process_objs(process_dir, self.log)
+            process_objs.sort(key=lambda x: x.datetime)
+            process_loop(process_objs, labjournal, self.log)
+            create_html(process_objs, output_path, report_name)
             self.log(f"HTML created at {output_path}")
             self.signals.finished.emit()
 

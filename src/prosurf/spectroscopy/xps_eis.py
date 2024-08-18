@@ -10,6 +10,7 @@ from bokeh.plotting import figure
 from numpy._typing import NDArray
 
 from prosurf.fileinfo import Fileinfo
+from prosurf.labjournal import Labjournal
 
 
 class XpsEis:
@@ -82,6 +83,12 @@ class XpsEis:
             xps_scan.plot()
         return self
 
+    def set_labjournal_data(self, labjournal: Labjournal) -> None:
+        for xps_scan in self.data:
+            xps_scan.labjournal_data = labjournal.extract_metadata_for_m_id(
+                xps_scan.m_id
+            )
+
 
 class XpsScan:
     """Class handling a single XPS scan in an Omicron EIS data file (.txt)"""
@@ -112,6 +119,7 @@ class XpsScan:
         self.e_pass = e_pass
 
         self.m_id = f"{self.filename}_{self.scan_number}"
+        self.labjournal_data: dict[str, str] | None = None
 
         self.script = None
         self.div = None
