@@ -19,6 +19,8 @@ dependencies = [
     "pyqt6>=6.7.0",
     "seaborn>=0.13.2",
     "nanonispy @ git+https://github.com/matkrin/nanonispy",
+    "pandas>=2.2.2",
+    "openpyxl>=3.1.5",
 ]
 readme = "README.md"
 requires-python = ">= 3.12"

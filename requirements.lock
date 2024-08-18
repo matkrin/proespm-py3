@@ -19,6 +19,8 @@ contourpy==1.2.1
     # via matplotlib
 cycler==0.12.1
     # via matplotlib
+et-xmlfile==1.1.0
+    # via openpyxl
 fonttools==4.53.1
     # via matplotlib
 jinja2==3.1.4
@@ -53,11 +55,14 @@ numpy==2.0.0
     # via prosurf
     # via seaborn
     # via sm4file
+openpyxl==3.1.5
+    # via prosurf
 packaging==24.1
     # via bokeh
     # via matplotlib
 pandas==2.2.2
     # via bokeh
+    # via prosurf
     # via seaborn
 pillow==10.4.0
     # via bokeh
