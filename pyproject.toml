@@ -21,6 +21,7 @@ dependencies = [
     "nanonispy @ git+https://github.com/matkrin/nanonispy",
     "pandas>=2.2.2",
     "openpyxl>=3.1.5",
+    "opencv-python>=4.10.0.84",
 ]
 readme = "README.md"
 requires-python = ">= 3.12"

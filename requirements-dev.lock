@@ -61,10 +61,13 @@ numpy==2.0.0
     # via matplotlib
     # via mulfile
     # via nanonispy
+    # via opencv-python
     # via pandas
     # via prosurf
     # via seaborn
     # via sm4file
+opencv-python==4.10.0.84
+    # via prosurf
 openpyxl==3.1.5
     # via prosurf
 packaging==24.1
