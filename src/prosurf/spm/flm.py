@@ -17,16 +17,20 @@ class StmFlm(StmMul):
 
     """
 
+    ident = "FLM"
+
     def __init__(self, filepath: str) -> None:
         super().__init__(filepath)
 
         self.m_id = self.fileinfo.filename
         self.mp4_save_dir = os.path.join(self.fileinfo.dirname, "movies")
-        self.mp4_name = os.path.join(self.mp4_save_dir, f"{self.fileinfo.filename}.mp4")
+        self.mp4_name = os.path.join(
+            self.mp4_save_dir, f"{self.fileinfo.filename}.mp4"
+        )
         self.dimensions = self.mulimages[0].img_data.shape
         self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
-    def convert_to_mp4(self, fps: int=10) -> None:
+    def convert_to_mp4(self, fps: int = 10) -> None:
         """
         takes image-data(np-arrays) of all images in flm-file,
         flips the matrices vertically(as scanning starts in lower left corner),
