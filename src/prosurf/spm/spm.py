@@ -26,6 +26,10 @@ class SpmImage:
         self.xsize = xsize
         self.data_uri = None
 
+    @property
+    def shape(self) -> tuple[int, int]:
+        return self.arr.shape
+
     def plot(self, show: bool = False) -> Self:
         """Plots the image in"""
         rocket = sns.color_palette("rocket", as_cmap=True)

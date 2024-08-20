@@ -12,6 +12,7 @@ from prosurf.misc.image import Image
 from prosurf.misc.qcmb import Qcmb
 from prosurf.spectroscopy.aes_staib import AesStaib
 from prosurf.spectroscopy.xps_eis import XpsEis
+from prosurf.spm.flm import StmFlm
 from prosurf.spm.mtrx import StmMatrix
 from prosurf.spm.mul import StmMul
 from prosurf.spm.nid import SpmNid
@@ -40,6 +41,7 @@ ProcessObject: TypeAlias = (
     StmMatrix
     | StmMul
     | StmSm4
+    | StmFlm
     | AesStaib
     | StmSxm
     | SpmNid
@@ -129,6 +131,10 @@ def create_process_objs(
                 obj = SpmNid(file_path)
                 obj.slide_num = slide_num
                 slide_num += 1
+                process_objects.append(obj)
+
+            case ".flm":
+                obj = StmFlm(file_path)
                 process_objects.append(obj)
 
             case ".vms" | ".dat":
