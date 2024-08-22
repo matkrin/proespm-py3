@@ -1,0 +1,60 @@
+<h2 id="{{ entry.m_id }}">{{ entry.fileinfo.basename }}</h2>
+
+{% for xps_scan in entry.data %}
+    <div class="row">
+        <div class="xps_plot" >
+            {{ xps_scan.script }}
+            {{ xps_scan.div }}
+        </div>
+
+        <div class="table_column">
+            <table style:"width=100%">
+                <tr>
+                    <th>ID</th>
+                    <td>{{ xps_scan.m_id }}</td>
+                </tr>
+                <tr>
+                    <th>Scan Number</th>
+                    <td>{{ xps_scan.scan_number }}</td>
+                </tr>
+                <tr>
+                    <th>Datetime</th>
+                    <td>{{ xps_scan.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+                </tr>
+                <tr>
+                    <th>Region</th>
+                    <td>{{ xps_scan.start }} - {{ xps_scan.end }} eV</td>
+                </tr>
+                <tr>
+                    <th>Step</th>
+                    <td>{{ xps_scan.step }} eV</td>
+                </tr>
+                <tr>
+                    <th>Sweeps</th>
+                    <td>{{ xps_scan.sweeps }}</td>
+                </tr>
+                <tr>
+                    <th>Dwell</th>
+                    <td>{{ xps_scan.dwell }} s</td>
+                </tr>
+                <tr>
+                    <th>E<sub>pass</sub></th>
+                    <td>{{ xps_scan.e_pass }} eV</td>
+                </tr>
+            </table>
+        </div>
+        {% if xps_scan.labjournal_data is not none %}
+            <div class="table_column">
+                <table>
+                    {% for key, value in xps_scan.labjournal_data.items() %}
+                        <tr>
+                            <th>{{ key }}</th>
+                            <td>{{ value[0] }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+    </div>
+
+{% endfor %}

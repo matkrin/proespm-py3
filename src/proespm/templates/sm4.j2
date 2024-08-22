@@ -1,0 +1,76 @@
+<div class="row">
+
+    <div class="stm_image_fw">
+        <img id="{{ entry.m_id }}" src="{{ entry.img_data_fw.data_uri }}" class="hover-shadow"
+            data-slide-num="{{ entry.slide_num }}" />
+    </div>
+    <div class="stm_image_bw">
+        <img id="{{ entry.m_id }}" src="{{ entry.img_data_bw.data_uri }}" class="hover-shadow"
+            data-slide-num="{{ entry.slide_num }}" />
+    </div>
+
+    <!-- ECSTM specific data -->
+    {% if entry.voltage_div and entry.voltage_script %}
+        <div class="ecstm-plot">
+            {{ entry.voltage_script }}
+            {{ entry.voltage_div }}
+        </div>
+    {% endif %}
+
+    {% if entry.current_div and entry.current_script %}
+        <div class="ecstm-plot">
+            {{ entry.current_script }}
+            {{ entry.current_div }}
+        </div>
+    {% endif %}
+
+    <!-- IMAGE METADATA -->
+    <div class="table_column">
+        <table>
+            <tr>
+                <th>Image ID</th>
+                <td><a href="file:///{{ entry.fileinfo.filepath }}">{{ entry.m_id }}</td>
+            </tr>
+            <tr>
+                <th>Datetime</th>
+                <td>{{ entry.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+            </tr>
+            <tr>
+                <th>Scan Size</th>
+                <td>{{ "{:.0f}".format(entry.xsize) }} &#215; {{ "{:.0f}".format(entry.ysize) }} nm&#178;</td>
+            </tr>
+            <tr>
+                <th>Resolution</th>
+                <td>{{ entry.xres }} &#215; {{ entry.yres }}</td>
+            </tr>
+            <tr>
+                <th>Tilt</th>
+                <td>{{ entry.tilt }}&#176;</td>
+            <tr>
+                <th>Scan Duration</th>
+                <td>{{ "{:.2f}".format(entry.speed) }} s</td>
+            </tr>
+            <tr>
+                <th>Line Time</th>
+                <td>{{ "{:.2f}".format(entry.line_time) }} ms</td>
+            </tr>
+            <tr>
+                <th>Offset</th>
+                <td>{{ "{:.2f}".format(entry.xoffset) }} nm, {{ "{:.2f}".format(entry.yoffset) }} nm</td>
+            </tr>
+        </table>
+    </div>
+
+    {% if entry.labjournal_data is not none %}
+        <div class="table_column">
+            <table>
+                {% for key, value in entry.labjournal_data.items() %}
+                    <tr>
+                        <th>{{ key }}</th>
+                        <td>{{ value[0] }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endif %}
+</div>

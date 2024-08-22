@@ -1,0 +1,319 @@
+:root {
+    --body-fg-color: black;
+    --body-bg-color: #f2f2f6;
+    --table-sec-color: #f2f2f2;
+    --navbar-color: #24292e;
+    --navbar-color: rgba(36, 41, 46, 0.8);
+    --row-bg-color: white;
+    --overview-hover-color: rgba(20, 75, 211, 1);
+}
+
+body {
+    font-family: sans-serif;
+    margin: 0;
+    color: var(--body-fg-color);
+    background-color: var(--body-bg-color);
+}
+
+h1 {
+    text-align: center;
+}
+
+h2 {
+    margin: 15px 20px;
+}
+
+table {
+    border-spacing: 0;
+}
+
+img {
+    width: 100%;
+}
+
+img.hover-shadow {
+    transition: 0.3s;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 5px 15px;
+}
+
+tr:nth-child(even) {
+    background-color: var(--table-sec-color);
+}
+
+/* NAVBAR */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 99;
+}
+
+.navbar ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 5px;
+    background-color: var(--navbar-color);
+    backdrop-filter: blur(15px);
+}
+
+.navbar li {
+    cursor: pointer;
+    display: inline;
+    padding: 0px 10px;
+    font-size: 18px;
+    color: white;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: white;
+}
+
+/* OVERVIEW */
+details {
+    margin: 15px 20px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: grey;
+    border-radius: 20px 20px 20px 20px;
+    background-color: var(--row-bg-color);
+}
+
+details>summary {
+    cursor: pointer;
+    padding: 15px 0 15px 20px;
+    font-size: 1.2em;
+}
+
+details>div {
+    margin: 15px 20px 15px 20px;
+}
+
+#overview {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.overview-entry {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.overview-entry:hover {
+    color: white;
+    background-color: var(--overview-hover-color);
+    font-weight: bold;
+}
+
+.overview-entry>p {
+    font-size: 12px;
+    margin: 0 0 7px 0;
+    max-width: 200px;
+    text-align: center;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 15px 20px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: grey;
+    border-radius: 20px 20px 20px 20px;
+    background-color: var(--row-bg-color);
+}
+
+.stm_image_fw,
+.stm_image_bw {
+    cursor: pointer;
+    float: left;
+    width: 20%;
+    padding: 20px;
+}
+
+.xps_plot {
+    float: left;
+    width: 40%;
+    padding: 20px;
+}
+
+.ecstm-plot {
+    float: left;
+    width: 20%;
+    padding: 20px;
+}
+
+.qcmb_plot {
+    float: left;
+    width: 50%;
+    padding: 20px;
+}
+
+.table_column {
+    float: left;
+    width: 20%;
+    padding: 20px;
+}
+
+.remark_column {
+    float: left;
+    width: 20%;
+    padding: 20px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/*  MODAL */
+#modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 20px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(15px);
+    z-index: 10000;
+}
+
+.modal-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-image {
+    height: 80vh;
+    width: auto;
+    padding: 10px;
+}
+
+#slide-info {
+    color: white;
+    display: table;
+    margin: 0 auto;
+    font-size: 20px;
+    padding: 5px;
+}
+
+/* MODAL Close Button */
+.close {
+    color: white;
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #999;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* MODAL Next & previous buttons in modal*/
+.prev-next {
+    cursor: pointer;
+    padding: 17px;
+    margin-top: -50px;
+    color: white;
+    font-weight: bold;
+    font-size: 30px;
+    transition: 0.6s ease;
+    border-radius: 10px 10px 10px 10px;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev-next:hover {
+    background-color: rgba(255, 255, 255, 0.24);
+}
+
+.hover-shadow:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* SIDEBAR */
+.sidebar {
+    height: 100%;
+    width: 0%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-x: scroll;
+    transition: 0.2s;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.80);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid grey;
+    z-index: 2;
+}
+
+.sidebar-content {
+    display: block;
+    text-align: left;
+    padding: 70px 0 0 35px;
+}
+
+.sidebar a:link {
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar a:hover {
+    color: #646cff;
+}
+
+/* TOP BUTTON */
+#top_button {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    z-index: 99;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: black;
+    cursor: pointer;
+    border-radius: 20%;
+    font-size: 25px;
+}
+
+/* #top_button:hover { */
+/*     color: rgb(255, 255, 0); */
+/*     background-color: rgb(48, 23, 61) */
+/* } */
+
+#top-button-icon {
+    width: 50px;
+    height: 50px;
+}
+
+#error-file {
+    color: red;
+    font-size: 1.5em
+}

@@ -1,0 +1,52 @@
+<div class="row">
+    <div class="xps_plot">
+        {{ entry.script }}
+        {{ entry.div }}
+    </div>
+
+    <div class="table_column">
+        <table style:"width=100%">
+            <tr>
+                <th id="{{ entry.m_id }}">ID</th>
+                <td>{{ entry.m_id }}</td>
+            </tr>
+            <tr>
+                <th>Datetime</th>
+                <td>{{ entry.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+            </tr>
+
+            {% if entry.u_start %}
+                <tr>
+                    <th>U<sub>start</sub></th>
+                    <td>{{ "{:.3f}".format(entry.u_start) }} V</td>
+                </tr>
+                <tr>
+                    <th>U<sub>1</sub></th>
+                    <td>{{ "{:.3f}".format(entry.u_1) }} V</td>
+                </tr>
+                <tr>
+                    <th>U<sub>2</sub></th>
+                    <td>{{ "{:.3f}".format(entry.u_2) }} V</td>
+                </tr>
+                <tr>
+                    <th>Rate</th>
+                    <td>{{ "{:.3f}".format(entry.rate) }} V</td>
+                </tr>
+            {% endif %}
+
+        </table>
+    </div>
+
+    {% if entry.labjournal_data is not none %}
+        <div class="table_column">
+            <table>
+                {% for key, value in entry.labjournal_data.items() %}
+                    <tr>
+                        <th>{{ key }}</th>
+                        <td>{{ value[0] }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endif %}
+</div>

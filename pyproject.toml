@@ -1,0 +1,51 @@
+[project]
+name = "proespm"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "matkrin", email = "matkrin@protonmail.com" }
+]
+dependencies = [
+    "access2thematrix>=0.4.4",
+    "mulfile @ git+https://github.com/matkrin/mulfile@v0.4.0",
+    "numpy>=2.0.0",
+    "vamas>=0.1.1",
+    "sm4file @ git+https://github.com/matkrin/sm4file@v0.1.0",
+    "rich>=13.7.1",
+    "jinja2>=3.1.4",
+    "matplotlib>=3.9.1",
+    "matplotlib-scalebar>=0.8.1",
+    "bokeh==3.5.0",
+    "pyqt6>=6.7.0",
+    "seaborn>=0.13.2",
+    "nanonispy @ git+https://github.com/matkrin/nanonispy",
+    "pandas>=2.2.2",
+    "openpyxl>=3.1.5",
+    "opencv-python>=4.10.0.84",
+]
+readme = "README.md"
+requires-python = ">= 3.12"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "pytest>=8.2.2",
+    "mypy>=1.10.1",
+    "pyinstaller>=6.9.0",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/proespm"]
+
+[tool.ruff]
+line-length = 80
+
+[tool.basedpyright]
+typeCheckingMode = "all"

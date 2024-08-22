@@ -1,0 +1,100 @@
+<div class="row">
+
+  <div class="stm_image_fw">
+    <img id="{{ entry.m_id }}" src="{{ entry.img_data_fw.data_uri }}" class="hover-shadow" data-slide-num="{{ entry.slide_num }}" />
+  </div>
+  <div class="stm_image_bw">
+    <img id="{{ entry.m_id }}" src="{{ entry.img_data_bw.data_uri }}" class="hover-shadow" data-slide-num="{{ entry.slide_num }}" />
+  </div>
+
+
+  <!-- IMAGE METADATA -->
+  <div class="table_column">
+    <table>
+      <tr>
+        <th>Image ID</th>
+        <td><a href="file:///{{ entry.fileinfo.filepath }}">{{ entry.m_id }}</td>
+      </tr>
+      <tr>
+        <th>Number</th>
+        <td>{{ entry.slide_num }}</td>
+      </tr>
+      <tr>
+        <th>Datetime</th>
+        <td>{{ entry.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+      </tr>
+      <tr>
+      <tr>
+        <th>I<sub>tun</sub></th>
+        <td>{{ "{:.2f}".format(entry.current) }} nA</td>
+      </tr>
+      <tr>
+        <th>U<sub>tun</sub></th>
+        <td>{{ "{:.1f}".format(entry.bias) }} mV</td>
+      </tr>
+      <tr>
+        <th>Scan Size</th>
+        <td>{{ "{:.0f}".format(entry.xsize) }} &#215; {{ "{:.0f}".format(entry.ysize) }} nm&#178;</td>
+      </tr>
+      <tr>
+        <th>Resolution</th>
+        <td>{{ entry.xres }} &#215; {{ entry.yres }}</td>
+      </tr>
+      <tr>
+        <th>Rotation</th>
+        <td>{{ entry.rotation }}&#176;</td>
+      <tr>
+        <th>Scan Duration</th>
+        <td>{{ "{:.2f}".format(entry.scan_duration) }} s</td>
+      </tr>
+      <tr>
+        <th>Line Time</th>
+        <td>{{ "{:.2f}".format(entry.line_time) }} ms</td>
+      </tr>
+      <tr>
+        <th>Offset</th>
+        <td>{{ "{:.2f}".format(entry.xoffset) }} nm, {{ "{:.2f}".format(entry.yoffset) }} nm</td>
+      </tr>
+
+      {% if entry.p_gain %}
+          <tr>
+            <th>P / I</th>
+            <td>{{ "{:.2f}".format(entry.p_gain) }} / {{ "{:.2f}".format(entry.i_gain) }}</td>
+          </tr>
+      {% endif %}
+
+    </table>
+  </div>
+
+  <div class="table_column">
+    <table style:"width=100%" >
+      <tr>
+        <th>Comment</th>
+        <td>{{ entry.creation_comment }}</td>
+      </tr>
+      <tr>
+        <th>Data Set</th>
+        <td>{{ entry.data_set_name }}</td>
+      </tr>
+      <tr>
+        <th>Sample</th>
+        <td>{{ entry.sample_name }}</td>
+      </tr>
+    </table>
+  </div>
+
+  {% if entry.labjournal_data is not none %}
+  <div class="table_column">
+    <table>
+    {% for key, value in entry.labjournal_data.items() %}
+      <tr>
+        <th>{{ key }}</th>
+        <td>{{ value[0] }}</td>
+      </tr>
+    {% endfor %}
+    </table>
+  </div>
+  {% endif %}
+
+
+</div><!-- End of one row -->
