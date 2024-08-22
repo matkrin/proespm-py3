@@ -2,7 +2,7 @@ import sys
 
 from PyQt6.QtWidgets import QApplication
 
-from prosurf.gui import MainGui
+from proespm.gui import MainGui
 
 
 def main():

@@ -3,9 +3,9 @@ import numpy as np
 from dateutil import parser
 import nanonispy as nap  # pyright: ignore[reportMissingTypeStubs]
 
-from prosurf.fileinfo import Fileinfo
-from prosurf.labjournal import Labjournal
-from prosurf.spm.spm import SpmImage
+from proespm.fileinfo import Fileinfo
+from proespm.labjournal import Labjournal
+from proespm.spm.spm import SpmImage
 
 
 class StmSxm:

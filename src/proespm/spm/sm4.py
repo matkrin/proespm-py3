@@ -4,10 +4,10 @@ from bokeh.embed import components
 from numpy.typing import NDArray
 from sm4file import Sm4
 
-from prosurf.ec.ec import EcPlot
-from prosurf.fileinfo import Fileinfo
-from prosurf.labjournal import Labjournal
-from prosurf.spm.spm import SpmImage
+from proespm.ec.ec import EcPlot
+from proespm.fileinfo import Fileinfo
+from proespm.labjournal import Labjournal
+from proespm.spm.spm import SpmImage
 
 
 class StmSm4:

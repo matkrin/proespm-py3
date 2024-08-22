@@ -6,8 +6,8 @@ from bokeh.embed import components
 from bokeh.layouts import row
 from bokeh.plotting import figure
 
-from prosurf.fileinfo import Fileinfo
-from prosurf.labjournal import Labjournal
+from proespm.fileinfo import Fileinfo
+from proespm.labjournal import Labjournal
 
 
 class Qcmb:

@@ -4,9 +4,9 @@ from typing import Self
 import numpy as np
 import access2thematrix  # pyright: ignore[reportMissingTypeStubs]
 
-from prosurf.fileinfo import Fileinfo
-from prosurf.labjournal import Labjournal
-from prosurf.spm.spm import SpmImage
+from proespm.fileinfo import Fileinfo
+from proespm.labjournal import Labjournal
+from proespm.spm.spm import SpmImage
 
 
 class NoTracesError(Exception):

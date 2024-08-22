@@ -5,19 +5,19 @@ from typing import Callable, TypeAlias
 
 from jinja2 import Environment, FileSystemLoader
 
-from prosurf.ec.ec4 import Ec4
-from prosurf.ec.ec_labview import CaLabview, CvLabview, FftLabview
-from prosurf.labjournal import Labjournal
-from prosurf.misc.image import Image
-from prosurf.misc.qcmb import Qcmb
-from prosurf.spectroscopy.aes_staib import AesStaib
-from prosurf.spectroscopy.xps_eis import XpsEis
-from prosurf.spm.flm import StmFlm
-from prosurf.spm.mtrx import StmMatrix
-from prosurf.spm.mul import StmMul
-from prosurf.spm.nid import SpmNid
-from prosurf.spm.sm4 import StmSm4
-from prosurf.spm.sxm import StmSxm
+from proespm.ec.ec4 import Ec4
+from proespm.ec.ec_labview import CaLabview, CvLabview, FftLabview
+from proespm.labjournal import Labjournal
+from proespm.misc.image import Image
+from proespm.misc.qcmb import Qcmb
+from proespm.spectroscopy.aes_staib import AesStaib
+from proespm.spectroscopy.xps_eis import XpsEis
+from proespm.spm.flm import StmFlm
+from proespm.spm.mtrx import StmMatrix
+from proespm.spm.mul import StmMul
+from proespm.spm.nid import SpmNid
+from proespm.spm.sm4 import StmSm4
+from proespm.spm.sxm import StmSxm
 
 ALLOWED_FILE_TYPES = (
     ".mul",

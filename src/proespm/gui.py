@@ -28,8 +28,8 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-from prosurf.labjournal import Labjournal
-from prosurf.processing import create_html, create_process_objs, process_loop
+from proespm.labjournal import Labjournal
+from proespm.processing import create_html, create_process_objs, process_loop
 
 
 class ProcessingWorker(QRunnable):
@@ -86,7 +86,7 @@ class MainGui(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
 
-        self.setWindowTitle("prosurf")
+        self.setWindowTitle("proespm")
         self.setGeometry(100, 100, 700, 400)
 
         self.central_widget = QWidget()

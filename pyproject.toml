@@ -1,5 +1,5 @@
 [project]
-name = "prosurf"
+name = "proespm"
 version = "0.1.0"
 description = "Add your description here"
 authors = [
@@ -42,7 +42,7 @@ dev-dependencies = [
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/prosurf"]
+packages = ["src/proespm"]
 
 [tool.ruff]
 line-length = 80

@@ -11,9 +11,9 @@ from bokeh.palettes import Category10_10
 from dateutil import parser
 from numpy._typing import NDArray
 
-from prosurf.ec.ec import EcPlot
-from prosurf.fileinfo import Fileinfo
-from prosurf.labjournal import Labjournal
+from proespm.ec.ec import EcPlot
+from proespm.fileinfo import Fileinfo
+from proespm.labjournal import Labjournal
 
 
 DATETIME_REGEX = re.compile(r"dateTime(\s+[\d\s:-]+)")

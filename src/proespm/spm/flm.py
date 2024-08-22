@@ -2,7 +2,7 @@ from datetime import datetime
 import os
 from typing import Self, override
 import cv2
-from prosurf.spm.mul import StmMul
+from proespm.spm.mul import StmMul
 
 for k, v in os.environ.items():
     if k.startswith("QT_") and "cv2" in v:

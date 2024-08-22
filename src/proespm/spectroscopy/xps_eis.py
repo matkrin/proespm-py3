@@ -9,8 +9,8 @@ from bokeh.embed import components
 from bokeh.plotting import figure
 from numpy._typing import NDArray
 
-from prosurf.fileinfo import Fileinfo
-from prosurf.labjournal import Labjournal
+from proespm.fileinfo import Fileinfo
+from proespm.labjournal import Labjournal
 
 
 class XpsEis:

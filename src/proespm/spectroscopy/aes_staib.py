@@ -8,8 +8,8 @@ from dateutil import parser
 from numpy._typing import NDArray
 from vamas.vamas import Vamas
 
-from prosurf.fileinfo import Fileinfo
-from prosurf.labjournal import Labjournal
+from proespm.fileinfo import Fileinfo
+from proespm.labjournal import Labjournal
 
 
 class AesStaib:

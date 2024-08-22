@@ -5,9 +5,9 @@ from typing import Self
 import mulfile
 import numpy as np
 
-from prosurf.fileinfo import Fileinfo
-from prosurf.labjournal import Labjournal
-from prosurf.spm.spm import SpmImage
+from proespm.fileinfo import Fileinfo
+from proespm.labjournal import Labjournal
+from proespm.spm.spm import SpmImage
 
 
 class StmMul:
