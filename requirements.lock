@@ -94,7 +94,7 @@ seaborn==0.13.2
 six==1.16.0
     # via access2thematrix
     # via python-dateutil
-sm4file @ git+https://github.com/matkrin/sm4file@cd80b559c989b89a611ac28b9109f7a52d2d8b1a
+sm4file==0.1.0
     # via proespm
 tornado==6.4.1
     # via bokeh

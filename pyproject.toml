@@ -10,7 +10,6 @@ dependencies = [
     "mulfile @ git+https://github.com/matkrin/mulfile@v0.4.0",
     "numpy>=2.0.0",
     "vamas>=0.1.1",
-    "sm4file @ git+https://github.com/matkrin/sm4file@v0.1.0",
     "rich>=13.7.1",
     "jinja2>=3.1.4",
     "matplotlib>=3.9.1",
@@ -22,6 +21,7 @@ dependencies = [
     "pandas>=2.2.2",
     "openpyxl>=3.1.5",
     "opencv-python>=4.10.0.84",
+    "sm4file>=0.1.0",
 ]
 readme = "README.md"
 requires-python = ">= 3.12"
