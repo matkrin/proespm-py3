@@ -7,7 +7,6 @@ authors = [
 ]
 dependencies = [
     "access2thematrix>=0.4.4",
-    "mulfile @ git+https://github.com/matkrin/mulfile@v0.4.0",
     "numpy>=2.0.0",
     "vamas>=0.1.1",
     "rich>=13.7.1",
@@ -22,6 +21,7 @@ dependencies = [
     "openpyxl>=3.1.5",
     "opencv-python>=4.10.0.84",
     "sm4file>=0.1.0",
+    "mulfile>=0.4.0",
 ]
 readme = "README.md"
 requires-python = ">= 3.12"

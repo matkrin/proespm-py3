@@ -28,26 +28,22 @@ class StmMul:
 
         self.mulimages = mulfile.load(filepath)
 
-        for mul_image in self.mulimages:  # pyright: ignore[reportUnknownVariableType]
-            mul_image.basename = self.fileinfo.basename
-            mul_image.fileinfo = self.fileinfo
-            mul_image.m_id = mul_image.img_id  # pyright: ignore[reportUnknownMemberType]
-            mul_image.img_data = SpmImage(
-                np.flip(mul_image.img_data, axis=0),   # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
-                mul_image.xsize,  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
+        for mul_image in self.mulimages:
+            mul_image.basename = self.fileinfo.basename  # pyright: ignore[reportAttributeAccessIssue]
+            mul_image.fileinfo = self.fileinfo  # pyright: ignore[reportAttributeAccessIssue]
+            mul_image.m_id = mul_image.img_id  # pyright: ignore[reportAttributeAccessIssue]
+            mul_image.img_data = SpmImage(  # pyright: ignore[reportAttributeAccessIssue]
+                np.flip(mul_image.img_data, axis=0),
+                mul_image.xsize,
             )
-            mul_image.labjournal_data = None
+            mul_image.labjournal_data = None  # pyright: ignore[reportAttributeAccessIssue]
 
     def process(self) -> Self:
-        for mul_image in self.mulimages:  # pyright: ignore[reportUnknownVariableType]
-            mul_image.img_data.corr_plane().corr_lines().plot()  # pyright: ignore[reportUnknownMemberType]
+        for mul_image in self.mulimages:
+            mul_image.img_data.corr_plane().corr_lines().plot()  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]
 
         return self
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        for mul_image in self.mulimages:   # pyright: ignore[reportUnknownVariableType]
-            mul_image.labjournal_data = labjournal.extract_metadata_for_m_id(mul_image.m_id)   # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
-
-
-
-
+        for mul_image in self.mulimages:
+            mul_image.labjournal_data = labjournal.extract_metadata_for_m_id(mul_image.m_id)  # pyright: ignore[reportAttributeAccessIssue]

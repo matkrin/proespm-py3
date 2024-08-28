@@ -47,7 +47,7 @@ matplotlib-scalebar==0.8.1
     # via proespm
 mdurl==0.1.2
     # via markdown-it-py
-mulfile @ git+https://github.com/matkrin/mulfile@b2918905627f1b90671baeecf8347cfb1395bd7b
+mulfile==0.4.0
     # via proespm
 mypy==1.10.1
 mypy-extensions==1.0.0

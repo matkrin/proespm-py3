@@ -40,7 +40,7 @@ matplotlib-scalebar==0.8.1
     # via proespm
 mdurl==0.1.2
     # via markdown-it-py
-mulfile @ git+https://github.com/matkrin/mulfile@b2918905627f1b90671baeecf8347cfb1395bd7b
+mulfile==0.4.0
     # via proespm
 nanonispy @ git+https://github.com/matkrin/nanonispy@ed67b592d6b6b23e42d8860974c1e9e15802465a
     # via proespm
