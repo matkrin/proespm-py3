@@ -45,8 +45,8 @@ jobs:
             target: aarch64-apple-darwin
 
     env:
-      RELEASE_FOLDER: "${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.target }}"
-      BINARY_NAME: "${{ github.event.repository.name }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}"
+      RELEASE_FOLDER: "proespm-${{ github.ref_name }}-${{ matrix.target }}"
+      BINARY_NAME: "proespm${{ matrix.os == 'windows-latest' && '.exe' || '' }}"
 
     steps:
       - name: Checkout code
