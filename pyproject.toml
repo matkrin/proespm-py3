@@ -11,7 +11,7 @@ dependencies = [
     "vamas>=0.1.1",
     "rich>=13.7.1",
     "jinja2>=3.1.4",
-    "matplotlib>=3.9.1",
+    "matplotlib>=3.9.2",
     "matplotlib-scalebar>=0.8.1",
     "bokeh==3.5.0",
     "pyqt6>=6.7.0",
