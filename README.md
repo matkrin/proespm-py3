@@ -45,4 +45,7 @@ rye sync
 - Cyclic Voltammetry, Chronoamperometry, Linear Sweep Voltammetry:
   - Nordic Electrochemistry EC4
 
+- Temperature Programmed Desorption (TPD):
+  - LabView (self written)
+
 - png images, e.g. LEED images
