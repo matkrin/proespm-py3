@@ -10,6 +10,7 @@ from proespm.ec.ec_labview import CaLabview, CvLabview, FftLabview
 from proespm.labjournal import Labjournal
 from proespm.misc.image import Image
 from proespm.misc.qcmb import Qcmb
+from proespm.misc.tpd import Tpd
 from proespm.spectroscopy.aes_staib import AesStaib
 from proespm.spectroscopy.xps_eis import XpsEis
 from proespm.spm.flm import StmFlm
@@ -34,6 +35,7 @@ ALLOWED_FILE_TYPES = (
     ".png",
     ".jpg",
     ".jpeg",
+    ".lvm"
 )
 
 # TODO: make this a proper interface
@@ -52,6 +54,7 @@ ProcessObject: TypeAlias = (
     | CaLabview
     | FftLabview
     | Image
+    | Tpd
 )
 
 
@@ -179,6 +182,11 @@ def create_process_objs(
                 obj.slide_num = slide_num
                 slide_num += 1
                 process_objects.append(obj)
+
+            case ".lvm":
+                obj = Tpd(file_path)
+                process_objects.append(obj)
+
 
             case _:
                 continue

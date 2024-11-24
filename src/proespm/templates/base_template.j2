@@ -57,6 +57,8 @@
             {% include "ec4.j2" %}
         {% elif entry.ident == "IMAGE" %}
             {% include "image.j2" %}
+        {% elif entry.ident == "TPD" %}
+            {% include "tpd.j2" %}
         {% endif %}
     {% endfor %}
 
