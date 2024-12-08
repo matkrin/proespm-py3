@@ -36,6 +36,7 @@ dev-dependencies = [
     "pytest>=8.2.2",
     "mypy>=1.10.1",
     "pyinstaller>=6.9.0",
+    "pandas-stubs>=2.2.3.241126",
 ]
 
 [tool.hatch.metadata]

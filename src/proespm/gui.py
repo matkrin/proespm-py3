@@ -1,13 +1,13 @@
-from datetime import datetime
 import os
 import traceback
+from datetime import datetime
 from typing import override
 
 from PyQt6.QtCore import (
     QObject,
     QRunnable,
-    QThreadPool,
     Qt,
+    QThreadPool,
     pyqtSignal,
     pyqtSlot,  # pyright: ignore[reportUnknownVariableType]
 )
@@ -28,7 +28,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-from proespm.labjournal import Labjournal
+from proespm.labjournal import parse_labjournal
 from proespm.processing import create_html, create_process_objs, process_loop
 
 
@@ -53,7 +53,9 @@ class ProcessingWorker(QRunnable):
         process_dir = self.process_dir
         output_path = self.output_path
         labjournal = (
-            Labjournal(self.labj_path) if self.labj_path is not None else None
+            parse_labjournal(self.labj_path)
+            if self.labj_path is not None
+            else None
         )
         report_name = os.path.basename(process_dir)
 
