@@ -2,13 +2,13 @@ default:
     just list
 
 run:
-    python src/proespm/main.py
+    uv run src/proespm/main.py
 
 test:
-    rye test
+    uv run pytest
 
 build:
-    rye run pyinstaller \
+    uv run pyinstaller \
         --onefile \
         --noconsole \
         --name proespm \
