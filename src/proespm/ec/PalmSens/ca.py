@@ -44,7 +44,6 @@ class Ca:
 
             if datetime_match is not None:
                 self.datetime = parser.parse(datetime_match.group(1).strip())
-                print(self.datetime)
 
     def plot(self):
         plot = EcPlot()
