@@ -18,7 +18,7 @@ DATETIME_REGEX = re.compile(r"Date and time:,([\d\s:-]+)")
 class Cp:
     """Class for handling chronopotentiometry files (.txt)"""
 
-    ident = "ca" 
+    ident = "cp" 
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
