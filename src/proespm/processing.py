@@ -74,10 +74,16 @@ def check_file_for_str(file: str, string_to_check: str, line_num: int) -> bool:
     Returns:
         True if file starts with string_to_check, False if not
     """
-    with open(file) as f:
-        [next(f) for _ in range(line_num - 1)]
-        line = f.readline()
-    return string_to_check in line
+    try:
+        with open(file) as f:
+            [next(f) for _ in range(line_num - 1)]
+            line = f.readline()
+        return string_to_check in line
+    except:
+        with open(file, encoding='utf-16') as f:
+            [next(f) for _ in range(line_num - 1)]
+            line = f.readline()
+        return string_to_check in line
 
 
 def import_files(process_dir: str) -> list[str]:
@@ -183,7 +189,6 @@ def create_process_objs(
                 process_objects.append(obj)
                 
             case ".csv" if check_file_for_str(file_path, "Chronopotentiometry", 4):
-                print('chronopotentiometry')
                 obj = Cp(file_path)
                 process_objects.append(obj)
 
