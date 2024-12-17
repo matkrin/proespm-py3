@@ -14,12 +14,12 @@ from proespm.labjournal import Labjournal
 DATETIME_REGEX = re.compile(r"Date and time:,([\d\s:-]+)")
 
 
-class Ca:
+class CaPalmSens:
     """Class for handling PalmSens chronoamperometry files (.csv)
     (testfile: PS241105-2.csv)
     """
 
-    ident: Literal["CA"] = "CA"
+    ident: Literal["CA_PALMSENS"] = "CA_PALMSENS"
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo: Fileinfo = Fileinfo(filepath)

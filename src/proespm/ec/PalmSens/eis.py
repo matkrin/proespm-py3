@@ -16,12 +16,12 @@ DATETIME_REGEX = re.compile(
 )
 
 
-class Eis:
+class EisPalmSens:
     """Class for handling PalmSens impedence spectroscopy files (.csv)
     (testfile: PS241105-14.csv)
     """
 
-    ident: Literal["EIS"] = "EIS"
+    ident: Literal["EIS_PALMSENS"] = "EIS_PALMSENS"
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo: Fileinfo = Fileinfo(filepath)
