@@ -1,7 +1,7 @@
 from __future__ import annotations
 import re
 from datetime import datetime
-from typing import Self
+from typing import Literal, Self
 import numpy as np
 from bokeh.embed import components
 from dateutil import parser
@@ -11,7 +11,9 @@ from proespm.fileinfo import Fileinfo
 from proespm.labjournal import Labjournal
 
 
-DATETIME_REGEX = re.compile(r"Date and time:,(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})")
+DATETIME_REGEX = re.compile(
+    r"Date and time:,(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})"
+)
 
 
 class Eis:
@@ -19,13 +21,11 @@ class Eis:
     (testfile: PS241105-14.csv)
     """
 
-    ident = "eis"
-
-
+    ident: Literal["EIS"] = "EIS"
 
     def __init__(self, filepath: str) -> None:
-        self.fileinfo = Fileinfo(filepath)
-        self.m_id = self.fileinfo.filename
+        self.fileinfo: Fileinfo = Fileinfo(filepath)
+        self.m_id: str = self.fileinfo.filename
         self.labjournal_data: dict[str, str] | None = None
 
         self.datetime: datetime | None = None
@@ -33,14 +33,14 @@ class Eis:
 
         self.ec_type: str | None = None
 
-        self.data: list[NDArray[np.float64]] = [self.read_cv_data(filepath)]
+        self.data: NDArray[np.float64] = self.read_cv_data(filepath)
         self.script: str | None = None
         self.div: str | None = None
 
     def read_cv_data(self, filepath: str) -> NDArray[np.float64]:
         return np.genfromtxt(
             filepath,
-            usecols=[4,5],
+            usecols=[4, 5],
             delimiter=",",
             skip_header=6,
             skip_footer=1,
@@ -48,7 +48,7 @@ class Eis:
         )
 
     def read_params(self) -> None:
-        with open(self.fileinfo.filepath, encoding = 'utf-16')  as f:
+        with open(self.fileinfo.filepath, encoding="utf-16") as f:
             content = f.read()
             datetime_match = DATETIME_REGEX.search(content)
 
@@ -60,13 +60,12 @@ class Eis:
         plot.set_x_axis_label("Z' [Ohm]")
         plot.set_y_axis_label("Z'' [Ohm]")
 
-        for i, arr in enumerate(self.data):
-            x = arr[:, 0]  # Z'
-            y = arr[:, 1]  # Z''
+        x = self.data[:, 0]  # Z'
+        y = self.data[:, 1]  # Z''
 
-            plot.plot_scatter(x, y, legend_label=f"Cycle {i + 1}")
+        plot.plot_scatter(x, y)
+        plot.show_legend(False)
 
-        plot.set_legend_location("bottom_right")
         self.script, self.div = components(plot.fig, wrap_script=True)
 
     def process(self) -> Self:

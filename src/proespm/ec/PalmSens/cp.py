@@ -1,7 +1,7 @@
 from __future__ import annotations
 import re
 from datetime import datetime
-from typing import Self
+from typing import Literal, Self
 import numpy as np
 from bokeh.embed import components
 from dateutil import parser
@@ -14,17 +14,16 @@ from proespm.labjournal import Labjournal
 DATETIME_REGEX = re.compile(r"Date and time:,([\d\s:-]+)")
 
 
-
 class Cp:
     """Class for handling PalmSense chronopotentiometry files (.csv)
     (testfile: PS241105-1.csv)
     """
 
-    ident = "cp"
+    ident: Literal["CP"] = "CP"
 
     def __init__(self, filepath: str) -> None:
-        self.fileinfo = Fileinfo(filepath)
-        self.m_id = self.fileinfo.filename
+        self.fileinfo: Fileinfo = Fileinfo(filepath)
+        self.m_id: str = self.fileinfo.filename
         self.labjournal_data: dict[str, str] | None = None
 
         self.datetime: datetime | None = None
@@ -32,7 +31,7 @@ class Cp:
 
         self.ec_type: str | None = None
 
-        self.data: list[NDArray[np.float64]] = [self.read_cv_data(filepath)]
+        self.data: NDArray[np.float64] = self.read_cv_data(filepath)
         self.script: str | None = None
         self.div: str | None = None
 
@@ -46,7 +45,7 @@ class Cp:
         )
 
     def read_params(self) -> None:
-        with open(self.fileinfo.filepath, encoding = 'utf-16')  as f:
+        with open(self.fileinfo.filepath, encoding="utf-16") as f:
             content = f.read()
             datetime_match = DATETIME_REGEX.search(content)
 
@@ -58,13 +57,12 @@ class Cp:
         plot.set_x_axis_label("t [s]")
         plot.set_y_axis_label("E [V]")
 
-        for i, arr in enumerate(self.data):
-            x = arr[:, 0]  # time
-            y = arr[:, 1]  # voltage
+        x = self.data[:, 0]  # time
+        y = self.data[:, 1]  # voltage
 
-            plot.plot_scatter(x, y, legend_label=f"Cycle {i + 1}")
+        plot.plot_scatter(x, y)
+        plot.show_legend(False)
 
-        plot.set_legend_location("bottom_right")
         self.script, self.div = components(plot.fig, wrap_script=True)
 
     def process(self) -> Self:
@@ -73,4 +71,3 @@ class Cp:
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
         self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)
-

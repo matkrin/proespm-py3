@@ -1,11 +1,9 @@
 from __future__ import annotations
-import itertools
 import re
 from datetime import datetime
-from typing import Self
+from typing import Literal, Self
 import numpy as np
 from bokeh.embed import components
-from bokeh.palettes import Category10_10
 from dateutil import parser
 from numpy._typing import NDArray
 from proespm.ec.ec import EcPlot
@@ -21,11 +19,11 @@ class Cv:
     (testfile: PS241105-3.csv)
     """
 
-    ident = "cv"
+    ident: Literal["CV"] = "CV"
 
     def __init__(self, filepath: str) -> None:
-        self.fileinfo = Fileinfo(filepath)
-        self.m_id = self.fileinfo.filename
+        self.fileinfo: Fileinfo = Fileinfo(filepath)
+        self.m_id: str = self.fileinfo.filename
         self.labjournal_data: dict[str, str] | None = None
 
         self.datetime: datetime | None = None
@@ -33,7 +31,7 @@ class Cv:
 
         self.ec_type: str | None = None
 
-        self.data: list[NDArray[np.float64]] = [self.read_cv_data(filepath)]
+        self.data: NDArray[np.float64] = self.read_cv_data(filepath)
         self.script: str | None = None
         self.div: str | None = None
 
@@ -45,10 +43,6 @@ class Cv:
             skip_footer=1,
             encoding="utf-16",
         )
-
-    def push_cv_data(self, other: Cv) -> None:
-        for arr in other.data:
-            self.data.append(arr)
 
     def read_params(self) -> None:
         with open(self.fileinfo.filepath, encoding="utf-16") as f:
@@ -62,12 +56,11 @@ class Cv:
         plot.set_x_axis_label("E [V]")
         plot.set_y_axis_label("I [µA]")
 
-        for i, arr in enumerate(self.data):
-            for j in range(5):
-                x = arr[:, j]  # voltage
-                y = arr[:, j + 1]  # current
+        for i in range(0, self.data.shape[1], 2):
+            x = self.data[:, i]  # voltage
+            y = self.data[:, i + 1]  # current
 
-                plot.plot_scatter(x, y, legend_label=f"Cycle {j + 1}")
+            plot.plot_scatter(x, y, legend_label=f"Cycle {i // 2 + 1}")
 
         plot.set_legend_location("bottom_right")
         self.script, self.div = components(plot.fig, wrap_script=True)
