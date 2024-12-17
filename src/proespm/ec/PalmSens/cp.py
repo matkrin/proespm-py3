@@ -18,7 +18,7 @@ DATETIME_REGEX = re.compile(r"Date and time:,([\d\s:-]+)")
 class Cp:
     """Class for handling chronopotentiometry files (.txt)"""
 
-    ident = "cp" 
+    ident = "cp"
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
@@ -35,7 +35,13 @@ class Cp:
         self.div: str | None = None
 
     def read_cv_data(self, filepath: str) -> NDArray[np.float64]:
-        return np.loadtxt(filepath, skiprows=6, delimiter = ',', encoding='utf-16')
+        return np.genfromtxt(
+            filepath,
+            delimiter=",",
+            skip_header=6,
+            skip_footer=1,
+            encoding="utf-16",
+        )
 
     def read_params(self) -> None:
         with open(self.fileinfo.filepath, encoding = 'utf-16')  as f:
@@ -65,4 +71,4 @@ class Cp:
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
         self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)
-        
+

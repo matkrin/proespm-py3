@@ -28,14 +28,20 @@ class Lsv:
         self.datetime: datetime | None = None
         self.read_params()
 
-        self.ec_type: str | None = None 
+        self.ec_type: str | None = None
 
         self.data: list[NDArray[np.float64]] = [self.read_cv_data(filepath)]
         self.script: str | None = None
         self.div: str | None = None
 
     def read_cv_data(self, filepath: str) -> NDArray[np.float64]:
-        return np.loadtxt(filepath, skiprows=6, delimiter = ',', encoding='utf-16')
+        return np.genfromtxt(
+            filepath,
+            delimiter=",",
+            skip_header=6,
+            skip_footer=1,
+            encoding="utf-16",
+        )
 
     def read_params(self) -> None:
         with open(self.fileinfo.filepath, encoding = 'utf-16')  as f:

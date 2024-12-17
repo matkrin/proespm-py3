@@ -36,7 +36,14 @@ class Eis:
         self.div: str | None = None
 
     def read_cv_data(self, filepath: str) -> NDArray[np.float64]:
-        return np.loadtxt(filepath, usecols = [4,5], skiprows=6, delimiter = ',', encoding='utf-16')
+        return np.genfromtxt(
+            filepath,
+            usecols=[4,5],
+            delimiter=",",
+            skip_header=6,
+            skip_footer=1,
+            encoding="utf-16",
+        )
 
     def read_params(self) -> None:
         with open(self.fileinfo.filepath, encoding = 'utf-16')  as f:

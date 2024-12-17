@@ -16,7 +16,6 @@ from proespm.labjournal import Labjournal
 DATETIME_REGEX = re.compile(r"Date and time measurement:,([\d\s:-]+)")
 
 
-
 class Cv:
     """Class for handling cyclic voltammetry files (.txt)"""
 
@@ -37,14 +36,20 @@ class Cv:
         self.div: str | None = None
 
     def read_cv_data(self, filepath: str) -> NDArray[np.float64]:
-        return np.loadtxt(filepath, skiprows=6, delimiter = ',', encoding='utf-16')
+        return np.genfromtxt(
+            filepath,
+            delimiter=",",
+            skip_header=6,
+            skip_footer=1,
+            encoding="utf-16",
+        )
 
     def push_cv_data(self, other: Cv) -> None:
         for arr in other.data:
             self.data.append(arr)
 
     def read_params(self) -> None:
-        with open(self.fileinfo.filepath, encoding = 'utf-16') as f:
+        with open(self.fileinfo.filepath, encoding="utf-16") as f:
             content = f.read()
             datetime_match = DATETIME_REGEX.search(content)
             if datetime_match is not None:
@@ -58,7 +63,7 @@ class Cv:
         for i, arr in enumerate(self.data):
             for j in range(5):
                 x = arr[:, j]  # voltage
-                y = arr[:, j+1]  # current
+                y = arr[:, j + 1]  # current
 
                 plot.plot_scatter(x, y, legend_label=f"Cycle {j + 1}")
 
@@ -71,5 +76,3 @@ class Cv:
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
         self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)
-        
-

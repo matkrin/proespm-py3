@@ -14,7 +14,6 @@ from proespm.labjournal import Labjournal
 DATETIME_REGEX = re.compile(r"Date and time:,([\d\s:-]+)")
 
 
-
 class Ca:
     """Class for handling chronoampermetry files (.txt)"""
 
@@ -35,10 +34,16 @@ class Ca:
         self.div: str | None = None
 
     def read_cv_data(self, filepath: str) -> NDArray[np.float64]:
-        return np.loadtxt(filepath, skiprows=6, delimiter = ',', encoding='utf-16')
+        return np.genfromtxt(
+            filepath,
+            delimiter=",",
+            skip_header=6,
+            skip_footer=1,
+            encoding="utf-16",
+        )
 
     def read_params(self) -> None:
-        with open(self.fileinfo.filepath, 'r', encoding = 'utf-16')  as f:
+        with open(self.fileinfo.filepath, "r", encoding="utf-16") as f:
             content = f.read()
             datetime_match = DATETIME_REGEX.search(content)
 
@@ -65,4 +70,3 @@ class Ca:
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
         self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)
-
