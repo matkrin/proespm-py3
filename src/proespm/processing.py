@@ -156,10 +156,10 @@ def create_process_objs(
                 obj = StmFlm(file_path)
                 process_objects.append(obj)
 
-            # case ".vms" | ".dat":
-            #     # TODO: check if vamas or dat file is really from Staib AES
-            #     obj = AesStaib(file_path)
-            #     process_objects.append(obj)
+            case ".vms" | ".dat":
+                # TODO: check if vamas or dat file is really from Staib AES
+                obj = AesStaib(file_path)
+                process_objects.append(obj)
 
             case ".txt" if check_file_for_str(file_path, "Region", 1):
                 obj = XpsEis(file_path)

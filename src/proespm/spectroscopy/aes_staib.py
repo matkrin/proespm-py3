@@ -1,4 +1,3 @@
-import datetime
 from typing import Self, TextIO
 
 import numpy as np
@@ -125,9 +124,7 @@ class AesStaib:
             self.retrace_time = int(read_header_line(f))  # in ms
             _description_len = read_header_line(f)
 
-            self.datetime = datetime.datetime.strptime(
-                f.readline().split("    ")[-1].strip(), "%a %b %d %H:%M:%S %Y"
-            )
+            self.datetime = parser.parse(f.readline().split("    ")[-1].strip())
 
             _reserved_1 = read_header_line(f)
             _reserved_2 = read_header_line(f)
