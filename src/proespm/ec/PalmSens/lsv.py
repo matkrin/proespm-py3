@@ -15,7 +15,9 @@ DATETIME_REGEX = re.compile(r"Date and time:,([\d\s:-]+)")
 
 
 class Lsv:
-    """Class for handling Voltammetry files (.csv)"""
+    """Class for handling PalmSens linear sweep voltammetry files (.csv)
+    (testfile: PS241105-13.csv)
+    """
 
     ident = "lsv"
 

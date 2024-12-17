@@ -15,7 +15,9 @@ DATETIME_REGEX = re.compile(r"Date and time:,(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2
 
 
 class Eis:
-    """Class for handling Chronoamperometry files (.csv)"""
+    """Class for handling PalmSens impedence spectroscopy files (.csv)
+    (testfile: PS241105-14.csv)
+    """
 
     ident = "eis"
 

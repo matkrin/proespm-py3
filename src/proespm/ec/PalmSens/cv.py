@@ -17,7 +17,9 @@ DATETIME_REGEX = re.compile(r"Date and time measurement:,([\d\s:-]+)")
 
 
 class Cv:
-    """Class for handling cyclic voltammetry files (.txt)"""
+    """Class for handling PalmSens cyclic voltammetry files (.csv)
+    (testfile: PS241105-3.csv)
+    """
 
     ident = "cv"
 

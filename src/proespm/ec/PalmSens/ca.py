@@ -15,7 +15,9 @@ DATETIME_REGEX = re.compile(r"Date and time:,([\d\s:-]+)")
 
 
 class Ca:
-    """Class for handling chronoampermetry files (.txt)"""
+    """Class for handling PalmSens chronoamperometry files (.csv)
+    (testfile: PS241105-2.csv)
+    """
 
     ident = "ca"
 
