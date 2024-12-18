@@ -24,6 +24,7 @@ class StmMul:
         self.slide_num: int | None = None
 
         self.m_id: str = self.fileinfo.filename
+        self.sheet_id: str | None = None
         self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
         self.mulimages = mulfile.load(filepath)
@@ -46,4 +47,6 @@ class StmMul:
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
         for mul_image in self.mulimages:
-            mul_image.labjournal_data = labjournal.extract_metadata_for_m_id(mul_image.m_id)  # pyright: ignore[reportAttributeAccessIssue]
+            metadata =  labjournal.extract_metadata_for_m_id(mul_image.m_id)  # pyright: ignore[reportAttributeAccessIssue]
+            if metadata is not None:
+                self.sheet_id, mul_image.labjournal_data = metadata

@@ -1,15 +1,17 @@
 from __future__ import annotations
+
 import re
 from datetime import datetime
-from typing import Literal, Self
+from typing import Any, Hashable, Literal, Self
+
 import numpy as np
 from bokeh.embed import components
 from dateutil import parser
 from numpy._typing import NDArray
+
 from proespm.ec.ec import EcPlot
 from proespm.fileinfo import Fileinfo
 from proespm.labjournal import Labjournal
-
 
 DATETIME_REGEX = re.compile(
     r"Date and time:,(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})"
@@ -26,7 +28,8 @@ class EisPalmSens:
     def __init__(self, filepath: str) -> None:
         self.fileinfo: Fileinfo = Fileinfo(filepath)
         self.m_id: str = self.fileinfo.filename
-        self.labjournal_data: dict[str, str] | None = None
+        self.sheet_id: str | None = None
+        self.labjournal_data: dict[Hashable, Any] | None = None
 
         self.datetime: datetime | None = None
         self.read_params()
@@ -73,4 +76,6 @@ class EisPalmSens:
         return self
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)
+        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
+        if metadata is not None:
+            self.sheet_id, self.labjournal_data = metadata

@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from typing import Self
+from typing import Any, Hashable, Self
 import numpy as np
 import access2thematrix  # pyright: ignore[reportMissingTypeStubs]
 
@@ -28,7 +28,8 @@ class StmMatrix:
         self.slide_num: int | None = None
 
         self.m_id: str = self.fileinfo.filename
-        self.labjournal_data: dict[str, str] | None = None
+        self.labjournal_data: dict[Hashable, Any] | None = None  #pyright: ignore[reportExplicitAny]
+        self.sheet_id: str | None = None
 
         self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
@@ -77,4 +78,6 @@ class StmMatrix:
         return self
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)
+        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
+        if metadata is not None:
+            self.sheet_id, self.labjournal_data = metadata

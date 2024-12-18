@@ -1,5 +1,5 @@
 import re
-from typing import Self
+from typing import Any, Hashable, Self
 
 import numpy as np
 from dateutil import parser
@@ -19,8 +19,9 @@ class SpmNid:
         self.fileinfo = Fileinfo(filepath)
 
         self.m_id = self.fileinfo.filename
+        self.sheet_id: str | None = None
         self.slide_num: int | None = None
-        self.labjournal_data: dict[str, str] | None = None
+        self.labjournal_data: dict[Hashable, Any] | None = None
 
         with open(filepath, "rb") as f:
             content = f.read()
@@ -119,7 +120,9 @@ class SpmNid:
         return self
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)
+        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
+        if metadata is not None:
+            self.sheet_id, self.labjournal_data = metadata
 
 
 def get_header(content_list: list[bytes]) -> list[bytes]:

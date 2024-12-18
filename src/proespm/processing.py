@@ -257,6 +257,7 @@ def process_loop(
 
 def create_html(
     process_objs: list[ProcessObject],
+    labjournal: Labjournal | None,
     output_path: str,
     report_name: str,
 ) -> None:
@@ -282,6 +283,7 @@ def create_html(
 
     output = template.render(
         process_objs=process_objs,
+        labjournal=labjournal,
         title=report_name,
         files_dir=output_path.rstrip("_report.html"),
     )

@@ -1,4 +1,4 @@
-from typing import Self
+from typing import Any, Hashable, Self
 import numpy as np
 from dateutil import parser
 import nanonispy as nap  # pyright: ignore[reportMissingTypeStubs]
@@ -19,8 +19,9 @@ class StmSxm:
         self.ident = "SXM"
         self.fileinfo = Fileinfo(filepath)
         self.m_id = self.fileinfo.filename
+        self.sheet_id: str | None = None
         self.slide_num: int | None = None
-        self.labjournal_data: dict[str, str] | None = None
+        self.labjournal_data: dict[Hashable, Any] | None = None
 
         self.sxm = nap.read.Scan(filepath)
 
@@ -43,10 +44,12 @@ class StmSxm:
         self.speed = self.line_time * self.yres / 1e3  # pyright: ignore[reportUnknownMemberType] in s?
 
         self.img_data_fw = SpmImage(
-            np.flip(self.sxm.signals["Z"]["forward"], axis=0), self.xsize,  # pyright: ignore[reportUnknownArgumentType, reportUnknownMemberType]
+            np.flip(self.sxm.signals["Z"]["forward"], axis=0),
+            self.xsize,  # pyright: ignore[reportUnknownArgumentType, reportUnknownMemberType]
         )
         self.img_data_bw = SpmImage(
-            np.flip(self.sxm.signals["Z"]["backward"], axis=(0, 1)), self.xsize,  # pyright: ignore[reportUnknownArgumentType, reportUnknownMemberType]
+            np.flip(self.sxm.signals["Z"]["backward"], axis=(0, 1)),
+            self.xsize,  # pyright: ignore[reportUnknownArgumentType, reportUnknownMemberType]
         )
 
     def process(self) -> Self:
@@ -55,4 +58,6 @@ class StmSxm:
         return self
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)
+        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
+        if metadata is not None:
+            self.sheet_id, self.labjournal_data = metadata

@@ -1,7 +1,7 @@
 from __future__ import annotations
 import re
 from datetime import datetime
-from typing import Literal, Self
+from typing import Any, Hashable, Literal, Self
 import numpy as np
 from bokeh.embed import components
 from dateutil import parser
@@ -24,7 +24,8 @@ class CaPalmSens:
     def __init__(self, filepath: str) -> None:
         self.fileinfo: Fileinfo = Fileinfo(filepath)
         self.m_id: str = self.fileinfo.filename
-        self.labjournal_data: dict[str, str] | None = None
+        self.sheet_id: str | None = None
+        self.labjournal_data: dict[Hashable, Any] | None = None
 
         self.datetime: datetime | None = None
         self.read_params()
@@ -70,4 +71,6 @@ class CaPalmSens:
         return self
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)
+        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
+        if metadata is not None:
+            self.sheet_id, self.labjournal_data = metadata

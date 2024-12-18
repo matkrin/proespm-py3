@@ -19,6 +19,7 @@ class CvLabview:
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.m_id = self.fileinfo.filename
+        self.sheet_id: str | None = None
         self.labjournal_data: dict[str, str] | None = None
         self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
@@ -68,7 +69,9 @@ class CvLabview:
         return self
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)
+        metadata =  labjournal.extract_metadata_for_m_id(self.m_id)
+        if metadata is not None:
+            self.sheet_id, self.labjournal_data = metadata
 
 
 class CaLabview:
@@ -79,6 +82,7 @@ class CaLabview:
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.m_id = self.fileinfo.filename
+        self.sheet_id: str | None = None
         self.labjournal_data: dict[str, str] | None = None
         self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
@@ -138,7 +142,9 @@ class CaLabview:
         return self
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)
+        metadata =  labjournal.extract_metadata_for_m_id(self.m_id)
+        if metadata is not None:
+            self.sheet_id, self.labjournal_data = metadata
 
 
 class FftLabview:
@@ -149,6 +155,7 @@ class FftLabview:
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.m_id = self.fileinfo.filename
+        self.sheet_id: str | None = None
         self.labjournal_data: dict[str, str] | None = None
         self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
@@ -180,4 +187,6 @@ class FftLabview:
         return self
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)
+        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
+        if metadata is not None:
+            self. sheet_id, self.labjournal_data = metadata

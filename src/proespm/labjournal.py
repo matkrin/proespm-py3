@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Any, Hashable, override
+from typing import Any, Hashable, Literal, override
 
 import numpy as np
 import pandas as pd
@@ -18,7 +18,7 @@ class Labjournal(ABC):
     @abstractmethod
     def extract_metadata_for_m_id(
         self, m_id: str
-    ) -> dict[Hashable, Any] | None: ...
+    ) -> tuple[str, dict[Hashable, Any]] | None: ...
 
 
 def parse_labjournal(xls_file: str) -> Labjournal:
@@ -46,19 +46,21 @@ class LabjournalSimple(Labjournal):
         xls_file: Path to the Excel file.
     """
 
+    ident: Literal["LABJ_SIMPLE"] = "LABJ_SIMPLE"
+
     def __init__(self, xls_file: str) -> None:
         self._excel: pd.DataFrame = pd.read_excel(xls_file, dtype=str)
 
     @override
     def extract_metadata_for_m_id(
         self, m_id: str
-    ) -> dict[Hashable, Any] | None:
+    ) -> tuple[str, dict[Hashable, Any]] | None:
         matched_row = self._excel[self._excel["ID"].str.match(m_id)]
         row_dict = matched_row.to_dict(orient="list")
         if len(matched_row.index) == 0:
             return None
 
-        return row_dict
+        return "", row_dict
 
 
 class LabjournalStructured(Labjournal):
@@ -70,13 +72,15 @@ class LabjournalStructured(Labjournal):
         xls_file: Path to the Excel file.
     """
 
+    ident: Literal["LABJ_STRUCTURED"] = "LABJ_STRUCTURED"
+
     def __init__(self, xls_file: str) -> None:
         self._excel_file = pd.ExcelFile(xls_file)
         self._sheet_names = self._excel_file.sheet_names
         self._used_sheets: list[str] = []
-        self._entries: dict[str, pd.DataFrame] = self._read_entries()
+        self.entries: dict[str, pd.DataFrame] = self._read_entries()
 
-    def _read_header(self) -> list[LabJournalHeader]:
+    def read_header(self) -> list[LabJournalHeader]:
         """Read the labjournal headers that were in use in extraction"""
         return [
             LabJournalHeader(self._excel_file, used_sheet)
@@ -98,7 +102,7 @@ class LabjournalStructured(Labjournal):
     @override
     def extract_metadata_for_m_id(
         self, m_id: str
-    ) -> dict[Hashable, Any] | None:
+    ) -> tuple[str, dict[Hashable, Any]] | None:
         """Extract labjournal entries for measurement IDs (m_id)
 
         Args:
@@ -107,16 +111,16 @@ class LabjournalStructured(Labjournal):
         Returns:
             The metadata in the Excel file for the given `m_id`.
         """
-        for sheet in self._sheet_names:
-            df = self._entries[sheet]
+        for sheet_name in self._sheet_names:
+            df = self.entries[sheet_name]
             matched_row = df[df["first_ID"].str.match(m_id, na=False)]
 
             if len(matched_row.index) == 0:
                 continue
 
             row_dict = matched_row.to_dict(orient="list")
-            self._used_sheets.append(str(sheet))
-            return row_dict
+            self._used_sheets.append(str(sheet_name))
+            return sheet_name, row_dict
 
         return None
 

@@ -64,7 +64,7 @@ class ProcessingWorker(QRunnable):
             process_objs = create_process_objs(process_dir, self.log)
             process_objs.sort(key=lambda x: x.datetime)
             process_loop(process_objs, labjournal, self.log)
-            create_html(process_objs, output_path, report_name)
+            create_html(process_objs, labjournal, output_path, report_name)
             self.log(f"HTML created at {output_path}")
             self.signals.finished.emit()
 
