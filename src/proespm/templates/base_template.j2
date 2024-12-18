@@ -53,6 +53,11 @@
             or entry.ident == "CV_LABVIEW"
             or entry.ident == "CA_LABVIEW"
             or entry.ident == "FFT_LABVIEW"
+            or entry.ident == "CA_PALMSENS"
+            or entry.ident == "CP_PALMSENS"
+            or entry.ident == "LSV_PALMSENS"
+            or entry.ident == "EIS_PALMSENS"
+            or entry.ident == "CV_PALMSENS"
         %}
             {% include "ec4.j2" %}
         {% elif entry.ident == "IMAGE" %}

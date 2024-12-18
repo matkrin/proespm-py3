@@ -6,6 +6,11 @@ from typing import Callable, TypeAlias
 from jinja2 import Environment, FileSystemLoader
 
 from proespm.ec.ec4 import Ec4
+from proespm.ec.PalmSens.ca import CaPalmSens
+from proespm.ec.PalmSens.cp import CpPalmSens
+from proespm.ec.PalmSens.cv import CvPalmSens
+from proespm.ec.PalmSens.eis import EisPalmSens
+from proespm.ec.PalmSens.lsv import LsvPalmSens
 from proespm.ec.ec_labview import CaLabview, CvLabview, FftLabview
 from proespm.labjournal import Labjournal
 from proespm.misc.image import Image
@@ -35,7 +40,7 @@ ALLOWED_FILE_TYPES = (
     ".png",
     ".jpg",
     ".jpeg",
-    ".lvm"
+    ".lvm",
 )
 
 # TODO: make this a proper interface
@@ -55,6 +60,11 @@ ProcessObject: TypeAlias = (
     | FftLabview
     | Image
     | Tpd
+    | CaPalmSens
+    | CpPalmSens
+    | CvPalmSens
+    | EisPalmSens
+    | LsvPalmSens
 )
 
 
@@ -69,10 +79,16 @@ def check_file_for_str(file: str, string_to_check: str, line_num: int) -> bool:
     Returns:
         True if file starts with string_to_check, False if not
     """
-    with open(file) as f:
-        [next(f) for _ in range(line_num - 1)]
-        line = f.readline()
-    return string_to_check in line
+    try:
+        with open(file) as f:
+            [next(f) for _ in range(line_num - 1)]
+            line = f.readline()
+        return string_to_check in line
+    except:
+        with open(file, encoding="utf-16") as f:
+            [next(f) for _ in range(line_num - 1)]
+            line = f.readline()
+        return string_to_check in line
 
 
 def import_files(process_dir: str) -> list[str]:
@@ -165,7 +181,11 @@ def create_process_objs(
 
             case ".csv" if not check_file_for_str(
                 file_path, "Scan rate", 1
-            ) and not check_file_for_str(file_path, "Freq_Hz", 1):
+            ) and not check_file_for_str(
+                file_path, "Freq_Hz", 1
+            ) and not check_file_for_str(
+                file_path, "Date and time", 1
+            ) and not check_file_for_str(file_path, "Date and time", 4):
                 obj = CaLabview(file_path)
                 process_objects.append(obj)
 
@@ -177,6 +197,36 @@ def create_process_objs(
                 obj = FftLabview(file_path)
                 process_objects.append(obj)
 
+            case ".csv" if check_file_for_str(
+                file_path, "Chronopotentiometry", 4
+            ):
+                obj = CpPalmSens(file_path)
+                process_objects.append(obj)
+
+            case ".csv" if check_file_for_str(
+                file_path, "Chronoamperometry", 4
+            ):
+                obj = CaPalmSens(file_path)
+                process_objects.append(obj)
+
+            case ".csv" if check_file_for_str(
+                file_path, "Cyclic Voltammetry", 4
+            ):
+                obj = CvPalmSens(file_path)
+                process_objects.append(obj)
+
+            case ".csv" if check_file_for_str(
+                file_path, "Linear Sweep Voltammetry", 4
+            ):
+                obj = LsvPalmSens(file_path)
+                process_objects.append(obj)
+
+            case ".csv" if check_file_for_str(
+                file_path, "Impedance Spectroscopy", 2
+            ):
+                obj = EisPalmSens(file_path)
+                process_objects.append(obj)
+
             case ".png" | ".jpg" | ".jpeg":
                 obj = Image(file_path)
                 obj.slide_num = slide_num
@@ -186,7 +236,6 @@ def create_process_objs(
             case ".lvm":
                 obj = Tpd(file_path)
                 process_objects.append(obj)
-
 
             case _:
                 continue
