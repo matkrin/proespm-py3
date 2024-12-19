@@ -10,6 +10,7 @@ from dateutil import parser
 from numpy._typing import NDArray
 
 from proespm.ec.ec import EcPlot
+from proespm.ec.PalmSens import PARAM_MAP
 from proespm.fileinfo import Fileinfo
 from proespm.labjournal import Labjournal
 
@@ -79,3 +80,6 @@ class EisPalmSens:
         metadata = labjournal.extract_metadata_for_m_id(self.m_id)
         if metadata is not None:
             self.sheet_id, self.labjournal_data = metadata
+            self.labjournal_data = {
+                PARAM_MAP.get(k, k): v for k, v in self.labjournal_data.items()
+            }
