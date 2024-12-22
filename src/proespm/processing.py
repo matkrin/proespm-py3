@@ -6,12 +6,13 @@ from typing import Callable, TypeAlias
 from jinja2 import Environment, FileSystemLoader
 
 from proespm.ec.ec4 import Ec4
+from proespm.ec.ec_labview import CaLabview, CvLabview, FftLabview
 from proespm.ec.PalmSens.ca import CaPalmSens
 from proespm.ec.PalmSens.cp import CpPalmSens
 from proespm.ec.PalmSens.cv import CvPalmSens
 from proespm.ec.PalmSens.eis import EisPalmSens
 from proespm.ec.PalmSens.lsv import LsvPalmSens
-from proespm.ec.ec_labview import CaLabview, CvLabview, FftLabview
+from proespm.ec.PalmSens.pssession import PalmSensSession
 from proespm.labjournal import Labjournal
 from proespm.misc.image import Image
 from proespm.misc.qcmb import Qcmb
@@ -41,6 +42,7 @@ ALLOWED_FILE_TYPES = (
     ".jpg",
     ".jpeg",
     ".lvm",
+    ".pssession",
 )
 
 # TODO: make this a proper interface
@@ -65,6 +67,7 @@ ProcessObject: TypeAlias = (
     | CvPalmSens
     | EisPalmSens
     | LsvPalmSens
+    | PalmSensSession
 )
 
 
@@ -235,6 +238,10 @@ def create_process_objs(
 
             case ".lvm":
                 obj = Tpd(file_path)
+                process_objects.append(obj)
+
+            case ".pssession":
+                obj = PalmSensSession(file_path)
                 process_objects.append(obj)
 
             case _:

@@ -76,6 +76,7 @@
                                 or entry.ident == "LSV_PALMSENS"
                                 or entry.ident == "EIS_PALMSENS"
                                 or entry.ident == "CV_PALMSENS"
+                                or entry.ident == "PS_SESSION"
                             %}
                                 {% include "ec4.j2" %}
                             {% elif entry.ident == "IMAGE" %}
@@ -120,6 +121,7 @@
                 or entry.ident == "LSV_PALMSENS"
                 or entry.ident == "EIS_PALMSENS"
                 or entry.ident == "CV_PALMSENS"
+                or entry.ident == "PS_SESSION"
             %}
                 {% include "ec4.j2" %}
             {% elif entry.ident == "IMAGE" %}
