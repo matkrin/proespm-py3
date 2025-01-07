@@ -9,8 +9,6 @@ implementation of [proespm](https://github.com/n-bock/proespm).
 
 ## Installation
 
-Using [Rye](https://rye.astral.sh/):
-
 1. Clone the repository:
 
 ```bash
@@ -18,34 +16,36 @@ git clone https://github.com/matkrin/proespm-py3.git
 cd proespm-py3
 ```
 
-2. Set up the project environment using Rye:
+2. Set up the project environment using [uv](https://docs.astral.sh/uv/):
 
 ```bash
-rye sync
+uv sync
 ```
 
 ## Supported Methods
 
-- SPM:
+- Scanning Probe Microscopy (SPM):
   - Specs Aarhus MUL (.mul, .flm)
   - Omicron MATRIX (.mtrx)
   - RHK SM4 (.sm4)
   - Nanonis SXM (.sxm)
   - Nanosurf STM and AFM (.nid)
 
-- XPS:
+- X-ray Photoelectron Spectroscopy (XPS):
   - Omicron EIS (.txt)
 
-- AES:
+- Auger Electron Spectroscopy (AES):
   - STAIB WinSpectro (.vms, .dat)
 
-- QCMB:
+- Quartz-Crystal Microbalance (QCMB):
   - Inficon STM2 (.log)
 
-- Cyclic Voltammetry, Chronoamperometry, Linear Sweep Voltammetry:
+- Cyclic Voltammetry (CV), Chronoamperometry (CA), Linear Sweep Voltammetry
+  (LSV), Impedence Spectroscopy (EIS):
   - Nordic Electrochemistry EC4
+  - PalmSens (.cvs, .pssession)
 
 - Temperature Programmed Desorption (TPD):
   - LabView (self written)
 
-- png images, e.g. LEED images
+- png, jpg images, e.g. LEED images
