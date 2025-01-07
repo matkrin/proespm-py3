@@ -7,6 +7,7 @@ import numpy as np
 from bokeh.embed import components
 from numpy.typing import NDArray
 
+from proespm.ec.PalmSens import PARAM_MAP
 from proespm.ec.ec import EcPlot
 from proespm.fileinfo import Fileinfo
 from proespm.labjournal import Labjournal
@@ -58,7 +59,7 @@ class PalmSensSession:
                 return np.array([z_re, z_im]).T
 
             case PalmSensType.CV:
-                data: list[float] = []
+                data: list[list[float]] = []
                 for values_arr in dataset_values:
                     values: list[float] = []
                     for v in values_arr["DataValues"]:
@@ -115,11 +116,20 @@ class PalmSensSession:
                 plot.set_x_axis_label("t [s]")
                 plot.set_y_axis_label("I [µA]")
 
-                x = self.data[:, 0]  # time
-                y = self.data[:, 2]  # current
+                time = self.data[:, 0]
+                potential = self.data[:, 1]
+                current = self.data[:, 2]
 
-                plot.plot_scatter(x, y)
-                plot.show_legend(False)
+                potential_min: float = potential.min() * 0.95
+                potential_max: float = potential.max() * 1.05
+
+                current_min: float = current.min() * 1.05
+                current_max: float = current.max() * 0.8
+
+                plot.set_y_range(current_min, current_max)
+                plot.add_second_axis("voltage", potential_min, potential_max, axis_label="U [V]")
+                plot.plot_scatter(time, current, legend_label="I")
+                plot.plot_second_axis(time, potential, legend_label="U")
 
             case PalmSensType.CP:
                 plot.set_x_axis_label("t [s]")
