@@ -20,6 +20,7 @@ class Image:
 
         self.img_uri: str | None = None
         self.slide_num: int | None = None
+        self.sheet_id: str | None = None
 
     def encode_png(self):
         """Encodes an image to base64
@@ -38,4 +39,6 @@ class Image:
         return self
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)
+        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
+        if metadata is not None:
+            self.sheet_id, self.labjournal_data = metadata
