@@ -109,7 +109,8 @@ def import_files(process_dir: str) -> list[str]:
             for entry in os.scandir(process_dir)
             if entry.path.lower().endswith(ALLOWED_FILE_TYPES)
             and entry.is_file()
-        ]
+        ],
+        # key=lambda x: os.path.getctime(x),
     )
 
 
