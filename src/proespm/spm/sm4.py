@@ -56,7 +56,10 @@ class StmSm4:
         self.voltage_div = None
         self.current_script = None
         self.current_div = None
-        self.init_ec_data()
+
+        # If there is more than 2 current and 2 topography channels
+        if len(self.sm4) > 4:
+            self.init_ec_data()
 
     def init_ec_data(self) -> None:
         e_cell_imgs = [
@@ -70,16 +73,19 @@ class StmSm4:
             e_cell_avg: NDArray[np.float32] = np.average(
                 e_cell_imgs[0].data, axis=0
             )
-            u_tun_avg: NDArray[np.float32] = np.average(
-                u_tun_imgs[0].data, axis=0
-            )
             x = np.arange(1, len(e_cell_avg) + 1)
 
             plot = EcPlot()
             plot.set_x_axis_label("Pixels average lines")
             plot.set_y_axis_label("U [V vs pt pseudo]")
             plot.plot_scatter(x, e_cell_avg, legend_label="E_cell")
-            plot.plot_scatter(x, u_tun_avg, legend_label="U_tun")
+
+            if len(u_tun_imgs) != 0:
+                u_tun_avg: NDArray[np.float32] = np.average(
+                    u_tun_imgs[0].data, axis=0
+                )
+                plot.plot_scatter(x, u_tun_avg, legend_label="U_tun")
+
             plot.fig.width = 500
             plot.fig.height = 500
             self.voltage_script, self.voltage_div = components(
