@@ -28,8 +28,8 @@ from proespm.spm.sxm import StmSxm
 
 ALLOWED_FILE_TYPES = (
     ".mul",
-    ".Z_mtrx",
-    ".SM4",
+    ".z_mtrx",
+    ".sm4",
     ".sxm",
     ".nid",
     ".flm",

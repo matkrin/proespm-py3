@@ -33,12 +33,14 @@ class SpmImage:
     def plot(self, show: bool = False) -> Self:
         """Plots the image in"""
         rocket = sns.color_palette("rocket", as_cmap=True)
+        vmin = np.percentile(self.arr, 1)
+        vmax = np.percentile(self.arr, 99)
         fig, ax = plt.subplots(figsize=(5, 5))  # pyright: ignore[reportUnknownMemberType]
         _ = ax.imshow(  # pyright: ignore[reportUnknownMemberType]
             self.arr,
             cmap=rocket,
-            vmin=None,
-            vmax=None,
+            vmin=vmin,
+            vmax=vmax,
             extent=(0, self.xres, 0, self.yres),
         )
         # plt.colorbar()
