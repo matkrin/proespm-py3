@@ -107,7 +107,8 @@ def import_files(process_dir: str) -> list[str]:
         [
             entry.path
             for entry in os.scandir(process_dir)
-            if entry.path.endswith(ALLOWED_FILE_TYPES) and entry.is_file()
+            if entry.path.lower().endswith(ALLOWED_FILE_TYPES)
+            and entry.is_file()
         ]
     )
 
@@ -182,13 +183,12 @@ def create_process_objs(
                 obj = Qcmb(file_path)
                 process_objects.append(obj)
 
-            case ".csv" if not check_file_for_str(
-                file_path, "Scan rate", 1
-            ) and not check_file_for_str(
-                file_path, "Freq_Hz", 1
-            ) and not check_file_for_str(
-                file_path, "Date and time", 1
-            ) and not check_file_for_str(file_path, "Date and time", 4):
+            case ".csv" if (
+                not check_file_for_str(file_path, "Scan rate", 1)
+                and not check_file_for_str(file_path, "Freq_Hz", 1)
+                and not check_file_for_str(file_path, "Date and time", 1)
+                and not check_file_for_str(file_path, "Date and time", 4)
+            ):
                 obj = CaLabview(file_path)
                 process_objects.append(obj)
 
