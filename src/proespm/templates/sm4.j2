@@ -36,12 +36,12 @@
                 <td>{{ entry.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
             </tr>
             <tr>
-                <th>I<sub>tun</sub></th>
+                <th>I<sub>t</sub></th>
                 <td>{{ "{:.2f}".format(entry.current) }} nA</td>
             </tr>
             <tr>
-                <th>U<sub>tun</sub></th>
-                <td>{{ "{:.1f}".format(entry.bias) }} mV</td>
+                <th>U<sub>b</sub></th>
+                <td>{{ "{:.2f}".format(entry.bias) }} V</td>
             </tr>
             <tr>
                 <th>Scan Size</th>
