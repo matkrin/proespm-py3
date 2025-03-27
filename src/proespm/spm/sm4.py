@@ -76,15 +76,15 @@ class StmSm4:
             x = np.arange(1, len(e_cell_avg) + 1)
 
             plot = EcPlot()
-            plot.set_x_axis_label("Pixels average lines")
-            plot.set_y_axis_label("U [V vs pt pseudo]")
-            plot.plot_scatter(x, e_cell_avg, legend_label="E_WE")
+            plot.set_x_axis_label("y pixel")
+            plot.set_y_axis_label("U line-averaged")
+            plot.plot_scatter(x, e_cell_avg, legend_label="E_WE [V]")
 
             if len(u_tun_imgs) != 0:
                 u_tun_avg: NDArray[np.float32] = np.average(
                     u_tun_imgs[0].data, axis=0
                 )
-                plot.plot_scatter(x, u_tun_avg, legend_label="U_tun")
+                plot.plot_scatter(x, u_tun_avg, legend_label="U_b [V]")
 
             plot.fig.width = 500
             plot.fig.height = 500
@@ -104,8 +104,8 @@ class StmSm4:
                 i_cell_avg = i_cell_avg * float(self.par5)
             x = np.arange(1, len(i_cell_avg) + 1)
             plot = EcPlot()
-            plot.set_x_axis_label("Pixels average lines")
-            plot.set_y_axis_label("I(V) [A]")
+            plot.set_x_axis_label("y pixel")
+            plot.set_y_axis_label("I_WE line-averaged[V]")
             plot.plot_scatter(x, i_cell_avg)
             plot.show_legend(False)
             plot.fig.width = 500
