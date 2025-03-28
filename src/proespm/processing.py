@@ -110,7 +110,7 @@ def import_files(process_dir: str) -> list[str]:
             if entry.path.lower().endswith(ALLOWED_FILE_TYPES)
             and entry.is_file()
         ],
-        # key=lambda x: os.path.getctime(x),
+        key=lambda x: os.path.getctime(x),
     )
 
 
@@ -118,7 +118,6 @@ def create_process_objs(
     process_dir: str, log: Callable[[str], None]
 ) -> list[ProcessObject]:
     """ """
-    slide_num = 1
     last_ec4: Ec4 | None = None
 
     process_objects: list[ProcessObject] = []
@@ -127,34 +126,22 @@ def create_process_objs(
         match path.suffix.lower():
             case ".z_mtrx":
                 obj = StmMatrix(file_path)
-                obj.slide_num = slide_num
-                slide_num += 1
                 process_objects.append(obj)
 
             case ".mul":
                 obj = StmMul(file_path)
-                obj.slide_num = slide_num
-                for mul_image in obj.mulimages:  # pyright: ignore[reportUnknownVariableType]
-                    mul_image.slide_num = slide_num
-                    slide_num += 1
                 process_objects.append(obj)
 
             case ".sm4":
                 obj = StmSm4(file_path)
-                obj.slide_num = slide_num
-                slide_num += 1
                 process_objects.append(obj)
 
             case ".sxm":
                 obj = StmSxm(file_path)
-                obj.slide_num = slide_num
-                slide_num += 1
                 process_objects.append(obj)
 
             case ".nid":
                 obj = SpmNid(file_path)
-                obj.slide_num = slide_num
-                slide_num += 1
                 process_objects.append(obj)
 
             case ".flm":
@@ -233,8 +220,6 @@ def create_process_objs(
 
             case ".png" | ".jpg" | ".jpeg":
                 obj = Image(file_path)
-                obj.slide_num = slide_num
-                slide_num += 1
                 process_objects.append(obj)
 
             case ".lvm":
@@ -256,11 +241,24 @@ def process_loop(
     labjournal: Labjournal | None,
     log: Callable[[str], None],
 ) -> None:
+    """"""
+    slide_num = 1
+    process_objects.sort(key=lambda x: x.datetime)
     for x in process_objects:
         log(f"Processing of {x.m_id}")
         _ = x.process()
         if labjournal is not None:
             x.set_labjournal_data(labjournal)
+        match x:
+            case StmMatrix() | StmSm4() | StmSxm() | SpmNid() | Image():
+                x.slide_num = slide_num
+                slide_num += 1
+            case StmMul():
+                for mul_image in x.mulimages:
+                    mul_image.slide_num = slide_num
+                    slide_num += 1
+            case _:
+                pass
 
 
 def create_html(
