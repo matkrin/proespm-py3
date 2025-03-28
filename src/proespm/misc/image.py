@@ -1,12 +1,14 @@
 import base64
 import os
 from datetime import datetime
-from typing import Self
+from typing import Self, final
 
 from proespm.fileinfo import Fileinfo
+from proespm.config import Config
 from proespm.labjournal import Labjournal
 
 
+@final
 class Image:
     """Class handeling image files (.png, .jpg, .jpeg)"""
     ident = "IMAGE"
@@ -34,7 +36,7 @@ class Image:
                 + base64.b64encode(f.read()).decode("ascii")
             )
 
-    def process(self) -> Self:
+    def process(self, _config: Config) -> Self:
         self.encode_png()
         return self
 

@@ -6,6 +6,7 @@ import mulfile
 import numpy as np
 
 from proespm.fileinfo import Fileinfo
+from proespm.config import Config
 from proespm.labjournal import Labjournal
 from proespm.spm.spm import SpmImage
 
@@ -39,14 +40,16 @@ class StmMul:
             )
             mul_image.labjournal_data = None  # pyright: ignore[reportAttributeAccessIssue]
 
-    def process(self) -> Self:
+    def process(self, config: Config) -> Self:
         for mul_image in self.mulimages:
-            mul_image.img_data.corr_plane().corr_lines().plot()  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]
+            mul_image.img_data.corr_plane().corr_lines().plot(
+                config.colormap, config.colorrange
+            )
 
         return self
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
         for mul_image in self.mulimages:
-            metadata =  labjournal.extract_metadata_for_m_id(mul_image.m_id)  # pyright: ignore[reportAttributeAccessIssue]
+            metadata = labjournal.extract_metadata_for_m_id(mul_image.m_id)  # pyright: ignore[reportAttributeAccessIssue]
             if metadata is not None:
                 self.sheet_id, mul_image.labjournal_data = metadata

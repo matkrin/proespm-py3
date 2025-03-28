@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from typing import Self
+from typing import Self, final
 
 import numpy as np
 from bokeh.embed import components
@@ -8,9 +8,11 @@ from numpy._typing import NDArray
 
 from proespm.ec.ec import EcPlot
 from proespm.fileinfo import Fileinfo
+from proespm.config import Config
 from proespm.labjournal import Labjournal
 
 
+@final
 class CvLabview:
     """Class handeling the CV files from self-written LabView software"""
 
@@ -64,7 +66,7 @@ class CvLabview:
 
         self.script, self.div = components(plot.fig, wrap_script=True)
 
-    def process(self) -> Self:
+    def process(self, _config: Config) -> Self:
         self.plot()
         return self
 
@@ -74,6 +76,7 @@ class CvLabview:
             self.sheet_id, self.labjournal_data = metadata
 
 
+@final
 class CaLabview:
     """Class handeling the CA files from self-written LabView software"""
 
@@ -137,7 +140,7 @@ class CaLabview:
 
         self.script, self.div = components(plot.fig, wrap_script=True)
 
-    def process(self) -> Self:
+    def process(self, _config: Config) -> Self:
         self.plot()
         return self
 
@@ -147,6 +150,7 @@ class CaLabview:
             self.sheet_id, self.labjournal_data = metadata
 
 
+@final
 class FftLabview:
     """Class handeling the FFT files from self-written LabView software"""
 
@@ -182,7 +186,7 @@ class FftLabview:
 
         self.script, self.div = components(plot.fig, wrap_script=True)
 
-    def process(self) -> Self:
+    def process(self, _config: Config) -> Self:
         self.plot()
         return self
 

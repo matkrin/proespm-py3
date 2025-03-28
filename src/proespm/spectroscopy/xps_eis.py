@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 from datetime import datetime
-from typing import Any, Self
+from typing import Any, Self, final
 
 import numpy as np
 from bokeh.embed import components
@@ -10,9 +10,11 @@ from bokeh.plotting import figure
 from numpy._typing import NDArray
 
 from proespm.fileinfo import Fileinfo
+from proespm.config import Config
 from proespm.labjournal import Labjournal
 
 
+@final
 class XpsEis:
     """Class handling Omicron EIS XPS files (.txt)"""
 
@@ -78,7 +80,7 @@ class XpsEis:
                 )
         return data
 
-    def process(self) -> Self:
+    def process(self, _config: Config) -> Self:
         for xps_scan in self.data:
             xps_scan.plot()
         return self

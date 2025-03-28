@@ -5,6 +5,7 @@ from bokeh.embed import components
 from bokeh.plotting import figure
 from dateutil import parser
 from numpy._typing import NDArray
+from proespm.config import Config
 from vamas.vamas import Vamas
 
 from proespm.fileinfo import Fileinfo
@@ -173,7 +174,7 @@ class AesStaib:
         plot.toolbar.active_scroll = "auto"  # pyright: ignore[reportAttributeAccessIssue]
         self.script, self.div = components(plot, wrap_script=True)
 
-    def process(self) -> Self:
+    def process(self, _config: Config) -> Self:
         self.plot()
         return self
 

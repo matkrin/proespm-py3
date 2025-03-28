@@ -1,8 +1,10 @@
+from dataclasses import dataclass
 import os
 import traceback
 from datetime import datetime
-from typing import override
+from typing import final, override
 
+import matplotlib.pyplot as plt
 from PyQt6.QtCore import (
     QObject,
     QRunnable,
@@ -15,6 +17,8 @@ from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
     QApplication,
     QCheckBox,
+    QComboBox,
+    QDoubleSpinBox,
     QFileDialog,
     QGridLayout,
     QHBoxLayout,
@@ -30,18 +34,26 @@ from PyQt6.QtWidgets import (
 
 from proespm.labjournal import parse_labjournal
 from proespm.processing import create_html, create_process_objs, process_loop
+from proespm.config import Config
 
 
+@final
 class ProcessingWorker(QRunnable):
     """Worker thread for the data processing"""
 
     def __init__(
-        self, process_dir: str, output_path: str, labj_path: str | None
+        self,
+        process_dir: str,
+        output_path: str,
+        labj_path: str | None,
+        colormap: str,
+        colorrange: tuple[float, float],
     ) -> None:
         super().__init__()
         self.process_dir = process_dir
         self.output_path = output_path
         self.labj_path = labj_path
+        self.config = Config(colormap=colormap, colorrange=colorrange)
         self.signals = WorkerSignals()
 
     def log(self, message: str) -> None:
@@ -62,7 +74,7 @@ class ProcessingWorker(QRunnable):
         try:
             self.log(f"Start processing of {process_dir}")
             process_objs = create_process_objs(process_dir, self.log)
-            process_loop(process_objs, labjournal, self.log)
+            process_loop(process_objs, labjournal, self.config, self.log)
             create_html(process_objs, labjournal, output_path, report_name)
             self.log(f"HTML created at {output_path}")
             self.signals.finished.emit()
@@ -72,6 +84,7 @@ class ProcessingWorker(QRunnable):
             self.signals.finished.emit()
 
 
+@final
 class WorkerSignals(QObject):
     """Class holding the signal.
     Custom signal needs a class derived from QObject!
@@ -81,6 +94,7 @@ class WorkerSignals(QObject):
     finished = pyqtSignal()
 
 
+@final
 class MainGui(QMainWindow):
     """Main GUI"""
 
@@ -141,6 +155,29 @@ class MainGui(QMainWindow):
         labj_layout.addWidget(self.labj_input)
         labj_layout.addWidget(self.labj_button)
         self.central_layout.addLayout(labj_layout)
+
+        # Colormap
+        colormap_layout = QHBoxLayout()
+        colormap_lbl = QLabel("Colormap:")
+        self.colormap = QComboBox()
+        self.colormap.addItems(plt.colormaps())
+        self.colormap.setCurrentText("rocket")
+        colormap_layout.addWidget(colormap_lbl)
+        colormap_layout.addWidget(self.colormap)
+        self.central_layout.addLayout(colormap_layout)
+
+        # Color range
+        colorrange_layout = QHBoxLayout()
+        colorrange_lbl = QLabel("Color range (percentile):")
+        self.colorrange_start = QDoubleSpinBox()
+        self.colorrange_start.setValue(1.0)
+        self.colorrange_end = QDoubleSpinBox()
+        self.colorrange_end.setMaximum(100.0)
+        self.colorrange_end.setValue(99.0)
+        colorrange_layout.addWidget(colorrange_lbl)
+        colorrange_layout.addWidget(self.colorrange_start)
+        colorrange_layout.addWidget(self.colorrange_end)
+        self.central_layout.addLayout(colorrange_layout)
 
         # Logging area
         self.log_area = QTextEdit()
@@ -239,6 +276,11 @@ class MainGui(QMainWindow):
         process_dir = self.process_dir_input.text()
         output_path = self.output_input.text()
         is_labj_checked = self.labj_checkbox.isChecked()
+        colormap = self.colormap.currentText()
+        colorrange = (
+            self.colorrange_start.value(),
+            self.colorrange_end.value(),
+        )
 
         labj_path = None
         if is_labj_checked and os.path.isfile(self.labj_input.text()):
@@ -253,7 +295,11 @@ class MainGui(QMainWindow):
             return
 
         processing_worker = ProcessingWorker(
-            process_dir, output_path, labj_path
+            process_dir,
+            output_path,
+            labj_path,
+            colormap,
+            colorrange,
         )
         _ = processing_worker.signals.message.connect(self.log)  # pyright: ignore[reportUnknownMemberType]
         _ = processing_worker.signals.finished.connect(self.processing_finished)  # pyright: ignore[reportUnknownMemberType]

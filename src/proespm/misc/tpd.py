@@ -1,7 +1,7 @@
 from datetime import datetime
 import itertools
 import os
-from typing import Self
+from typing import Self, final
 from bokeh.palettes import Category10_10
 import numpy as np
 from bokeh.embed import components
@@ -10,9 +10,11 @@ from bokeh.models import LinearAxis, Range1d
 from numpy.typing import NDArray
 
 from proespm.fileinfo import Fileinfo
+from proespm.config import Config
 from proespm.labjournal import Labjournal
 
 
+@final
 class Tpd:
     def __init__(self, filepath: str) -> None:
         self.ident = "TPD"
@@ -103,7 +105,7 @@ class Tpd:
 
         self.script, self.div = components(plot, wrap_script=True)
 
-    def process(self) -> Self:
+    def process(self, _config: Config) -> Self:
         self.plot()
         return self
 

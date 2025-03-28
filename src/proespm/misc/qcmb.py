@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from typing import final
 
 import numpy as np
 from bokeh.embed import components
@@ -7,9 +8,11 @@ from bokeh.layouts import row
 from bokeh.plotting import figure
 
 from proespm.fileinfo import Fileinfo
+from proespm.config import Config
 from proespm.labjournal import Labjournal
 
 
+@final
 class Qcmb:
     def __init__(self, filepath: str) -> None:
         self.ident = "QCMB"
@@ -70,7 +73,7 @@ class Qcmb:
 
         self.script, self.div = components(plot, wrap_script=True)
 
-    def process(self):
+    def process(self, _config: Config):
         self.plot()
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:

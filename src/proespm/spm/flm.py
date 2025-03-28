@@ -2,6 +2,7 @@ from datetime import datetime
 import os
 from typing import Self, override
 import cv2
+from proespm.config import Config
 from proespm.spm.mul import StmMul
 
 for k, v in os.environ.items():
@@ -73,7 +74,7 @@ class StmFlm(StmMul):
         video.release()
 
     @override
-    def process(self) -> Self:
+    def process(self, _config: Config) -> Self:
         for mul_image in self.mulimages:  # pyright: ignore[reportUnknownVariableType]
             mul_image.img_data.corr_plane().corr_lines()  # pyright: ignore[reportUnknownMemberType]
 

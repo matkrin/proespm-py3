@@ -1,7 +1,7 @@
 import json
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Any, Hashable, Literal, Self
+from typing import Any, Hashable, Literal, Self, final
 
 import numpy as np
 from bokeh.embed import components
@@ -10,6 +10,7 @@ from numpy.typing import NDArray
 from proespm.ec.PalmSens import PARAM_MAP
 from proespm.ec.ec import EcPlot
 from proespm.fileinfo import Fileinfo
+from proespm.config import Config
 from proespm.labjournal import Labjournal
 
 
@@ -21,6 +22,7 @@ class PalmSensType(Enum):
     CP = "Chronopotentiometry"
 
 
+@final
 class PalmSensSession:
     ident: Literal["PS_SESSION"] = "PS_SESSION"
 
@@ -127,7 +129,9 @@ class PalmSensSession:
                 current_max: float = current.max() * 0.8
 
                 plot.set_y_range(current_min, current_max)
-                plot.add_second_axis("voltage", potential_min, potential_max, axis_label="U [V]")
+                plot.add_second_axis(
+                    "voltage", potential_min, potential_max, axis_label="U [V]"
+                )
                 plot.plot_scatter(time, current, legend_label="I")
                 plot.plot_second_axis(time, potential, legend_label="U")
 
@@ -143,7 +147,7 @@ class PalmSensSession:
 
         self.script, self.div = components(plot.fig, wrap_script=True)
 
-    def process(self) -> Self:
+    def process(self, _config: Config) -> Self:
         self.plot()
         return self
 

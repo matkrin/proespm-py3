@@ -13,6 +13,7 @@ from proespm.ec.PalmSens.cv import CvPalmSens
 from proespm.ec.PalmSens.eis import EisPalmSens
 from proespm.ec.PalmSens.lsv import LsvPalmSens
 from proespm.ec.PalmSens.pssession import PalmSensSession
+from proespm.config import Config
 from proespm.labjournal import Labjournal
 from proespm.misc.image import Image
 from proespm.misc.qcmb import Qcmb
@@ -239,6 +240,7 @@ def create_process_objs(
 def process_loop(
     process_objects: list[ProcessObject],
     labjournal: Labjournal | None,
+    config: Config,
     log: Callable[[str], None],
 ) -> None:
     """"""
@@ -246,7 +248,7 @@ def process_loop(
     process_objects.sort(key=lambda x: x.datetime)
     for x in process_objects:
         log(f"Processing of {x.m_id}")
-        _ = x.process()
+        _ = x.process(config)
         if labjournal is not None:
             x.set_labjournal_data(labjournal)
         match x:

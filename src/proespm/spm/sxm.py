@@ -1,13 +1,15 @@
-from typing import Any, Hashable, Self
+from typing import Any, Hashable, Self, final
 import numpy as np
 from dateutil import parser
 import nanonispy as nap  # pyright: ignore[reportMissingTypeStubs]
 
 from proespm.fileinfo import Fileinfo
+from proespm.config import Config
 from proespm.labjournal import Labjournal
 from proespm.spm.spm import SpmImage
 
 
+@final
 class StmSxm:
     """Class for handling Nanonis .sxm files
 
@@ -52,9 +54,17 @@ class StmSxm:
             self.xsize,  # pyright: ignore[reportUnknownArgumentType, reportUnknownMemberType]
         )
 
-    def process(self) -> Self:
-        _ = self.img_data_fw.corr_plane().corr_lines().plot()
-        _ = self.img_data_bw.corr_plane().corr_lines().plot()
+    def process(self, config: Config) -> Self:
+        _ = (
+            self.img_data_fw.corr_plane()
+            .corr_lines()
+            .plot(config.colormap, config.colorrange)
+        )
+        _ = (
+            self.img_data_bw.corr_plane()
+            .corr_lines()
+            .plot(config.colormap, config.colorrange)
+        )
         return self
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:

@@ -2,6 +2,7 @@ from typing import Any, Hashable, Self
 import numpy as np
 from bokeh.embed import components
 from numpy.typing import NDArray
+from proespm.config import Config
 from sm4file import Sm4
 
 from proespm.ec.ec import EcPlot
@@ -114,12 +115,20 @@ class StmSm4:
                 plot.fig, wrap_script=True
             )
 
-    def process(self) -> Self:
-        _ = self.img_data_fw.corr_plane().corr_lines().plot()
-        _ = self.img_data_bw.corr_plane().corr_lines().plot()
+    def process(self, config: Config) -> Self:
+        _ = (
+            self.img_data_fw.corr_plane()
+            .corr_lines()
+            .plot(config.colormap, config.colorrange)
+        )
+        _ = (
+            self.img_data_bw.corr_plane()
+            .corr_lines()
+            .plot(config.colormap, config.colorrange)
+        )
         return self
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        metadata =  labjournal.extract_metadata_for_m_id(self.m_id)
+        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
         if metadata is not None:
             self.sheet_id, self.labjournal_data = metadata

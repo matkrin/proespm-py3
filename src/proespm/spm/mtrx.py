@@ -1,10 +1,11 @@
 import os
 from datetime import datetime
-from typing import Any, Hashable, Self
+from typing import Any, Hashable, Self, final
 import numpy as np
 import access2thematrix  # pyright: ignore[reportMissingTypeStubs]
 
 from proespm.fileinfo import Fileinfo
+from proespm.config import Config
 from proespm.labjournal import Labjournal
 from proespm.spm.spm import SpmImage
 
@@ -15,6 +16,7 @@ class NoTracesError(Exception):
         super().__init__(message)
 
 
+@final
 class StmMatrix:
     """Class for handling Omicron .Z_mtrx files
 
@@ -28,7 +30,7 @@ class StmMatrix:
         self.slide_num: int | None = None
 
         self.m_id: str = self.fileinfo.filename
-        self.labjournal_data: dict[Hashable, Any] | None = None  #pyright: ignore[reportExplicitAny]
+        self.labjournal_data: dict[Hashable, Any] | None = None  # pyright: ignore[reportExplicitAny]
         self.sheet_id: str | None = None
 
         self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
@@ -72,9 +74,17 @@ class StmMatrix:
         self.img_data_fw = SpmImage(row_fw, self.xsize)
         self.img_data_bw = SpmImage(row_bw, self.xsize)
 
-    def process(self) -> Self:
-        _ = self.img_data_fw.corr_plane().corr_lines().plot()
-        _ = self.img_data_bw.corr_plane().corr_lines().plot()
+    def process(self, config: Config) -> Self:
+        _ = (
+            self.img_data_fw.corr_plane()
+            .corr_lines()
+            .plot(config.colormap, config.colorrange)
+        )
+        _ = (
+            self.img_data_bw.corr_plane()
+            .corr_lines()
+            .plot(config.colormap, config.colorrange)
+        )
         return self
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:

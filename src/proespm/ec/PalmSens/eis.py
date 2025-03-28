@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 from datetime import datetime
-from typing import Any, Hashable, Literal, Self
+from typing import Any, Hashable, Literal, Self, final
 
 import numpy as np
 from bokeh.embed import components
@@ -12,6 +12,7 @@ from numpy._typing import NDArray
 from proespm.ec.ec import EcPlot
 from proespm.ec.PalmSens import PARAM_MAP
 from proespm.fileinfo import Fileinfo
+from proespm.config import Config
 from proespm.labjournal import Labjournal
 
 DATETIME_REGEX = re.compile(
@@ -19,6 +20,7 @@ DATETIME_REGEX = re.compile(
 )
 
 
+@final
 class EisPalmSens:
     """Class for handling PalmSens impedence spectroscopy files (.csv)
     (testfile: PS241105-14.csv)
@@ -72,7 +74,7 @@ class EisPalmSens:
 
         self.script, self.div = components(plot.fig, wrap_script=True)
 
-    def process(self) -> Self:
+    def process(self, _config: Config) -> Self:
         self.plot()
         return self
 

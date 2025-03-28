@@ -1,6 +1,6 @@
 import base64
 import io
-from typing import Any, Self
+from typing import Any, Self, final
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -11,6 +11,7 @@ from numpy._typing import NDArray
 plt.rcParams.update({"figure.max_open_warning": 0})
 
 
+@final
 class SpmImage:
     """Class for SPM image data
 
@@ -30,15 +31,19 @@ class SpmImage:
     def shape(self) -> tuple[int, int]:
         return self.arr.shape
 
-    def plot(self, show: bool = False) -> Self:
+    def plot(self, colormap: str, colorrange: tuple[float, float], show: bool = False) -> Self:
         """Plots the image in"""
-        rocket = sns.color_palette("rocket", as_cmap=True)
-        vmin = np.percentile(self.arr, 1)
-        vmax = np.percentile(self.arr, 99)
+        # rocket = sns.color_palette("rocket", as_cmap=True)
+        # cmap = colormap
+        # if colormap == "rocket":
+        #     cmap = rocket
+            
+        vmin = np.percentile(self.arr, colorrange[0])
+        vmax = np.percentile(self.arr, colorrange[1])
         fig, ax = plt.subplots(figsize=(5, 5))  # pyright: ignore[reportUnknownMemberType]
         _ = ax.imshow(  # pyright: ignore[reportUnknownMemberType]
             self.arr,
-            cmap=rocket,
+            cmap=colormap,
             vmin=vmin,
             vmax=vmax,
             extent=(0, self.xres, 0, self.yres),

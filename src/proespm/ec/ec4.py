@@ -3,7 +3,7 @@ from __future__ import annotations
 import itertools
 import re
 from datetime import datetime
-from typing import Self
+from typing import Self, final
 
 import numpy as np
 from bokeh.embed import components
@@ -13,6 +13,7 @@ from numpy._typing import NDArray
 
 from proespm.ec.ec import EcPlot
 from proespm.fileinfo import Fileinfo
+from proespm.config import Config
 from proespm.labjournal import Labjournal
 
 
@@ -23,6 +24,7 @@ U2_REGEX = re.compile(r"V2(\s+[\d.-]+)")
 RATE_REGEX = re.compile(r"Rate(\s+[\d.-]+)")
 
 
+@final
 class Ec4:
     """Class for handling Nordic Electrochemistry EC4 files (.txt)"""
 
@@ -147,7 +149,7 @@ class Ec4:
 
         self.script, self.div = components(plot.fig, wrap_script=True)
 
-    def process(self) -> Self:
+    def process(self, _config: Config) -> Self:
         self.plot()
         return self
 

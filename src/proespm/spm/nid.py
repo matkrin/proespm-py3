@@ -1,11 +1,12 @@
 import re
-from typing import Any, Hashable, Self
+from typing import Any, Hashable, Self, final
 
 import numpy as np
 from dateutil import parser
 from numpy._typing import NDArray
 
 from proespm.fileinfo import Fileinfo
+from proespm.config import Config
 from proespm.labjournal import Labjournal
 from proespm.spm.spm import SpmImage
 
@@ -13,6 +14,7 @@ FLOAT_REGEX = re.compile(r"[+-]?([0-9]*[.])?[0-9]+")
 UNITS_REGEX = re.compile(r"[a-zA-Zµ]+")
 
 
+@final
 class SpmNid:
     def __init__(self, filepath: str):
         self.ident = "NID"
@@ -113,9 +115,17 @@ class SpmNid:
         self.img_data_fw = SpmImage(np.flip(img_data_fw, axis=0), self.xsize)
         self.img_data_bw = SpmImage(np.flip(img_data_bw, axis=0), self.xsize)
 
-    def process(self) -> Self:
-        _ = self.img_data_fw.corr_plane().corr_lines().plot()
-        _ = self.img_data_bw.corr_plane().corr_lines().plot()
+    def process(self, config: Config) -> Self:
+        _ = (
+            self.img_data_fw.corr_plane()
+            .corr_lines()
+            .plot(config.colormap, config.colorrange)
+        )
+        _ = (
+            self.img_data_bw.corr_plane()
+            .corr_lines()
+            .plot(config.colormap, config.colorrange)
+        )
 
         return self
 
