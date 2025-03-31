@@ -43,6 +43,8 @@ class EcPlot:
         x_values: NDArray[np.int32 | np.float64],
         y_values: NDArray[np.float32 | np.float64],
         legend_label: str = "",
+        range_min: float | None = None,
+        range_max: float | None = None,
     ) -> None:
         _ = self.fig.scatter(
             x_values,
@@ -51,6 +53,9 @@ class EcPlot:
             legend_label=legend_label,
             color=next(self.colors),
         )
+
+        if range_min is not None and range_max is not None:
+            self.fig.y_range = Range1d(range_min, range_max)
 
     def plot_line(
         self,

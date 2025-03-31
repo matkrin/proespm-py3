@@ -71,7 +71,7 @@ class CvLabview:
         return self
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        metadata =  labjournal.extract_metadata_for_m_id(self.m_id)
+        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
         if metadata is not None:
             self.sheet_id, self.labjournal_data = metadata
 
@@ -119,23 +119,36 @@ class CaLabview:
     def plot(self) -> None:
         """Create a plot for use in the html-report"""
         plot = EcPlot()
-        plot.set_x_axis_label("Time [s] ???")
-        plot.set_y_axis_label("I [A]")
+        plot.set_x_axis_label("Time [s]")
+        plot.set_y_axis_label("I_WE [A]")
 
         x = self.data[:, 0]  # time
         y = self.data[:, 2]  # current
-        y2 = self.data[:, 1]  # TODO voltage ? not sure
+        y2 = self.data[:, 1]  # voltage
 
-        voltage_min = np.min(self.data[:, 1])
-        voltage_min = voltage_min - (abs(voltage_min * 0.05))
-        voltage_max = np.max(self.data[:, 1]) * 1.05
+        voltage_range_min = np.min(self.data[:, 1])
+        voltage_range_min = voltage_range_min - (abs(voltage_range_min * 0.05))
+        voltage_range_max = np.max(self.data[:, 1]) * 1.05
+
+        current_range_min = np.min(self.data[:, 2])
+        current_range_min = current_range_min - (abs(current_range_min * 0.05))
+        current_range_max = np.max(self.data[:, 2]) * 1.05
 
         plot.add_second_axis(
-            "voltage", float(voltage_min), float(voltage_max), "U [V]"
+            "voltage",
+            float(voltage_range_min),
+            float(voltage_range_max),
+            "U_WE [V]",
         )
 
-        plot.plot_scatter(x, y, legend_label="I")
-        plot.plot_second_axis(x, y2, legend_label="U")
+        plot.plot_scatter(
+            x,
+            y,
+            legend_label="I_WE",
+            range_min=float(current_range_min),
+            range_max=float(current_range_max),
+        )
+        plot.plot_second_axis(x, y2, legend_label="U_WE")
         plot.show_legend(True)
 
         self.script, self.div = components(plot.fig, wrap_script=True)
@@ -145,7 +158,7 @@ class CaLabview:
         return self
 
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        metadata =  labjournal.extract_metadata_for_m_id(self.m_id)
+        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
         if metadata is not None:
             self.sheet_id, self.labjournal_data = metadata
 
@@ -193,4 +206,4 @@ class FftLabview:
     def set_labjournal_data(self, labjournal: Labjournal) -> None:
         metadata = labjournal.extract_metadata_for_m_id(self.m_id)
         if metadata is not None:
-            self. sheet_id, self.labjournal_data = metadata
+            self.sheet_id, self.labjournal_data = metadata
