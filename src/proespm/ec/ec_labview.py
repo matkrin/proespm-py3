@@ -95,7 +95,7 @@ class CaLabview:
         self.u_1: float | None = None
         self.u_2: float | None = None
         self.rate: float | None = None
-        self.read_params()
+        # self.read_params()
 
         self.script: str | None = None
         self.div: str | None = None
