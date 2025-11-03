@@ -76,7 +76,7 @@ class StmFlm(StmMul):
     @override
     def process(self, _config: Config) -> Self:
         for mul_image in self.mulimages:  # pyright: ignore[reportUnknownVariableType]
-            mul_image.img_data.corr_plane().corr_lines()  # pyright: ignore[reportUnknownMemberType]
+            mul_image.img_data.corr_plane().corr_lines_median()  # pyright: ignore[reportUnknownMemberType]
 
         self.convert_to_mp4()
         return self

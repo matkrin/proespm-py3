@@ -31,13 +31,15 @@ class SpmImage:
     def shape(self) -> tuple[int, int]:
         return self.arr.shape
 
-    def plot(self, colormap: str, colorrange: tuple[float, float], show: bool = False) -> Self:
+    def plot(
+        self, colormap: str, colorrange: tuple[float, float], show: bool = False
+    ) -> Self:
         """Plots the image in"""
         # rocket = sns.color_palette("rocket", as_cmap=True)
         # cmap = colormap
         # if colormap == "rocket":
         #     cmap = rocket
-            
+
         vmin = np.percentile(self.arr, colorrange[0])
         vmax = np.percentile(self.arr, colorrange[1])
         fig, ax = plt.subplots(figsize=(5, 5))  # pyright: ignore[reportUnknownMemberType]
@@ -89,11 +91,21 @@ class SpmImage:
         self.arr -= np.min(self.arr)
         return self
 
-    def corr_lines(self):
+    def corr_lines_mean(self):
         """Subtract a plane of the average of each scan line from the image array"""
         mean: float = np.mean(self.arr, axis=1)
         correction = np.broadcast_to(
             mean, (self.arr.shape[1], self.arr.shape[0])
+        ).T
+        self.arr -= correction
+
+        return self
+
+    def corr_lines_median(self):
+        """Subtract a plane of the median of each scan line from the image array"""
+        median: float = np.median(self.arr, axis=1)
+        correction = np.broadcast_to(
+            median, (self.arr.shape[1], self.arr.shape[0])
         ).T
         self.arr -= correction
 

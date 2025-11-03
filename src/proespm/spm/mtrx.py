@@ -77,12 +77,16 @@ class StmMatrix:
     def process(self, config: Config) -> Self:
         _ = (
             self.img_data_fw.corr_plane()
-            .corr_lines()
+            .corr_lines_median()
+            .corr_plane()
+            .corr_lines_median()
             .plot(config.colormap, config.colorrange)
         )
         _ = (
             self.img_data_bw.corr_plane()
-            .corr_lines()
+            .corr_lines_median()
+            .corr_plane()
+            .corr_lines_median()
             .plot(config.colormap, config.colorrange)
         )
         return self

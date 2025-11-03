@@ -42,8 +42,12 @@ class StmMul:
 
     def process(self, config: Config) -> Self:
         for mul_image in self.mulimages:
-            mul_image.img_data.corr_plane().corr_lines().plot(
-                config.colormap, config.colorrange
+            (
+                mul_image.img_data.corr_plane()
+                .corr_lines_median()
+                .corr_plane()
+                .corr_lines_median()
+                .plot(config.colormap, config.colorrange)
             )
 
         return self
