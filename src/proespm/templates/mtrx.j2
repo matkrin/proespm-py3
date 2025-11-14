@@ -55,6 +55,12 @@
         <th>Offset</th>
         <td>{{ "{:.2f}".format(entry.xoffset) }} nm, {{ "{:.2f}".format(entry.yoffset) }} nm</td>
       </tr>
+      {% if entry.is_drift_compensation_enabled == True %}
+          <tr>
+            <th>Drift</th>
+            <td>{{ "{:.2f}".format(entry.xdrift) }} nm, {{ "{:.2f}".format(entry.ydrift) }} nm</td>
+          </tr>
+      {% endif %}
 
       {% if entry.p_gain %}
           <tr>

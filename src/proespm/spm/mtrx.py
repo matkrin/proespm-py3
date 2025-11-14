@@ -51,8 +51,6 @@ class StmMatrix:
         self.yres, self.xres = img_fw.data.shape  # pyright: ignore[reportUnknownMemberType]
         self.xsize = img_fw.width * 1e9  # in nm
         self.ysize = img_fw.height * 1e9  # in nm
-        self.xoffset = img_fw.x_offset  # in nm
-        self.yoffset = img_fw.y_offset  # in nm
         self.rotation = img_fw.angle  # in deg
 
         meta = mtrx_data.get_experiment_element_parameters()[1]
@@ -65,6 +63,18 @@ class StmMatrix:
             elif param.startswith("XYScanner.Raster_Time "):
                 # in seconds, per pixel?
                 self.raster_time = float(param.split()[1])
+            elif param.startswith("XYScanner.X_Drift"):
+                self.xdrift = float(param.split()[1]) * 1e9  # in nm/s
+            elif param.startswith("XYScanner.Y_Drift"):
+                self.ydrift = float(param.split()[1]) * 1e9  # in nm/s
+            elif param.startswith("XYScanner.X_Offset"):
+                self.xoffset = float(param.split()[1]) * 1e9  # in nm
+            elif param.startswith("XYScanner.Y_Offset"):
+                self.yoffset = float(param.split()[1]) * 1e9  # in nm
+            elif param.startswith("XYScanner.Enable_Drift_Compensation"):
+                self.is_drift_compensation_enabled = param.split()[1]
+
+
 
         self.line_time = self.raster_time * self.xres * 1e3  # in ms
         self.scan_duration = self.line_time * self.yres / 1e3  # in s
@@ -95,3 +105,7 @@ class StmMatrix:
         metadata = labjournal.extract_metadata_for_m_id(self.m_id)
         if metadata is not None:
             self.sheet_id, self.labjournal_data = metadata
+
+
+# mtrx = StmMatrix("/Users/matthias/Developer/proespm-py3/tests/testdata/20201111--4_1.Z_mtrx")
+# print(mtrx.xoffset)
