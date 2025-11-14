@@ -126,13 +126,13 @@ class CaLabview:
         y = self.data[:, 2]  # current
         y2 = self.data[:, 1]  # voltage
 
-        voltage_range_min = np.min(self.data[:, 1])
-        voltage_range_min = voltage_range_min - (abs(voltage_range_min * 0.05))
-        voltage_range_max = np.max(self.data[:, 1]) * 1.05
+        voltage_range = np.max(self.data[:, 1]) - np.min(self.data[:, 1])
+        voltage_range_min = np.min(self.data[:, 1]) - voltage_range * 0.05
+        voltage_range_max = np.max(self.data[:, 1]) + voltage_range * 0.05
 
-        current_range_min = np.min(self.data[:, 2])
-        current_range_min = current_range_min - (abs(current_range_min * 0.05))
-        current_range_max = np.max(self.data[:, 2]) * 1.05
+        current_range = np.max(self.data[:, 2]) - np.min(self.data[:, 2])
+        current_range_min = np.min(self.data[:, 2]) - current_range * 0.05
+        current_range_max = np.max(self.data[:, 2]) + current_range * 0.05
 
         plot.add_second_axis(
             "voltage",
