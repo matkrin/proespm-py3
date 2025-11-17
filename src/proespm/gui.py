@@ -161,7 +161,7 @@ class MainGui(QMainWindow):
         colormap_lbl = QLabel("Colormap:")
         self.colormap = QComboBox()
         self.colormap.addItems(plt.colormaps())
-        self.colormap.setCurrentText("rocket")
+        self.colormap.setCurrentText("inferno")
         colormap_layout.addWidget(colormap_lbl)
         colormap_layout.addWidget(self.colormap)
         self.central_layout.addLayout(colormap_layout)

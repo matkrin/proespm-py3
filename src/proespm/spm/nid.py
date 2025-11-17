@@ -34,13 +34,21 @@ class SpmNid:
         file_meta = _get_file_meta(content_list)
         self.op_mode = file_meta["Op. mode"]
 
+        if self.op_mode == 'Dynamic Force':
+            self.cantilever = file_meta["Cantilever type"]
+            self.amp_ctrl_mode = file_meta["Ampl. Ctrl. mode"]
+            self.excitation_amp = _read_float_from_string(file_meta["Excitation ampl."])
+        elif self.op_mode == 'Static Force':
+            self.cantilever = file_meta["Cantilever type"]
+            self.amp_ctrl_mode = file_meta["Ampl. Ctrl. mode"]
+
         self.xsize = _read_float_from_string(file_meta["Image size"])
         xsize_units = _read_units_from_string(file_meta["Image size"])
         if xsize_units == "µm":
             self.xsize *= 1000
         self.ysize = self.xsize
 
-        # scan_dir_up_down = file_meta["Scan direction"]
+        self.scan_dir_up_down = file_meta["Scan direction"]
 
         self.xoffset = _read_float_from_string(file_meta["X-Pos"])
         xoffset_units = _read_units_from_string(file_meta["X-Pos"])
@@ -52,10 +60,10 @@ class SpmNid:
         if y_offset_units == "µm":
             self.yoffset *= 1000
 
-        self.tilt = _read_float_from_string(file_meta["Rotation"])
+        self.rotation = _read_float_from_string(file_meta["Rotation"])
         self.line_time = _read_float_from_string(file_meta["Time/Line"])
         self.scan_duration = (
-            self.line_time * _read_float_from_string(file_meta["Lines"]) / 1000
+            self.line_time * 2 * _read_float_from_string(file_meta["Lines"]) / 1000
         )
 
         self.datetime = parser.parse(
@@ -111,10 +119,10 @@ class SpmNid:
             .astype(np.float64)
         )
 
-        # Plotting is from bottom left corner
-        if file_meta["Scan direction"] == "Down":
-            img_data_fw = np.flip(img_data_fw, axis=0)
-            img_data_bw = np.flip(img_data_bw, axis=0)
+        # # Plotting is from bottom left corner
+        # if file_meta["Scan direction"] == "Down":
+        #     img_data_fw = np.flip(img_data_fw, axis=0)
+        #     img_data_bw = np.flip(img_data_bw, axis=0)
 
         self.img_data_fw = SpmImage(np.flip(img_data_fw, axis=0), self.xsize)
         self.img_data_bw = SpmImage(np.flip(img_data_bw, axis=0), self.xsize)
