@@ -16,63 +16,104 @@
         <td><a href="file:///{{ entry.fileinfo.filepath }}">{{ entry.m_id }}</td>
       </tr>
       <tr>
-        <th>Datetime</th>
+        <th>Date/time</th>
         <td>{{ entry.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
       </tr>
       <tr>
-
+        <th>Op. mode</th>
+        <td>{{ entry.op_mode }}</td>
+      </tr>
       {% if entry.op_mode == 'Dynamic Force' %}
           <tr>
-            <th>Setpoint</sub></th>
-            <td>{{ "{:.2f}".format(entry.current) }} %</td>
+            <th>Cantilever</th>
+            <td>{{ entry.cantilever }}</td>
           </tr>
           <tr>
-            <th>Tip Voltage</th>
-            <td>{{ "{:.1f}".format(entry.bias) }} mV</td>
+            <th>Ampl. ctrl.</th>
+            <td>{{ entry.amp_ctrl_mode }}</td>
           </tr>
           <tr>
+            <th>Exc. ampl.</th>
+            <td>{{ "{:.1f}".format(entry.excitation_amp) }} mV</td>
+          </tr>
+          <tr>
+            <th>Setpoint</th>
+            <td>{{ "{:.1f}".format(entry.current) }} %</td>
+          </tr>
+          <tr>
+            <th>Tip volt.</th>
+            <td>{{ "{:+.1f}".format(entry.bias) }} mV</td>
+          </tr>
+      {% elif entry.op_mode == 'Static Force' %}
+          <tr>
+            <th>Cantilever</th>
+            <td>{{ entry.cantilever }}</td>
+          </tr>
+          <tr>
+            <th>Ampl. ctrl.</th>
+            <td>{{ entry.amp_ctrl_mode }}</td>
+          </tr>
+          <tr>
+            <th>Setpoint</th>
+            <td>{{ "{:.1f}".format(entry.current) }} nN</td>
+          </tr>
+          <tr>
+            <th>Tip volt.</th>
+            <td>{{ "{:+.1f}".format(entry.bias) }} mV</td>
+          </tr>
       {% else %}
           <tr>
-            <th>I<sub>tun</sub></th>
+            <th>I<sub>t</sub></th>
             <td>{{ "{:.2f}".format(entry.current) }} nA</td>
           </tr>
           <tr>
-            <th>U<sub>tun</sub></th>
-            <td>{{ "{:.1f}".format(entry.bias) }} mV</td>
+            <th>U<sub>b</sub></th>
+            <td>{{ "{:+.1f}".format(entry.bias) }} mV</td>
           </tr>
+      {% endif %}
+    </table>
+  </div>
+
+  <div class="table_column">
+    <table>
+      <tr>
+        <th></th>
+        <td>&nbsp;</td>
+      </tr>
+      {% if entry.p_gain %}
           <tr>
+            <th>P/I</th>
+            <td>{{ "{:.0f}".format(entry.p_gain) }} / {{ "{:.0f}".format(entry.i_gain) }}</td>
+          </tr>
       {% endif %}
 
       <tr>
-        <th>Scan Size</th>
+        <th>Scan size</th>
         <td>{{ "{:.0f}".format(entry.xsize) }} &#215; {{ "{:.0f}".format(entry.ysize) }} nm&#178;</td>
       </tr>
       <tr>
         <th>Resolution</th>
         <td>{{ entry.xres }} &#215; {{ entry.yres }}</td>
+      <tr>
+        <th>Line time</th>
+        <td>{{ "{:.1f}".format(entry.line_time) }} ms</td>
+      </tr>
+      </tr>
+        <th>Scan time</th>
+        <td>{{ "{:.2f}".format(entry.scan_duration) }} s</td>
+      </tr>
+      <tr>
+        <th>Scan direct.</th>
+        <td>{{ entry.scan_dir_up_down }}</td>
+      </tr>
+      <tr>
+        <th>Offset</th>
+        <td>{{ "{:+.1f}".format(entry.xoffset) }} nm <br> {{ "{:+.1f}".format(entry.yoffset) }} nm</td>
       </tr>
       <tr>
         <th>Rotation</th>
         <td>{{ entry.rotation }}&#176;</td>
       <tr>
-        <th>Scan Duration</th>
-        <td>{{ "{:.2f}".format(entry.scan_duration) }} s</td>
-      </tr>
-      <tr>
-        <th>Line Time</th>
-        <td>{{ "{:.2f}".format(entry.line_time) }} ms</td>
-      </tr>
-      <tr>
-        <th>Offset</th>
-        <td>{{ "{:.2f}".format(entry.xoffset) }} nm, {{ "{:.2f}".format(entry.yoffset) }} nm</td>
-      </tr>
-
-      {% if entry.p_gain %}
-          <tr>
-            <th>P / I</th>
-            <td>{{ "{:.2f}".format(entry.p_gain) }} / {{ "{:.2f}".format(entry.i_gain) }}</td>
-          </tr>
-      {% endif %}
 
     </table>
   </div>

@@ -10,8 +10,8 @@
                 <td><a href="file:///{{ entry.fileinfo.filepath }}">{{ entry.m_id }}</td>
             </tr>
             <tr>
-                <th>Datetime</th>
-                <td>{{ entry.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+                <th>Date/time</th>
+                <td>{{ entry.datetime.strftime("%Y-%m-%d <br> %H:%M:%S") }}</td>
             </tr>
         </table>
     </div>
