@@ -119,11 +119,6 @@ class SpmNid:
             .astype(np.float64)
         )
 
-        # # Plotting is from bottom left corner
-        # if file_meta["Scan direction"] == "Down":
-        #     img_data_fw = np.flip(img_data_fw, axis=0)
-        #     img_data_bw = np.flip(img_data_bw, axis=0)
-
         self.img_data_fw = SpmImage(np.flip(img_data_fw, axis=0), self.xsize)
         self.img_data_bw = SpmImage(np.flip(img_data_bw, axis=0), self.xsize)
 
