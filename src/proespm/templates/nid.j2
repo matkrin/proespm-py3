@@ -16,7 +16,7 @@
         <td><a href="file:///{{ entry.fileinfo.filepath }}">{{ entry.m_id }}</td>
       </tr>
       <tr>
-        <th>Date / time</th>
+        <th>Date/time</th>
         <td>{{ entry.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
       </tr>
       <tr>
@@ -82,7 +82,7 @@
       </tr>
       {% if entry.p_gain %}
           <tr>
-            <th>P / I</th>
+            <th>P/I</th>
             <td>{{ "{:.0f}".format(entry.p_gain) }} / {{ "{:.0f}".format(entry.i_gain) }}</td>
           </tr>
       {% endif %}
