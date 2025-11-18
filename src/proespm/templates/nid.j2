@@ -16,7 +16,7 @@
         <td><a href="file:///{{ entry.fileinfo.filepath }}">{{ entry.m_id }}</td>
       </tr>
       <tr>
-        <th>Date & time</th>
+        <th>Date / time</th>
         <td>{{ entry.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
       </tr>
       <tr>
@@ -41,7 +41,7 @@
             <td>{{ "{:.1f}".format(entry.current) }} %</td>
           </tr>
           <tr>
-            <th>Tip voltage</th>
+            <th>Tip volt.</th>
             <td>{{ "{:+.1f}".format(entry.bias) }} mV</td>
           </tr>
       {% elif entry.op_mode == 'Static Force' %}
@@ -58,7 +58,7 @@
             <td>{{ "{:.1f}".format(entry.current) }} nN</td>
           </tr>
           <tr>
-            <th>Tip voltage</th>
+            <th>Tip volt.</th>
             <td>{{ "{:+.1f}".format(entry.bias) }} mV</td>
           </tr>
       {% else %}
