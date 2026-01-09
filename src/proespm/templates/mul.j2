@@ -60,19 +60,5 @@
           </tr>
         </table>
       </div>
-
-      {% if img.labjournal_data is not none %}
-      <div class="table_column">
-        <table>
-        {% for key, value in img.labjournal_data.items() %}
-          <tr>
-            <th>{{ key }}</th>
-            <td>{{ value[0] }}</td>
-          </tr>
-        {% endfor %}
-        </table>
-      </div>
-      {% endif %}
-
     </div><!-- End of one row -->
 {% endfor %}

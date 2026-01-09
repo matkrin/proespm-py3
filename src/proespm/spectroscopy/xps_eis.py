@@ -11,7 +11,6 @@ from numpy._typing import NDArray
 
 from proespm.fileinfo import Fileinfo
 from proespm.config import Config
-from proespm.labjournal import Labjournal
 
 
 @final
@@ -85,13 +84,8 @@ class XpsEis:
             xps_scan.plot()
         return self
 
-    def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        for xps_scan in self.data:
-            xps_scan.labjournal_data = labjournal.extract_metadata_for_m_id(
-                xps_scan.m_id
-            )
 
-
+@final
 class XpsScan:
     """Class handling a single XPS scan in an Omicron EIS data file (.txt)"""
 
@@ -121,7 +115,6 @@ class XpsScan:
         self.e_pass = e_pass
 
         self.m_id = f"{self.filename}_{self.scan_number}"
-        self.labjournal_data: dict[str, str] | None = None
 
         self.script = None
         self.div = None

@@ -9,7 +9,6 @@ from numpy._typing import NDArray
 from proespm.ec.ec import EcPlot
 from proespm.fileinfo import Fileinfo
 from proespm.config import Config
-from proespm.labjournal import Labjournal
 
 
 @final
@@ -21,8 +20,6 @@ class CvLabview:
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.m_id = self.fileinfo.filename
-        self.sheet_id: str | None = None
-        self.labjournal_data: dict[str, str] | None = None
         self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
         self.type: str | None = None
@@ -70,11 +67,6 @@ class CvLabview:
         self.plot()
         return self
 
-    def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
-        if metadata is not None:
-            self.sheet_id, self.labjournal_data = metadata
-
 
 @final
 class CaLabview:
@@ -85,9 +77,6 @@ class CaLabview:
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.m_id = self.fileinfo.filename
-        self.sheet_id: str | None = None
-        self.labjournal_data: dict[str, str] | None = None
-        self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
         self.type: str | None = None
         self.data = self.read_ca_data()
@@ -157,11 +146,6 @@ class CaLabview:
         self.plot()
         return self
 
-    def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
-        if metadata is not None:
-            self.sheet_id, self.labjournal_data = metadata
-
 
 @final
 class FftLabview:
@@ -172,8 +156,6 @@ class FftLabview:
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.m_id = self.fileinfo.filename
-        self.sheet_id: str | None = None
-        self.labjournal_data: dict[str, str] | None = None
         self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
         self.type: str | None = None
@@ -202,8 +184,3 @@ class FftLabview:
     def process(self, _config: Config) -> Self:
         self.plot()
         return self
-
-    def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
-        if metadata is not None:
-            self.sheet_id, self.labjournal_data = metadata

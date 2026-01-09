@@ -11,7 +11,6 @@ from numpy.typing import NDArray
 
 from proespm.fileinfo import Fileinfo
 from proespm.config import Config
-from proespm.labjournal import Labjournal
 
 
 @final
@@ -30,7 +29,6 @@ class Tpd:
         self.colors = itertools.cycle(Category10_10)
 
         self.script, self.div = None, None
-        self.labjournal_data = None
 
     def get_data(self) -> dict[str, NDArray[np.float64]]:
         with open(self.fileinfo.filepath, "r") as f:
@@ -65,7 +63,6 @@ class Tpd:
         y_min -= 0.1 * y_max
         y_max += 0.1 * y_max
 
-
         plot = figure(
             width=1000,
             height=540,
@@ -83,7 +80,13 @@ class Tpd:
         plot.background_fill_alpha = 0
         plot.toolbar.active_scroll = "auto"  # pyright: ignore[reportAttributeAccessIssue]
         for k, v in self.data.items():
-            _ = plot.line(time_data, v, legend_label=k, color=next(self.colors), line_width=2)
+            _ = plot.line(
+                time_data,
+                v,
+                legend_label=k,
+                color=next(self.colors),
+                line_width=2,
+            )
 
         # Second Axis (right) for Temperature
         second_y_range_name = "Temperature"
@@ -108,6 +111,3 @@ class Tpd:
     def process(self, _config: Config) -> Self:
         self.plot()
         return self
-
-    def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)
