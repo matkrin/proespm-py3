@@ -130,3 +130,6 @@ class StmSm4:
         )
 
         return self
+
+    def template_name(self) -> str:
+        return "sm4.j2"

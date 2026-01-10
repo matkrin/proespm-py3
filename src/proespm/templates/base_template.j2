@@ -32,38 +32,8 @@
     </details>
     <!-- Loop through the `process_objs` and choose the according template -->
     {% for entry in process_objs %}
-        {% if entry.ident == "MTRX" %}
-            {% include "mtrx.j2" %}
-        {% elif entry.ident == "MUL" %}
-            {% include "mul.j2" %}
-        {% elif entry.ident == "SM4" %}
-            {% include "sm4.j2" %}
-        {% elif entry.ident == "SXM" %}
-            {% include "sxm.j2" %}
-        {% elif entry.ident == "NID" %}
-            {% include "nid.j2" %}
-        {% elif entry.ident == "AES" %}
-            {% include "aes.j2" %}
-        {% elif entry.ident == "XPS" %}
-            {% include "xps_eis.j2" %}
-        {% elif entry.ident == "QCMB" %}
-            {% include "qcmb.j2" %}
-        {% elif entry.ident == "EC4"
-            or entry.ident == "CV_LABVIEW"
-            or entry.ident == "CA_LABVIEW"
-            or entry.ident == "FFT_LABVIEW"
-            or entry.ident == "CA_PALMSENS"
-            or entry.ident == "CP_PALMSENS"
-            or entry.ident == "LSV_PALMSENS"
-            or entry.ident == "EIS_PALMSENS"
-            or entry.ident == "CV_PALMSENS"
-            or entry.ident == "PS_SESSION"
-        %}
-            {% include "ec4.j2" %}
-        {% elif entry.ident == "IMAGE" %}
-            {% include "image.j2" %}
-        {% elif entry.ident == "TPD" %}
-            {% include "tpd.j2" %}
+        {% if entry.template_name is defined and entry.template_name() %}
+            {% include entry.template_name() %}
         {% endif %}
     {% endfor %}
 

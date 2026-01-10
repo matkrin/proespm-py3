@@ -176,3 +176,6 @@ class AesStaib:
     def process(self, _config: Config) -> Self:
         self.plot()
         return self
+
+    def template_name(self) -> str:
+        return "aes.j2"

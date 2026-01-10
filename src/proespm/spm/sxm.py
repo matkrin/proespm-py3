@@ -67,3 +67,6 @@ class StmSxm:
             .plot(config.colormap, config.colorrange)
         )
         return self
+
+    def template_name(self) -> str:
+        return "sxm.j2"

@@ -84,6 +84,9 @@ class XpsEis:
             xps_scan.plot()
         return self
 
+    def template_name(self) -> str:
+        return "xps_eis.j2"
+
 
 @final
 class XpsScan:

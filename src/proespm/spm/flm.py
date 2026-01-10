@@ -80,3 +80,7 @@ class StmFlm(StmMul):
 
         self.convert_to_mp4()
         return self
+
+    @override
+    def template_name(self) -> None:
+        return None

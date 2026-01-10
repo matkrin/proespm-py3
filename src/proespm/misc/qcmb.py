@@ -73,3 +73,6 @@ class Qcmb:
 
     def process(self, _config: Config):
         self.plot()
+
+    def template_name(self) -> str:
+        return "qcmb.j2"

@@ -67,6 +67,9 @@ class CvLabview:
         self.plot()
         return self
 
+    def template_name(self) -> str:
+        return "ec4.j2"
+
 
 @final
 class CaLabview:
@@ -77,6 +80,7 @@ class CaLabview:
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.m_id = self.fileinfo.filename
+        self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
         self.type: str | None = None
         self.data = self.read_ca_data()
@@ -146,6 +150,9 @@ class CaLabview:
         self.plot()
         return self
 
+    def template_name(self) -> str:
+        return "ec4.j2"
+
 
 @final
 class FftLabview:
@@ -184,3 +191,6 @@ class FftLabview:
     def process(self, _config: Config) -> Self:
         self.plot()
         return self
+
+    def template_name(self) -> str:
+        return "ec4.j2"

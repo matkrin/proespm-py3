@@ -37,3 +37,6 @@ class Image:
     def process(self, _config: Config) -> Self:
         self.encode_png()
         return self
+
+    def template_name(self) -> str:
+        return "image.j2"

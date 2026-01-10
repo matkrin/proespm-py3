@@ -142,6 +142,9 @@ class SpmNid:
 
         return self
 
+    def template_name(self) -> str:
+        return "nid.j2"
+
 
 def _get_header(content_list: list[bytes]) -> list[bytes]:
     return content_list[0].split(b"\r\n")

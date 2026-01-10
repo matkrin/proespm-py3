@@ -51,3 +51,6 @@ class StmMul:
             )
 
         return self
+
+    def template_name(self) -> str:
+        return "mul.j2"
