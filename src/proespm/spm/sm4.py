@@ -1,4 +1,4 @@
-from typing import Any, Hashable, Self
+from typing import Any, Hashable, Self, final
 import numpy as np
 from bokeh.embed import components
 from numpy.typing import NDArray
@@ -7,10 +7,10 @@ from sm4file import Sm4
 
 from proespm.ec.ec import EcPlot
 from proespm.fileinfo import Fileinfo
-from proespm.labjournal import Labjournal
 from proespm.spm.spm import SpmImage
 
 
+@final
 class StmSm4:
     """Class for handling RHK SM4 files
 
@@ -25,8 +25,6 @@ class StmSm4:
         self.par5: str | None = None
 
         self.m_id = self.fileinfo.filename
-        self.sheet_id: str | None = None
-        self.labjournal_data: dict[Hashable, Any] | None = None
 
         self.sm4 = Sm4(filepath)
 
@@ -132,8 +130,3 @@ class StmSm4:
         )
 
         return self
-
-    def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
-        if metadata is not None:
-            self.sheet_id, self.labjournal_data = metadata

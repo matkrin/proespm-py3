@@ -30,109 +30,42 @@
         <summary>Overview</summary>
         <div id="overview"></div>
     </details>
-
-
-    {% if labjournal is not none %}
-    <!-- -->
-        {% if labjournal.ident == "LABJ_STRUCTURED" %}
-            {% for header in labjournal.read_header() %}
-                <details open>
-                    <summary>{{ header.sheet_id }}</summary>
-
-                    <div>
-                        <h2>{{ header.day.date() }}</h2>
-                        <h3>{{ header.title }}</h3>
-                        <p><strong>Experimenters:</strong> {{ header.experimenters }}</p>
-                        <p><strong>Comment:</strong> {{ header.comment }}</p>
-                        <p><strong>Identifier:</strong> {{ header.identifier }}</p>
-                    </div>
-
-                    <!-- Loop through the `process_objs` and choose the according template -->
-                    {% for entry in process_objs %}
-                        {% if entry.sheet_id == header.sheet_id %}
-
-                            {% if entry.ident == "MTRX" %}
-                                {% include "mtrx.j2" %}
-                            {% elif entry.ident == "MUL" %}
-                                {% include "mul.j2" %}
-                            {% elif entry.ident == "SM4" %}
-                                {% include "sm4.j2" %}
-                            {% elif entry.ident == "SXM" %}
-                                {% include "sxm.j2" %}
-                            {% elif entry.ident == "NID" %}
-                                {% include "nid.j2" %}
-                            {% elif entry.ident == "AES" %}
-                                {% include "aes.j2" %}
-                            {% elif entry.ident == "XPS" %}
-                                {% include "xps_eis.j2" %}
-                            {% elif entry.ident == "QCMB" %}
-                                {% include "qcmb.j2" %}
-                            {% elif entry.ident == "EC4"
-                                or entry.ident == "CV_LABVIEW"
-                                or entry.ident == "CA_LABVIEW"
-                                or entry.ident == "FFT_LABVIEW"
-                                or entry.ident == "CA_PALMSENS"
-                                or entry.ident == "CP_PALMSENS"
-                                or entry.ident == "LSV_PALMSENS"
-                                or entry.ident == "EIS_PALMSENS"
-                                or entry.ident == "CV_PALMSENS"
-                                or entry.ident == "PS_SESSION"
-                            %}
-                                {% include "ec4.j2" %}
-                            {% elif entry.ident == "IMAGE" %}
-                                {% include "image.j2" %}
-                            {% elif entry.ident == "TPD" %}
-                                {% include "tpd.j2" %}
-                            {% endif %}
-
-                        {% endif %}
-                    {% endfor %}
-
-                </details>
-            {% endfor %}
+    <!-- Loop through the `process_objs` and choose the according template -->
+    {% for entry in process_objs %}
+        {% if entry.ident == "MTRX" %}
+            {% include "mtrx.j2" %}
+        {% elif entry.ident == "MUL" %}
+            {% include "mul.j2" %}
+        {% elif entry.ident == "SM4" %}
+            {% include "sm4.j2" %}
+        {% elif entry.ident == "SXM" %}
+            {% include "sxm.j2" %}
+        {% elif entry.ident == "NID" %}
+            {% include "nid.j2" %}
+        {% elif entry.ident == "AES" %}
+            {% include "aes.j2" %}
+        {% elif entry.ident == "XPS" %}
+            {% include "xps_eis.j2" %}
+        {% elif entry.ident == "QCMB" %}
+            {% include "qcmb.j2" %}
+        {% elif entry.ident == "EC4"
+            or entry.ident == "CV_LABVIEW"
+            or entry.ident == "CA_LABVIEW"
+            or entry.ident == "FFT_LABVIEW"
+            or entry.ident == "CA_PALMSENS"
+            or entry.ident == "CP_PALMSENS"
+            or entry.ident == "LSV_PALMSENS"
+            or entry.ident == "EIS_PALMSENS"
+            or entry.ident == "CV_PALMSENS"
+            or entry.ident == "PS_SESSION"
+        %}
+            {% include "ec4.j2" %}
+        {% elif entry.ident == "IMAGE" %}
+            {% include "image.j2" %}
+        {% elif entry.ident == "TPD" %}
+            {% include "tpd.j2" %}
         {% endif %}
-
-    {% else %}
-
-        <!-- Loop through the `process_objs` and choose the according template -->
-        {% for entry in process_objs %}
-            {% if entry.ident == "MTRX" %}
-                {% include "mtrx.j2" %}
-            {% elif entry.ident == "MUL" %}
-                {% include "mul.j2" %}
-            {% elif entry.ident == "SM4" %}
-                {% include "sm4.j2" %}
-            {% elif entry.ident == "SXM" %}
-                {% include "sxm.j2" %}
-            {% elif entry.ident == "NID" %}
-                {% include "nid.j2" %}
-            {% elif entry.ident == "AES" %}
-                {% include "aes.j2" %}
-            {% elif entry.ident == "XPS" %}
-                {% include "xps_eis.j2" %}
-            {% elif entry.ident == "QCMB" %}
-                {% include "qcmb.j2" %}
-            {% elif entry.ident == "EC4"
-                or entry.ident == "CV_LABVIEW"
-                or entry.ident == "CA_LABVIEW"
-                or entry.ident == "FFT_LABVIEW"
-                or entry.ident == "CA_PALMSENS"
-                or entry.ident == "CP_PALMSENS"
-                or entry.ident == "LSV_PALMSENS"
-                or entry.ident == "EIS_PALMSENS"
-                or entry.ident == "CV_PALMSENS"
-                or entry.ident == "PS_SESSION"
-            %}
-                {% include "ec4.j2" %}
-            {% elif entry.ident == "IMAGE" %}
-                {% include "image.j2" %}
-            {% elif entry.ident == "TPD" %}
-                {% include "tpd.j2" %}
-            {% endif %}
-        {% endfor %}
-
-    {% endif %}
-
+    {% endfor %}
 
     <!--  Modal -->
     <div id="modal">

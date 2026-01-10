@@ -7,11 +7,9 @@ import numpy as np
 from bokeh.embed import components
 from numpy.typing import NDArray
 
-from proespm.ec.PalmSens import PARAM_MAP
 from proespm.ec.ec import EcPlot
 from proespm.fileinfo import Fileinfo
 from proespm.config import Config
-from proespm.labjournal import Labjournal
 
 
 class PalmSensType(Enum):
@@ -29,8 +27,6 @@ class PalmSensSession:
     def __init__(self, filepath: str) -> None:
         self.fileinfo: Fileinfo = Fileinfo(filepath)
         self.m_id: str = self.fileinfo.filename
-        self.sheet_id: str | None = None
-        self.labjournal_data: dict[Hashable, Any] | None = None  # pyright: ignore[reportExplicitAny]
         self.script: str | None = None
         self.div: str | None = None
 
@@ -150,11 +146,3 @@ class PalmSensSession:
     def process(self, _config: Config) -> Self:
         self.plot()
         return self
-
-    def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
-        if metadata is not None:
-            self.sheet_id, self.labjournal_data = metadata
-            self.labjournal_data = {
-                PARAM_MAP.get(k, k): v for k, v in self.labjournal_data.items()
-            }

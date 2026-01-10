@@ -6,7 +6,6 @@ import access2thematrix  # pyright: ignore[reportMissingTypeStubs]
 
 from proespm.fileinfo import Fileinfo
 from proespm.config import Config
-from proespm.labjournal import Labjournal
 from proespm.spm.spm import SpmImage
 
 
@@ -30,8 +29,6 @@ class StmMatrix:
         self.slide_num: int | None = None
 
         self.m_id: str = self.fileinfo.filename
-        self.labjournal_data: dict[Hashable, Any] | None = None  # pyright: ignore[reportExplicitAny]
-        self.sheet_id: str | None = None
 
         self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
@@ -100,12 +97,3 @@ class StmMatrix:
             .plot(config.colormap, config.colorrange)
         )
         return self
-
-    def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
-        if metadata is not None:
-            self.sheet_id, self.labjournal_data = metadata
-
-
-# mtrx = StmMatrix("/Users/matthias/Developer/proespm-py3/tests/testdata/20201111--4_1.Z_mtrx")
-# print(mtrx.xoffset)

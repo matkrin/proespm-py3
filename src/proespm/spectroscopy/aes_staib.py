@@ -1,4 +1,4 @@
-from typing import Self, TextIO
+from typing import Self, TextIO, final
 
 import numpy as np
 from bokeh.embed import components
@@ -9,9 +9,9 @@ from proespm.config import Config
 from vamas.vamas import Vamas
 
 from proespm.fileinfo import Fileinfo
-from proespm.labjournal import Labjournal
 
 
+@final
 class AesStaib:
     """Class for handling files from Staib DESA
 
@@ -23,7 +23,6 @@ class AesStaib:
         self.ident = "AES"
         self.fileinfo = Fileinfo(filepath)
         self.m_id = self.fileinfo.filename
-        self.labjournal_data: dict[str, str] | None = None
 
         self.datetime = None
         self.mode = None
@@ -177,6 +176,3 @@ class AesStaib:
     def process(self, _config: Config) -> Self:
         self.plot()
         return self
-
-    def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        self.labjournal_data = labjournal.extract_metadata_for_m_id(self.m_id)

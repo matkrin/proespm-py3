@@ -14,7 +14,6 @@ from numpy._typing import NDArray
 from proespm.ec.ec import EcPlot
 from proespm.fileinfo import Fileinfo
 from proespm.config import Config
-from proespm.labjournal import Labjournal
 
 
 DATETIME_REGEX = re.compile(r"dateTime(\s+[\d\s:-]+)")
@@ -33,8 +32,6 @@ class Ec4:
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.m_id = self.fileinfo.filename
-        self.sheet_id: str | None = None
-        self.labjournal_data: dict[str, str] | None = None
 
         self.datetime: datetime | None = None
         self.u_start: float | None = None
@@ -152,8 +149,3 @@ class Ec4:
     def process(self, _config: Config) -> Self:
         self.plot()
         return self
-
-    def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
-        if metadata is not None:
-            self.sheet_id, self.labjournal_data = metadata

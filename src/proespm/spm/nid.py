@@ -6,7 +6,6 @@ from dateutil import parser
 
 from proespm.config import Config
 from proespm.fileinfo import Fileinfo
-from proespm.labjournal import Labjournal
 from proespm.spm.spm import SpmImage
 
 
@@ -21,9 +20,7 @@ class SpmNid:
         self.fileinfo = Fileinfo(filepath)
 
         self.m_id = self.fileinfo.filename
-        self.sheet_id: str | None = None
         self.slide_num: int | None = None
-        self.labjournal_data: dict[Hashable, Any] | None = None  # pyright: ignore[reportExplicitAny]
 
         with open(filepath, "rb") as f:
             content = f.read()
@@ -34,11 +31,13 @@ class SpmNid:
         file_meta = _get_file_meta(content_list)
         self.op_mode = file_meta["Op. mode"]
 
-        if self.op_mode == 'Dynamic Force':
+        if self.op_mode == "Dynamic Force":
             self.cantilever = file_meta["Cantilever type"]
             self.amp_ctrl_mode = file_meta["Ampl. Ctrl. mode"]
-            self.excitation_amp = _read_float_from_string(file_meta["Excitation ampl."])
-        elif self.op_mode == 'Static Force':
+            self.excitation_amp = _read_float_from_string(
+                file_meta["Excitation ampl."]
+            )
+        elif self.op_mode == "Static Force":
             self.cantilever = file_meta["Cantilever type"]
             self.amp_ctrl_mode = file_meta["Ampl. Ctrl. mode"]
 
@@ -63,7 +62,10 @@ class SpmNid:
         self.rotation = _read_float_from_string(file_meta["Rotation"])
         self.line_time = _read_float_from_string(file_meta["Time/Line"])
         self.scan_duration = (
-            self.line_time * 2 * _read_float_from_string(file_meta["Lines"]) / 1000
+            self.line_time
+            * 2
+            * _read_float_from_string(file_meta["Lines"])
+            / 1000
         )
 
         self.datetime = parser.parse(
@@ -139,11 +141,6 @@ class SpmNid:
         )
 
         return self
-
-    def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
-        if metadata is not None:
-            self.sheet_id, self.labjournal_data = metadata
 
 
 def _get_header(content_list: list[bytes]) -> list[bytes]:

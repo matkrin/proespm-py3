@@ -5,7 +5,6 @@ import nanonispy as nap  # pyright: ignore[reportMissingTypeStubs]
 
 from proespm.fileinfo import Fileinfo
 from proespm.config import Config
-from proespm.labjournal import Labjournal
 from proespm.spm.spm import SpmImage
 
 
@@ -21,9 +20,7 @@ class StmSxm:
         self.ident = "SXM"
         self.fileinfo = Fileinfo(filepath)
         self.m_id = self.fileinfo.filename
-        self.sheet_id: str | None = None
         self.slide_num: int | None = None
-        self.labjournal_data: dict[Hashable, Any] | None = None
 
         self.sxm = nap.read.Scan(filepath)
 
@@ -70,8 +67,3 @@ class StmSxm:
             .plot(config.colormap, config.colorrange)
         )
         return self
-
-    def set_labjournal_data(self, labjournal: Labjournal) -> None:
-        metadata = labjournal.extract_metadata_for_m_id(self.m_id)
-        if metadata is not None:
-            self.sheet_id, self.labjournal_data = metadata
