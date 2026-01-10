@@ -1,15 +1,17 @@
-from typing import Any, Hashable, Self, final
+from typing import Self, final, override
+
+import nanonispy as nap  # pyright: ignore[reportMissingTypeStubs]
 import numpy as np
 from dateutil import parser
-import nanonispy as nap  # pyright: ignore[reportMissingTypeStubs]
 
-from proespm.fileinfo import Fileinfo
 from proespm.config import Config
+from proespm.fileinfo import Fileinfo
+from proespm.measurement import Measurement
 from proespm.spm.spm import SpmImage
 
 
 @final
-class StmSxm:
+class StmSxm(Measurement):
     """Class for handling Nanonis .sxm files
 
     Args:
@@ -43,14 +45,15 @@ class StmSxm:
         self.speed = self.line_time * self.yres / 1e3  # pyright: ignore[reportUnknownMemberType] in s?
 
         self.img_data_fw = SpmImage(
-            np.flip(self.sxm.signals["Z"]["forward"], axis=0),
+            np.flip(self.sxm.signals["Z"]["forward"], axis=0),  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
             self.xsize,  # pyright: ignore[reportUnknownArgumentType, reportUnknownMemberType]
         )
         self.img_data_bw = SpmImage(
-            np.flip(self.sxm.signals["Z"]["backward"], axis=(0, 1)),
+            np.flip(self.sxm.signals["Z"]["backward"], axis=(0, 1)),  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
             self.xsize,  # pyright: ignore[reportUnknownArgumentType, reportUnknownMemberType]
         )
 
+    @override
     def process(self, config: Config) -> Self:
         _ = (
             self.img_data_fw.corr_plane()
@@ -68,5 +71,6 @@ class StmSxm:
         )
         return self
 
+    @override
     def template_name(self) -> str:
         return "sxm.j2"

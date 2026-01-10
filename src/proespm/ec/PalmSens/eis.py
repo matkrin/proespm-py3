@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 from datetime import datetime
-from typing import Literal, Self, final
+from typing import Literal, Self, final, override
 
 import numpy as np
 from bokeh.embed import components
@@ -12,6 +12,7 @@ from numpy._typing import NDArray
 from proespm.ec.ec import EcPlot
 from proespm.fileinfo import Fileinfo
 from proespm.config import Config
+from proespm.measurement import Measurement
 
 DATETIME_REGEX = re.compile(
     r"Date and time:,(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})"
@@ -19,7 +20,7 @@ DATETIME_REGEX = re.compile(
 
 
 @final
-class EisPalmSens:
+class EisPalmSens(Measurement):
     """Class for handling PalmSens impedence spectroscopy files (.csv)
     (testfile: PS241105-14.csv)
     """
@@ -70,9 +71,11 @@ class EisPalmSens:
 
         self.script, self.div = components(plot.fig, wrap_script=True)
 
-    def process(self, _config: Config) -> Self:
+    @override
+    def process(self, config: Config) -> Self:
         self.plot()
         return self
 
+    @override
     def template_name(self) -> str:
         return "ec4.j2"

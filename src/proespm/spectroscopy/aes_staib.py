@@ -1,4 +1,4 @@
-from typing import Self, TextIO, final
+from typing import Self, TextIO, final, override
 
 import numpy as np
 from bokeh.embed import components
@@ -6,13 +6,14 @@ from bokeh.plotting import figure
 from dateutil import parser
 from numpy._typing import NDArray
 from proespm.config import Config
+from proespm.measurement import Measurement
 from vamas.vamas import Vamas
 
 from proespm.fileinfo import Fileinfo
 
 
 @final
-class AesStaib:
+class AesStaib(Measurement):
     """Class for handling files from Staib DESA
 
     Args:
@@ -173,9 +174,11 @@ class AesStaib:
         plot.toolbar.active_scroll = "auto"  # pyright: ignore[reportAttributeAccessIssue]
         self.script, self.div = components(plot, wrap_script=True)
 
-    def process(self, _config: Config) -> Self:
+    @override
+    def process(self, config: Config) -> Self:
         self.plot()
         return self
 
+    @override
     def template_name(self) -> str:
         return "aes.j2"

@@ -1,4 +1,5 @@
 import itertools
+from typing import final
 
 from bokeh.plotting import figure
 from bokeh.models import LinearAxis, Range1d
@@ -7,6 +8,7 @@ import numpy as np
 from numpy._typing import NDArray
 
 
+@final
 class EcPlot:
     """A electrochemistry plot"""
 

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 from datetime import datetime
-from typing import Any, Self, final
+from typing import Any, Self, final, override
 
 import numpy as np
 from bokeh.embed import components
@@ -11,10 +11,11 @@ from numpy._typing import NDArray
 
 from proespm.fileinfo import Fileinfo
 from proespm.config import Config
+from proespm.measurement import Measurement
 
 
 @final
-class XpsEis:
+class XpsEis(Measurement):
     """Class handling Omicron EIS XPS files (.txt)"""
 
     def __init__(self, filepath: str) -> None:
@@ -79,11 +80,13 @@ class XpsEis:
                 )
         return data
 
-    def process(self, _config: Config) -> Self:
+    @override
+    def process(self, config: Config) -> Self:
         for xps_scan in self.data:
             xps_scan.plot()
         return self
 
+    @override
     def template_name(self) -> str:
         return "xps_eis.j2"
 
@@ -95,7 +98,7 @@ class XpsScan:
     def __init__(
         self,
         filepath: str,
-        xps_data: NDArray[Any],
+        xps_data: NDArray[Any],  # pyright: ignore[reportExplicitAny]
         scan_number: int,
         start: float,
         end: float,

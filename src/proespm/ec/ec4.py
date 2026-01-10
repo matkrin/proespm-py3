@@ -3,7 +3,7 @@ from __future__ import annotations
 import itertools
 import re
 from datetime import datetime
-from typing import Self, final
+from typing import Self, final, override
 
 import numpy as np
 from bokeh.embed import components
@@ -14,6 +14,7 @@ from numpy._typing import NDArray
 from proespm.ec.ec import EcPlot
 from proespm.fileinfo import Fileinfo
 from proespm.config import Config
+from proespm.measurement import Measurement
 
 
 DATETIME_REGEX = re.compile(r"dateTime(\s+[\d\s:-]+)")
@@ -24,7 +25,7 @@ RATE_REGEX = re.compile(r"Rate(\s+[\d.-]+)")
 
 
 @final
-class Ec4:
+class Ec4(Measurement):
     """Class for handling Nordic Electrochemistry EC4 files (.txt)"""
 
     ident = "EC4"
@@ -146,9 +147,11 @@ class Ec4:
 
         self.script, self.div = components(plot.fig, wrap_script=True)
 
-    def process(self, _config: Config) -> Self:
+    @override
+    def process(self, config: Config) -> Self:
         self.plot()
         return self
 
+    @override
     def template_name(self) -> str:
         return "ec4.j2"

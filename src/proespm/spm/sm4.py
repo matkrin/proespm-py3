@@ -1,17 +1,19 @@
-from typing import Any, Hashable, Self, final
+from typing import Self, final, override
+
 import numpy as np
 from bokeh.embed import components
 from numpy.typing import NDArray
-from proespm.config import Config
 from sm4file import Sm4
 
+from proespm.config import Config
 from proespm.ec.ec import EcPlot
 from proespm.fileinfo import Fileinfo
+from proespm.measurement import Measurement
 from proespm.spm.spm import SpmImage
 
 
 @final
-class StmSm4:
+class StmSm4(Measurement):
     """Class for handling RHK SM4 files
 
     Args:
@@ -69,7 +71,7 @@ class StmSm4:
         ]
 
         if len(e_cell_imgs) != 0:
-            e_cell_avg: NDArray[np.float32] = np.average(
+            e_cell_avg: NDArray[np.float32] = np.average(  # pyright: ignore[reportAny]
                 e_cell_imgs[0].data, axis=0
             )
             x = np.arange(1, len(e_cell_avg) + 1)
@@ -80,7 +82,7 @@ class StmSm4:
             plot.plot_scatter(x, e_cell_avg, legend_label="E_WE [V]")
 
             if len(u_tun_imgs) != 0:
-                u_tun_avg: NDArray[np.float32] = np.average(
+                u_tun_avg: NDArray[np.float32] = np.average(  # pyright: ignore[reportAny]
                     u_tun_imgs[0].data, axis=0
                 )
                 plot.plot_scatter(x, u_tun_avg, legend_label="U_b [V]")
@@ -96,7 +98,7 @@ class StmSm4:
         ]
 
         if len(i_cell_imgs) != 0:
-            i_cell_avg: NDArray[np.float32] = np.average(
+            i_cell_avg: NDArray[np.float32] = np.average(  # pyright: ignore[reportAny]
                 i_cell_imgs[0].data, axis=1
             )
             if self.par5 is not None:
@@ -113,6 +115,7 @@ class StmSm4:
                 plot.fig, wrap_script=True
             )
 
+    @override
     def process(self, config: Config) -> Self:
         _ = (
             self.img_data_fw.corr_plane()
@@ -131,5 +134,6 @@ class StmSm4:
 
         return self
 
+    @override
     def template_name(self) -> str:
         return "sm4.j2"

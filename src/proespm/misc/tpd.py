@@ -1,7 +1,7 @@
 from datetime import datetime
 import itertools
 import os
-from typing import Self, final
+from typing import Self, cast, final, override
 from bokeh.palettes import Category10_10
 import numpy as np
 from bokeh.embed import components
@@ -11,10 +11,11 @@ from numpy.typing import NDArray
 
 from proespm.fileinfo import Fileinfo
 from proespm.config import Config
+from proespm.measurement import Measurement
 
 
 @final
-class Tpd:
+class Tpd(Measurement):
     def __init__(self, filepath: str) -> None:
         self.ident = "TPD"
         self.fileinfo = Fileinfo(filepath)
@@ -44,7 +45,7 @@ class Tpd:
             if "Q" not in entry
         ]
 
-        return {k: v for k, v in zip(header_entries, numeric_data)}
+        return {k: v for k, v in zip(header_entries, numeric_data)}  # pyright: ignore[reportAny]
 
     def plot(self) -> None:
         """Creates an interactive plot of the data"""
@@ -53,8 +54,8 @@ class Tpd:
         y_min = np.inf
         y_max = 0
         for arr in self.data.values():
-            min: np.float64 = arr.min()
-            max: np.float64 = arr.max()
+            min = cast(np.float64, arr.min())
+            max = cast(np.float64, arr.max())
             if min < y_min:
                 y_min = min - 0.1 * max
             if max > y_max:
@@ -90,8 +91,9 @@ class Tpd:
 
         # Second Axis (right) for Temperature
         second_y_range_name = "Temperature"
-        plot.extra_y_ranges[second_y_range_name] = Range1d(
-            temperature_data.min() - 5, temperature_data.max() + 5
+        plot.extra_y_ranges[second_y_range_name] = Range1d(  # pyright: ignore[reportIndexIssue]
+            temperature_data.min() - 5,  # pyright: ignore[reportAny]
+            temperature_data.max() + 5,  # pyright: ignore[reportAny]
         )
         ax2 = LinearAxis(
             y_range_name=second_y_range_name, axis_label="Temperature / °C"
@@ -108,9 +110,11 @@ class Tpd:
 
         self.script, self.div = components(plot, wrap_script=True)
 
-    def process(self, _config: Config) -> Self:
+    @override
+    def process(self, config: Config) -> Self:
         self.plot()
         return self
 
+    @override
     def template_name(self) -> str:
         return "tpd.j2"

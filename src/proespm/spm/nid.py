@@ -1,11 +1,12 @@
 import re
-from typing import Any, Hashable, Self, final
+from typing import Self, final, override
 
 import numpy as np
 from dateutil import parser
 
 from proespm.config import Config
 from proespm.fileinfo import Fileinfo
+from proespm.measurement import Measurement
 from proespm.spm.spm import SpmImage
 
 
@@ -14,7 +15,7 @@ UNITS_REGEX = re.compile(r"[a-zA-Zµ°]+")
 
 
 @final
-class SpmNid:
+class SpmNid(Measurement):
     def __init__(self, filepath: str):
         self.ident = "NID"
         self.fileinfo = Fileinfo(filepath)
@@ -124,6 +125,7 @@ class SpmNid:
         self.img_data_fw = SpmImage(np.flip(img_data_fw, axis=0), self.xsize)
         self.img_data_bw = SpmImage(np.flip(img_data_bw, axis=0), self.xsize)
 
+    @override
     def process(self, config: Config) -> Self:
         _ = (
             self.img_data_fw.corr_plane()
@@ -142,6 +144,7 @@ class SpmNid:
 
         return self
 
+    @override
     def template_name(self) -> str:
         return "nid.j2"
 

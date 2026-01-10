@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from typing import Self
+from typing import Self, override
 
 import mulfile
 from mulfile.mul import Mul
@@ -8,10 +8,11 @@ import numpy as np
 
 from proespm.fileinfo import Fileinfo
 from proespm.config import Config
+from proespm.measurement import Measurement
 from proespm.spm.spm import SpmImage
 
 
-class StmMul:
+class StmMul(Measurement):
     """Class for handling .mul files
 
     Args:
@@ -40,10 +41,11 @@ class StmMul:
                 mul_image.xsize,
             )
 
+    @override
     def process(self, config: Config) -> Self:
         for mul_image in self.mulimages:
             (
-                mul_image.img_data.corr_plane()
+                mul_image.img_data.corr_plane()  # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
                 .corr_lines_median()
                 .corr_plane()
                 .corr_lines_median()
@@ -52,5 +54,6 @@ class StmMul:
 
         return self
 
-    def template_name(self) -> str:
+    @override
+    def template_name(self) -> str | None:
         return "mul.j2"

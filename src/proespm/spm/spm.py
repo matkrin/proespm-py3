@@ -1,10 +1,9 @@
 import base64
 import io
-from typing import Any, Self, final
+from typing import Any, Self, cast, final
 
 import matplotlib.pyplot as plt
 import numpy as np
-import seaborn as sns
 from matplotlib_scalebar.scalebar import ScaleBar  # pyright: ignore[reportMissingTypeStubs]
 from numpy._typing import NDArray
 
@@ -21,7 +20,7 @@ class SpmImage:
 
     """
 
-    def __init__(self, arr: NDArray[np.floating[Any]], xsize: float) -> None:
+    def __init__(self, arr: NDArray[np.floating[Any]], xsize: float) -> None:  # pyright: ignore[reportExplicitAny]
         self.arr = arr
         self.yres, self.xres = arr.shape
         self.xsize = xsize
@@ -29,7 +28,7 @@ class SpmImage:
 
     @property
     def shape(self) -> tuple[int, int]:
-        return self.arr.shape
+        return self.arr.shape  # pyright: ignore[reportReturnType]
 
     def plot(
         self, colormap: str, colorrange: tuple[float, float], show: bool = False
@@ -46,8 +45,8 @@ class SpmImage:
         _ = ax.imshow(  # pyright: ignore[reportUnknownMemberType]
             self.arr,
             cmap=colormap,
-            vmin=vmin,
-            vmax=vmax,
+            vmin=vmin,  # pyright: ignore[reportArgumentType]
+            vmax=vmax,  # pyright: ignore[reportArgumentType]
             extent=(0, self.xres, 0, self.yres),
         )
         # plt.colorbar()
@@ -93,7 +92,7 @@ class SpmImage:
 
     def corr_lines_mean(self):
         """Subtract a plane of the average of each scan line from the image array"""
-        mean: float = np.mean(self.arr, axis=1)
+        mean = cast(float, np.mean(self.arr, axis=1))
         correction = np.broadcast_to(
             mean, (self.arr.shape[1], self.arr.shape[0])
         ).T
@@ -103,7 +102,7 @@ class SpmImage:
 
     def corr_lines_median(self):
         """Subtract a plane of the median of each scan line from the image array"""
-        median: float = np.median(self.arr, axis=1)
+        median = cast(float, np.median(self.arr, axis=1))
         correction = np.broadcast_to(
             median, (self.arr.shape[1], self.arr.shape[0])
         ).T
@@ -121,7 +120,7 @@ class SpmImage:
         least_squares = np.linalg.lstsq(
             coeff_matrix, self.arr.ravel(), rcond=-1
         )[0]
-        background: NDArray[np.floating[Any]] = (
+        background: NDArray[np.floating[Any]] = (  # pyright: ignore[reportAny, reportExplicitAny]
             least_squares[0] * np.ones(self.arr.shape)
             + least_squares[1] * x_coords
             + least_squares[2] * y_coords

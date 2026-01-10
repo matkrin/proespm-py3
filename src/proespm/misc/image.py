@@ -1,14 +1,15 @@
 import base64
 import os
 from datetime import datetime
-from typing import Self, final
+from typing import Self, final, override
 
 from proespm.fileinfo import Fileinfo
 from proespm.config import Config
+from proespm.measurement import Measurement
 
 
 @final
-class Image:
+class Image(Measurement):
     """Class handeling image files (.png, .jpg, .jpeg)"""
 
     ident = "IMAGE"
@@ -34,9 +35,11 @@ class Image:
                 + base64.b64encode(f.read()).decode("ascii")
             )
 
-    def process(self, _config: Config) -> Self:
+    @override
+    def process(self, config: Config) -> Self:
         self.encode_png()
         return self
 
+    @override
     def template_name(self) -> str:
         return "image.j2"

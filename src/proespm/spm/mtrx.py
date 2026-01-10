@@ -1,11 +1,12 @@
 import os
 from datetime import datetime
-from typing import Any, Hashable, Self, final
+from typing import Self, final, override
 import numpy as np
 import access2thematrix  # pyright: ignore[reportMissingTypeStubs]
 
 from proespm.fileinfo import Fileinfo
 from proespm.config import Config
+from proespm.measurement import Measurement
 from proespm.spm.spm import SpmImage
 
 
@@ -16,7 +17,7 @@ class NoTracesError(Exception):
 
 
 @final
-class StmMatrix:
+class StmMatrix(Measurement):
     """Class for handling Omicron .Z_mtrx files
 
     Args:
@@ -71,8 +72,6 @@ class StmMatrix:
             elif param.startswith("XYScanner.Enable_Drift_Compensation"):
                 self.is_drift_compensation_enabled = param.split()[1]
 
-
-
         self.line_time = self.raster_time * self.xres * 1e3  # in ms
         self.scan_duration = self.line_time * self.yres / 1e3  # in s
 
@@ -81,6 +80,7 @@ class StmMatrix:
         self.img_data_fw = SpmImage(row_fw, self.xsize)
         self.img_data_bw = SpmImage(row_bw, self.xsize)
 
+    @override
     def process(self, config: Config) -> Self:
         _ = (
             self.img_data_fw.corr_plane()
@@ -98,5 +98,6 @@ class StmMatrix:
         )
         return self
 
+    @override
     def template_name(self) -> str:
         return "mtrx.j2"

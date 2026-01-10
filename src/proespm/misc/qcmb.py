@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from typing import final
+from typing import Self, final, override
 
 import numpy as np
 from bokeh.embed import components
@@ -9,10 +9,11 @@ from bokeh.plotting import figure
 
 from proespm.fileinfo import Fileinfo
 from proespm.config import Config
+from proespm.measurement import Measurement
 
 
 @final
-class Qcmb:
+class Qcmb(Measurement):
     def __init__(self, filepath: str) -> None:
         self.ident = "QCMB"
         self.fileinfo = Fileinfo(filepath)
@@ -71,8 +72,11 @@ class Qcmb:
 
         self.script, self.div = components(plot, wrap_script=True)
 
-    def process(self, _config: Config):
+    @override
+    def process(self, config: Config) -> Self:
         self.plot()
+        return self
 
+    @override
     def template_name(self) -> str:
         return "qcmb.j2"

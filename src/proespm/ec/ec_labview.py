@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from typing import Self, final
+from typing import Self, cast, final, override
 
 import numpy as np
 from bokeh.embed import components
@@ -9,10 +9,11 @@ from numpy._typing import NDArray
 from proespm.ec.ec import EcPlot
 from proespm.fileinfo import Fileinfo
 from proespm.config import Config
+from proespm.measurement import Measurement
 
 
 @final
-class CvLabview:
+class CvLabview(Measurement):
     """Class handeling the CV files from self-written LabView software"""
 
     ident = "CV_LABVIEW"
@@ -46,7 +47,7 @@ class CvLabview:
         if self.data[0, 1] < self.data[1, 1]:
             self.u_1, self.u_2 = self.u_2, self.u_1
 
-        total_time: float = self.data[-1, 0]
+        total_time = cast(float, self.data[-1, 0])
         self.rate = 2 * (abs(self.u_1) + abs(self.u_2)) / total_time
 
     def plot(self) -> None:
@@ -63,16 +64,18 @@ class CvLabview:
 
         self.script, self.div = components(plot.fig, wrap_script=True)
 
-    def process(self, _config: Config) -> Self:
+    @override
+    def process(self, config: Config) -> Self:
         self.plot()
         return self
 
+    @override
     def template_name(self) -> str:
         return "ec4.j2"
 
 
 @final
-class CaLabview:
+class CaLabview(Measurement):
     """Class handeling the CA files from self-written LabView software"""
 
     ident = "CA_LABVIEW"
@@ -106,7 +109,7 @@ class CaLabview:
         if self.data[0, 1] < self.data[1, 1]:
             self.u_1, self.u_2 = self.u_2, self.u_1
 
-        total_time: float = self.data[-1, 0]
+        total_time = cast(float, self.data[-1, 0])
         self.rate = 2 * (abs(self.u_1) + abs(self.u_2)) / total_time
 
     def plot(self) -> None:
@@ -146,16 +149,18 @@ class CaLabview:
 
         self.script, self.div = components(plot.fig, wrap_script=True)
 
-    def process(self, _config: Config) -> Self:
+    @override
+    def process(self, config: Config) -> Self:
         self.plot()
         return self
 
+    @override
     def template_name(self) -> str:
         return "ec4.j2"
 
 
 @final
-class FftLabview:
+class FftLabview(Measurement):
     """Class handeling the FFT files from self-written LabView software"""
 
     ident = "FFT_LABVIEW"
@@ -188,9 +193,11 @@ class FftLabview:
 
         self.script, self.div = components(plot.fig, wrap_script=True)
 
-    def process(self, _config: Config) -> Self:
+    @override
+    def process(self, config: Config) -> Self:
         self.plot()
         return self
 
+    @override
     def template_name(self) -> str:
         return "ec4.j2"
