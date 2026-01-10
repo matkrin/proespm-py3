@@ -34,10 +34,6 @@ class SpmImage:
         self, colormap: str, colorrange: tuple[float, float], show: bool = False
     ) -> Self:
         """Plots the image in"""
-        # rocket = sns.color_palette("rocket", as_cmap=True)
-        # cmap = colormap
-        # if colormap == "rocket":
-        #     cmap = rocket
 
         vmin = np.percentile(self.arr, colorrange[0])
         vmax = np.percentile(self.arr, colorrange[1])
