@@ -12,8 +12,6 @@ from proespm.measurement import Measurement
 class Image(Measurement):
     """Class handeling image files (.png, .jpg, .jpeg)"""
 
-    ident = "IMAGE"
-
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
 

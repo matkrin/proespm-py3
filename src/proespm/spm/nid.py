@@ -18,7 +18,6 @@ UNITS_REGEX = re.compile(r"[a-zA-Zµ°]+")
 @final
 class SpmNid(Measurement):
     def __init__(self, filepath: str):
-        self.ident = "NID"
         self.fileinfo = Fileinfo(filepath)
         self.slide_num: int | None = None
 

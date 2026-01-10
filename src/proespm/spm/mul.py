@@ -19,8 +19,6 @@ class StmMul(Measurement):
         filepath (str): Full path to the .mul file
     """
 
-    ident: str = "MUL"
-
     def __init__(self, filepath: str) -> None:
         self.fileinfo: Fileinfo = Fileinfo(filepath)
         self.slide_num: int | None = None

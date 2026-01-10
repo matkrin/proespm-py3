@@ -22,7 +22,6 @@ class AesStaib(Measurement):
     """
 
     def __init__(self, filepath: str) -> None:
-        self.ident = "AES"
         self.fileinfo = Fileinfo(filepath)
 
         self._datetime = None

@@ -22,7 +22,6 @@ class StmSm4(Measurement):
     """
 
     def __init__(self, filepath: str) -> None:
-        self.ident = "SM4"
         self.fileinfo = Fileinfo(filepath)
         self.slide_num: int | None = None
         self.par5: str | None = None

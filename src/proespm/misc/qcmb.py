@@ -15,7 +15,6 @@ from proespm.measurement import Measurement
 @final
 class Qcmb(Measurement):
     def __init__(self, filepath: str) -> None:
-        self.ident = "QCMB"
         self.fileinfo = Fileinfo(filepath)
 
         arr = np.genfromtxt(

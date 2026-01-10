@@ -19,7 +19,6 @@ class XpsEis(Measurement):
     """Class handling Omicron EIS XPS files (.txt)"""
 
     def __init__(self, filepath: str) -> None:
-        self.ident = "XPS"
         self.fileinfo = Fileinfo(filepath)
         self.data = self.read_xps_eis_txt(filepath)
 

@@ -17,7 +17,6 @@ from proespm.measurement import Measurement
 @final
 class Tpd(Measurement):
     def __init__(self, filepath: str) -> None:
-        self.ident = "TPD"
         self.fileinfo = Fileinfo(filepath)
 
         self.script: str | None = None

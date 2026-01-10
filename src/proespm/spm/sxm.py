@@ -20,7 +20,6 @@ class StmSxm(Measurement):
     """
 
     def __init__(self, filepath: str) -> None:
-        self.ident = "SXM"
         self.fileinfo = Fileinfo(filepath)
         self.slide_num: int | None = None
 

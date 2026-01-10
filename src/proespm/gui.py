@@ -30,8 +30,8 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-from proespm.processing import create_html, create_process_objs, process_loop
 from proespm.config import Config
+from proespm.processing import create_html, create_process_objs, process_loop
 
 
 @final
@@ -254,7 +254,6 @@ class MainGui(QMainWindow):
             self.colorrange_start.value(),
             self.colorrange_end.value(),
         )
-
 
         if not os.path.isdir(process_dir):
             _ = QMessageBox.warning(
