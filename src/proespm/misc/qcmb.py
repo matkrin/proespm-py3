@@ -17,8 +17,6 @@ class Qcmb(Measurement):
     def __init__(self, filepath: str) -> None:
         self.ident = "QCMB"
         self.fileinfo = Fileinfo(filepath)
-        self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
-        self.m_id = self.fileinfo.filename
 
         arr = np.genfromtxt(
             filepath, delimiter=", ", skip_header=2, skip_footer=1
@@ -71,6 +69,14 @@ class Qcmb(Measurement):
         plot = row(subplot_rate, subplot_thick, sizing_mode="scale_width")
 
         self.script, self.div = components(plot, wrap_script=True)
+
+    @override
+    def m_id(self) -> str:
+        return self.fileinfo.filename
+
+    @override
+    def datetime(self) -> datetime:
+        return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
 
     @override
     def process(self, config: Config) -> Self:

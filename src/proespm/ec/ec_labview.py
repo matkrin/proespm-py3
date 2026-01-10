@@ -6,9 +6,9 @@ import numpy as np
 from bokeh.embed import components
 from numpy._typing import NDArray
 
+from proespm.config import Config
 from proespm.ec.ec import EcPlot
 from proespm.fileinfo import Fileinfo
-from proespm.config import Config
 from proespm.measurement import Measurement
 
 
@@ -20,8 +20,6 @@ class CvLabview(Measurement):
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
-        self.m_id = self.fileinfo.filename
-        self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
         self.type: str | None = None
         self.data = self.read_cv_data(filepath)
@@ -65,6 +63,14 @@ class CvLabview(Measurement):
         self.script, self.div = components(plot.fig, wrap_script=True)
 
     @override
+    def m_id(self) -> str:
+        return self.fileinfo.filename
+
+    @override
+    def datetime(self) -> datetime:
+        return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
+
+    @override
     def process(self, config: Config) -> Self:
         self.plot()
         return self
@@ -82,8 +88,6 @@ class CaLabview(Measurement):
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
-        self.m_id = self.fileinfo.filename
-        self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
         self.type: str | None = None
         self.data = self.read_ca_data()
@@ -150,6 +154,14 @@ class CaLabview(Measurement):
         self.script, self.div = components(plot.fig, wrap_script=True)
 
     @override
+    def m_id(self) -> str:
+        return self.fileinfo.filename
+
+    @override
+    def datetime(self) -> datetime:
+        return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
+
+    @override
     def process(self, config: Config) -> Self:
         self.plot()
         return self
@@ -167,8 +179,6 @@ class FftLabview(Measurement):
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
-        self.m_id = self.fileinfo.filename
-        self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
         self.type: str | None = None
         self.data = self.read_fft_data()
@@ -192,6 +202,14 @@ class FftLabview(Measurement):
         plot.plot_line(x, y)
 
         self.script, self.div = components(plot.fig, wrap_script=True)
+
+    @override
+    def m_id(self) -> str:
+        return self.fileinfo.filename
+
+    @override
+    def datetime(self) -> datetime:
+        return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
 
     @override
     def process(self, config: Config) -> Self:

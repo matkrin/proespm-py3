@@ -19,8 +19,6 @@ class Tpd(Measurement):
     def __init__(self, filepath: str) -> None:
         self.ident = "TPD"
         self.fileinfo = Fileinfo(filepath)
-        self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
-        self.m_id = self.fileinfo.filename
 
         self.script: str | None = None
         self.div: str | None = None
@@ -109,6 +107,14 @@ class Tpd(Measurement):
         )
 
         self.script, self.div = components(plot, wrap_script=True)
+
+    @override
+    def m_id(self) -> str:
+        return self.fileinfo.filename
+
+    @override
+    def datetime(self) -> datetime:
+        return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
 
     @override
     def process(self, config: Config) -> Self:

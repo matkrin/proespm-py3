@@ -29,10 +29,6 @@ class StmMatrix(Measurement):
         self.fileinfo = Fileinfo(filepath)
         self.slide_num: int | None = None
 
-        self.m_id: str = self.fileinfo.filename
-
-        self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
-
         mtrx_data = access2thematrix.MtrxData()
 
         self.traces, _ = mtrx_data.open(filepath)  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
@@ -79,6 +75,14 @@ class StmMatrix(Measurement):
         row_bw = np.flip(img_bw.data, axis=0) * 1e9  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType] # in nm
         self.img_data_fw = SpmImage(row_fw, self.xsize)
         self.img_data_bw = SpmImage(row_bw, self.xsize)
+
+    @override
+    def m_id(self) -> str:
+        return self.fileinfo.filename
+
+    @override
+    def datetime(self) -> datetime:
+        return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
 
     @override
     def process(self, config: Config) -> Self:

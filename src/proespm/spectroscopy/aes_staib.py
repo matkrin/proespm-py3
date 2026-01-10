@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Self, TextIO, final, override
 
 import numpy as np
@@ -5,11 +6,11 @@ from bokeh.embed import components
 from bokeh.plotting import figure
 from dateutil import parser
 from numpy._typing import NDArray
-from proespm.config import Config
-from proespm.measurement import Measurement
 from vamas.vamas import Vamas
 
+from proespm.config import Config
 from proespm.fileinfo import Fileinfo
+from proespm.measurement import Measurement
 
 
 @final
@@ -23,9 +24,8 @@ class AesStaib(Measurement):
     def __init__(self, filepath: str) -> None:
         self.ident = "AES"
         self.fileinfo = Fileinfo(filepath)
-        self.m_id = self.fileinfo.filename
 
-        self.datetime = None
+        self._datetime = None
         self.mode = None
         self.dwell_time = None
         self.scan_num = None
@@ -55,7 +55,7 @@ class AesStaib(Measurement):
         vms = Vamas(filepath)
         # AES Staib vms always contains only one block
         data = vms.blocks[0]
-        self.datetime = parser.parse(
+        self._datetime = parser.parse(
             f"{data.year}-{data.month}-{data.day} {data.hour}:{data.minute}:{data.second}"
         )
         self.mode = data.signal_mode
@@ -125,7 +125,9 @@ class AesStaib(Measurement):
             self.retrace_time = int(read_header_line(f))  # in ms
             _description_len = read_header_line(f)
 
-            self.datetime = parser.parse(f.readline().split("    ")[-1].strip())
+            self._datetime = parser.parse(
+                f.readline().split("    ")[-1].strip()
+            )
 
             _reserved_1 = read_header_line(f)
             _reserved_2 = read_header_line(f)
@@ -173,6 +175,15 @@ class AesStaib(Measurement):
         _ = plot.line(x, y)
         plot.toolbar.active_scroll = "auto"  # pyright: ignore[reportAttributeAccessIssue]
         self.script, self.div = components(plot, wrap_script=True)
+
+    @override
+    def m_id(self) -> str:
+        return self.fileinfo.filename
+
+    @override
+    def datetime(self) -> datetime:
+        assert self._datetime is not None  # Type assertion
+        return self._datetime
 
     @override
     def process(self, config: Config) -> Self:

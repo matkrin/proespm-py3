@@ -24,13 +24,11 @@ class StmFlm(StmMul):
     def __init__(self, filepath: str) -> None:
         super().__init__(filepath)
 
-        self.m_id = self.fileinfo.filename
         self.mp4_save_dir = os.path.join(self.fileinfo.dirname, "movies")
         self.mp4_name = os.path.join(
             self.mp4_save_dir, f"{self.fileinfo.filename}.mp4"
         )
         self.dimensions = self.mulimages[0].img_data.shape
-        self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
 
     def convert_to_mp4(self, fps: int = 10) -> None:
         """
@@ -73,6 +71,14 @@ class StmFlm(StmMul):
             video.write(img_color)  # pyright: ignore[reportUnknownArgumentType]
 
         video.release()
+
+    @override
+    def m_id(self) -> str:
+        return self.fileinfo.filename
+
+    @override
+    def datetime(self) -> datetime:
+        return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
 
     @override
     def process(self, config: Config) -> Self:

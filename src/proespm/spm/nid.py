@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 from typing import Self, final, override
 
 import numpy as np
@@ -19,8 +20,6 @@ class SpmNid(Measurement):
     def __init__(self, filepath: str):
         self.ident = "NID"
         self.fileinfo = Fileinfo(filepath)
-
-        self.m_id = self.fileinfo.filename
         self.slide_num: int | None = None
 
         with open(filepath, "rb") as f:
@@ -69,7 +68,7 @@ class SpmNid(Measurement):
             / 1000
         )
 
-        self.datetime = parser.parse(
+        self._datetime = parser.parse(
             file_meta["Date"] + " " + file_meta["Time"]
         )
         self.bias = _read_float_from_string(file_meta["Tip voltage"])
@@ -124,6 +123,14 @@ class SpmNid(Measurement):
 
         self.img_data_fw = SpmImage(np.flip(img_data_fw, axis=0), self.xsize)
         self.img_data_bw = SpmImage(np.flip(img_data_bw, axis=0), self.xsize)
+
+    @override
+    def m_id(self) -> str:
+        return self.fileinfo.filename
+
+    @override
+    def datetime(self) -> datetime:
+        return self._datetime
 
     @override
     def process(self, config: Config) -> Self:

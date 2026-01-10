@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Self, final, override
 
 import numpy as np
@@ -26,8 +27,6 @@ class StmSm4(Measurement):
         self.slide_num: int | None = None
         self.par5: str | None = None
 
-        self.m_id = self.fileinfo.filename
-
         self.sm4 = Sm4(filepath)
 
         for channel in self.sm4.topography_channels():
@@ -36,7 +35,7 @@ class StmSm4(Measurement):
             elif channel.scan_direction == "left":
                 self.img_bw = channel
 
-        self.datetime = self.img_fw.datetime
+        self._datetime = self.img_fw.datetime
         self.current = self.img_fw.current * 1e9  # in nA
         self.bias = self.img_fw.bias
         self.xoffset = self.img_fw.x_offset * 1e9  # in nm
@@ -114,6 +113,14 @@ class StmSm4(Measurement):
             self.current_script, self.current_div = components(
                 plot.fig, wrap_script=True
             )
+
+    @override
+    def m_id(self) -> str:
+        return self.fileinfo.filename
+
+    @override
+    def datetime(self) -> datetime:
+        return self._datetime
 
     @override
     def process(self, config: Config) -> Self:

@@ -27,7 +27,6 @@ class PalmSensSession(Measurement):
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo: Fileinfo = Fileinfo(filepath)
-        self.m_id: str = self.fileinfo.filename
         self.script: str | None = None
         self.div: str | None = None
 
@@ -43,7 +42,7 @@ class PalmSensSession(Measurement):
         )
         base_date = datetime(1, 1, 1)
         timestamp_in_seconds = timestamp_in_10e7 * 1e-7
-        self.datetime: datetime = base_date + timedelta(
+        self._datetime: datetime = base_date + timedelta(
             seconds=timestamp_in_seconds
         )
 
@@ -145,6 +144,14 @@ class PalmSensSession(Measurement):
                 plot.show_legend(False)
 
         self.script, self.div = components(plot.fig, wrap_script=True)
+
+    @override
+    def m_id(self) -> str:
+        return self.fileinfo.filename
+
+    @override
+    def datetime(self) -> datetime:
+        return self._datetime
 
     @override
     def process(self, config: Config) -> Self:

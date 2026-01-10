@@ -1,6 +1,8 @@
 import os
+from typing import final
 
 
+@final
 class Fileinfo:
     """Class giving infos about a data file"""
 

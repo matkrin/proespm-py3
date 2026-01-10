@@ -25,11 +25,6 @@ class StmMul(Measurement):
         self.fileinfo: Fileinfo = Fileinfo(filepath)
         self.slide_num: int | None = None
 
-        self.m_id: str = self.fileinfo.filename
-        self.datetime: datetime = datetime.fromtimestamp(
-            os.path.getmtime(filepath)
-        )
-
         self.mulimages: Mul = mulfile.load(filepath)
 
         for mul_image in self.mulimages:
@@ -40,6 +35,14 @@ class StmMul(Measurement):
                 np.flip(mul_image.img_data, axis=0),
                 mul_image.xsize,
             )
+
+    @override
+    def m_id(self) -> str:
+        return self.fileinfo.filename
+
+    @override
+    def datetime(self) -> datetime:
+        return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
 
     @override
     def process(self, config: Config) -> Self:

@@ -1,4 +1,4 @@
-<h2 id="{{ entry.m_id }}">{{ entry.fileinfo.basename }}</h2>
+<h2 id="{{ entry.m_id() }}">{{ entry.fileinfo.basename }}</h2>
 
 {% for xps_scan in entry.data %}
     <div class="row">

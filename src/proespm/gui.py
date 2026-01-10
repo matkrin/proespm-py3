@@ -15,7 +15,6 @@ from PyQt6.QtCore import (
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
     QApplication,
-    QCheckBox,
     QComboBox,
     QDoubleSpinBox,
     QFileDialog,
@@ -137,7 +136,7 @@ class MainGui(QMainWindow):
         colormap_layout = QHBoxLayout()
         colormap_lbl = QLabel("Colormap:")
         self.colormap = QComboBox()
-        self.colormap.addItems(plt.colormaps())
+        self.colormap.addItems(plt.colormaps())  # pyright: ignore[reportUnknownMemberType]
         self.colormap.setCurrentText("inferno")
         colormap_layout.addWidget(colormap_lbl)
         colormap_layout.addWidget(self.colormap)
@@ -273,7 +272,7 @@ class MainGui(QMainWindow):
         )
         _ = processing_worker.signals.message.connect(self.log)  # pyright: ignore[reportUnknownMemberType]
         _ = processing_worker.signals.finished.connect(self.processing_finished)  # pyright: ignore[reportUnknownMemberType]
-        self.threadpool.start(processing_worker)
+        self.threadpool.start(processing_worker)  # pyright: ignore[reportUnknownMemberType]
 
     @pyqtSlot()
     def processing_finished(self):

@@ -7,12 +7,12 @@
     <div class="table_column">
         <table style:"width=100%">
             <tr>
-                <th id="{{ entry.m_id }}">ID</th>
-                <td>{{ entry.m_id }}</td>
+                <th id="{{ entry.m_id() }}">ID</th>
+                <td>{{ entry.m_id() }}</td>
             </tr>
             <tr>
                 <th>Datetime</th>
-                <td>{{ entry.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+                <td>{{ entry.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
             </tr>
             <tr>
                 <th>Ident</th>

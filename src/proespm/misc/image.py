@@ -17,9 +17,6 @@ class Image(Measurement):
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
 
-        self.m_id = self.fileinfo.filename
-        self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
-
         self.img_uri: str | None = None
         self.slide_num: int | None = None
 
@@ -34,6 +31,14 @@ class Image(Measurement):
                 f"data:image/{self.fileinfo.fileext};base64, "
                 + base64.b64encode(f.read()).decode("ascii")
             )
+
+    @override
+    def m_id(self) -> str:
+        return self.fileinfo.filename
+
+    @override
+    def datetime(self) -> datetime:
+        return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
 
     @override
     def process(self, config: Config) -> Self:

@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Self, final, override
 
 import nanonispy as nap  # pyright: ignore[reportMissingTypeStubs]
@@ -21,14 +22,13 @@ class StmSxm(Measurement):
     def __init__(self, filepath: str) -> None:
         self.ident = "SXM"
         self.fileinfo = Fileinfo(filepath)
-        self.m_id = self.fileinfo.filename
         self.slide_num: int | None = None
 
         self.sxm = nap.read.Scan(filepath)
 
         day, month, year = self.sxm.header["rec_date"].split(".")  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
         time = self.sxm.header["rec_time"]  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
-        self.datetime = parser.parse(f"{year}-{month}-{day} {time}")
+        self._datetime = parser.parse(f"{year}-{month}-{day} {time}")
 
         self.current: float = (
             float(self.sxm.header["z-controller"]["Setpoint"][0].split()[0])  # pyright: ignore[reportUnknownArgumentType, reportUnknownMemberType]
@@ -52,6 +52,14 @@ class StmSxm(Measurement):
             np.flip(self.sxm.signals["Z"]["backward"], axis=(0, 1)),  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
             self.xsize,  # pyright: ignore[reportUnknownArgumentType, reportUnknownMemberType]
         )
+
+    @override
+    def m_id(self) -> str:
+        return self.fileinfo.filename
+
+    @override
+    def datetime(self) -> datetime:
+        return self._datetime
 
     @override
     def process(self, config: Config) -> Self:

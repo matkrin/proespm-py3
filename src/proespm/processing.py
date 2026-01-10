@@ -1,10 +1,11 @@
 import os
 import sys
 from pathlib import Path
-from typing import Callable, TypeAlias
+from typing import Callable
 
 from jinja2 import Environment, FileSystemLoader
 
+from proespm.config import Config
 from proespm.ec.ec4 import Ec4
 from proespm.ec.ec_labview import CaLabview, CvLabview, FftLabview
 from proespm.ec.PalmSens.ca import CaPalmSens
@@ -13,7 +14,7 @@ from proespm.ec.PalmSens.cv import CvPalmSens
 from proespm.ec.PalmSens.eis import EisPalmSens
 from proespm.ec.PalmSens.lsv import LsvPalmSens
 from proespm.ec.PalmSens.pssession import PalmSensSession
-from proespm.config import Config
+from proespm.measurement import Measurement
 from proespm.misc.image import Image
 from proespm.misc.qcmb import Qcmb
 from proespm.misc.tpd import Tpd
@@ -45,31 +46,6 @@ ALLOWED_FILE_TYPES = (
     ".pssession",
 )
 
-# TODO: make this a proper interface
-ProcessObject: TypeAlias = (
-    StmMatrix
-    | StmMul
-    | StmSm4
-    | StmFlm
-    | AesStaib
-    | StmSxm
-    | SpmNid
-    | Qcmb
-    | XpsEis
-    | Ec4
-    | CvLabview
-    | CaLabview
-    | FftLabview
-    | Image
-    | Tpd
-    | CaPalmSens
-    | CpPalmSens
-    | CvPalmSens
-    | EisPalmSens
-    | LsvPalmSens
-    | PalmSensSession
-)
-
 
 def check_file_for_str(file: str, string_to_check: str, line_num: int) -> bool:
     """Check if a file contains a string at a certain line number
@@ -87,7 +63,7 @@ def check_file_for_str(file: str, string_to_check: str, line_num: int) -> bool:
             [next(f) for _ in range(line_num - 1)]
             line = f.readline()
         return string_to_check in line
-    except:
+    except Exception:
         with open(file, encoding="utf-16") as f:
             [next(f) for _ in range(line_num - 1)]
             line = f.readline()
@@ -115,12 +91,12 @@ def import_files(process_dir: str) -> list[str]:
 
 
 def create_process_objs(
-    process_dir: str, log: Callable[[str], None]
-) -> list[ProcessObject]:
+    process_dir: str, _log: Callable[[str], None]
+) -> list[Measurement]:
     """ """
     last_ec4: Ec4 | None = None
 
-    process_objects: list[ProcessObject] = []
+    process_objects: list[Measurement] = []
     for file_path in import_files(process_dir):
         path = Path(file_path)
         match path.suffix.lower():
@@ -237,15 +213,15 @@ def create_process_objs(
 
 
 def process_loop(
-    process_objects: list[ProcessObject],
+    process_objects: list[Measurement],
     config: Config,
     log: Callable[[str], None],
 ) -> None:
     """"""
     slide_num = 1
-    process_objects.sort(key=lambda x: x.datetime)
+    process_objects.sort(key=lambda x: x.datetime())
     for x in process_objects:
-        log(f"Processing of {x.m_id}")
+        log(f"Processing of {x.m_id()}")
         _ = x.process(config)
         match x:
             case StmMatrix() | StmSm4() | StmSxm() | SpmNid() | Image():
@@ -253,14 +229,14 @@ def process_loop(
                 slide_num += 1
             case StmMul():
                 for mul_image in x.mulimages:
-                    mul_image.slide_num = slide_num
+                    mul_image.slide_num = slide_num  # pyright: ignore[reportAttributeAccessIssue]
                     slide_num += 1
             case _:
                 pass
 
 
 def create_html(
-    process_objs: list[ProcessObject],
+    process_objs: list[Measurement],
     output_path: str,
     report_name: str,
 ) -> None:

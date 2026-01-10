@@ -1,10 +1,10 @@
 <div class="row">
 
   <div class="stm_image_fw">
-    <img id="{{ entry.m_id }}" src="{{ entry.img_data_fw.data_uri }}" class="hover-shadow" data-slide-num="{{ entry.slide_num }}" />
+    <img id="{{ entry.m_id() }}" src="{{ entry.img_data_fw.data_uri }}" class="hover-shadow" data-slide-num="{{ entry.slide_num }}" />
   </div>
   <div class="stm_image_bw">
-    <img id="{{ entry.m_id }}" src="{{ entry.img_data_bw.data_uri }}" class="hover-shadow" data-slide-num="{{ entry.slide_num }}" />
+    <img id="{{ entry.m_id() }}" src="{{ entry.img_data_bw.data_uri }}" class="hover-shadow" data-slide-num="{{ entry.slide_num }}" />
   </div>
 
 
@@ -13,7 +13,7 @@
     <table>
       <tr>
         <th>Image ID</th>
-        <td><a href="file:///{{ entry.fileinfo.filepath }}">{{ entry.m_id }}</td>
+        <td><a href="file:///{{ entry.fileinfo.filepath }}">{{ entry.m_id() }}</td>
       </tr>
       <tr>
         <th>Number</th>
@@ -21,7 +21,7 @@
       </tr>
       <tr>
         <th>Datetime</th>
-        <td>{{ entry.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+        <td>{{ entry.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
       </tr>
       <tr>
       <tr>

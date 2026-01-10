@@ -29,9 +29,8 @@ class EisPalmSens(Measurement):
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo: Fileinfo = Fileinfo(filepath)
-        self.m_id: str = self.fileinfo.filename
 
-        self.datetime: datetime | None = None
+        self._datetime: datetime | None = None
         self.read_params()
 
         self.ec_type: str | None = None
@@ -56,7 +55,7 @@ class EisPalmSens(Measurement):
             datetime_match = DATETIME_REGEX.search(content)
 
             if datetime_match is not None:
-                self.datetime = parser.parse(datetime_match.group(1).strip())
+                self._datetime = parser.parse(datetime_match.group(1).strip())
 
     def plot(self):
         plot = EcPlot()
@@ -70,6 +69,15 @@ class EisPalmSens(Measurement):
         plot.show_legend(False)
 
         self.script, self.div = components(plot.fig, wrap_script=True)
+
+    @override
+    def m_id(self) -> str:
+        return self.fileinfo.filename
+
+    @override
+    def datetime(self) -> datetime:
+        assert self._datetime is not None  # Type assertion
+        return self._datetime
 
     @override
     def process(self, config: Config) -> Self:

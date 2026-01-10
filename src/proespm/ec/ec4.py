@@ -32,9 +32,8 @@ class Ec4(Measurement):
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
-        self.m_id = self.fileinfo.filename
 
-        self.datetime: datetime | None = None
+        self._datetime: datetime | None = None
         self.u_start: float | None = None
         self.u_1: float | None = None
         self.u_2: float | None = None
@@ -63,7 +62,7 @@ class Ec4(Measurement):
             u2_match = U2_REGEX.search(content)
             rate_match = RATE_REGEX.search(content)
             if datetime_match is not None:
-                self.datetime = parser.parse(datetime_match.group(1).strip())
+                self._datetime = parser.parse(datetime_match.group(1).strip())
             if u_start_match is not None:
                 self.u_start = float(u_start_match.group(1).strip())
             if u1_match is not None:
@@ -146,6 +145,15 @@ class Ec4(Measurement):
             )
 
         self.script, self.div = components(plot.fig, wrap_script=True)
+
+    @override
+    def m_id(self) -> str:
+        return self.fileinfo.filename
+
+    @override
+    def datetime(self) -> datetime:
+        assert self._datetime is not None  # Type assertion
+        return self._datetime
 
     @override
     def process(self, config: Config) -> Self:

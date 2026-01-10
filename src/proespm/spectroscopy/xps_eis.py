@@ -21,9 +21,7 @@ class XpsEis(Measurement):
     def __init__(self, filepath: str) -> None:
         self.ident = "XPS"
         self.fileinfo = Fileinfo(filepath)
-        self.datetime = datetime.fromtimestamp(os.path.getmtime(filepath))
         self.data = self.read_xps_eis_txt(filepath)
-        self.m_id = self.fileinfo.basename
 
     def read_xps_eis_txt(self, filepath: str) -> list[XpsScan]:
         """Reads the data of a .txt file from Omicron EIS software"""
@@ -79,6 +77,14 @@ class XpsEis(Measurement):
                     )
                 )
         return data
+
+    @override
+    def m_id(self) -> str:
+        return self.fileinfo.filename
+
+    @override
+    def datetime(self) -> datetime:
+        return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
 
     @override
     def process(self, config: Config) -> Self:

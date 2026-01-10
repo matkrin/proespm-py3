@@ -17,6 +17,7 @@
 </head>
 
 <body>
+    <!-- Navigation bar on top -->
     <div class="navbar">
         <ul>
             <li id="menu"><i data-feather="menu"></i></li>
@@ -30,6 +31,7 @@
         <summary>Overview</summary>
         <div id="overview"></div>
     </details>
+
     <!-- Loop through the `process_objs` and choose the according template -->
     {% for entry in process_objs %}
         {% if entry.template_name is defined and entry.template_name() %}
@@ -56,7 +58,7 @@
             <ul>
                 <li><a href="#overview">Overview</a></li>
                 {% for entry in process_objs %}
-                    <li><a href="#{{ entry.m_id }}">{{ entry.m_id }}</a></li>
+                    <li><a href="#{{ entry.m_id() }}">{{ entry.m_id() }}</a></li>
                 {% endfor %}
             </ul>
         </div>
