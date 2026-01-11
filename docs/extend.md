@@ -15,7 +15,13 @@ are necessary:
 
 These steps are further explained in the following accompanied by the practical
 example of the existing `Image` measurement which is responsible for handling
-simple PNG and JPEG images.
+simple PNG and JPEG images. The resulting entry in the HTML report will look
+like this:
+
+![Image report entry](assets/image_entry.png)
+
+See the full [report example](example.html) for context and other measurement
+entries.
 
 ## 1. Create a class for measurement file
 

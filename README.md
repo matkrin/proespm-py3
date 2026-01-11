@@ -4,23 +4,10 @@ Proespm is a Python-based tool designed to transform scientific data into
 interactive, shareable HTML reports. It supports automatic data processing for
 specific types of data, such as image corrections for scanning probe microscopy
 (SPM) data. An example of a generated report can be found
-[here](https://matkrin.github.io/proespm-py3/). This is a Python 3
-implementation of [proespm](https://github.com/n-bock/proespm).
-
-## Installation
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/matkrin/proespm-py3.git
-cd proespm-py3
-```
-
-2. Set up the project environment using [uv](https://docs.astral.sh/uv/):
-
-```bash
-uv sync
-```
+[here](https://matkrin.github.io/proespm-py3/example.html). This is a Python 3
+implementation of [proespm](https://github.com/n-bock/proespm). Have a look a
+the [documentation](https://matkrin.github.io/proespm-py3) for information about
+installation, usage and extensibility.
 
 ## Supported Methods
 
