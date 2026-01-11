@@ -13,7 +13,7 @@ wheels/
 .DS_Store
 
 # created reports
-*.html
+*report.html
 
 # pyinstaller
 *.spec
