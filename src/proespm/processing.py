@@ -28,7 +28,6 @@ from proespm.spm.sm4 import StmSm4
 from proespm.spm.sxm import StmSxm
 
 
-
 def check_file_for_str(file: str, string_to_check: str, line_num: int) -> bool:
     """Check if a file contains a string at a certain line number.
 
@@ -80,8 +79,8 @@ def create_measurement_objs(
 
     Every filepath entry in `process_dir` gets tested to uniquely identify its
     type of measurement and transformed into an object that implements
-    `Measurement` accordingly. 
-    
+    `Measurement` accordingly.
+
     Args:
         process_dir: Full path of the directory containing files to import.
 
@@ -235,7 +234,7 @@ def process_loop(
             case StmMatrix() | StmSm4() | StmSxm() | SpmNid() | Image():
                 measurement.slide_num = slide_num
                 slide_num += 1
-            case StmMul():
+            case StmMul() if type(measurement) is StmMul:
                 for mul_image in measurement.mulimages:
                     mul_image.slide_num = slide_num  # pyright: ignore[reportAttributeAccessIssue]
                     slide_num += 1
