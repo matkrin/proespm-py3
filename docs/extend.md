@@ -20,7 +20,7 @@ like this:
 
 ![Image report entry](assets/image_entry.png)
 
-See the full [report example](example.html) for context and other measurement
+See the full [report example](assets/example.html) for context and other measurement
 entries.
 
 ## 1. Create a class for measurement file

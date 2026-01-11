@@ -18,3 +18,4 @@ wheels/
 # pyinstaller
 *.spec
 movies/
+site/

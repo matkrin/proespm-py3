@@ -1,14 +1,14 @@
 # Proespm
 
 Proespm is a Python-based tool designed to transform scientific data into
-interactive, shareable [HTML reports](example.html). It supports automatic data
+interactive, shareable [HTML reports](assets/example.html). It supports automatic data
 processing for specific types of data, such as image corrections for scanning
 probe microscopy (SPM) data.
 
 If you intend to use `proespm`, have a look at the
 [Installation](installation.md) and [Usage](usage.md) sections.
 
-If you want to extend the program's functionality,see [Extend functionality](extend.md).
+If you want to extend the program's functionality, see [Extend functionality](extend.md).
 
 ## Supported Methods
 
