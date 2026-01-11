@@ -8,7 +8,8 @@ probe microscopy (SPM) data.
 If you intend to use `proespm`, have a look at the
 [Installation](installation.md) and [Usage](usage.md) sections.
 
-If you want to extend the program's functionality, see [Extend functionality](extend.md).
+If you want to extend the program's functionality, see
+[Extending functionality](extend.md).
 
 ## Supported Methods
 

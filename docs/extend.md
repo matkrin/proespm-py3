@@ -20,8 +20,9 @@ like this:
 
 ![Image report entry](assets/image_entry.png)
 
-See the full [report example](assets/example.html) for context and other measurement
-entries.
+See the full
+[report example](https://matkrin.github.io/proespm-py3/assets/example.html)
+for context and other measurement entries.
 
 ## 1. Create a class for measurement file
 
