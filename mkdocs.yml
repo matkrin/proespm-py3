@@ -1,0 +1,65 @@
+site_name: proespm
+site_description: Scientific data report generation
+site_url: https://matkrin.github.io/proespm-py3
+
+theme:
+  name: "material"
+  features:
+    - content.code.copy
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      primary: teal
+      scheme: default
+      toggle:
+        icon: material/lightbulb
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      primary: blue
+      scheme: slate
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to light mode
+
+repo_name: matkrin/proespm-py3
+repo_url: https://github.com/matkrin/proespm-py3
+
+nav:
+- Home: index.md
+- Installation: installation.md
+- Usage: usage.md
+- Extending Functionality: extend.md
+# - API Reference:
+#     - processing.py: api/processing.md
+
+plugins:
+- search
+- mkdocstrings:
+    handlers:
+      python:
+        paths: [.]
+        options:
+          show_root_heading: true
+          show_category_heading: false
+          show_symbol_type_heading: true
+          show_symbol_type_toc: true
+          show_root_toc_entry: true
+          show_source: false
+          show_signature_annotations: true
+          # show_if_no_docstring: true
+          # separate_signature: true
+          heading_level: 1
+          summary: true
+
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
