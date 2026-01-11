@@ -1,9 +1,9 @@
-{% for img in entry.mulimages %}
+{% for img in measurement.mulimages %}
     {% if img.m_id.endswith('_1') %}
-        <h2 id="{{ entry.m_id }}">{{ img.basename }}</h2>
+        <h2 id="{{ measurement.m_id }}">{{ img.basename }}</h2>
     {% endif %}
 
-    <div class="row">
+    <div class="measurement-row">
       <div class="stm_image_fw">
         <img id="{{ img.m_id }}" src="{{ img.img_data.data_uri }}" class="hover-shadow" data-slide-num="{{ img.slide_num }}" />
       </div>

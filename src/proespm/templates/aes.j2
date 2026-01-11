@@ -1,50 +1,50 @@
-<div class="row">
+<div class="measurement-row">
   <div class="xps_plot">
-    {{ entry.script }}
-    {{ entry.div }}
+    {{ measurement.script }}
+    {{ measurement.div }}
   </div>
 
   <div class="table_column">
     <table style:"width=100%" >
       <tr>
-        <th id="{{ entry.m_id() }}">ID</th>
-        <td>{{ entry.m_id() }}</td>
+        <th id="{{ measurement.m_id() }}">ID</th>
+        <td>{{ measurement.m_id() }}</td>
       </tr>
       <tr>
         <th>Datetime</th>
-        <td>{{ entry.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
+        <td>{{ measurement.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
       </tr>
       <tr>
         <th>Mode</th>
-        <td>{{ entry.mode }}</td>
+        <td>{{ measurement.mode }}</td>
       </tr>
       <tr>
         <th>Region</th>
-        <td>{{ "{:.0f}".format(entry.e_start) }} - {{ "{:.0f}".format(entry.e_stop) }} eV</td>
+        <td>{{ "{:.0f}".format(measurement.e_start) }} - {{ "{:.0f}".format(measurement.e_stop) }} eV</td>
       </tr>
       <tr>
         <th>Step</th>
-        <td>{{ "{:.2f}".format(entry.stepwidth) }} eV</td>
+        <td>{{ "{:.2f}".format(measurement.stepwidth) }} eV</td>
       </tr>
       <tr>
         <th>Sweeps</th>
-        <td>{{ entry.scan_num }}</td>
+        <td>{{ measurement.scan_num }}</td>
       </tr>
       <tr>
         <th>t<sub>dwell</sub></th>
-        <td>{{ entry.dwell_time }} ms</td>
+        <td>{{ measurement.dwell_time }} ms</td>
       </tr>
       <tr>
         <th>t<sub>retrace</sub></th>
-        <td>{{ entry.retrace_time }} ms</td>
+        <td>{{ measurement.retrace_time }} ms</td>
       </tr>
       <tr>
         <th>Resolution</sub></th>
-        <td>{{ entry.res }} %</td>
+        <td>{{ measurement.res }} %</td>
       </tr>
       <tr>
         <th>Resolution Mode</sub></th>
-        <td>{{ entry.res_mode }}</td>
+        <td>{{ measurement.res_mode }}</td>
       </tr>
     </table>
   </div>

@@ -1,26 +1,26 @@
-<div class="row">
+<div class="measurement-row">
 
     <div class="stm_image_fw">
-        <img id="{{ entry.m_id() }}" src="{{ entry.img_data_fw.data_uri }}" class="hover-shadow"
-            data-slide-num="{{ entry.slide_num }}" />
+        <img id="{{ measurement.m_id() }}" src="{{ measurement.img_data_fw.data_uri }}" class="hover-shadow"
+            data-slide-num="{{ measurement.slide_num }}" />
     </div>
     <div class="stm_image_bw">
-        <img id="{{ entry.m_id() }}" src="{{ entry.img_data_bw.data_uri }}" class="hover-shadow"
-            data-slide-num="{{ entry.slide_num }}" />
+        <img id="{{ measurement.m_id() }}" src="{{ measurement.img_data_bw.data_uri }}" class="hover-shadow"
+            data-slide-num="{{ measurement.slide_num }}" />
     </div>
 
     <!-- ECSTM specific data -->
-    {% if entry.voltage_div and entry.voltage_script %}
+    {% if measurement.voltage_div and measurement.voltage_script %}
         <div class="ecstm-plot">
-            {{ entry.voltage_script }}
-            {{ entry.voltage_div }}
+            {{ measurement.voltage_script }}
+            {{ measurement.voltage_div }}
         </div>
     {% endif %}
 
-    {% if entry.current_div and entry.current_script %}
+    {% if measurement.current_div and measurement.current_script %}
         <div class="ecstm-plot">
-            {{ entry.current_script }}
-            {{ entry.current_div }}
+            {{ measurement.current_script }}
+            {{ measurement.current_div }}
         </div>
     {% endif %}
 
@@ -29,42 +29,42 @@
         <table>
             <tr>
                 <th>Image ID</th>
-                <td><a href="file:///{{ entry.fileinfo.filepath }}">{{ entry.m_id() }}</td>
+                <td><a href="file:///{{ measurement.fileinfo.filepath }}">{{ measurement.m_id() }}</td>
             </tr>
             <tr>
                 <th>Datetime</th>
-                <td>{{ entry.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
+                <td>{{ measurement.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
             </tr>
             <tr>
                 <th>I<sub>t</sub></th>
-                <td>{{ "{:.2f}".format(entry.current) }} nA</td>
+                <td>{{ "{:.2f}".format(measurement.current) }} nA</td>
             </tr>
             <tr>
                 <th>U<sub>b</sub></th>
-                <td>{{ "{:.2f}".format(entry.bias) }} V</td>
+                <td>{{ "{:.2f}".format(measurement.bias) }} V</td>
             </tr>
             <tr>
                 <th>Scan Size</th>
-                <td>{{ "{:.0f}".format(entry.xsize) }} &#215; {{ "{:.0f}".format(entry.ysize) }} nm&#178;</td>
+                <td>{{ "{:.0f}".format(measurement.xsize) }} &#215; {{ "{:.0f}".format(measurement.ysize) }} nm&#178;</td>
             </tr>
             <tr>
                 <th>Resolution</th>
-                <td>{{ entry.xres }} &#215; {{ entry.yres }}</td>
+                <td>{{ measurement.xres }} &#215; {{ measurement.yres }}</td>
             </tr>
             <tr>
                 <th>Tilt</th>
-                <td>{{ entry.tilt }}&#176;</td>
+                <td>{{ measurement.tilt }}&#176;</td>
             <tr>
                 <th>Scan Duration</th>
-                <td>{{ "{:.2f}".format(entry.speed) }} s</td>
+                <td>{{ "{:.2f}".format(measurement.speed) }} s</td>
             </tr>
             <tr>
                 <th>Line Time</th>
-                <td>{{ "{:.2f}".format(entry.line_time) }} ms</td>
+                <td>{{ "{:.2f}".format(measurement.line_time) }} ms</td>
             </tr>
             <tr>
                 <th>Offset</th>
-                <td>{{ "{:.2f}".format(entry.xoffset) }} nm, {{ "{:.2f}".format(entry.yoffset) }} nm</td>
+                <td>{{ "{:.2f}".format(measurement.xoffset) }} nm, {{ "{:.2f}".format(measurement.yoffset) }} nm</td>
             </tr>
         </table>
     </div>

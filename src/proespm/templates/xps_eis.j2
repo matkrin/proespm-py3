@@ -1,7 +1,7 @@
-<h2 id="{{ entry.m_id() }}">{{ entry.fileinfo.basename }}</h2>
+<h2 id="{{ measurement.m_id() }}">{{ measurement.fileinfo.basename }}</h2>
 
-{% for xps_scan in entry.data %}
-    <div class="row">
+{% for xps_scan in measurement.data %}
+    <div class="measurement-row">
         <div class="xps_plot" >
             {{ xps_scan.script }}
             {{ xps_scan.div }}

@@ -30,8 +30,8 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-from proespm.config import Config
-from proespm.processing import create_html, create_process_objs, process_loop
+from proespm.config import DEFAULT_COLORMAP, Config
+from proespm.processing import create_html, create_measurement_objs, process_loop
 
 
 @final
@@ -63,7 +63,7 @@ class ProcessingWorker(QRunnable):
 
         try:
             self.log(f"Start processing of {process_dir}")
-            process_objs = create_process_objs(process_dir, self.log)
+            process_objs = create_measurement_objs(process_dir, self.log)
             process_loop(process_objs, self.config, self.log)
             create_html(process_objs, output_path, report_name)
             self.log(f"HTML created at {output_path}")
@@ -76,9 +76,7 @@ class ProcessingWorker(QRunnable):
 
 @final
 class WorkerSignals(QObject):
-    """Class holding the signal.
-    Custom signal needs a class derived from QObject!
-    """
+    """Class holding the signal. Custom signal needs a class derived from QObject!"""
 
     message = pyqtSignal(str)
     finished = pyqtSignal()
@@ -99,10 +97,9 @@ class MainGui(QMainWindow):
         self.central_layout = QVBoxLayout()
         self.central_widget.setLayout(self.central_layout)
 
-        # Create the grid layout
         grid_layout = QGridLayout()
 
-        # Create label, text input, and button for the first row
+        # Label, text input, and button for the first row (Process directory)
         process_dir_label = QLabel("Choose folder: ")
         self.process_dir_input = QLineEdit()
         self.process_dir_input.setReadOnly(True)
@@ -115,7 +112,7 @@ class MainGui(QMainWindow):
         grid_layout.addWidget(self.process_dir_input, 0, 1)
         grid_layout.addWidget(self.process_dir_button, 0, 2)
 
-        # Create label, text input, and button for the second row
+        # Label, text input, and button for the second row (Output directory)
         output_label = QLabel("Output: ")
         self.output_input = QLineEdit()
         self.output_input.setReadOnly(True)
@@ -137,7 +134,7 @@ class MainGui(QMainWindow):
         colormap_lbl = QLabel("Colormap:")
         self.colormap = QComboBox()
         self.colormap.addItems(plt.colormaps())  # pyright: ignore[reportUnknownMemberType]
-        self.colormap.setCurrentText("inferno")
+        self.colormap.setCurrentText(DEFAULT_COLORMAP)
         colormap_layout.addWidget(colormap_lbl)
         colormap_layout.addWidget(self.colormap)
         self.central_layout.addLayout(colormap_layout)
@@ -187,7 +184,7 @@ class MainGui(QMainWindow):
         self.connect_signals()
 
     def connect_signals(self):
-        """Connect button clicks to their respective function"""
+        """Connect button clicks to their respective handler functions."""
         _ = self.process_dir_button.clicked.connect(self.choose_directory)  # pyright: ignore[reportUnknownMemberType] `pyqtSlot` seems to be not typed
         _ = self.output_button.clicked.connect(self.save_file)  # pyright: ignore[reportUnknownMemberType]
         _ = self.save_log_button.clicked.connect(self.save_log)  # pyright: ignore[reportUnknownMemberType]
@@ -196,7 +193,7 @@ class MainGui(QMainWindow):
 
     @pyqtSlot()
     def choose_directory(self) -> None:
-        """Handler for `process_dir_button`"""
+        """Handler for `process_dir_button`."""
         dirname = QFileDialog.getExistingDirectory(
             self,
             caption="Choose folder to process",
@@ -213,7 +210,7 @@ class MainGui(QMainWindow):
 
     @pyqtSlot()
     def save_file(self) -> None:
-        """Handler for `output_button`"""
+        """Handler for `output_button`."""
         file_path, _ = QFileDialog.getSaveFileName(
             self,
             caption="Save HTML report as...",
@@ -229,7 +226,7 @@ class MainGui(QMainWindow):
 
     @pyqtSlot()
     def save_log(self) -> None:
-        """Handler for `save_log_button`"""
+        """Handler for `save_log_button`."""
         file_path, _ = QFileDialog.getSaveFileName(
             self,
             caption="Save Log",
@@ -246,6 +243,7 @@ class MainGui(QMainWindow):
 
     @pyqtSlot()
     def start_processing(self) -> None:
+        """Handler for `start_button`."""
         self.start_button.setEnabled(False)
         process_dir = self.process_dir_input.text()
         output_path = self.output_input.text()
@@ -275,6 +273,7 @@ class MainGui(QMainWindow):
 
     @pyqtSlot()
     def processing_finished(self):
+        """Handler for finished signal."""
         self.start_button.setEnabled(True)
         self.log_area.append("-" * 40)
 
@@ -284,7 +283,7 @@ class MainGui(QMainWindow):
         QApplication.quit()
 
     def log(self, message: str) -> None:
-        """Append `message` to the `log_area`"""
+        """Append `message` to the `log_area`."""
         dt = datetime.now()
         dt_info = dt.strftime("[%Y-%m-%d, %H:%M:%S]:")
         self.log_area.append(f"{dt_info} {message}")

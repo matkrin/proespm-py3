@@ -120,7 +120,7 @@ details>div {
     text-align: center;
 }
 
-.row {
+.measurement-row {
     display: flex;
     flex-wrap: wrap;
     margin: 15px 20px;

@@ -1,40 +1,40 @@
-<div class="row">
+<div class="measurement-row">
     <div class="xps_plot">
-        {{ entry.script }}
-        {{ entry.div }}
+        {{ measurement.script }}
+        {{ measurement.div }}
     </div>
 
     <div class="table_column">
         <table style:"width=100%">
             <tr>
-                <th id="{{ entry.m_id() }}">ID</th>
-                <td>{{ entry.m_id() }}</td>
+                <th id="{{ measurement.m_id() }}">ID</th>
+                <td>{{ measurement.m_id() }}</td>
             </tr>
             <tr>
                 <th>Datetime</th>
-                <td>{{ entry.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
+                <td>{{ measurement.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
             </tr>
             <tr>
                 <th>Ident</th>
-                <td>{{ entry.ident }}</td>
+                <td>{{ measurement.ident }}</td>
             </tr>
 
-            {% if entry.u_start %}
+            {% if measurement.u_start %}
                 <tr>
                     <th>U<sub>start</sub></th>
-                    <td>{{ "{:.3f}".format(entry.u_start) }} V</td>
+                    <td>{{ "{:.3f}".format(measurement.u_start) }} V</td>
                 </tr>
                 <tr>
                     <th>U<sub>1</sub></th>
-                    <td>{{ "{:.3f}".format(entry.u_1) }} V</td>
+                    <td>{{ "{:.3f}".format(measurement.u_1) }} V</td>
                 </tr>
                 <tr>
                     <th>U<sub>2</sub></th>
-                    <td>{{ "{:.3f}".format(entry.u_2) }} V</td>
+                    <td>{{ "{:.3f}".format(measurement.u_2) }} V</td>
                 </tr>
                 <tr>
                     <th>Rate</th>
-                    <td>{{ "{:.3f}".format(entry.rate) }} V</td>
+                    <td>{{ "{:.3f}".format(measurement.rate) }} V</td>
                 </tr>
             {% endif %}
 

@@ -32,10 +32,10 @@
         <div id="overview"></div>
     </details>
 
-    <!-- Loop through the `process_objs` and choose the according template -->
-    {% for entry in process_objs %}
-        {% if entry.template_name is defined and entry.template_name() %}
-            {% include entry.template_name() %}
+    <!-- Loop through the `measurement_objects` and choose the according template -->
+    {% for measurement in measurement_objects %}
+        {% if measurement.template_name is defined and measurement.template_name() %}
+            {% include measurement.template_name() %}
         {% endif %}
     {% endfor %}
 
@@ -57,8 +57,8 @@
         <div class="sidebar-content"
             <ul>
                 <li><a href="#overview">Overview</a></li>
-                {% for entry in process_objs %}
-                    <li><a href="#{{ entry.m_id() }}">{{ entry.m_id() }}</a></li>
+                {% for measurement in measurement_objects %}
+                    <li><a href="#{{ measurement.m_id() }}">{{ measurement.m_id() }}</a></li>
                 {% endfor %}
             </ul>
         </div>

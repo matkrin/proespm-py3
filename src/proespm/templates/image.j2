@@ -1,17 +1,17 @@
-<div class="row">
+<div class="measurement-row">
     <div class="stm_image_fw">
-        <img id="{{ entry.m_id() }}" src="{{ entry.img_uri }}" class="hover-shadow" data-slide-num="{{ entry.slide_num }}" />
+        <img id="{{ measurement.m_id() }}" src="{{ measurement.img_uri }}" class="hover-shadow" data-slide-num="{{ measurement.slide_num }}" />
     </div>
 
     <div class="table_column">
         <table style:"width=100%">
             <tr>
                 <th>ID</th>
-                <td><a href="file:///{{ entry.fileinfo.filepath }}">{{ entry.m_id }}</td>
+                <td><a href="file:///{{ measurement.fileinfo.filepath }}">{{ measurement.m_id() }}</td>
             </tr>
             <tr>
                 <th>Date/time</th>
-                <td>{{ entry.datetime().strftime("%Y-%m-%d <br> %H:%M:%S") }}</td>
+                <td>{{ measurement.datetime().strftime("%Y-%m-%d <br> %H:%M:%S") }}</td>
             </tr>
         </table>
     </div>

@@ -1,10 +1,10 @@
-<div class="row">
+<div class="measurement-row">
 
   <div class="stm_image_fw">
-    <img id="{{ entry.m_id() }}" src="{{ entry.img_data_fw.data_uri }}" class="hover-shadow" data-slide-num="{{ entry.slide_num }}" />
+    <img id="{{ measurement.m_id() }}" src="{{ measurement.img_data_fw.data_uri }}" class="hover-shadow" data-slide-num="{{ measurement.slide_num }}" />
   </div>
   <div class="stm_image_bw">
-    <img id="{{ entry.m_id() }}" src="{{ entry.img_data_bw.data_uri }}" class="hover-shadow" data-slide-num="{{ entry.slide_num }}" />
+    <img id="{{ measurement.m_id() }}" src="{{ measurement.img_data_bw.data_uri }}" class="hover-shadow" data-slide-num="{{ measurement.slide_num }}" />
   </div>
 
 
@@ -13,59 +13,59 @@
     <table>
       <tr>
         <th>Image ID</th>
-        <td><a href="file:///{{ entry.fileinfo.filepath }}">{{ entry.m_id() }}</td>
+        <td><a href="file:///{{ measurement.fileinfo.filepath }}">{{ measurement.m_id() }}</td>
       </tr>
       <tr>
         <th>Number</th>
-        <td>{{ entry.slide_num }}</td>
+        <td>{{ measurement.slide_num }}</td>
       </tr>
       <tr>
         <th>Datetime</th>
-        <td>{{ entry.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
+        <td>{{ measurement.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
       </tr>
       <tr>
       <tr>
         <th>I<sub>tun</sub></th>
-        <td>{{ "{:.2f}".format(entry.current) }} nA</td>
+        <td>{{ "{:.2f}".format(measurement.current) }} nA</td>
       </tr>
       <tr>
         <th>U<sub>tun</sub></th>
-        <td>{{ "{:.1f}".format(entry.bias) }} mV</td>
+        <td>{{ "{:.1f}".format(measurement.bias) }} mV</td>
       </tr>
       <tr>
         <th>Scan Size</th>
-        <td>{{ "{:.0f}".format(entry.xsize) }} &#215; {{ "{:.0f}".format(entry.ysize) }} nm&#178;</td>
+        <td>{{ "{:.0f}".format(measurement.xsize) }} &#215; {{ "{:.0f}".format(measurement.ysize) }} nm&#178;</td>
       </tr>
       <tr>
         <th>Resolution</th>
-        <td>{{ entry.xres }} &#215; {{ entry.yres }}</td>
+        <td>{{ measurement.xres }} &#215; {{ measurement.yres }}</td>
       </tr>
       <tr>
         <th>Rotation</th>
-        <td>{{ entry.rotation }}&#176;</td>
+        <td>{{ measurement.rotation }}&#176;</td>
       <tr>
         <th>Scan Duration</th>
-        <td>{{ "{:.2f}".format(entry.scan_duration) }} s</td>
+        <td>{{ "{:.2f}".format(measurement.scan_duration) }} s</td>
       </tr>
       <tr>
         <th>Line Time</th>
-        <td>{{ "{:.2f}".format(entry.line_time) }} ms</td>
+        <td>{{ "{:.2f}".format(measurement.line_time) }} ms</td>
       </tr>
       <tr>
         <th>Offset</th>
-        <td>{{ "{:.2f}".format(entry.xoffset) }} nm, {{ "{:.2f}".format(entry.yoffset) }} nm</td>
+        <td>{{ "{:.2f}".format(measurement.xoffset) }} nm, {{ "{:.2f}".format(measurement.yoffset) }} nm</td>
       </tr>
-      {% if entry.is_drift_compensation_enabled == True %}
+      {% if measurement.is_drift_compensation_enabled == True %}
           <tr>
             <th>Drift</th>
-            <td>{{ "{:.2f}".format(entry.xdrift) }} nm, {{ "{:.2f}".format(entry.ydrift) }} nm</td>
+            <td>{{ "{:.2f}".format(measurement.xdrift) }} nm, {{ "{:.2f}".format(measurement.ydrift) }} nm</td>
           </tr>
       {% endif %}
 
-      {% if entry.p_gain %}
+      {% if measurement.p_gain %}
           <tr>
             <th>P / I</th>
-            <td>{{ "{:.2f}".format(entry.p_gain) }} / {{ "{:.2f}".format(entry.i_gain) }}</td>
+            <td>{{ "{:.2f}".format(measurement.p_gain) }} / {{ "{:.2f}".format(measurement.i_gain) }}</td>
           </tr>
       {% endif %}
 
@@ -76,15 +76,15 @@
     <table style:"width=100%" >
       <tr>
         <th>Comment</th>
-        <td>{{ entry.creation_comment }}</td>
+        <td>{{ measurement.creation_comment }}</td>
       </tr>
       <tr>
         <th>Data Set</th>
-        <td>{{ entry.data_set_name }}</td>
+        <td>{{ measurement.data_set_name }}</td>
       </tr>
       <tr>
         <th>Sample</th>
-        <td>{{ entry.sample_name }}</td>
+        <td>{{ measurement.sample_name }}</td>
       </tr>
     </table>
   </div>

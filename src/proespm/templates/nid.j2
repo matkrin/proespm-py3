@@ -1,10 +1,10 @@
-<div class="row">
+<div class="measurement-row">
 
   <div class="stm_image_fw">
-    <img id="{{ entry.m_id() }}" src="{{ entry.img_data_fw.data_uri }}" class="hover-shadow" data-slide-num="{{ entry.slide_num }}" />
+    <img id="{{ measurement.m_id() }}" src="{{ measurement.img_data_fw.data_uri }}" class="hover-shadow" data-slide-num="{{ measurement.slide_num }}" />
   </div>
   <div class="stm_image_bw">
-    <img id="{{ entry.m_id() }}" src="{{ entry.img_data_bw.data_uri }}" class="hover-shadow" data-slide-num="{{ entry.slide_num }}" />
+    <img id="{{ measurement.m_id() }}" src="{{ measurement.img_data_bw.data_uri }}" class="hover-shadow" data-slide-num="{{ measurement.slide_num }}" />
   </div>
 
 
@@ -13,62 +13,62 @@
     <table>
       <tr>
         <th>Image ID</th>
-        <td><a href="file:///{{ entry.fileinfo.filepath }}">{{ entry.m_id() }}</td>
+        <td><a href="file:///{{ measurement.fileinfo.filepath }}">{{ measurement.m_id() }}</td>
       </tr>
       <tr>
         <th>Date/time</th>
-        <td>{{ entry.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
+        <td>{{ measurement.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
       </tr>
       <tr>
         <th>Op. mode</th>
-        <td>{{ entry.op_mode }}</td>
+        <td>{{ measurement.op_mode }}</td>
       </tr>
-      {% if entry.op_mode == 'Dynamic Force' %}
+      {% if measurement.op_mode == 'Dynamic Force' %}
           <tr>
             <th>Cantilever</th>
-            <td>{{ entry.cantilever }}</td>
+            <td>{{ measurement.cantilever }}</td>
           </tr>
           <tr>
             <th>Ampl. ctrl.</th>
-            <td>{{ entry.amp_ctrl_mode }}</td>
+            <td>{{ measurement.amp_ctrl_mode }}</td>
           </tr>
           <tr>
             <th>Exc. ampl.</th>
-            <td>{{ "{:.1f}".format(entry.excitation_amp) }} mV</td>
+            <td>{{ "{:.1f}".format(measurement.excitation_amp) }} mV</td>
           </tr>
           <tr>
             <th>Setpoint</th>
-            <td>{{ "{:.1f}".format(entry.current) }} %</td>
+            <td>{{ "{:.1f}".format(measurement.current) }} %</td>
           </tr>
           <tr>
             <th>Tip volt.</th>
-            <td>{{ "{:+.1f}".format(entry.bias) }} mV</td>
+            <td>{{ "{:+.1f}".format(measurement.bias) }} mV</td>
           </tr>
-      {% elif entry.op_mode == 'Static Force' %}
+      {% elif measurement.op_mode == 'Static Force' %}
           <tr>
             <th>Cantilever</th>
-            <td>{{ entry.cantilever }}</td>
+            <td>{{ measurement.cantilever }}</td>
           </tr>
           <tr>
             <th>Ampl. ctrl.</th>
-            <td>{{ entry.amp_ctrl_mode }}</td>
+            <td>{{ measurement.amp_ctrl_mode }}</td>
           </tr>
           <tr>
             <th>Setpoint</th>
-            <td>{{ "{:.1f}".format(entry.current) }} nN</td>
+            <td>{{ "{:.1f}".format(measurement.current) }} nN</td>
           </tr>
           <tr>
             <th>Tip volt.</th>
-            <td>{{ "{:+.1f}".format(entry.bias) }} mV</td>
+            <td>{{ "{:+.1f}".format(measurement.bias) }} mV</td>
           </tr>
       {% else %}
           <tr>
             <th>I<sub>t</sub></th>
-            <td>{{ "{:.2f}".format(entry.current) }} nA</td>
+            <td>{{ "{:.2f}".format(measurement.current) }} nA</td>
           </tr>
           <tr>
             <th>U<sub>b</sub></th>
-            <td>{{ "{:+.1f}".format(entry.bias) }} mV</td>
+            <td>{{ "{:+.1f}".format(measurement.bias) }} mV</td>
           </tr>
       {% endif %}
     </table>
@@ -80,39 +80,39 @@
         <th></th>
         <td>&nbsp;</td>
       </tr>
-      {% if entry.p_gain %}
+      {% if measurement.p_gain %}
           <tr>
             <th>P/I</th>
-            <td>{{ "{:.0f}".format(entry.p_gain) }} / {{ "{:.0f}".format(entry.i_gain) }}</td>
+            <td>{{ "{:.0f}".format(measurement.p_gain) }} / {{ "{:.0f}".format(measurement.i_gain) }}</td>
           </tr>
       {% endif %}
 
       <tr>
         <th>Scan size</th>
-        <td>{{ "{:.0f}".format(entry.xsize) }} &#215; {{ "{:.0f}".format(entry.ysize) }} nm&#178;</td>
+        <td>{{ "{:.0f}".format(measurement.xsize) }} &#215; {{ "{:.0f}".format(measurement.ysize) }} nm&#178;</td>
       </tr>
       <tr>
         <th>Resolution</th>
-        <td>{{ entry.xres }} &#215; {{ entry.yres }}</td>
+        <td>{{ measurement.xres }} &#215; {{ measurement.yres }}</td>
       <tr>
         <th>Line time</th>
-        <td>{{ "{:.1f}".format(entry.line_time) }} ms</td>
+        <td>{{ "{:.1f}".format(measurement.line_time) }} ms</td>
       </tr>
       </tr>
         <th>Scan time</th>
-        <td>{{ "{:.2f}".format(entry.scan_duration) }} s</td>
+        <td>{{ "{:.2f}".format(measurement.scan_duration) }} s</td>
       </tr>
       <tr>
         <th>Scan direct.</th>
-        <td>{{ entry.scan_dir_up_down }}</td>
+        <td>{{ measurement.scan_dir_up_down }}</td>
       </tr>
       <tr>
         <th>Offset</th>
-        <td>{{ "{:+.1f}".format(entry.xoffset) }} nm <br> {{ "{:+.1f}".format(entry.yoffset) }} nm</td>
+        <td>{{ "{:+.1f}".format(measurement.xoffset) }} nm <br> {{ "{:+.1f}".format(measurement.yoffset) }} nm</td>
       </tr>
       <tr>
         <th>Rotation</th>
-        <td>{{ entry.rotation }}&#176;</td>
+        <td>{{ measurement.rotation }}&#176;</td>
       <tr>
 
     </table>

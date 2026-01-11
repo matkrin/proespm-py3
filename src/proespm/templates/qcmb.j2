@@ -1,18 +1,18 @@
-<div class="row" id="{{ entry.m_id() }}">
+<div class="measurement-row" id="{{ measurement.m_id() }}">
     <div class="qcmb_plot">
-        {{ entry.script }}
-        {{ entry.div }}
+        {{ measurement.script }}
+        {{ measurement.div }}
     </div>
 
     <div class="table_column">
         <table style:"width=100%">
             <tr>
                 <th>ID</th>
-                <td>{{ entry.m_id() }}</td>
+                <td>{{ measurement.m_id() }}</td>
             </tr>
             <tr>
                 <th>Datetime</th>
-                <td>{{ entry.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
+                <td>{{ measurement.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
             </tr>
             <tr>
         </table>
