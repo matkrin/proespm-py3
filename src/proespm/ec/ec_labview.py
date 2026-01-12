@@ -29,6 +29,11 @@ class CvLabview(Measurement):
         self.rate: float | None = None
         self.read_params()
 
+        assert self.u_1 is not None and self.u_2 is not None  # Type assertion
+
+        tol = 0.002 * (self.u_1 - self.u_2)
+        self.cycles = self.split_cycles(tol)
+
         self.script: str | None = None
         self.div: str | None = None
 
@@ -48,18 +53,70 @@ class CvLabview(Measurement):
         total_time = cast(float, self.data[-1, 0])
         self.rate = 2 * (abs(self.u_1) + abs(self.u_2)) / total_time
 
-    def plot(self) -> None:
-        """Create a plot for use in the html-report"""
-        plot = EcPlot()
-        plot.set_x_axis_label("U vs. ref [V] ")
-        plot.set_y_axis_label("I [A]")
-
+    def split_cycles(
+        self, tol: float = 0.0
+    ) -> list[tuple[NDArray[np.float64], NDArray[np.float64]]]:
         x = self.data[:, 1]  # voltage
         y = self.data[:, 2]  # current
 
-        plot.plot_scatter(x, y)
-        plot.show_legend(False)
+        # Initial scan direction
+        d0 = np.sign(x[1] - x[0])  # pyright: ignore[reportAny]
+        if d0 == 0:
+            raise ValueError("Initial scan direction cannot be zero")
 
+        x0 = x[0]  # pyright: ignore[reportAny]
+        cycle_start_indices = [0]
+
+        for i in range(1, len(x)):
+            dx = x[i] - x[i - 1]  # pyright: ignore[reportAny]
+            d = np.sign(dx)  # pyright: ignore[reportAny]
+
+            # Ignore zero steps, Crossing must happen in initial scan direction
+            if d == 0 or d != d0:
+                continue
+
+            if d0 > 0:
+                crossed = (x[i - 1] < x0 - tol) and (x[i] >= x0 - tol)  # pyright: ignore[reportAny]
+            else:
+                crossed = (x[i - 1] > x0 + tol) and (x[i] <= x0 + tol)  # pyright: ignore[reportAny]
+
+            if crossed:
+                cycle_start_indices.append(i)
+
+        cycles: list[tuple[NDArray[np.float64], NDArray[np.float64]]] = []
+        for i in range(len(cycle_start_indices) - 1):
+            i0 = cycle_start_indices[i]
+            i1 = cycle_start_indices[i + 1]
+            cycles.append((x[i0:i1], y[i0:i1]))
+
+        return cycles
+
+    # def plot(self) -> None:
+    #     """Create a plot for use in the html-report"""
+    #     plot = EcPlot()
+    #     plot.set_x_axis_label("U vs. ref [V] ")
+    #     plot.set_y_axis_label("I [A]")
+
+    #     x = self.data[:, 1]  # voltage
+    #     y = self.data[:, 2]  # current
+
+    #     plot.plot_scatter(x, y)
+    #     plot.show_legend(False)
+
+    #     self.script, self.div = components(plot.fig, wrap_script=True)
+
+    def plot(self) -> None:
+        plot = EcPlot()
+        plot.set_x_axis_label("U vs. ref [V]")
+        plot.set_y_axis_label("I [A]")
+
+        for i, arr in enumerate(self.cycles):
+            x = arr[0]  # volage
+            y = arr[1]  # current
+
+            plot.plot_scatter(x, y, legend_label=f"Cycle {i + 1}")
+
+        plot.set_legend_location("bottom_right")
         self.script, self.div = components(plot.fig, wrap_script=True)
 
     @override
