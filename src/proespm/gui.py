@@ -166,6 +166,9 @@ class MainGui(QMainWindow):
         self.save_log_button = QPushButton("Save Log")
         log_button_layout.addStretch()  # Pushes button to the right
         log_button_layout.addWidget(self.save_log_button)
+        self._help = QLabel('<a href="https://matkrin.github.io/proespm-py3/">Help</a>')
+        self._help.setOpenExternalLinks(True)
+        log_button_layout.addWidget(self._help)
         self.central_layout.addLayout(log_button_layout)
 
         # Horizontal layout for the start and exit buttons
