@@ -9,7 +9,7 @@ theme:
   palette:
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
-      primary: teal
+      primary: blue
       scheme: default
       toggle:
         icon: material/lightbulb
@@ -31,8 +31,8 @@ nav:
 - Installation: installation.md
 - Usage: usage.md
 - Extending Functionality: extend.md
-# - API Reference:
-#     - processing.py: api/processing.md
+- API Reference:
+    - Measurement: api/measurement.md
 
 plugins:
 - search

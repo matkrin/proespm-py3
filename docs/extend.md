@@ -26,36 +26,37 @@ for context and other measurement entries.
 
 ## 1. Create a class for measurement file
 
-For your class to implement the `Measurement` interface, it needs to define the
+For your class to implement the [`Measurement`](api/measurement.md) interface, it needs to define the
 following methods:
 
-```python
-# my_measurement.py
 
-class MyMeasurement(Measurement):
+```python
+class Measurement(ABC):
+    """Interface for a scientific measurement file."""
+
+    @abstractmethod
     def __init__(self, filepath: str) -> None:
-        # Implement logic for reading your measurement file
-        # ...
+        ...
 
     @abstractmethod
     def m_id(self) -> str:
         """Unique measurement identifier."""
-        #...
+        ...
 
     @abstractmethod
     def datetime(self) -> datetime.datetime:
         """Date and time of the measurement."""
-        # ...
+        ...
 
     @abstractmethod
     def process(self, config: Config) -> Self:
         """Processing of the measurement."""
-        # ...
+        ...
 
     @abstractmethod
     def template_name(self) -> str | None:
         """Name of the Jinja2 template used for HTML rendering."""
-        # ...
+        ...
 ```
 
 The `__init__` constructor takes the full path to the measurement file as an
