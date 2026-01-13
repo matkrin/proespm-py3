@@ -51,8 +51,16 @@ class StmMatrix(Measurement):
             # print(f"{param=}")
             if param.startswith("Regulator.Setpoint_1"):
                 self.current = float(param.split()[1]) * 1e9  # in nA
+                if param.split()[2] == "Ampere":
+                    self.op_mode = "STM"
+                else:
+                    self.op_mode = "AFM"
             elif param.startswith("GapVoltageControl.Voltage "):
-                self.bias = float(param.split()[1]) * 1e3  # in mV
+                self.bias = float(param.split()[1])  # in V
+            elif param.startswith("Regulator.Loop_Gain_1_I "):
+                self.i_gain = float(param.split()[1])   # in %
+            elif param.startswith("Regulator.Loop_Gain_1_P "):
+                self.p_gain = float(param.split()[1])   # in %
             elif param.startswith("XYScanner.Raster_Time "):
                 # in seconds, per pixel?
                 self.raster_time = float(param.split()[1])
@@ -66,6 +74,8 @@ class StmMatrix(Measurement):
                 self.yoffset = float(param.split()[1]) * 1e9  # in nm
             elif param.startswith("XYScanner.Enable_Drift_Compensation"):
                 self.is_drift_compensation_enabled = param.split()[1]
+            elif param.startswith("XYScanner.Y_Retrace "):
+                self.retrace = param.split()[1]                
 
         self.line_time = self.raster_time * self.xres * 1e3  # in ms
         self.scan_duration = self.line_time * self.yres / 1e3  # in s

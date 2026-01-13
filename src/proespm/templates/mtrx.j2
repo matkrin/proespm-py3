@@ -12,68 +12,29 @@
   <div class="table_column">
     <table>
       <tr>
-        <th>Image ID</th>
-        <td><a href="file:///{{ measurement.fileinfo.filepath }}">{{ measurement.m_id() }}</td>
-      </tr>
-      <tr>
-        <th>Number</th>
-        <td>{{ measurement.slide_num }}</td>
+        <th>Image ID <br> &nbsp;&nbsp;&nbsp;(number)</th>
+        <td><a href="file:///{{ measurement.fileinfo.filepath }}">{{ measurement.m_id }}</a> <br> {{ measurement.slide_num }}</td>
       </tr>
       <tr>
         <th>Datetime</th>
-        <td>{{ measurement.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
+        <td>{{ measurement.datetime.strftime("%Y-%m-%d") }} <br> {{ measurement.datetime.strftime("%H:%M:%S") }}</td>
       </tr>
       <tr>
-      <tr>
-        <th>I<sub>tun</sub></th>
-        <td>{{ "{:.2f}".format(measurement.current) }} nA</td>
+        <th>Controller</th>
+        <td>Matrix</td>
       </tr>
       <tr>
-        <th>U<sub>tun</sub></th>
-        <td>{{ "{:.1f}".format(measurement.bias) }} mV</td>
+        <th>Op. mode</th>
+        <td>{{ measurement.op_mode }}</td>
       </tr>
       <tr>
-        <th>Scan Size</th>
-        <td>{{ "{:.0f}".format(measurement.xsize) }} &#215; {{ "{:.0f}".format(measurement.ysize) }} nm&#178;</td>
+        <th>I<sub>t</sub></th>
+        <td>{{ "{:.2g}".format(measurement.current) }} nA</td>
       </tr>
       <tr>
-        <th>Resolution</th>
-        <td>{{ measurement.xres }} &#215; {{ measurement.yres }}</td>
+        <th>U<sub>b</sub></th>
+        <td>{{ "{:+.2g}".format(measurement.bias) }} V</td>
       </tr>
-      <tr>
-        <th>Rotation</th>
-        <td>{{ measurement.rotation }}&#176;</td>
-      <tr>
-        <th>Scan Duration</th>
-        <td>{{ "{:.2f}".format(measurement.scan_duration) }} s</td>
-      </tr>
-      <tr>
-        <th>Line Time</th>
-        <td>{{ "{:.2f}".format(measurement.line_time) }} ms</td>
-      </tr>
-      <tr>
-        <th>Offset</th>
-        <td>{{ "{:.2f}".format(measurement.xoffset) }} nm, {{ "{:.2f}".format(measurement.yoffset) }} nm</td>
-      </tr>
-      {% if measurement.is_drift_compensation_enabled == True %}
-          <tr>
-            <th>Drift</th>
-            <td>{{ "{:.2f}".format(measurement.xdrift) }} nm, {{ "{:.2f}".format(measurement.ydrift) }} nm</td>
-          </tr>
-      {% endif %}
-
-      {% if measurement.p_gain %}
-          <tr>
-            <th>P / I</th>
-            <td>{{ "{:.2f}".format(measurement.p_gain) }} / {{ "{:.2f}".format(measurement.i_gain) }}</td>
-          </tr>
-      {% endif %}
-
-    </table>
-  </div>
-
-  <div class="table_column">
-    <table style:"width=100%" >
       <tr>
         <th>Comment</th>
         <td>{{ measurement.creation_comment }}</td>
@@ -88,4 +49,73 @@
       </tr>
     </table>
   </div>
+
+  <div class="table_column">
+    <table>
+      <tr>
+        <th></th>
+        <td>&nbsp;</td>
+      </tr>
+        <tr>
+          <th>P / I</th>
+          <td>{{ "{:.2f}".format(measurement.p_gain) }} / {{ "{:.2f}".format(measurement.i_gain) }} %</td>
+        </tr>    
+      <tr>
+        <th>Scan size</th>
+        <td>{{ "{:.0f}".format(measurement.xsize) }} &#215; {{ "{:.0f}".format(measurement.ysize) }} nm&#178;</td>
+      </tr>
+      <tr>
+        <th>Resolution</th>
+        <td>{{ measurement.xres }} &#215; {{ measurement.yres }}</td>
+      <tr>
+        <th>Line time</th>
+        <td>{{ "{:.1f}".format(measurement.line_time) }} ms</td>
+      </tr>
+      </tr>
+        <th>Scan time</th>
+        <td>{{ "{:.2f}".format(measurement.scan_duration) }} s</td>
+      </tr>
+      {% if measurement.retrace == 'True' %}
+          <tr>
+            <th>Scan direct.</th>
+            <td>down</td>
+          </tr>
+      {% endif %}
+      {% if measurement.retrace == 'False' %}
+          <tr>
+            <th>Scan direct.</th>
+            <td>up</td>
+          </tr>
+      {% endif %}
+      <tr>
+        <th>Offset</th>
+        <td>{{ "{:+.1f}".format(measurement.xoffset) }} nm <br> {{ "{:+.1f}".format(measurement.yoffset) }} nm</td>
+      </tr>
+      <tr>
+        <th>Rotation</th>
+        <td>{{ measurement.rotation }}&#176;</td>
+      <tr>
+      {% if measurement.is_drift_compensation_enabled == 'True' %}
+          <tr>
+            <th>Drift</th>
+            <td>{{ "{:.2f}".format(measurement.xdrift) }} nm/s <br> {{ "{:.2f}".format(measurement.ydrift) }} nm/s</td>
+          </tr>
+      {% endif %}
+
+    </table>
+  </div>
+
+  {% if measurement.labjournal_data is not none %}
+  <div class="table_column">
+    <table>
+    {% for key, value in measurement.labjournal_data.items() %}
+      <tr>
+        <th>{{ key }}</th>
+        <td>{{ value[0] }}</td>
+      </tr>
+    {% endfor %}
+    </table>
+  </div>
+  {% endif %}
+
 </div><!-- End of one row -->

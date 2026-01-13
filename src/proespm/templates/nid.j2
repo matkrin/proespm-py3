@@ -13,11 +13,14 @@
     <table>
       <tr>
         <th>Image ID</th>
-        <td><a href="file:///{{ measurement.fileinfo.filepath }}">{{ measurement.m_id() }}</td>
+        <td><a href="file:///{{ measurement.fileinfo.filepath }}">{{ measurement.m_id }}</a></td>
+      </tr>
+        <th>Date/time</th>
+        <td>{{ measurement.datetime.strftime("%Y-%m-%d") }} <br> {{ measurement.datetime.strftime("%H:%M:%S") }}</td>
       </tr>
       <tr>
-        <th>Date/time</th>
-        <td>{{ measurement.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
+        <th>Controller </th>
+        <td>Nanosurf</td>
       </tr>
       <tr>
         <th>Op. mode</th>
@@ -86,7 +89,6 @@
             <td>{{ "{:.0f}".format(measurement.p_gain) }} / {{ "{:.0f}".format(measurement.i_gain) }}</td>
           </tr>
       {% endif %}
-
       <tr>
         <th>Scan size</th>
         <td>{{ "{:.0f}".format(measurement.xsize) }} &#215; {{ "{:.0f}".format(measurement.ysize) }} nm&#178;</td>
