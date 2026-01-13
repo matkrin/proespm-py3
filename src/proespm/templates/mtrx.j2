@@ -13,11 +13,11 @@
     <table>
       <tr>
         <th>Image ID <br> &nbsp;&nbsp;&nbsp;(number)</th>
-        <td><a href="file:///{{ measurement.fileinfo.filepath }}">{{ measurement.m_id }}</a> <br> {{ measurement.slide_num }}</td>
+        <td><a href="file:///{{ measurement.fileinfo.filepath }}">{{ measurement.m_id() }}</a> <br> {{ measurement.slide_num }}</td>
       </tr>
       <tr>
         <th>Datetime</th>
-        <td>{{ measurement.datetime.strftime("%Y-%m-%d") }} <br> {{ measurement.datetime.strftime("%H:%M:%S") }}</td>
+        <td>{{ measurement.datetime().strftime("%Y-%m-%d") }} <br> {{ measurement.datetime().strftime("%H:%M:%S") }}</td>
       </tr>
       <tr>
         <th>Controller</th>
@@ -104,18 +104,4 @@
 
     </table>
   </div>
-
-  {% if measurement.labjournal_data is not none %}
-  <div class="table_column">
-    <table>
-    {% for key, value in measurement.labjournal_data.items() %}
-      <tr>
-        <th>{{ key }}</th>
-        <td>{{ value[0] }}</td>
-      </tr>
-    {% endfor %}
-    </table>
-  </div>
-  {% endif %}
-
 </div><!-- End of one row -->
