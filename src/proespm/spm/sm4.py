@@ -46,6 +46,7 @@ class StmSm4(Measurement):
         self.ysize = self.img_fw.ysize * 1e9  # in nm
         self.speed = self.img_fw.period * self.xres * self.yres
         self.line_time = self.img_fw.period * self.xres * 1e3  # in ms
+        self.scan_direction = self.img_fw.scan_direction
 
         self.img_data_fw = SpmImage(self.img_fw.data * 1e9, self.xsize)
         self.img_data_bw = SpmImage(self.img_bw.data * 1e9, self.xsize)
