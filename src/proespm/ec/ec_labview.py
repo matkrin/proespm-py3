@@ -1,3 +1,4 @@
+import io
 import os
 from datetime import datetime
 from typing import Self, cast, final, override
@@ -39,7 +40,13 @@ class CvLabview(Measurement):
 
     def read_cv_data(self, filepath: str) -> NDArray[np.float64]:
         """Read the numeric data as numpy array"""
-        return np.loadtxt(filepath, skiprows=1)
+
+        with open(filepath, "rb") as f:
+            raw = f.read()
+
+        raw = raw.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+
+        return np.loadtxt(io.BytesIO(raw), skiprows=1)
 
     def read_params(self) -> None:
         """Calculate relevent parameters"""
@@ -147,7 +154,7 @@ class CaLabview(Measurement):
         self.fileinfo = Fileinfo(filepath)
 
         self.type: str | None = None
-        self.data = self.read_ca_data()
+        self.data = self.read_ca_data(filepath)
         self.u_start: float | None = None
         self.u_1: float | None = None
         self.u_2: float | None = None
@@ -157,9 +164,15 @@ class CaLabview(Measurement):
         self.script: str | None = None
         self.div: str | None = None
 
-    def read_ca_data(self) -> NDArray[np.float64]:
+    def read_ca_data(self, filepath: str) -> NDArray[np.float64]:
         """Read the numeric data as numpy array"""
-        return np.loadtxt(self.fileinfo.filepath, skiprows=1)
+
+        with open(filepath, "rb") as f:
+            raw = f.read()
+
+        raw = raw.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+
+        return np.loadtxt(io.BytesIO(raw), skiprows=1)
 
     def read_params(self) -> None:
         """Calculate relevent parameters"""
@@ -238,14 +251,20 @@ class FftLabview(Measurement):
         self.fileinfo = Fileinfo(filepath)
 
         self.type: str | None = None
-        self.data = self.read_fft_data()
+        self.data = self.read_fft_data(filepath)
 
         self.script = str | None
         self.div = str | None
 
-    def read_fft_data(self):
+    def read_fft_data(self, filepath: str) -> NDArray[np.float64]:
         """Read the numeric data as numpy array"""
-        return np.loadtxt(self.fileinfo.filepath, skiprows=1)
+
+        with open(filepath, "rb") as f:
+            raw = f.read()
+
+        raw = raw.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+
+        return np.loadtxt(io.BytesIO(raw), skiprows=1)
 
     def plot(self) -> None:
         """Create a plot for use in the html-report"""
