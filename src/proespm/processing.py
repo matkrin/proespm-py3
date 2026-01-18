@@ -53,7 +53,8 @@ def check_file_for_str(file: str, string_to_check: str, line_num: int) -> bool:
 
 
 def import_files(process_dir: str) -> list[str]:
-    """Import files from a given directory for processing.
+    """Import files from a given directory and one level nested directories
+    for processing.
 
     Args:
         process_dir: Full path of the directory containing files to import.
@@ -61,15 +62,20 @@ def import_files(process_dir: str) -> list[str]:
     Returns:
         List of full paths to imported files.
     """
-    return sorted(
-        [
-            entry.path
-            for entry in os.scandir(process_dir)
-            if entry.path.lower().endswith(ALLOWED_FILE_TYPES)
-            and entry.is_file()
-        ],
-        key=lambda x: os.path.getctime(x),
-    )
+    measurement_files: list[str] = []
+    for entry in os.scandir(process_dir):
+        if entry.is_dir():
+            for sub_entry in os.scandir(entry):
+                if sub_entry.is_file() and sub_entry.path.lower().endswith(
+                    ALLOWED_FILE_TYPES
+                ):
+                    measurement_files.append(sub_entry.path)
+        elif entry.is_file() and entry.path.lower().endswith(
+            ALLOWED_FILE_TYPES
+        ):
+            measurement_files.append(entry.path)
+
+    return sorted(measurement_files, key=lambda x: os.path.getctime(x))
 
 
 def create_measurement_objs(
