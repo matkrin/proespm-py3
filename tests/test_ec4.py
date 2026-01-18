@@ -2,7 +2,7 @@ from pathlib import Path
 from proespm.ec.ec4 import Ec4
 
 
-testdata = Path(__file__).parent / "testdata"
+testdata = Path(__file__).parent / "testdata" / "ec4"
 
 CV_EC4 = testdata / r"CV_153505_ 1.txt"
 CV_EC4_2 = testdata / r"CV_153605_ 2.txt"
