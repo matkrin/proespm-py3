@@ -32,7 +32,7 @@ If you want to extend the program's functionality, see
 - Cyclic Voltammetry (CV), Chronoamperometry (CA), Linear Sweep Voltammetry
   (LSV), Impedence Spectroscopy (EIS):
     - Nordic Electrochemistry EC4
-    - PalmSens (.cvs, .pssession)
+    - PalmSens (.csv, .pssession)
 
 - Temperature Programmed Desorption (TPD):
     - LabView (self written)

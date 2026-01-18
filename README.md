@@ -4,10 +4,10 @@ Proespm is a Python-based tool designed to transform scientific data into
 interactive, shareable HTML reports. It supports automatic data processing for
 specific types of data, such as image corrections for scanning probe microscopy
 (SPM) data. An example of a generated report can be found
-[here](https://matkrin.github.io/proespm-py3/example.html). This is a Python 3
-implementation of [proespm](https://github.com/n-bock/proespm). Have a look a
-the [documentation](https://matkrin.github.io/proespm-py3) for information about
-installation, usage and extensibility.
+[here](https://matkrin.github.io/proespm-py3/assets/example.html). This is a
+Python 3 implementation of [proespm](https://github.com/n-bock/proespm). Have a
+look a the [documentation](https://matkrin.github.io/proespm-py3) for
+information about installation, usage and extensibility.
 
 ## Supported Methods
 
@@ -30,7 +30,7 @@ installation, usage and extensibility.
 - Cyclic Voltammetry (CV), Chronoamperometry (CA), Linear Sweep Voltammetry
   (LSV), Impedence Spectroscopy (EIS):
   - Nordic Electrochemistry EC4
-  - PalmSens (.cvs, .pssession)
+  - PalmSens (.csv, .pssession)
 
 - Temperature Programmed Desorption (TPD):
   - LabView (self written)
