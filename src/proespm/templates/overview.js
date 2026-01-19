@@ -1,5 +1,7 @@
 function create_overview() {
-    const images = document.getElementsByClassName("stm_image_fw");
+    const stmImages = document.getElementsByClassName("stm_image_fw");
+    const screenshotImgs = document.getElementsByClassName("screenshot-image");
+    const images = [...stmImages, ...screenshotImgs];
     const overview = document.getElementById("overview");
 
     for (let i = 0; i < images.length; ++i) {

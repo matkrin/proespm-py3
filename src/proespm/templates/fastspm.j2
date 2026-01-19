@@ -1,0 +1,36 @@
+<div class="measurement-row">
+    <div class="screenshot-image">
+        <img id="{{ measurement.m_id() }}" src="{{ measurement.img_uri }}" class="hover-shadow" data-slide-num="{{ measurement.slide_num }}" />
+    </div>
+
+    <div class="table_column">
+        <table style:"width=100%">
+            <tr>
+                <th>ID</th>
+                <td><a href="file:///{{ measurement.fileinfo.filepath }}">{{ measurement.m_id() }}</td>
+            </tr>
+            <tr>
+                <th>Date/time</th>
+                <td>{{ measurement.datetime().strftime("%Y-%m-%d <br> %H:%M:%S") }}</td>
+            </tr>
+            {% if measurement.op_mode == "FS" %}
+                <tr>
+                    <th>X-Frequency</th>
+                    <td>{{ "{:.2f}".format(measurement.x_frequency) }} {{ measurement.x_frequency_unit }}</td>
+                </tr>
+                <tr>
+                    <th>X-Phase</th>
+                    <td>{{ measurement.x_phase }} {{ measurement.x_phase_unit }}</td>
+                </tr>
+                <tr>
+                    <th>Y-Phase</th>
+                    <td>{{ measurement.y_phase }} {{ measurement.y_phase_unit }}</td>
+                </tr>
+                <tr>
+                    <th>Angle</th>
+                    <td>{{ measurement.angle }} {{ measurement.angle_unit }}</td>
+                </tr>
+            {% endif %}
+        </table>
+    </div>
+</div>
