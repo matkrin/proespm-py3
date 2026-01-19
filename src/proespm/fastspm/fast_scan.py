@@ -9,17 +9,16 @@ from proespm.config import Config
 from proespm.fileinfo import Fileinfo
 from proespm.measurement import Measurement
 
-filename = "/Users/matthias/Downloads/testdatanew/FS_251120_001.h5"
 
 IMAGE_EXTENSION = "jpg"
 
 
 @final
 class FastScan(Measurement):
-    """Class for handling .h5 files of fast scans
+    """Class for handling .h5 files of fast scans (FS)
 
     Args:
-        filepath (str): Full path to the .Z_mtrx file
+        filepath (str): Full path to the .h5 file
     """
 
     op_mode = "FS"
@@ -78,8 +77,3 @@ class FastScan(Measurement):
     @override
     def template_name(self) -> str:
         return "fastspm.j2"
-
-
-fs = FastScan(filename)
-print(fs.datetime())
-print(type(fs.datetime()))

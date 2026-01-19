@@ -14,6 +14,7 @@ from proespm.ec.PalmSens.cv import CvPalmSens
 from proespm.ec.PalmSens.eis import EisPalmSens
 from proespm.ec.PalmSens.lsv import LsvPalmSens
 from proespm.ec.PalmSens.pssession import PalmSensSession
+from proespm.fastspm.atom_tracking import AtomTracking
 from proespm.fastspm.fast_scan import FastScan
 from proespm.measurement import Measurement
 from proespm.misc.image import Image
@@ -194,7 +195,9 @@ def create_measurement_objs(
                 obj = EisPalmSens(file_path)
                 measurement_objects.append(obj)
 
-            case ".png" | ".jpg" | ".jpeg" if not path.name.startswith("FS"):
+            case ".png" | ".jpg" | ".jpeg" if not path.with_suffix(
+                ".h5"
+            ).exists():
                 obj = Image(file_path)
                 measurement_objects.append(obj)
 
@@ -205,9 +208,12 @@ def create_measurement_objs(
             case ".pssession":
                 obj = PalmSensSession(file_path)
                 measurement_objects.append(obj)
-
             case ".h5":
-                obj = FastScan(file_path)
+                if path.name.startswith("FS"):
+                    obj = FastScan(file_path)
+                elif path.name.startswith("AT"):
+                    obj = AtomTracking(file_path)
+
                 measurement_objects.append(obj)
 
             case _:
@@ -249,6 +255,7 @@ def process_loop(
                 | SpmNid()
                 | Image()
                 | FastScan()
+                | AtomTracking()
             ):
                 measurement.slide_num = slide_num
                 slide_num += 1
