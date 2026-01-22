@@ -15,7 +15,7 @@ IMAGE_EXTENSION = "jpg"
 
 @final
 class AtomTracking(Measurement):
-    """Class for handling .h5 files of atom tracking (AT)
+    """Class for handling .h5 files of atom tracking (AT) measurements.
 
     Args:
         filepath (str): Full path to the .h5 file
@@ -25,7 +25,6 @@ class AtomTracking(Measurement):
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
-        print(self.fileinfo)
 
         self.img_uri: str | None = None
         self.slide_num: int | None = None

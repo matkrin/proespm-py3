@@ -85,6 +85,13 @@
                     <th>Number of circles</th>
                     <td>{{ measurement.num_circles }}</td>
                 </tr>
+
+            {% elif measurement.op_mode == "ET" %}
+                <tr>
+                    <th>Time per pixel</th>
+                    <td>{{ "{:.1f}".format(measurement.time_per_pixel) }} {{ measurement.time_per_pixel_unit }}</td>
+                </tr>
+
             {% endif %}
         </table>
     </div>

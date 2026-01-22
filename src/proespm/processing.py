@@ -1,3 +1,4 @@
+from proespm.fastspm.error_topography import ErrorTopography
 import os
 import sys
 from pathlib import Path
@@ -213,6 +214,8 @@ def create_measurement_objs(
                     obj = FastScan(file_path)
                 elif path.name.startswith("AT"):
                     obj = AtomTracking(file_path)
+                elif path.name.startswith("ET"):
+                    obj = ErrorTopography(file_path)
 
                 measurement_objects.append(obj)
 
@@ -256,6 +259,7 @@ def process_loop(
                 | Image()
                 | FastScan()
                 | AtomTracking()
+                | ErrorTopography()
             ):
                 measurement.slide_num = slide_num
                 slide_num += 1
