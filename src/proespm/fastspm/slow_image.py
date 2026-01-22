@@ -16,14 +16,14 @@ IMAGE_EXTENSION = "jpg"
 
 
 @final
-class ErrorTopography(Measurement):
-    """Class for handling .h5 files of error topography (ET) measurements.
+class SlowImage(Measurement):
+    """Class for handling .h5 files of slow image (SI) measurements.
 
     Args:
         filepath (str): Full path to the .h5 file
     """
 
-    op_mode = "ET"
+    op_mode = "SI"
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
@@ -34,6 +34,18 @@ class ErrorTopography(Measurement):
 
         with h5py.File(filepath, "r") as f:
             self.attributes = dict(f.attrs)
+
+            # def show_attrs(name, obj):
+            #     print(f"= {obj} =")
+            #     if obj.attrs:
+            #         print(f"  [{name}]")
+            #         for k, v in obj.attrs.items():
+            #             print(f"    {k} -> {v}")
+
+            # f.visititems(show_attrs)
+
+        # for k, v in self.attributes.items():
+        #     print(f"{k}->{v}".encode("utf8", "backslashreplace"))
 
         # TODO Maybe?
         self.time_per_pixel = self.attributes["PI.ControlTimeStep"]

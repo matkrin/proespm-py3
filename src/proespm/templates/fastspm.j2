@@ -92,6 +92,12 @@
                     <td>{{ "{:.1f}".format(measurement.time_per_pixel) }} {{ measurement.time_per_pixel_unit }}</td>
                 </tr>
 
+            {% elif measurement.op_mode == "SI" %}
+                <tr>
+                    <th>Time per pixel</th>
+                    <td>{{ "{:.1f}".format(measurement.time_per_pixel) }} {{ measurement.time_per_pixel_unit }}</td>
+                </tr>
+
             {% endif %}
         </table>
     </div>

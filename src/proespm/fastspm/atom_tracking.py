@@ -50,7 +50,7 @@ class AtomTracking(Measurement):
         ]
 
         self.lockin_phase = self.attributes["LockIn.Phase"]
-        # TODO: this is wierd
+        # TODO: this is weird encoding
         self.lockin_phase_unit = self.attributes["LockIn.Phase.Unit"].encode(
             "utf8", "backslashreplace"
         )

@@ -1,4 +1,4 @@
-from proespm.fastspm.error_topography import ErrorTopography
+from proespm.fastspm.slow_image import SlowImage
 import os
 import sys
 from pathlib import Path
@@ -16,6 +16,7 @@ from proespm.ec.PalmSens.eis import EisPalmSens
 from proespm.ec.PalmSens.lsv import LsvPalmSens
 from proespm.ec.PalmSens.pssession import PalmSensSession
 from proespm.fastspm.atom_tracking import AtomTracking
+from proespm.fastspm.error_topography import ErrorTopography
 from proespm.fastspm.fast_scan import FastScan
 from proespm.measurement import Measurement
 from proespm.misc.image import Image
@@ -216,6 +217,8 @@ def create_measurement_objs(
                     obj = AtomTracking(file_path)
                 elif path.name.startswith("ET"):
                     obj = ErrorTopography(file_path)
+                elif path.name.startswith("SI"):
+                    obj = SlowImage(file_path)
 
                 measurement_objects.append(obj)
 
@@ -260,6 +263,7 @@ def process_loop(
                 | FastScan()
                 | AtomTracking()
                 | ErrorTopography()
+                | SlowImage()
             ):
                 measurement.slide_num = slide_num
                 slide_num += 1
