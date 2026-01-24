@@ -1,4 +1,4 @@
-from proespm.misc.rga import Rga
+from proespm.misc.rga import RgaMassScan, RgaTimeSeries
 from proespm.fastspm.slow_image import SlowImage
 import os
 import sys
@@ -148,8 +148,16 @@ def create_measurement_objs(
 
             case ".txt" if check_file_for_str(
                 file_path, "Residual Gas Analyzer Software", 2
+            ) and check_file_for_str(file_path, "Analog Scan Setup:", 5):
+                obj = RgaMassScan(file_path)
+                measurement_objects.append(obj)
+
+            case ".txt" if check_file_for_str(
+                file_path, "Residual Gas Analyzer Software", 2
+            ) and check_file_for_str(
+                file_path, "Pressure vs Time Scan Setup:", 5
             ):
-                obj = Rga(file_path)
+                obj = RgaTimeSeries(file_path)
                 measurement_objects.append(obj)
 
             case ".log":
