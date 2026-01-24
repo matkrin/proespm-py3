@@ -19,7 +19,8 @@ ALLOWED_FILE_TYPES = (
     ".jpeg",
     ".lvm",
     ".pssession",
-    ".h5"
+    ".h5",
+    ".json",
 )
 
 

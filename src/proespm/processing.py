@@ -1,5 +1,3 @@
-from proespm.misc.rga import RgaMassScan, RgaTimeSeries
-from proespm.fastspm.slow_image import SlowImage
 import os
 import sys
 from pathlib import Path
@@ -19,9 +17,12 @@ from proespm.ec.PalmSens.pssession import PalmSensSession
 from proespm.fastspm.atom_tracking import AtomTracking
 from proespm.fastspm.error_topography import ErrorTopography
 from proespm.fastspm.fast_scan import FastScan
+from proespm.fastspm.slow_image import SlowImage
 from proespm.measurement import Measurement
+from proespm.misc.elab_ftw import ElabFtw
 from proespm.misc.image import Image
 from proespm.misc.qcmb import Qcmb
+from proespm.misc.rga import RgaMassScan, RgaTimeSeries
 from proespm.misc.tpd import Tpd
 from proespm.spectroscopy.aes_staib import AesStaib
 from proespm.spectroscopy.xps_eis import XpsEis
@@ -225,6 +226,7 @@ def create_measurement_objs(
             case ".pssession":
                 obj = PalmSensSession(file_path)
                 measurement_objects.append(obj)
+
             case ".h5":
                 if path.name.startswith("FS"):
                     obj = FastScan(file_path)
@@ -234,7 +236,13 @@ def create_measurement_objs(
                     obj = ErrorTopography(file_path)
                 elif path.name.startswith("SI"):
                     obj = SlowImage(file_path)
+                else:
+                    continue
 
+                measurement_objects.append(obj)
+
+            case ".json":
+                obj = ElabFtw(file_path)
                 measurement_objects.append(obj)
 
             case _:
