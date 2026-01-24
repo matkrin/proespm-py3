@@ -1,3 +1,4 @@
+from proespm.misc.rga import Rga
 from proespm.fastspm.slow_image import SlowImage
 import os
 import sys
@@ -144,6 +145,12 @@ def create_measurement_objs(
                 else:
                     assert last_ec4 is not None
                     last_ec4.push_cv_data(obj)
+
+            case ".txt" if check_file_for_str(
+                file_path, "Residual Gas Analyzer Software", 2
+            ):
+                obj = Rga(file_path)
+                measurement_objects.append(obj)
 
             case ".log":
                 # TODO: check if valid qcmb file

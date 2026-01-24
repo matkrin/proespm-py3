@@ -27,7 +27,6 @@ class ErrorTopography(Measurement):
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
-        print(self.fileinfo)
 
         self.img_uri: str | None = None
         self.slide_num: int | None = None
