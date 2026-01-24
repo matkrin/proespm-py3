@@ -1,0 +1,35 @@
+<div class="measurement-row">
+    <div class="xps_plot">
+        {{ measurement.script }}
+        {{ measurement.div }}
+    </div>
+
+    <div class="table_column">
+        <table style:"width=100%">
+            <tr>
+                <th id="{{ measurement.m_id() }}">ID</th>
+                <td>{{ measurement.m_id() }}</td>
+            </tr>
+            <tr>
+                <th>Datetime</th>
+                <td>{{ measurement.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
+            </tr>
+            <tr>
+                <th>Software</th>
+                <td>{{ measurement.software }}</td>
+            </tr>
+            {% if measurement.op_mode == "MASSSCAN" %}
+                <tr>
+                    <th>Points per amu</th>
+                    <td>{{ measurement.points_per_amu }}</td>
+                </tr>
+
+            {% elif measurement.op_mode == "TIMESERIES" %}
+                <tr>
+                    <th>Sample period</th>
+                    <td>{{ measurement.sample_period }} {{ measurement.sample_period_unit }}</td>
+                </tr>
+            {% endif %}
+        </table>
+    </div>
+</div>

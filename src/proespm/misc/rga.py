@@ -1,19 +1,23 @@
-from dataclasses import dataclass
-import itertools
-from bokeh.palettes import Category10_10
-from bokeh.embed import components
-from bokeh.plotting import figure
-from proespm.fileinfo import Fileinfo
-from typing import Self, final, override, TextIO
-from proespm.config import Config
 import datetime
+import itertools
+from dataclasses import dataclass
+from typing import Self, TextIO, final, override
+
 import dateutil
-from proespm.measurement import Measurement
 import numpy as np
+from bokeh.embed import components
+from bokeh.palettes import Category10_10
+from bokeh.plotting import figure
+
+from proespm.config import Config
+from proespm.fileinfo import Fileinfo
+from proespm.measurement import Measurement
 
 
 @final
 class RgaMassScan(Measurement):
+    op_mode = "MASSSCAN"
+
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
 
@@ -73,7 +77,7 @@ class RgaMassScan(Measurement):
 
     @override
     def template_name(self) -> str | None:
-        return "tpd.j2"
+        return "rga.j2"
 
 
 @dataclass
@@ -100,6 +104,8 @@ class RgaChannel:
 
 @final
 class RgaTimeSeries(Measurement):
+    op_mode = "TIMESERIES"
+
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
 
@@ -116,7 +122,9 @@ class RgaTimeSeries(Measurement):
 
             self.active_channels = f.readline().split(", ")[-1]
             self.units = f.readline().split(", ")[-1]
-            self.sample_period = f.readline().split(", ")[-1]
+            self.sample_period, self.sample_period_unit = f.readline().split(
+                ", "
+            )[1:]
 
             line = f.readline()
             while "Start time" not in line:
@@ -182,7 +190,7 @@ class RgaTimeSeries(Measurement):
 
     @override
     def template_name(self) -> str | None:
-        return "tpd.j2"
+        return "rga.j2"
 
 
 def _skip_until_two_empty_lines(f: TextIO):
