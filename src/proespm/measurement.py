@@ -9,9 +9,6 @@ class Measurement(ABC):
     """Interface for a scientific measurement file."""
 
     @abstractmethod
-    def __init__(self, filepath: str) -> None: ...
-
-    @abstractmethod
     def m_id(self) -> str:
         """Unique measurement identifier."""
         ...

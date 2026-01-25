@@ -1,6 +1,6 @@
-<div class="measurement-row">
-    <div class="table_column">
-        <table style:"width=100%">
+<div class="measurement-row" style="border-color: limegreen; border-width: 2px">
+    <div style="float: left; width: 30%; padding: 20px">
+        <table style="width=100%">
             <tr>
                 <th id="{{ measurement.m_id() }}">ID</th>
                 <td>{{ measurement.m_id() }}</td>
@@ -27,7 +27,7 @@
             </tr>
         </table>
     </div>
-    <div class="remark_colummn">
-        {{ measurement.body_html }}
+    <div style="float: left; width: 40%;" >
+        <p style="font-size: 20px; text-align: justify">{{ measurement.text }}</p>
     </div>
 </div>

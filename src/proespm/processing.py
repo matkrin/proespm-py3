@@ -19,7 +19,7 @@ from proespm.fastspm.error_topography import ErrorTopography
 from proespm.fastspm.fast_scan import FastScan
 from proespm.fastspm.slow_image import SlowImage
 from proespm.measurement import Measurement
-from proespm.misc.elab_ftw import ElabFtw
+from proespm.misc.elab_ftw import extract_elabftw
 from proespm.misc.image import Image
 from proespm.misc.qcmb import Qcmb
 from proespm.misc.rga import RgaMassScan, RgaTimeSeries
@@ -242,8 +242,8 @@ def create_measurement_objs(
                 measurement_objects.append(obj)
 
             case ".json":
-                obj = ElabFtw(file_path)
-                measurement_objects.append(obj)
+                objs = extract_elabftw(file_path)
+                measurement_objects += objs
 
             case _:
                 continue
