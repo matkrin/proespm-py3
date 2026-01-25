@@ -14,9 +14,15 @@ from proespm.ec.PalmSens.cv import CvPalmSens
 from proespm.ec.PalmSens.eis import EisPalmSens
 from proespm.ec.PalmSens.lsv import LsvPalmSens
 from proespm.ec.PalmSens.pssession import PalmSensSession
+from proespm.fastspm.atom_tracking import AtomTracking
+from proespm.fastspm.error_topography import ErrorTopography
+from proespm.fastspm.fast_scan import FastScan
+from proespm.fastspm.slow_image import SlowImage
 from proespm.measurement import Measurement
+from proespm.misc.elab_ftw import extract_elabftw
 from proespm.misc.image import Image
 from proespm.misc.qcmb import Qcmb
+from proespm.misc.rga import RgaMassScan, RgaTimeSeries
 from proespm.misc.tpd import Tpd
 from proespm.spectroscopy.aes_staib import AesStaib
 from proespm.spectroscopy.xps_eis import XpsEis
@@ -141,6 +147,20 @@ def create_measurement_objs(
                     assert last_ec4 is not None
                     last_ec4.push_cv_data(obj)
 
+            case ".txt" if check_file_for_str(
+                file_path, "Residual Gas Analyzer Software", 2
+            ) and check_file_for_str(file_path, "Analog Scan Setup:", 5):
+                obj = RgaMassScan(file_path)
+                measurement_objects.append(obj)
+
+            case ".txt" if check_file_for_str(
+                file_path, "Residual Gas Analyzer Software", 2
+            ) and check_file_for_str(
+                file_path, "Pressure vs Time Scan Setup:", 5
+            ):
+                obj = RgaTimeSeries(file_path)
+                measurement_objects.append(obj)
+
             case ".log":
                 # TODO: check if valid qcmb file
                 obj = Qcmb(file_path)
@@ -193,7 +213,9 @@ def create_measurement_objs(
                 obj = EisPalmSens(file_path)
                 measurement_objects.append(obj)
 
-            case ".png" | ".jpg" | ".jpeg":
+            case ".png" | ".jpg" | ".jpeg" if not path.with_suffix(
+                ".h5"
+            ).exists():
                 obj = Image(file_path)
                 measurement_objects.append(obj)
 
@@ -204,6 +226,24 @@ def create_measurement_objs(
             case ".pssession":
                 obj = PalmSensSession(file_path)
                 measurement_objects.append(obj)
+
+            case ".h5":
+                if path.name.startswith("FS"):
+                    obj = FastScan(file_path)
+                elif path.name.startswith("AT"):
+                    obj = AtomTracking(file_path)
+                elif path.name.startswith("ET"):
+                    obj = ErrorTopography(file_path)
+                elif path.name.startswith("SI"):
+                    obj = SlowImage(file_path)
+                else:
+                    continue
+
+                measurement_objects.append(obj)
+
+            case ".json":
+                objs = extract_elabftw(file_path)
+                measurement_objects += objs
 
             case _:
                 continue
@@ -237,7 +277,17 @@ def process_loop(
         log(f"Processing of {measurement.m_id()}")
         _ = measurement.process(config)
         match measurement:
-            case StmMatrix() | StmSm4() | StmSxm() | SpmNid() | Image():
+            case (
+                StmMatrix()
+                | StmSm4()
+                | StmSxm()
+                | SpmNid()
+                | Image()
+                | FastScan()
+                | AtomTracking()
+                | ErrorTopography()
+                | SlowImage()
+            ):
                 measurement.slide_num = slide_num
                 slide_num += 1
             case StmMul() if type(measurement) is StmMul:

@@ -12,7 +12,8 @@ closeButton.addEventListener("click", () => closeModal())
 
 const imgs_fw = document.getElementsByClassName("stm_image_fw");
 const imgs_bw = document.getElementsByClassName("stm_image_bw");
-const imgs = [...imgs_fw, ...imgs_bw]
+const screenshotImgs = document.getElementsByClassName("screenshot-image");
+const imgs = [...imgs_fw, ...imgs_bw, ...screenshotImgs];
 
 let slideIndex = 1;
 

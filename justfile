@@ -1,5 +1,5 @@
 default:
-    just list
+    just --list
 
 run:
     uv run src/proespm/main.py

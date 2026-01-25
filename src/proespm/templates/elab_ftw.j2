@@ -1,0 +1,33 @@
+<div class="measurement-row" style="border-color: limegreen; border-width: 2px">
+    <div style="float: left; width: 30%; padding: 20px">
+        <table style="width=100%">
+            <tr>
+                <th id="{{ measurement.m_id() }}">ID</th>
+                <td>{{ measurement.m_id() }}</td>
+            </tr>
+            <tr>
+                <th>Datetime</th>
+                <td>{{ measurement.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ measurement.type_ }}</td>
+            </tr>
+            <tr>
+                <th>Operator</th>
+                <td>{{ measurement.operator }}</td>
+            </tr>
+            <tr>
+                <th>Team</th>
+                <td>{{ measurement.team }}</td>
+            </tr>
+            <tr>
+                <th>Tags</th>
+                <td>{{ measurement.tags }}</td>
+            </tr>
+        </table>
+    </div>
+    <div style="float: left; width: 40%;" >
+        <p style="font-size: 20px; text-align: justify">{{ measurement.text }}</p>
+    </div>
+</div>

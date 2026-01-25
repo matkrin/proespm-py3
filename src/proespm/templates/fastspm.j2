@@ -1,0 +1,104 @@
+<div class="measurement-row">
+    <div class="screenshot-image">
+        <img id="{{ measurement.m_id() }}" src="{{ measurement.img_uri }}" class="hover-shadow" data-slide-num="{{ measurement.slide_num }}" />
+    </div>
+
+    <div class="table_column">
+        <table style:"width=100%">
+            <tr>
+                <th>ID</th>
+                <td><a href="file:///{{ measurement.fileinfo.filepath }}">{{ measurement.m_id() }}</td>
+            </tr>
+            <tr>
+                <th>Date/time</th>
+                <td>{{ measurement.datetime().strftime("%Y-%m-%d <br> %H:%M:%S") }}</td>
+            </tr>
+            <tr>
+                <th>Operation Mode</th>
+                <td>{{ measurement.op_mode }}</td>
+            </tr>
+            {% if measurement.op_mode == "FS" %}
+                <tr>
+                    <th>X-Frequency</th>
+                    <td>{{ "{:.2f}".format(measurement.x_frequency) }} {{ measurement.x_frequency_unit }}</td>
+                </tr>
+                <tr>
+                    <th>X-Phase</th>
+                    <td>{{ measurement.x_phase }} {{ measurement.x_phase_unit }}</td>
+                </tr>
+                <tr>
+                    <th>Y-Phase</th>
+                    <td>{{ measurement.y_phase }} {{ measurement.y_phase_unit }}</td>
+                </tr>
+                <tr>
+                    <th>Angle</th>
+                    <td>{{ measurement.angle }} {{ measurement.angle_unit }}</td>
+                </tr>
+
+            <!-- Atom tracking -->
+            {% elif measurement.op_mode == "AT" %}
+                <tr>
+                    <th>X-Amplitude</th>
+                    <td>{{ "{:.3f}".format(measurement.x_amplitude) }} {{ measurement.x_amplitude_unit }}</td>
+                </tr>
+
+                <tr>
+                    <th>Y-Amplitude</th>
+                    <td>{{ "{:.3f}".format(measurement.y_amplitude) }} {{ measurement.y_amplitude_unit }}</td>
+                </tr>
+
+                <tr>
+                    <th>Rotation Phase</th>
+                    <td>{{ "{:.1f}".format(measurement.rotation_phase) }} {{ measurement.rotation_phase_unit }}</td>
+                </tr>
+
+                <tr>
+                    <th>Lock-In Phase</th>
+                    <td>{{ "{:.1f}".format(measurement.lockin_phase) }} {{ measurement.lockin_phase_unit }}</td>
+                </tr>
+
+                <tr>
+                    <th>Lock-In Time Constant</th>
+                    <td>{{ "{:.2f}".format(measurement.lockin_timeconstant) }} {{ measurement.lockin_timeconstant_unit }}</td>
+                </tr>
+                <tr>
+                    <th>K<sub>p</sub></th>
+                    <td>{{ "{:.2f}".format(measurement.k_p) }} {{ measurement.k_p_unit }}</td>
+                </tr>
+                <tr>
+                    <th>Ti</th>
+                    <td>{{ "{:.2f}".format(measurement.ti) }} {{ measurement.ti_unit }}</td>
+                </tr>
+                <tr>
+                    <th>Control Time Step</th>
+                    <td>{{ "{:.2f}".format(measurement.control_timestep) }} {{ measurement.control_timestep_unit }}</td>
+                </tr>
+                <tr>
+                    <th>PI Hardware</th>
+                    <td>{{ measurement.hardware }}</td>
+                </tr>
+                <tr>
+                    <th>Circle by circle</th>
+                    <td>{{ measurement.circle_by_circle }}</td>
+                </tr>
+                <tr>
+                    <th>Number of circles</th>
+                    <td>{{ measurement.num_circles }}</td>
+                </tr>
+
+            {% elif measurement.op_mode == "ET" %}
+                <tr>
+                    <th>Time per pixel</th>
+                    <td>{{ "{:.1f}".format(measurement.time_per_pixel) }} {{ measurement.time_per_pixel_unit }}</td>
+                </tr>
+
+            {% elif measurement.op_mode == "SI" %}
+                <tr>
+                    <th>Time per pixel</th>
+                    <td>{{ "{:.1f}".format(measurement.time_per_pixel) }} {{ measurement.time_per_pixel_unit }}</td>
+                </tr>
+
+            {% endif %}
+        </table>
+    </div>
+</div>

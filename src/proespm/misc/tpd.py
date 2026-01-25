@@ -26,8 +26,6 @@ class Tpd(Measurement):
 
         self.colors = itertools.cycle(Category10_10)
 
-        self.script, self.div = None, None
-
     def get_data(self) -> dict[str, NDArray[np.float64]]:
         with open(self.fileinfo.filepath, "r") as f:
             header = f.readline()
