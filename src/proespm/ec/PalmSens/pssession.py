@@ -1,7 +1,7 @@
 import json
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Any, Hashable, Literal, Self, cast, final, override
+from typing import Any, Hashable, Self, cast, final, override
 
 import numpy as np
 from bokeh.embed import components
@@ -23,7 +23,7 @@ class PalmSensType(Enum):
 
 @final
 class PalmSensSession(Measurement):
-    ident: Literal["PS_SESSION"] = "PS_SESSION"
+    controller = "PalmSens"
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo: Fileinfo = Fileinfo(filepath)
@@ -36,6 +36,7 @@ class PalmSensSession(Measurement):
 
         title = cast(str, self.parsed["Measurements"][0]["Title"])
         self.session_type: PalmSensType = PalmSensType(title)
+        self.ec_type = self.session_type.value
 
         timestamp_in_10e7: int = cast(
             int, self.parsed["Measurements"][0]["TimeStamp"]
@@ -160,4 +161,4 @@ class PalmSensSession(Measurement):
 
     @override
     def template_name(self) -> str:
-        return "ec4.j2"
+        return "ec.j2"

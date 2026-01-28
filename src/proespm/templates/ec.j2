@@ -1,0 +1,105 @@
+<div class="measurement-row">
+    <div class="xps_plot">
+        {{ measurement.script }}
+        {{ measurement.div }}
+    </div>
+
+    <div class="table_column">
+        <table style:"width=100%">
+            <tr>
+                <th id="{{ measurement.m_id() }}">File ID</th>
+                <td><a href="file:///{{ measurement.fileinfo.filepath }}">{{ measurement.m_id() }}</a></td>
+            </tr>
+            <tr>
+                <th>Datetime</th>
+                <td>{{ measurement.datetime().strftime("%Y-%m-%d") }} <br> {{ measurement.datetime().strftime("%H:%M:%S") }}</td>
+            </tr>
+            <tr>
+                <th>EC Type</th>
+                <td>{{ measurement.ec_type }}</td>
+            </tr>
+            <tr>
+                <th>Controller</th>
+                <td>{{ measurement.controller }}</td>
+            </tr>
+
+            {% if measurement.timestep %}
+                <tr>
+                    <th>Timestep</th>
+                    <td>{{ "{:.0f}".format(measurement.timestep) }} ms</td>
+                </tr>
+            {% endif %}
+
+
+            {% if measurement.scanrate %}
+                <tr>
+                    <th>Scanrate</th>
+                    <td>{{ "{:.0f}".format(measurement.scanrate) }} mV/s</td>
+                </tr>
+            {% endif %}
+        </table>
+    </div>
+    <div class="table_column">
+        <table style:"width=100%">
+            <tr>
+                <th></th>
+                <td>&nbsp;</td>
+            </tr>
+            {% if measurement.u_start  %}
+                <tr>
+                    <th>E<sub>WE_start</sub></th>
+                    <td>{{ "%.3f"|format(measurement.u_start) }} V</td>
+                </tr>
+
+                {% if measurement.ec_type == 'Cyclic Voltammetry' %}
+                    <tr>
+                        <th>E<sub>WE_1</sub> / E<sub>WE_2</sub></th>
+                        <td>{{ "%.3f"|format(measurement.u_1) }} / {{ "%.3f"|format(measurement.u_2) }} V</td>
+                    </tr>
+
+                {% elif measurement.ec_type == 'Chronoamperometry' %}
+                    <tr>
+                        <th>E<sub>WE_max</sub> / E<sub>WE_min</sub></th>
+                        <td>{{ "%.3f"|format(measurement.u_2) }} / {{ "%.3f"|format(measurement.u_1) }} V</td>
+                    </tr>
+
+                {% endif %}
+
+                <tr>
+                    <th>ΔE<sub>WE</sub></th>
+                    <td>{{ "%.3f"|format((measurement.u_2 - measurement.u_1) | abs) }} V</td>
+                </tr>
+            {% endif %}    
+
+            {% if measurement.u_bias_start  %}
+                <tr>
+                    <th></th>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <th>U<sub>b_start</sub></th>
+                    <td>{{ "%.3f"|format(measurement.u_bias_start) }} V</td>
+                </tr>
+
+                {% if measurement.ec_type == 'Cyclic Voltammetry' %}
+                    <tr>
+                        <th>U<sub>b_1</sub> / U<sub>b_</sub></th>
+                        <td>{{ "%.3f"|format(measurement.u_bias_1) }} / {{ "%.3f"|format(measurement.u_bias_2) }} V</td>
+                    </tr>
+
+                {% elif measurement.ec_type == 'Chronoamperometry' %}
+                    <tr>
+                        <th>U<sub>b_max</sub> / U<sub>b_min</sub></th>
+                        <td>{{ "%.3f"|format(measurement.u_bias_2) }} / {{ "%.3f"|format(measurement.u_bias_1) }} V</td>
+                    </tr>
+
+                {% endif %}
+
+                <tr>
+                    <th>ΔU<sub>b</sub></th>
+                    <td>{{ "%.3f"|format((measurement.u_bias_2 - measurement.u_bias_1) | abs) }} V</td>
+                </tr>
+            {% endif %}
+        </table>
+    </div>
+</div>

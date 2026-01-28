@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 from datetime import datetime
-from typing import Literal, Self, final, override
+from typing import Self, final, override
 
 import numpy as np
 from bokeh.embed import components
@@ -23,15 +23,14 @@ class CpPalmSens(Measurement):
     (testfile: PS241105-1.csv)
     """
 
-    ident: Literal["CP_PALMSENS"] = "CP_PALMSENS"
+    controller = "PalmSens"
+    ec_type = "Chronopotentiometry"
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo: Fileinfo = Fileinfo(filepath)
 
         self._datetime: datetime | None = None
         self.read_params()
-
-        self.ec_type: str | None = None
 
         self.data: NDArray[np.float64] = self.read_cv_data(filepath)
         self.script: str | None = None
@@ -83,4 +82,4 @@ class CpPalmSens(Measurement):
 
     @override
     def template_name(self) -> str:
-        return "ec4.j2"
+        return "ec.j2"
