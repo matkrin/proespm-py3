@@ -82,4 +82,4 @@ class CpPalmSens(Measurement):
 
     @override
     def template_name(self) -> str:
-        return "ec4.j2"
+        return "ec.j2"

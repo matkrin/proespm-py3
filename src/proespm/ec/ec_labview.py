@@ -165,7 +165,7 @@ class CvLabview(Measurement):
 
     @override
     def template_name(self) -> str:
-        return "ec4.j2"
+        return "ec.j2"
 
 
 @final
@@ -297,7 +297,7 @@ class CaLabview(Measurement):
 
     @override
     def template_name(self) -> str:
-        return "ec4.j2"
+        return "ec.j2"
 
 
 @final
@@ -357,4 +357,4 @@ class FftLabview(Measurement):
 
     @override
     def template_name(self) -> str:
-        return "ec4.j2"
+        return "ec.j2"
