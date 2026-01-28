@@ -15,8 +15,12 @@
                 <td>{{ measurement.datetime().strftime("%Y-%m-%d") }} <br> {{ measurement.datetime().strftime("%H:%M:%S") }}</td>
             </tr>
             <tr>
-                <th>Ident</th>
-                <td>{{ measurement.ident }}</td>
+                <th>EC Type</th>
+                <td>{{ measurement.ec_type }}</td>
+            </tr>
+            <tr>
+                <th>Controller</th>
+                <td>{{ measurement.controller }}</td>
             </tr>
 
             {% if measurement.u_start %}
@@ -33,8 +37,8 @@
                     <td>{{ "{:.3f}".format(measurement.u_2) }} V</td>
                 </tr>
                 <tr>
-                    <th>Rate</th>
-                    <td>{{ "{:.3f}".format(measurement.rate) }} V</td>
+                    <th>Scanrate</th>
+                    <td>{{ "{:.3f}".format(measurement.scanrate) }} V</td>
                 </tr>
             {% endif %}
 

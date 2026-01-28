@@ -17,7 +17,8 @@ from proespm.measurement import Measurement
 class CvLabview(Measurement):
     """Class handeling the CV files from self-written LabView software"""
 
-    ident = "CV_LABVIEW"
+    controller = "LabView"
+    ec_type = "Cyclic Voltammetry"
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
@@ -27,7 +28,7 @@ class CvLabview(Measurement):
         self.u_start: float | None = None
         self.u_1: float | None = None
         self.u_2: float | None = None
-        self.rate: float | None = None
+        self.scanrate: float | None = None
         self.read_params()
 
         assert self.u_1 is not None and self.u_2 is not None  # Type assertion
@@ -58,7 +59,7 @@ class CvLabview(Measurement):
             self.u_1, self.u_2 = self.u_2, self.u_1
 
         total_time = cast(float, self.data[-1, 0])
-        self.rate = 2 * (abs(self.u_1) + abs(self.u_2)) / total_time
+        self.scanrate = 2 * (abs(self.u_1) + abs(self.u_2)) / total_time
 
     def split_cycles(
         self, tol: float = 0.0
@@ -148,7 +149,8 @@ class CvLabview(Measurement):
 class CaLabview(Measurement):
     """Class handeling the CA files from self-written LabView software"""
 
-    ident = "CA_LABVIEW"
+    controller = "LabView"
+    ec_type = "Chronoamperometry"
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
@@ -158,7 +160,7 @@ class CaLabview(Measurement):
         self.u_start: float | None = None
         self.u_1: float | None = None
         self.u_2: float | None = None
-        self.rate: float | None = None
+        self.scanrate: float | None = None
         # self.read_params()
 
         self.script: str | None = None
@@ -184,7 +186,7 @@ class CaLabview(Measurement):
             self.u_1, self.u_2 = self.u_2, self.u_1
 
         total_time = cast(float, self.data[-1, 0])
-        self.rate = 2 * (abs(self.u_1) + abs(self.u_2)) / total_time
+        self.scanrate = 2 * (abs(self.u_1) + abs(self.u_2)) / total_time
 
     def plot(self) -> None:
         """Create a plot for use in the html-report"""
@@ -245,7 +247,8 @@ class CaLabview(Measurement):
 class FftLabview(Measurement):
     """Class handeling the FFT files from self-written LabView software"""
 
-    ident = "FFT_LABVIEW"
+    controller = "LabView"
+    ec_type = "FFT"
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
