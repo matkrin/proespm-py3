@@ -37,7 +37,7 @@ class Ec4(Measurement):
         self.u_start: float | None = None
         self.u_1: float | None = None
         self.u_2: float | None = None
-        self.rate: float | None = None
+        self.scanrate: float | None = None
         self.read_params()
 
         self.ec_type: str | None = None
@@ -70,7 +70,7 @@ class Ec4(Measurement):
             if u2_match is not None:
                 self.u_2 = float(u2_match.group(1).strip())
             if rate_match is not None:
-                self.rate = float(rate_match.group(1).strip())
+                self.scanrate = float(rate_match.group(1).strip())
 
     def plot(self):
         # Unfortunately, we cannot tell the type by the file ifself, external info needed

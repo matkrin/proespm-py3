@@ -37,6 +37,10 @@ class PalmSensSession(Measurement):
         title = cast(str, self.parsed["Measurements"][0]["Title"])
         self.session_type: PalmSensType = PalmSensType(title)
 
+        self.controller = "PalmSens"
+        self.ec_type = self.session_type.value
+
+
         timestamp_in_10e7: int = cast(
             int, self.parsed["Measurements"][0]["TimeStamp"]
         )

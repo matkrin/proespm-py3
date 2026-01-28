@@ -33,6 +33,7 @@ class EisPalmSens(Measurement):
         self._datetime: datetime | None = None
         self.read_params()
 
+        self.controller: str | None = None
         self.ec_type: str | None = None
 
         self.data: NDArray[np.float64] = self.read_cv_data(filepath)

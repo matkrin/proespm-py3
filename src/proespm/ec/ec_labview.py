@@ -21,12 +21,17 @@ class CvLabview(Measurement):
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
 
-        self.type: str | None = None
+        self.controller: str | None = None
+        self.ec_type: str | None = None
         self.data = self.read_cv_data(filepath)
         self.u_start: float | None = None
         self.u_1: float | None = None
         self.u_2: float | None = None
-        self.rate: float | None = None
+        self.ub_start: float | None = None
+        self.ub_1: float | None = None
+        self.ub_2: float | None = None
+        self.timestep: float | None = None
+        self.scanrate: float | None = None
         self.read_params()
 
         assert self.u_1 is not None and self.u_2 is not None  # Type assertion
@@ -42,16 +47,25 @@ class CvLabview(Measurement):
         return np.loadtxt(filepath, skiprows=1)
 
     def read_params(self) -> None:
-        """Calculate relevent parameters"""
+        """Calculate relevant parameters"""
+        self.controller = "LabView"
+        self.ec_type = "Cyclic Voltammetry"
+
         self.u_start = self.data[0, 1]
-
-        self.u_1 = float(np.max(self.data[:, 1]))
-        self.u_2 = float(np.min(self.data[:, 1]))
-        if self.data[0, 1] < self.data[1, 1]:
-            self.u_1, self.u_2 = self.u_2, self.u_1
-
-        total_time = cast(float, self.data[-1, 0])
-        self.rate = 2 * (abs(self.u_1) + abs(self.u_2)) / total_time
+        self.ub_start = self.data[0, 4]
+        if np.sign(self.data[1,1] - self.data[0,1]) > 0:
+            self.u_1 = float(np.max(self.data[:, 1]))
+            self.u_2 = float(np.min(self.data[:, 1]))
+            self.ub_1 = float(np.max(self.data[:, 4]))
+            self.ub_2 = float(np.min(self.data[:, 4]))
+        else:
+            self.u_1 = float(np.min(self.data[:, 1]))
+            self.u_2 = float(np.max(self.data[:, 1]))
+            self.ub_1 = float(np.min(self.data[:, 4]))
+            self.ub_2 = float(np.max(self.data[:, 4]))
+        
+        self.timestep = 1000 * (self.data[-1, 0] - self.data[0, 0]) / (self.data.shape[0] - 1)
+        self.scanrate = self.data[0,8]
 
     def split_cycles(
         self, tol: float = 0.0
@@ -107,11 +121,11 @@ class CvLabview(Measurement):
 
     def plot(self) -> None:
         plot = EcPlot()
-        plot.set_x_axis_label("U vs. ref [V]")
-        plot.set_y_axis_label("I [A]")
+        plot.set_x_axis_label("E_WE [V]")
+        plot.set_y_axis_label("I_WE [A]")
 
         for i, arr in enumerate(self.cycles):
-            x = arr[0]  # volage
+            x = arr[0]  # voltage
             y = arr[1]  # current
 
             plot.plot_scatter(x, y, legend_label=f"Cycle {i + 1}")
@@ -139,20 +153,25 @@ class CvLabview(Measurement):
 
 @final
 class CaLabview(Measurement):
-    """Class handeling the CA files from self-written LabView software"""
+    """Class handling the CA files from self-written LabView software"""
 
     ident = "CA_LABVIEW"
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
 
-        self.type: str | None = None
+        self.controller: str | None = None
+        self.ec_type: str | None = None
         self.data = self.read_ca_data()
         self.u_start: float | None = None
         self.u_1: float | None = None
         self.u_2: float | None = None
-        self.rate: float | None = None
-        # self.read_params()
+        self.ub_start: float | None = None
+        self.ub_1: float | None = None
+        self.ub_2: float | None = None
+        self.timestep: float | None = None
+        self.scanrate: float | None = None
+        self.read_params()
 
         self.script: str | None = None
         self.div: str | None = None
@@ -162,22 +181,26 @@ class CaLabview(Measurement):
         return np.loadtxt(self.fileinfo.filepath, skiprows=1)
 
     def read_params(self) -> None:
-        """Calculate relevent parameters"""
+        """Calculate relevant parameters"""
+        self.controller = "LabView"
+        self.ec_type = "Chronoamperometry"
+
         self.u_start = self.data[0, 1]
+        self.u_1 = float(np.min(self.data[:, 1]))
+        self.u_2 = float(np.max(self.data[:, 1]))
 
-        self.u_1 = float(np.max(self.data[:, 1]))
-        self.u_2 = float(np.min(self.data[:, 1]))
-        if self.data[0, 1] < self.data[1, 1]:
-            self.u_1, self.u_2 = self.u_2, self.u_1
+        self.ub_start = self.data[0, 4]
+        self.ub_1 = float(np.min(self.data[:, 4]))
+        self.ub_2 = float(np.max(self.data[:, 4]))
 
-        total_time = cast(float, self.data[-1, 0])
-        self.rate = 2 * (abs(self.u_1) + abs(self.u_2)) / total_time
+        self.timestep = 1000 * (self.data[-1, 0] - self.data[0, 0]) / (self.data.shape[0] - 1)
 
     def plot(self) -> None:
         """Create a plot for use in the html-report"""
         plot = EcPlot()
-        plot.set_x_axis_label("Time [s]")
+        plot.set_x_axis_label("t [s]")
         plot.set_y_axis_label("I_WE [A]")
+
 
         x = self.data[:, 0]  # time
         y = self.data[:, 2]  # current
@@ -195,7 +218,7 @@ class CaLabview(Measurement):
             "voltage",
             float(voltage_range_min),
             float(voltage_range_max),
-            "U_WE [V]",
+            "E_WE [V]",
         )
 
         plot.plot_scatter(
@@ -205,7 +228,7 @@ class CaLabview(Measurement):
             range_min=float(current_range_min),
             range_max=float(current_range_max),
         )
-        plot.plot_second_axis(x, y2, legend_label="U_WE")
+        plot.plot_second_axis(x, y2, legend_label="E_WE")
         plot.show_legend(True)
 
         self.script, self.div = components(plot.fig, wrap_script=True)
@@ -242,16 +265,26 @@ class FftLabview(Measurement):
 
         self.script = str | None
         self.div = str | None
+        self.timestep: float | None = None
+        self.scanrate: float | None = None
+        self.read_params()
+
 
     def read_fft_data(self):
         """Read the numeric data as numpy array"""
         return np.loadtxt(self.fileinfo.filepath, skiprows=1)
 
+    def read_params(self) -> None:
+        """Calculate relevant parameters"""
+        self.controller = "LabView"
+        self.ec_type = "FFT"
+
+
     def plot(self) -> None:
         """Create a plot for use in the html-report"""
         plot = EcPlot()
-        plot.set_x_axis_label("Frequence [Hz]")
-        plot.set_y_axis_label("Amplitude")
+        plot.set_x_axis_label("Frequency [Hz]")
+        plot.set_y_axis_label("PSD(I_t) [dB]")
 
         x = self.data[:, 0]  # frequency
         y = self.data[:, 1]  # amplitude
