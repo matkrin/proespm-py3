@@ -25,7 +25,7 @@ RATE_REGEX = re.compile(r"Rate(\s+[\d.-]+)")
 
 
 @final
-class Ec4(Measurement):
+class NordicEc4(Measurement):
     """Class for handling Nordic Electrochemistry EC4 files (.txt)"""
 
     controller = "Nordic EC4"
@@ -49,7 +49,7 @@ class Ec4(Measurement):
     def read_cv_data(self, filepath: str) -> NDArray[np.float64]:
         return np.loadtxt(filepath, skiprows=96)
 
-    def push_cv_data(self, other: Ec4) -> None:
+    def push_cv_data(self, other: NordicEc4) -> None:
         for arr in other.data:
             self.data.append(arr)
 

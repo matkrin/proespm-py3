@@ -6,7 +6,7 @@ from typing import Callable
 from jinja2 import Environment, FileSystemLoader
 
 from proespm.config import ALLOWED_FILE_TYPES, Config
-from proespm.ec.ec4 import Ec4
+from proespm.ec.nordic_ec4 import NordicEc4
 from proespm.ec.ec_labview import CaLabview, CvLabview, FftLabview
 from proespm.ec.PalmSens.ca import CaPalmSens
 from proespm.ec.PalmSens.cp import CpPalmSens
@@ -99,7 +99,7 @@ def create_measurement_objs(
     Returns:
         List of `Measurement` objects derived from files at `process_dir`.
     """
-    last_ec4: Ec4 | None = None
+    last_ec4: NordicEc4 | None = None
 
     measurement_objects: list[Measurement] = []
     for file_path in import_files(process_dir):
@@ -139,7 +139,7 @@ def create_measurement_objs(
                 measurement_objects.append(obj)
 
             case ".txt" if check_file_for_str(file_path, "EC4 File", 1):
-                obj = Ec4(file_path)
+                obj = NordicEc4(file_path)
                 if path.stem.endswith("1"):
                     last_ec4 = obj
                     measurement_objects.append(last_ec4)
