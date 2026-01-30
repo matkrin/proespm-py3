@@ -17,6 +17,7 @@ from proespm.ec.PalmSens.pssession import PalmSensSession
 from proespm.fastspm.atom_tracking import AtomTracking
 from proespm.fastspm.error_topography import ErrorTopography
 from proespm.fastspm.fast_scan import FastScan
+from proespm.fastspm.high_speed import HighSpeed
 from proespm.fastspm.slow_image import SlowImage
 from proespm.measurement import Measurement
 from proespm.misc.elab_ftw import extract_elabftw
@@ -236,6 +237,8 @@ def create_measurement_objs(
                     obj = ErrorTopography(file_path)
                 elif path.name.startswith("SI"):
                     obj = SlowImage(file_path)
+                elif path.name.startswith("HS"):
+                    obj = HighSpeed(file_path)
                 else:
                     continue
 
@@ -287,6 +290,7 @@ def process_loop(
                 | AtomTracking()
                 | ErrorTopography()
                 | SlowImage()
+                | HighSpeed()
             ):
                 measurement.slide_num = slide_num
                 slide_num += 1
