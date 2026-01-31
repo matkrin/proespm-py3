@@ -98,7 +98,7 @@
                     <td>{{ "{:.1f}".format(measurement.time_per_pixel) }} {{ measurement.time_per_pixel_unit }}</td>
                 </tr>
 
-            {% measurement.op_mode == "HS %}
+            {% elif measurement.op_mode == "HS" %}
                 <tr>
                     <th>Timestep</th>
                     <td>{{ "{:.2f}".format(measurement.timestep) }} {{ measurement.timestep_unit }}</td>

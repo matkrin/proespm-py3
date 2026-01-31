@@ -12,9 +12,6 @@ from proespm.fileinfo import Fileinfo
 from proespm.measurement import Measurement
 
 
-IMAGE_EXTENSIONS = ("jpg", "jpeg")
-
-
 @final
 class HighSpeed(Measurement):
     """Class for handling .h5 files of high speed (HS) measurements.
@@ -24,6 +21,7 @@ class HighSpeed(Measurement):
     """
 
     op_mode = "HS"
+    image_extensions = ("jpg", "jpeg")
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
@@ -56,11 +54,11 @@ class HighSpeed(Measurement):
     def process(self, config: Config) -> Self:
         base_path = Path(self.fileinfo.filepath).with_suffix("")
 
-        for ext in IMAGE_EXTENSIONS:
+        for ext in HighSpeed.image_extensions:
             path = base_path.with_suffix(f".{ext}")
             if path.exists():
                 image_path = path
-                image_extention = ext
+                image_extension = ext
                 break
         else:
             raise FileNotFoundError(
@@ -72,7 +70,7 @@ class HighSpeed(Measurement):
             buffer = io.BytesIO()
             img.save(buffer, format="JPEG")
             encoded = base64.b64encode(buffer.getvalue()).decode("ascii")
-            self.img_uri = f"data:image/{image_extention};base64,{encoded}"
+            self.img_uri = f"data:image/{image_extension};base64,{encoded}"
 
         return self
 

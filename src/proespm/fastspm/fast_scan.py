@@ -22,6 +22,7 @@ class FastScan(Measurement):
     """
 
     op_mode = "FS"
+    image_extensions = ("jpg", "jpeg")
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
@@ -61,13 +62,22 @@ class FastScan(Measurement):
 
     @override
     def process(self, config: Config) -> Self:
-        with (
-            Path(self.fileinfo.filepath)
-            .with_suffix(f".{IMAGE_EXTENSION}")
-            .open("rb") as image_file
-        ):
+        base_path = Path(self.fileinfo.filepath).with_suffix("")
+
+        for ext in FastScan.image_extensions:
+            path = base_path.with_suffix(f".{ext}")
+            if path.exists():
+                image_path = path
+                image_extension = ext
+                break
+        else:
+            raise FileNotFoundError(
+                f"No JPEG image found next to the .h5 file '{self.fileinfo.filepath}'"
+            )
+
+        with image_path.open("rb") as image_file:
             self.img_uri = (
-                f"data:image/{IMAGE_EXTENSION};base64, "
+                f"data:image/{image_extension};base64, "
                 + base64.b64encode(image_file.read()).decode("ascii")
             )
 

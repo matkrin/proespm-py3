@@ -12,9 +12,6 @@ from proespm.fileinfo import Fileinfo
 from proespm.measurement import Measurement
 
 
-IMAGE_EXTENSION = "jpg"
-
-
 @final
 class ErrorTopography(Measurement):
     """Class for handling .h5 files of error topography (ET) measurements.
@@ -24,6 +21,7 @@ class ErrorTopography(Measurement):
     """
 
     op_mode = "ET"
+    image_extensions = ("jpg", "jpeg")
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
@@ -55,14 +53,25 @@ class ErrorTopography(Measurement):
 
     @override
     def process(self, config: Config) -> Self:
-        path = Path(self.fileinfo.filepath).with_suffix(f".{IMAGE_EXTENSION}")
+        base_path = Path(self.fileinfo.filepath).with_suffix("")
 
-        with Image.open(path) as img:
+        for ext in ErrorTopography.image_extensions:
+            path = base_path.with_suffix(f".{ext}")
+            if path.exists():
+                image_path = path
+                image_extension = ext
+                break
+        else:
+            raise FileNotFoundError(
+                f"No JPEG image found next to the .h5 file '{self.fileinfo.filepath}'"
+            )
+
+        with Image.open(image_path) as img:
             img = img.rotate(90, expand=True)
             buffer = io.BytesIO()
             img.save(buffer, format="JPEG")
             encoded = base64.b64encode(buffer.getvalue()).decode("ascii")
-            self.img_uri = f"data:image/{IMAGE_EXTENSION};base64,{encoded}"
+            self.img_uri = f"data:image/{image_extension};base64,{encoded}"
 
         return self
 
