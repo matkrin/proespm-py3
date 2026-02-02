@@ -19,6 +19,8 @@ If you want to extend the program's functionality, see
     - RHK SM4 (.sm4)
     - Nanonis SXM (.sxm)
     - Nanosurf STM and AFM (.nid)
+    - FAST module (.h5): fast scan, atom tracking, error topography, slow image,
+      high speed
 
 - X-ray Photoelectron Spectroscopy (XPS):
     - Omicron EIS (.txt)
@@ -36,5 +38,9 @@ If you want to extend the program's functionality, see
 
 - Temperature Programmed Desorption (TPD):
     - LabView (self written)
+
+- Residual Gas Analyzer Software (RGA):
+    - Analog Scan
+    - Pressure vs Time Scan
 
 - png, jpg images, e.g. LEED images
