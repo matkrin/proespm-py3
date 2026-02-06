@@ -1,16 +1,12 @@
-import base64
 from datetime import datetime, timezone
-from pathlib import Path
 from typing import Self, final, override
 
 import h5py
 
 from proespm.config import Config
+from proespm.fastspm.fastspm import read_corresponding_image
 from proespm.fileinfo import Fileinfo
 from proespm.measurement import Measurement
-
-
-IMAGE_EXTENSION = "jpg"
 
 
 @final
@@ -22,7 +18,6 @@ class FastScan(Measurement):
     """
 
     op_mode = "FS"
-    image_extensions = ("jpg", "jpeg")
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
@@ -62,25 +57,7 @@ class FastScan(Measurement):
 
     @override
     def process(self, config: Config) -> Self:
-        base_path = Path(self.fileinfo.filepath).with_suffix("")
-
-        for ext in FastScan.image_extensions:
-            path = base_path.with_suffix(f".{ext}")
-            if path.exists():
-                image_path = path
-                image_extension = ext
-                break
-        else:
-            raise FileNotFoundError(
-                f"No JPEG image found next to the .h5 file '{self.fileinfo.filepath}'"
-            )
-
-        with image_path.open("rb") as image_file:
-            self.img_uri = (
-                f"data:image/{image_extension};base64, "
-                + base64.b64encode(image_file.read()).decode("ascii")
-            )
-
+        self.img_uri = read_corresponding_image(self.fileinfo.filepath, False)
         return self
 
     @override

@@ -1,13 +1,10 @@
-import base64
 from datetime import datetime, timezone
-from pathlib import Path
 from typing import Self, final, override
-import io
 
 import h5py
-from PIL import Image
 
 from proespm.config import Config
+from proespm.fastspm.fastspm import read_corresponding_image
 from proespm.fileinfo import Fileinfo
 from proespm.measurement import Measurement
 
@@ -21,7 +18,6 @@ class ErrorTopography(Measurement):
     """
 
     op_mode = "ET"
-    image_extensions = ("jpg", "jpeg")
 
     def __init__(self, filepath: str) -> None:
         self.fileinfo = Fileinfo(filepath)
@@ -53,26 +49,7 @@ class ErrorTopography(Measurement):
 
     @override
     def process(self, config: Config) -> Self:
-        base_path = Path(self.fileinfo.filepath).with_suffix("")
-
-        for ext in ErrorTopography.image_extensions:
-            path = base_path.with_suffix(f".{ext}")
-            if path.exists():
-                image_path = path
-                image_extension = ext
-                break
-        else:
-            raise FileNotFoundError(
-                f"No JPEG image found next to the .h5 file '{self.fileinfo.filepath}'"
-            )
-
-        with Image.open(image_path) as img:
-            img = img.rotate(90, expand=True)
-            buffer = io.BytesIO()
-            img.save(buffer, format="JPEG")
-            encoded = base64.b64encode(buffer.getvalue()).decode("ascii")
-            self.img_uri = f"data:image/{image_extension};base64,{encoded}"
-
+        self.img_uri = read_corresponding_image(self.fileinfo.filepath, True)
         return self
 
     @override
