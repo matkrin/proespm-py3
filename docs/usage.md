@@ -1,5 +1,7 @@
 # Usage
 
+## GUI
+
 If you used [uv](https://docs.astral.sh/uv/) for installation, you can navigate
 to the project root (the folder that contains the `pyproject.toml` file) and run
 `proespm` with:
@@ -42,3 +44,20 @@ errors, it is best to share a saved log file with the maintainers.
 
 After the processing finished, you can open the created HTML report in a
 browser.
+
+## CLI
+
+If you install the CLI via `uv tool install` you can simply run
+
+```sh
+proespm <DATA-DIRECTORY>
+```
+
+where `DATA-DIRECTORY` contains your measurement files of which the HTML report
+should be created. By default the report is created in the same directory where
+`DATA-DIRECTORY` is located with the basename of `DATA-DIRECTORY` and
+'_report.html' appended. This can be overwritten with the `-o` or `--output`
+option. The color map and color range of microscopy data can be configured via
+the `-c`/`--colormap` and `-s`/`--colorrange-start` and `-e`/`--colorrange-end`
+options, respectively. For a list of all options and their default values, use
+the `-h`/`--help` option.
