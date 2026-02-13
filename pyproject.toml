@@ -36,6 +36,9 @@ dev = [
     "basedpyright>=1.37.1",
 ]
 
+[project.scripts]
+proespm = "proespm.cli:run_cli"
+
 [tool.ruff]
 line-length = 80
 

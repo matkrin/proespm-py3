@@ -23,3 +23,6 @@ docs-serve:
 
 docs-build:
     uv run mkdocs build
+
+testreport:
+    uv run proespm ./tests/testdata

@@ -19,6 +19,20 @@ uv run src/proespm/main.py
 
 from the project's root directory.
 
+Furthermore, you can install the CLI with
+
+```sh
+uv tool install .
+```
+
+or
+
+```sh
+uv tool install --editable .
+```
+
+if you want to hack on it.
+
 ## Using pip
 
 If you choose to use pip for installation, you have to make sure that you have
