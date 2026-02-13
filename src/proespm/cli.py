@@ -94,6 +94,3 @@ def parse_args() -> type[Args]:
     )
 
     return parser.parse_args(namespace=Args)
-
-
-run_cli()
