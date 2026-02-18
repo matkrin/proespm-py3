@@ -115,8 +115,27 @@ def parse_args() -> Args:
         default=0,
         help="Increase verbosity (up to -vvv)",
     )
+    _ = parser.add_argument(
+        "-V",
+        "--version",
+        action="version",
+        version=f"%(prog)s {get_version()}",
+        help="Print version",
+    )
 
     return Args(**vars(parser.parse_args()))  # pyright: ignore[reportAny]
+
+
+def get_version() -> str:
+    """Get the version of this package as defined in pyproject.toml."""
+
+    source_location = Path(__file__).parent.parent.parent
+    pyproject = source_location / "pyproject.toml"
+    if pyproject.exists():
+        with open(pyproject, "rb") as f:
+            return cast(str, tomllib.load(f)["project"]["version"])
+
+    return ""
 
 
 def determine_log_level(verbosity: int) -> int:
