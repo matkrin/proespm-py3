@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 from datetime import datetime
+from statistics import mode
 from typing import Any, Self, final, override
 
 import numpy as np
@@ -37,6 +38,7 @@ class XpsEis(Measurement):
                 line2 = [x.rstrip("\n") for x in line2]
 
                 scan_dict.update(dict(zip(line1, line2)))
+                notes = str(scan_dict["Notes"])
 
                 line3 = f.readline().split("\t")
                 line3 = [x.rstrip("\n") for x in line3]
@@ -51,6 +53,7 @@ class XpsEis(Measurement):
                 start = float(scan_dict["Start"])
                 end = float(scan_dict["End"])
                 step = float(scan_dict["Step"])
+                mode = str(scan_dict["Mode"])
 
                 num_lines = int(abs(start - end) / step)
 
@@ -70,6 +73,8 @@ class XpsEis(Measurement):
                         start=start,
                         end=end,
                         step=step,
+                        mode=mode,
+                        notes=notes,
                         sweeps=int(scan_dict["Sweeps"]),
                         dwell=float(scan_dict["Dwell"]),
                         e_pass=float(scan_dict["CAE/CRR"]),
@@ -108,6 +113,8 @@ class XpsScan:
         start: float,
         end: float,
         step: float,
+        mode: str,
+        notes: str,
         sweeps: int,
         dwell: float,
         e_pass: float,
@@ -121,6 +128,8 @@ class XpsScan:
         self.start = start
         self.end = end
         self.step = step
+        self.mode = mode
+        self.notes = notes
         self.sweeps = sweeps
         self.dwell = dwell
         self.e_pass = e_pass
