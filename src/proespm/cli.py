@@ -1,7 +1,10 @@
 import argparse
 from dataclasses import dataclass
+import logging
 from pathlib import Path
 import sys
+import tomllib
+from typing import cast
 
 import matplotlib.pyplot as plt
 from proespm.config import Config
@@ -19,6 +22,8 @@ class Args:
     colormap: str
     colorrange_start: float
     colorrange_end: float
+    verbose: int
+    version: bool
 
 
 def run_cli() -> None:
@@ -30,16 +35,25 @@ def run_cli() -> None:
         sys.exit(1)
 
     if args.colormap not in plt.colormaps():
-        print(f"No such colormap '{args.colormap}'")
+        print(f"No such colormap '{args.colormap}'", file=sys.stderr)
         sys.exit(1)
 
     if args.colorrange_start < 0 or args.colorrange_start > 100:
-        print("Start of color range must be between 0.0 and 100.0")
+        print(
+            "Start of color range must be between 0.0 and 100.0",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     if args.colorrange_end < 0 or args.colorrange_end > 100:
-        print("End of color range must be between 0.0 and 100.0")
+        print(
+            "End of color range must be between 0.0 and 100.0", file=sys.stderr
+        )
         sys.exit(1)
+
+    log_format = "[%(asctime)s %(levelname)s %(name)s]: %(message)s"
+    log_level = determine_log_level(args.verbose)
+    logging.basicConfig(format=log_format, level=log_level)
 
     colorrange = (args.colorrange_start, args.colorrange_end)
 
@@ -57,13 +71,15 @@ def run_cli() -> None:
     print(f"HTML created at {output_path}")
 
 
-def parse_args() -> type[Args]:
+def parse_args() -> Args:
     parser = argparse.ArgumentParser(
         prog="proespm",
         description="Creation of HTML reports of scientifc data",
     )
     _ = parser.add_argument(
-        "data_dir", type=Path, help="Directory containing data to process"
+        "data_dir",
+        type=Path,
+        help="Directory containing data to process",
     )
     _ = parser.add_argument(
         "-o",
@@ -92,5 +108,25 @@ def parse_args() -> type[Args]:
         default=99.9,
         help="Percentile end of color range for microscopy data (default: %(default)s)",
     )
+    _ = parser.add_argument(
+        "-v",
+        "--verbose",
+        action="count",
+        default=0,
+        help="Increase verbosity (up to -vvv)",
+    )
 
-    return parser.parse_args(namespace=Args)
+    return Args(**vars(parser.parse_args()))  # pyright: ignore[reportAny]
+
+
+def determine_log_level(verbosity: int) -> int:
+    if verbosity == 1:
+        log_level = logging.WARN
+    elif verbosity == 2:
+        log_level = logging.INFO
+    elif verbosity > 2:
+        log_level = logging.DEBUG
+    else:
+        log_level = logging.ERROR
+
+    return log_level
