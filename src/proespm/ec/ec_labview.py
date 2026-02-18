@@ -332,7 +332,7 @@ class FftLabview(Measurement):
     def plot(self) -> None:
         """Create a plot for use in the html-report"""
         plot = EcPlot()
-        plot.set_x_axis_label("Frequence [Hz]")
+        plot.set_x_axis_label("Frequency [Hz]")
         plot.set_y_axis_label("Amplitude")
 
         x = self.data[:, 0]  # frequency

@@ -1,5 +1,3 @@
-<h2 id="{{ measurement.m_id() }}">{{ measurement.fileinfo.basename }}</h2>
-
 {% for xps_scan in measurement.data %}
     <div class="measurement-row">
         <div class="xps_plot" >
@@ -10,16 +8,24 @@
         <div class="table_column">
             <table style:"width=100%">
                 <tr>
-                    <th>ID</th>
-                    <td>{{ xps_scan.m_id }}</td>
+                    <th>File ID</th>
+                    <td><a href="file:///{{ measurement.fileinfo.filepath }}">{{ xps_scan.m_id }}</a></td>
                 </tr>
                 <tr>
-                    <th>Scan Number</th>
-                    <td>{{ xps_scan.scan_number }}</td>
+                    <th>Date/time</th>
+                    <td>{{ measurement.datetime().strftime("%Y-%m-%d") }} <br> {{ measurement.datetime().strftime("%H:%M:%S") }}</td>
                 </tr>
                 <tr>
-                    <th>Datetime</th>
-                    <td>{{ xps_scan.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+                    <th>Controller </th>
+                    <td>EIS</td>
+                </tr>
+                <tr>
+                    <th>Op. mode</th>
+                    <td>{{ xps_scan.mode }}</td>
+                </tr>
+                <tr>
+                    <th>Notes</th>
+                    <td>{{ xps_scan.notes }}</td>
                 </tr>
                 <tr>
                     <th>Region</th>
