@@ -2,6 +2,7 @@ import argparse
 from dataclasses import dataclass
 import logging
 from pathlib import Path
+from pprint import pformat, pprint
 import sys
 import tomllib
 from typing import cast
@@ -23,7 +24,6 @@ class Args:
     colorrange_start: float
     colorrange_end: float
     verbose: int
-    version: bool
 
 
 def run_cli() -> None:
@@ -64,10 +64,17 @@ def run_cli() -> None:
     report_name = args.data_dir.name
 
     config = Config(colormap=args.colormap, colorrange=colorrange)
+    logging.info(f"Using config: {config}")
+
     print(f"Start processing of {data_dir}")
-    process_objs = create_measurement_objs(str(data_dir), print)
-    process_loop(process_objs, config, print)
-    create_html(process_objs, str(output_path), report_name)
+    measurement_objs = create_measurement_objs(str(data_dir), print)
+    logging.info(
+        f"Created measurement objects:\n{pformat([x.m_id() for x in measurement_objs])}"
+    )
+
+    process_loop(measurement_objs, config, print)
+    create_html(measurement_objs, str(output_path), report_name)
+
     print(f"HTML created at {output_path}")
 
 
