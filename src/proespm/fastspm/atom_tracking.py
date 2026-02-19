@@ -41,16 +41,9 @@ class AtomTracking(Measurement):
         self.rotation_phase = self.attributes[
             "Circular_movement.Rotation_Phase"
         ]
-        # self.rotation_phase_unit = self.attributes[
-        #     "Circular_movement.Rotation_Phase.Unit"
-        # ]
         self.rotation_phase_unit = "°"
         
         self.lockin_phase = self.attributes["LockIn.Phase"]
-        # TODO: this is weird encoding
-        # self.lockin_phase_unit = self.attributes["LockIn.Phase.Unit"].encode(
-        #     "utf8", "backslashreplace"
-        # )
         self.lockin_phase_unit = "°"
         
         self.lockin_timeconstant = self.attributes["LockIn.TimeConstant"]
