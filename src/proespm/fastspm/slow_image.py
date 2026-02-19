@@ -9,11 +9,11 @@ import h5py
 from proespm.config import Config
 from proespm.fastspm.fastspm import read_corresponding_image
 from proespm.fileinfo import Fileinfo
-from proespm.measurement import Measurement
+from proespm.fastspm.fastspm import FastSPMMeasurement
 
 
 @final
-class SlowImage(Measurement):
+class SlowImage(FastSPMMeasurement):
     """Class for handling .h5 files of slow image (SI) measurements.
 
     Args:
@@ -61,6 +61,8 @@ class SlowImage(Measurement):
 
         self.time_per_pixel = self.attributes.get("PI.ControlTimeStep","")
         self.time_per_pixel_unit = self.attributes.get("PI.ControlTimeStep.Unit","")
+
+        super().__init__(filepath)
 
     @override
     def m_id(self) -> str:

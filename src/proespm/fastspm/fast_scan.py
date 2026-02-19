@@ -6,11 +6,11 @@ import h5py
 from proespm.config import Config
 from proespm.fastspm.fastspm import read_corresponding_image
 from proespm.fileinfo import Fileinfo
-from proespm.measurement import Measurement
+from proespm.fastspm.fastspm import FastSPMMeasurement
 
 
 @final
-class FastScan(Measurement):
+class FastScan(FastSPMMeasurement):
     """Class for handling .h5 files of fast scan (FS) measurements.
 
     Args:
@@ -90,6 +90,8 @@ class FastScan(Measurement):
 
         self.angle = self.attributes.get("Scanner.Angle","")
         self.angle_unit = "°"
+
+        super().__init__(filepath)
 
     @override
     def m_id(self) -> str:

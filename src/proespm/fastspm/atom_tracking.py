@@ -6,11 +6,11 @@ import h5py
 from proespm.config import Config
 from proespm.fastspm.fastspm import read_corresponding_image
 from proespm.fileinfo import Fileinfo
-from proespm.measurement import Measurement
+from proespm.fastspm.fastspm import FastSPMMeasurement
 
 
 @final
-class AtomTracking(Measurement):
+class AtomTracking(FastSPMMeasurement):
     """Class for handling .h5 files of atom tracking (AT) measurements.
 
     Args:
@@ -84,6 +84,8 @@ class AtomTracking(Measurement):
 
         self.circle_by_circle = self.attributes.get("PI.CircleByCircle","")
         self.num_circles = self.attributes.get("PI.CircleByCircle.Number","")
+
+        super().__init__(filepath)
 
     @override
     def m_id(self) -> str:

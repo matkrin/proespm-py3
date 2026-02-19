@@ -216,4 +216,36 @@
             {% endif %}
         </table>
     </div>
+
+    {% if measurement.par %}
+    <div class="table_column">
+        <table>
+            <tr>
+                <th></th>
+                <td>&nbsp;</td>
+            </tr>
+            
+            <tr>
+                <th>E<sub>WE</sub></th>
+                <td>{{measurement.par.E_WE_V}}</td>
+            </tr>
+            <tr>
+                <th>I<sub>WE</sub></th>
+                <td>{{measurement.par.I_WE_A}}</td>
+            </tr>
+            <tr>
+                <th>U<sub>b</sub></th>
+                <td>{{measurement.par.U_Tun_res_V}}</td>
+            </tr>
+            <tr>
+                <th>I<sub>t</sub></th>
+                <td>{{measurement.par.I_Tip_A}}</td>
+            </tr>
+            <tr>
+                <th>U<sub>tip</sub></th>
+                <td>{{measurement.par.U_Tip_V}}</td>
+            </tr>
+        </table>
+    </div>
+    {% endif %}
 </div>
