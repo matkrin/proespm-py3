@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import os
 from datetime import datetime
-from statistics import mode
 from typing import Any, Self, final, override
 
 import numpy as np
