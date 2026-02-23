@@ -43,9 +43,24 @@ class SlowImage(Measurement):
         # for k, v in self.attributes.items():
         #     print(f"{k}->{v}".encode("utf8", "backslashreplace"))
 
-        # TODO Maybe?
-        self.time_per_pixel = self.attributes["PI.ControlTimeStep"]
-        self.time_per_pixel_unit = self.attributes["PI.ControlTimeStep.Unit"]
+        self.aux_1 = float(self.attributes.get("Aux1.Value","0"))*float(self.attributes.get("Aux1.ConversionFactor","0")) * (2 * float(self.attributes.get("Aux1.InvertSignalIn","0")) - 1)
+        self.aux_1_unit = self.attributes.get("Aux1.Unit","")
+        self.aux_1_label = self.attributes.get("Aux1.Label","")
+
+        self.aux_2 = float(self.attributes.get("Aux2.Value","0"))*float(self.attributes.get("Aux2.ConversionFactor","0")) * (2 * float(self.attributes.get("Aux2.InvertSignalIn","0")) - 1)
+        self.aux_2_unit = self.attributes.get("Aux2.Unit","")
+        self.aux_2_label = self.attributes.get("Aux2.Label","")
+
+        self.z_in_convfact = float(self.attributes.get("Z_In.ConversionFactor","nan"))
+        self.z_in_offset = float(self.attributes.get("Z_In.Offset","nan"))
+        self.z_in_unit = self.attributes.get("Z_In.Unit","")
+
+        self.temp_start = self.attributes.get("ExperimentInfo.TemperatureStart","nan")
+        self.temp_end = self.attributes.get("ExperimentInfo.TemperatureEnd","nan")
+        self.temp_unit = self.attributes.get("ExperimentInfo.Temperature.Unit","nan")
+
+        self.time_per_pixel = self.attributes.get("PI.ControlTimeStep","")
+        self.time_per_pixel_unit = self.attributes.get("PI.ControlTimeStep.Unit","")
 
     @override
     def m_id(self) -> str:
