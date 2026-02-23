@@ -28,9 +28,16 @@ class ErrorTopography(Measurement):
         with h5py.File(filepath, "r") as f:
             self.attributes = dict(f.attrs)
 
-        # TODO Maybe?
-        self.time_per_pixel = self.attributes["PI.ControlTimeStep"]
-        self.time_per_pixel_unit = self.attributes["PI.ControlTimeStep.Unit"]
+        self.aux_1 = float(self.attributes.get("Aux1.Value","0"))*float(self.attributes.get("Aux1.ConversionFactor","0")) * (2 * float(self.attributes.get("Aux1.InvertSignalIn","0")) - 1)
+        self.aux_1_unit = self.attributes.get("Aux1.Unit","")
+        self.aux_1_label = self.attributes.get("Aux1.Label","")
+
+        self.aux_2 = float(self.attributes.get("Aux2.Value","0"))*float(self.attributes.get("Aux2.ConversionFactor","0")) * (2 * float(self.attributes.get("Aux2.InvertSignalIn","0")) - 1)
+        self.aux_2_unit = self.attributes.get("Aux2.Unit","")
+        self.aux_2_label = self.attributes.get("Aux2.Label","")
+
+        self.time_per_pixel = self.attributes.get("PI.ControlTimeStep","")
+        self.time_per_pixel_unit = self.attributes.get("PI.ControlTimeStep.Unit","")
 
     @override
     def m_id(self) -> str:

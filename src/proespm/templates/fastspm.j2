@@ -22,86 +22,192 @@
             </tr>
             {% if measurement.op_mode == "FS" %}
                 <tr>
-                    <th>X-Frequency</th>
-                    <td>{{ "{:.2f}".format(measurement.x_frequency) }} {{ measurement.x_frequency_unit }}</td>
+                    <th>{{ measurement.aux_1_label }}</th>
+                    <td>{{ "{:.2f}".format(measurement.aux_1) }} {{ measurement.aux_1_unit }}</td>
                 </tr>
                 <tr>
-                    <th>X-Phase</th>
-                    <td>{{ measurement.x_phase }} {{ measurement.x_phase_unit }}</td>
+                    <th>{{ measurement.aux_2_label }}</th>
+                    <td>{{ "{:.2f}".format(measurement.aux_2) }} {{ measurement.aux_2_unit }}</td>
+                </tr>
+                {% if measurement.temp_start == measurement.temp_start: %}
+                    <tr>
+                        <th>T<sub>start</sub> / T<sub>end</sub></th>
+                        <td>{{ "{:.1f}".format(measurement.temp_start) }} {{ measurement.temp_unit }} / {{ "{:.1f}".format(measurement.temp_end) }} {{ measurement.temp_unit }}</td>
+                    </tr>
+                {% endif %}
+
+                <tr>
+                    <th>Frame rate</th>
+                    <td>{{ "{:.1f}".format(measurement.frames_s)}} {{ measurement.frames_s_unit }}</td>
                 </tr>
                 <tr>
-                    <th>Y-Phase</th>
-                    <td>{{ measurement.y_phase }} {{ measurement.y_phase_unit }}</td>
+                    <th>x Freq.</th>
+                    <td>{{ "{:.1f}".format(measurement.x_frequency) }} {{ measurement.x_frequency_unit }}</td>
+                </tr>
+                <tr>
+                    <th>px Freq</th>
+                    <td>{{ "{:.1f}".format(measurement.px_frequency) }} {{ measurement.px_frequency_unit }}</td>
+                </tr>
+                <tr>
+                    <th>N Frames</th>
+                    <td>{{ measurement.numframes }}</td>
+                </tr>
+                <tr>
+                    <th>Scan Gain X1/X2/Y1/Y2</th>
+                    <td>{{ measurement.scangain_x1 }}/{{ measurement.scangain_x2 }}/{{ measurement.scangain_y1 }}/{{ measurement.scangain_y2 }}</td>
+                </tr>
+                <tr>
+                    <th>Sig_in <br> CF/IR/LA/Offs</th>
+                    <td>{{ "{:.0f}".format(measurement.sig_in_convfact) }}/{{ "{:.0f}".format(measurement.sig_in_range) }}/{{ measurement.sig_in_logamp }}/{{ "{:.3f}".format(measurement.sig_in_offset) }} {{ measurement._sig_in_offset_unit }}</td>
+                </tr>
+                <tr>
+                    <th>Z_in <br> CF/IR/Offs</th>
+                    <td>{{ "{:.0f}".format(measurement.z_in_convfact) }} {{ measurement.z_in_unit }}/{{ measurement.z_in_offset_unit }} <br> {{ "{:.0f}".format(measurement.z_in_range) }}/{{ "{:.3f}".format(measurement.z_in_offset) }} {{ measurement.z_in_offset_unit }}</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="table_column">
+            <table style:"width=100%">        
+                <tr>
+                    <th></th>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <th>Scan Voltage</th>
+                    <td>{{ "{:.2f}".format(measurement.scan_volt_x) }} &#215; {{ "{:.2f}".format(measurement.scan_volt_y) }} {{ measurement.scan_volt_y_unit }}&#178;</td>
+                </tr>
+                <tr>
+                    <th>Scan Size </th>
+                    <td>{{ "{:.1f}".format((measurement.scan_volt_x * measurement.scan_calib_x)) }}  &#215; {{ "{:.1f}".format(measurement.scan_volt_y * measurement.scan_calib_y) }} {{ measurement.scan_size_unit }}&#178;</td>
+                </tr>
+                <tr>
+                    <th>Resolution</th>
+                    <td>{{ "{:.0f}".format(measurement.scan_pnts_x) }}  &#215; {{ "{:.0f}".format(measurement.scan_pnts_y) }} px&#178;</td>
+                </tr>
+                <tr>
+                    <th>Phase X/Y</th>
+                    <td>{{ measurement.x_phase }} {{ measurement.x_phase_unit }} / {{ measurement.y_phase }} {{ measurement.y_phase_unit }}</td>
                 </tr>
                 <tr>
                     <th>Angle</th>
-                    <td>{{ measurement.angle }} {{ measurement.angle_unit }}</td>
+                    <td>{{ measurement.angle }}{{ measurement.angle_unit }}</td>
                 </tr>
 
             <!-- Atom tracking -->
             {% elif measurement.op_mode == "AT" %}
                 <tr>
-                    <th>X-Amplitude</th>
-                    <td>{{ "{:.3f}".format(measurement.x_amplitude) }} {{ measurement.x_amplitude_unit }}</td>
+                    <th>{{ measurement.aux_1_label }}</th>
+                    <td>{{ "{:.2f}".format(measurement.aux_1) }} {{ measurement.aux_1_unit }}</td>
+                </tr>
+                <tr>
+                    <th>{{ measurement.aux_2_label }}</th>
+                    <td>{{ "{:.2f}".format(measurement.aux_2) }} {{ measurement.aux_2_unit }}</td>
+                </tr>
+                {% if measurement.temp_start == measurement.temp_start: %}
+                    <tr>
+                        <th>T<sub>start</sub> / T<sub>end</sub></th>
+                        <td>{{ "{:.1f}".format(measurement.temp_start) }} {{ measurement.temp_unit }} / {{ "{:.1f}".format(measurement.temp_end) }} {{ measurement.temp_unit }}</td>
+                    </tr>
+                {% endif %}
+
+                <tr>
+                    <th>Scan Gain X1/X2/Y1/Y2</th>
+                    <td>{{ measurement.scangain_x1 }}/{{ measurement.scangain_x2 }}/{{ measurement.scangain_y1 }}/{{ measurement.scangain_y2 }}</td>
+                </tr>
+                <tr>
+                    <th>Sig_in CF/LA/Offs</th>
+                    <td>{{ "{:.0f}".format(measurement.sig_in_convfact) }}/{{ measurement.sig_in_logamp }}/{{ "{:.3f}".format(measurement.sig_in_offset) }} {{ measurement._sig_in_offset_unit }}</td>
+                </tr>
+                <tr>
+                    <th>Z_in CF/Offs</th>
+                    <td>{{ "{:.0f}".format(measurement.z_in_convfact) }} {{ measurement.z_in_unit }} / {{ "{:.3f}".format(measurement.z_in_offset) }} {{ measurement.z_in_offset_unit }}</td>
+                </tr>
+                <tr>
+                    <th>Amplitude X/Y</th>
+                    <td>{{ "{:.3f}".format(measurement.x_amplitude) }} / {{ "{:.3f}".format(measurement.y_amplitude) }} {{ measurement.x_amplitude_unit }}</td>
                 </tr>
 
                 <tr>
-                    <th>Y-Amplitude</th>
-                    <td>{{ "{:.3f}".format(measurement.y_amplitude) }} {{ measurement.y_amplitude_unit }}</td>
-                </tr>
-
-                <tr>
-                    <th>Rotation Phase</th>
-                    <td>{{ "{:.1f}".format(measurement.rotation_phase) }} {{ measurement.rotation_phase_unit }}</td>
-                </tr>
-
-                <tr>
-                    <th>Lock-In Phase</th>
-                    <td>{{ "{:.1f}".format(measurement.lockin_phase) }} {{ measurement.lockin_phase_unit }}</td>
-                </tr>
-
-                <tr>
-                    <th>Lock-In Time Constant</th>
-                    <td>{{ "{:.2f}".format(measurement.lockin_timeconstant) }} {{ measurement.lockin_timeconstant_unit }}</td>
+                    <th>Rot. ph./LI ph./ <br> LI_timeconst</th>
+                    <td>{{ "{:.1f}".format(measurement.rotation_phase) }} {{ measurement.rotation_phase_unit }} / {{ "{:.1f}".format(measurement.lockin_phase) }} {{ measurement.lockin_phase_unit }} / {{ "{:.2f}".format(measurement.lockin_timeconstant) }} {{ measurement.lockin_timeconstant_unit }}</td>
                 </tr>
                 <tr>
-                    <th>K<sub>p</sub></th>
-                    <td>{{ "{:.2f}".format(measurement.k_p) }} {{ measurement.k_p_unit }}</td>
+                    <th>K<sub>p</sub> / T<sub>i</sub</th>
+                    <td>{{ "{:.2f}".format(measurement.k_p) }} {{ measurement.k_p_unit }} / {{ "{:.2f}".format(measurement.ti) }} {{ measurement.ti_unit }}</td>
                 </tr>
                 <tr>
-                    <th>T<sub>i</sub></th>
-                    <td>{{ "{:.2f}".format(measurement.ti) }} {{ measurement.ti_unit }}</td>
+                    <th>Ctrl_timstp / PI HW</th>
+                    <td>{{ "{:.2f}".format(measurement.control_timestep) }} {{ measurement.control_timestep_unit }} / {{ measurement.hardware }}</td>
                 </tr>
                 <tr>
-                    <th>Control Time Step</th>
-                    <td>{{ "{:.2f}".format(measurement.control_timestep) }} {{ measurement.control_timestep_unit }}</td>
-                </tr>
-                <tr>
-                    <th>PI Hardware</th>
-                    <td>{{ measurement.hardware }}</td>
-                </tr>
-                <tr>
-                    <th>Circle by circle</th>
-                    <td>{{ measurement.circle_by_circle }}</td>
-                </tr>
-                <tr>
-                    <th>Number of circles</th>
-                    <td>{{ measurement.num_circles }}</td>
+                    <th>C-by-c / N circles</th>
+                    <td>{{ measurement.circle_by_circle }} / {{ measurement.num_circles }}</td>
                 </tr>
 
             {% elif measurement.op_mode == "ET" %}
                 <tr>
-                    <th>Time per pixel</th>
+                    <th>{{ measurement.aux_1_label }}</th>
+                    <td>{{ "{:.2f}".format(measurement.aux_1) }} {{ measurement.aux_1_unit }}</td>
+                </tr>
+                <tr>
+                    <th>{{ measurement.aux_2_label }}</th>
+                    <td>{{ "{:.2f}".format(measurement.aux_2) }} {{ measurement.aux_2_unit }}</td>
+                </tr>
+                <tr>
+                    <th>Time/px</th>
                     <td>{{ "{:.1f}".format(measurement.time_per_pixel) }} {{ measurement.time_per_pixel_unit }}</td>
                 </tr>
 
             {% elif measurement.op_mode == "SI" %}
                 <tr>
-                    <th>Time per pixel</th>
+                    <th>{{ measurement.aux_1_label }}</th>
+                    <td>{{ "{:.2f}".format(measurement.aux_1) }} {{ measurement.aux_1_unit }}</td>
+                </tr>
+                <tr>
+                    <th>{{ measurement.aux_2_label }}</th>
+                    <td>{{ "{:.2f}".format(measurement.aux_2) }} {{ measurement.aux_2_unit }}</td>
+                </tr>
+                {% if measurement.temp_start == measurement.temp_start: %}
+                    <tr>
+                        <th>T<sub>start</sub> / T<sub>end</sub></th>
+                        <td>{{ "{:.1f}".format(measurement.temp_start) }} {{ measurement.temp_unit }} / {{ "{:.1f}".format(measurement.temp_end) }} {{ measurement.temp_unit }}</td>
+                    </tr>
+                {% endif %}
+
+                <tr>
+                    <th>Z_in CF/Offs</th>
+                    <td>{{ "{:.0f}".format(measurement.z_in_convfact) }} {{ measurement.z_in_unit }} / {{ "{:.3f}".format(measurement.z_in_offset) }} {{ measurement.z_in_offset_unit }}</td>
+                </tr>
+                <tr>
+                    <th>Time/px</th>
                     <td>{{ "{:.1f}".format(measurement.time_per_pixel) }} {{ measurement.time_per_pixel_unit }}</td>
                 </tr>
 
             {% elif measurement.op_mode == "HS" %}
+                <tr>
+                    <th>{{ measurement.aux_1_label }}</th>
+                    <td>{{ "{:.2f}".format(measurement.aux_1) }} {{ measurement.aux_1_unit }}</td>
+                </tr>
+                <tr>
+                    <th>{{ measurement.aux_2_label }}</th>
+                    <td>{{ "{:.2f}".format(measurement.aux_2) }} {{ measurement.aux_2_unit }}</td>
+                </tr>
+                {% if measurement.temp_start == measurement.temp_start: %}
+                    <tr>
+                        <th>T<sub>start</sub> / T<sub>end</sub></th>
+                        <td>{{ "{:.1f}".format(measurement.temp_start) }} {{ measurement.temp_unit }} / {{ "{:.1f}".format(measurement.temp_end) }} {{ measurement.temp_unit }}</td>
+                    </tr>
+                {% endif %}
+
+                <tr>
+                    <th>Sig_in CF/LA/Offs</th>
+                    <td>{{ "{:.0f}".format(measurement.sig_in_convfact) }}/{{ measurement.sig_in_logamp }}/{{ "{:.3f}".format(measurement.sig_in_offset) }} {{ measurement._sig_in_offset_unit }}</td>
+                </tr>
+                <tr>
+                    <th>Z_in CF/Offs</th>
+                    <td>{{ "{:.0f}".format(measurement.z_in_convfact) }} {{ measurement.z_in_unit }} / {{ "{:.3f}".format(measurement.z_in_offset) }} {{ measurement.z_in_offset_unit }}</td>
+                </tr>
                 <tr>
                     <th>Timestep</th>
                     <td>{{ "{:.3f}".format(measurement.timestep) }} {{ measurement.timestep_unit }}</td>

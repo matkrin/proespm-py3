@@ -54,13 +54,13 @@
                 {% if measurement.ec_type == 'Cyclic Voltammetry' %}
                     <tr>
                         <th>E<sub>WE_1</sub> / E<sub>WE_2</sub></th>
-                        <td>{{ "%.2f"|format(measurement.u_1) }} / {{ "%.3f"|format(measurement.u_2) }} V</td>
+                        <td>{{ "%.2f"|format(measurement.u_1) }} / {{ "%.2f"|format(measurement.u_2) }} V</td>
                     </tr>
 
                 {% elif measurement.ec_type == 'Chronoamperometry' %}
                     <tr>
                         <th>E<sub>WE_max</sub> / E<sub>WE_min</sub></th>
-                        <td>{{ "%.2f"|format(measurement.u_2) }} / {{ "%.3f"|format(measurement.u_1) }} V</td>
+                        <td>{{ "%.2f"|format(measurement.u_2) }} / {{ "%.2f"|format(measurement.u_1) }} V</td>
                     </tr>
 
                 {% endif %}
