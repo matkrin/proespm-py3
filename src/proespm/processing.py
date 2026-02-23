@@ -18,6 +18,7 @@ from proespm.fastspm.atom_tracking import AtomTracking
 from proespm.fastspm.error_topography import ErrorTopography
 from proespm.fastspm.fast_scan import FastScan
 from proespm.fastspm.high_speed import HighSpeed
+from proespm.fastspm.resonance_frequency import ResonanceFrequency
 from proespm.fastspm.slow_image import SlowImage
 from proespm.measurement import Measurement
 from proespm.misc.elab_ftw import extract_elabftw
@@ -217,7 +218,11 @@ def create_measurement_objs(
             case ".png" | ".jpg" | ".jpeg" if not path.with_suffix(
                 ".h5"
             ).exists():
-                obj = Image(file_path)
+                if path.name.startswith("RF"):
+                    obj = ResonanceFrequency(file_path)
+                else:
+                    obj = Image(file_path)
+
                 measurement_objects.append(obj)
 
             case ".lvm":
@@ -291,6 +296,7 @@ def process_loop(
                 | ErrorTopography()
                 | SlowImage()
                 | HighSpeed()
+                | ResonanceFrequency()
             ):
                 measurement.slide_num = slide_num
                 slide_num += 1
