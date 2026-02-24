@@ -88,7 +88,7 @@ def _parse_html_body(raw_string: str) -> dict[datetime, str]:
             t.strip() for t in time_cell.stripped_strings if t.strip()
         ]
 
-        texts = [t.strip() for t in text_cell.stripped_strings if t.strip()]
+        texts = [text_cell.decode_contents().strip()]
 
         if len(timestamps) == len(texts):
             for ts, txt in zip(timestamps, texts):
