@@ -4,13 +4,13 @@ from typing import Self, final, override
 import h5py
 
 from proespm.config import Config
-from proespm.fastspm.fastspm import read_corresponding_image
+from proespm.fastspm.fastspm import read_corresponding_image, read_corresponding_par_file
 from proespm.fileinfo import Fileinfo
-from proespm.fastspm.fastspm import FastSPMMeasurement
+from proespm.measurement import Measurement
 
 
 @final
-class FastScan(FastSPMMeasurement):
+class FastScan(Measurement):
     """Class for handling .h5 files of fast scan (FS) measurements.
 
     Args:
@@ -91,7 +91,7 @@ class FastScan(FastSPMMeasurement):
         self.angle = self.attributes.get("Scanner.Angle","")
         self.angle_unit = "°"
 
-        super().__init__(filepath)
+        self.par = read_corresponding_par_file(filepath)
 
     @override
     def m_id(self) -> str:

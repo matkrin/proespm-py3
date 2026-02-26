@@ -4,13 +4,13 @@ from typing import Self, final, override
 import h5py
 
 from proespm.config import Config
-from proespm.fastspm.fastspm import read_corresponding_image
+from proespm.fastspm.fastspm import read_corresponding_image, read_corresponding_par_file
 from proespm.fileinfo import Fileinfo
-from proespm.fastspm.fastspm import FastSPMMeasurement
+from proespm.measurement import Measurement
 
 
 @final
-class HighSpeed(FastSPMMeasurement):
+class HighSpeed(Measurement):
     """Class for handling .h5 files of high speed (HS) measurements.
 
     Args:
@@ -54,7 +54,7 @@ class HighSpeed(FastSPMMeasurement):
         self.timestep = self.attributes.get("PI.ControlTimeStep","")
         self.timestep_unit = self.attributes.get("PI.ControlTimeStep.Unit","")
 
-        super().__init__(filepath)
+        self.par = read_corresponding_par_file(filepath)
 
     @override
     def m_id(self) -> str:

@@ -4,13 +4,13 @@ from typing import Self, final, override
 import h5py
 
 from proespm.config import Config
-from proespm.fastspm.fastspm import read_corresponding_image
+from proespm.fastspm.fastspm import read_corresponding_image, read_corresponding_par_file
 from proespm.fileinfo import Fileinfo
-from proespm.fastspm.fastspm import FastSPMMeasurement
+from proespm.measurement import Measurement
 
 
 @final
-class ErrorTopography(FastSPMMeasurement):
+class ErrorTopography(Measurement):
     """Class for handling .h5 files of error topography (ET) measurements.
 
     Args:
@@ -39,7 +39,7 @@ class ErrorTopography(FastSPMMeasurement):
         self.time_per_pixel = self.attributes.get("PI.ControlTimeStep","")
         self.time_per_pixel_unit = self.attributes.get("PI.ControlTimeStep.Unit","")
 
-        super().__init__(filepath)
+        self.par = read_corresponding_par_file(filepath)
 
     @override
     def m_id(self) -> str:
