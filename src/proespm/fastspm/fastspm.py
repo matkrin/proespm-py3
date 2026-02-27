@@ -29,3 +29,28 @@ def read_corresponding_image(filepath: str, rotate: bool) -> str:
         encoded = base64.b64encode(buffer.getvalue()).decode("ascii")
 
         return f"data:image/{image_extension};base64,{encoded}"
+    
+
+def read_corresponding_par_file(filepath: str) -> dict[str,str] | None:
+    par_file_path = Path(filepath).with_suffix(".par")
+    
+    if not par_file_path.exists():
+        return None
+    
+    with open(par_file_path) as input:
+        output = {
+            'E_WE_V': 'UNDEFINED',
+            'I_WE_A': 'UNDEFINED',
+            'U_Tun_res_V': 'UNDEFINED',
+            'I_Tip_A': 'UNDEFINED',
+            'U_Tip_V': 'UNDEFINED'
+        }
+
+        for line in input:
+            pair = line.split()
+
+            if len(pair) > 1:
+                unit = " A" if "A" in pair[0] else " V"
+                output[pair[0]] = pair[1] + unit
+
+        return output
