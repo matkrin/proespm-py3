@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Self, final, override
 
-import nanonispy as nap  # pyright: ignore[reportMissingTypeStubs]
+import nanonispy as nap
 import numpy as np
 from dateutil import parser
 
@@ -25,31 +25,31 @@ class StmSxm(Measurement):
 
         self.sxm = nap.read.Scan(filepath)
 
-        day, month, year = self.sxm.header["rec_date"].split(".")  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
-        time = self.sxm.header["rec_time"]  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
+        day, month, year = self.sxm.header["rec_date"].split(".")
+        time = self.sxm.header["rec_time"]
         self._datetime = parser.parse(f"{year}-{month}-{day} {time}")
 
         self.current: float = (
-            float(self.sxm.header["z-controller"]["Setpoint"][0].split()[0])  # pyright: ignore[reportUnknownArgumentType, reportUnknownMemberType]
+            float(self.sxm.header["z-controller"]["Setpoint"][0].split()[0])
             * 1e9
         )  # in nA
 
-        self.bias: float = self.sxm.header["bias"]  # pyright: ignore[reportUnknownMemberType] in V
+        self.bias: float = self.sxm.header["bias"]
 
-        self.xsize, self.ysize = self.sxm.header["scan_range"] * 1e9  # pyright: ignore[reportUnknownMemberType] in nm
-        self.xoffset, self.yoffset = self.sxm.header["scan_offset"] * 1e9  # pyright: ignore[reportUnknownMemberType]
-        self.xres, self.yres = self.sxm.header["scan_pixels"]  # pyright: ignore[reportUnknownMemberType]
-        self.rotation = float(self.sxm.header["scan_angle"])  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType] in deg?
-        self.line_time = self.sxm.header["scan_time"][0] * 1e3  # pyright: ignore[reportUnknownMemberType]  in s?
-        self.speed = self.line_time * self.yres / 1e3  # pyright: ignore[reportUnknownMemberType] in s?
+        self.xsize, self.ysize = self.sxm.header["scan_range"] * 1e9
+        self.xoffset, self.yoffset = self.sxm.header["scan_offset"] * 1e9
+        self.xres, self.yres = self.sxm.header["scan_pixels"]
+        self.rotation = float(self.sxm.header["scan_angle"])
+        self.line_time = self.sxm.header["scan_time"][0] * 1e3
+        self.speed = self.line_time * self.yres / 1e3
 
         self.img_data_fw = SpmImage(
-            np.flip(self.sxm.signals["Z"]["forward"], axis=0),  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
-            self.xsize,  # pyright: ignore[reportUnknownArgumentType, reportUnknownMemberType]
+            np.flip(self.sxm.signals["Z"]["forward"], axis=0),
+            self.xsize,
         )
         self.img_data_bw = SpmImage(
-            np.flip(self.sxm.signals["Z"]["backward"], axis=(0, 1)),  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
-            self.xsize,  # pyright: ignore[reportUnknownArgumentType, reportUnknownMemberType]
+            np.flip(self.sxm.signals["Z"]["backward"], axis=(0, 1)),
+            self.xsize,
         )
 
     @override
@@ -57,7 +57,7 @@ class StmSxm(Measurement):
         return self.fileinfo.filename
 
     @override
-    def datetime(self) -> datetime:
+    def get_datetime(self) -> datetime:
         return self._datetime
 
     @override

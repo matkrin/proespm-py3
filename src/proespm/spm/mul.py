@@ -26,10 +26,10 @@ class StmMul(Measurement):
         self.mulimages: Mul = mulfile.load(filepath)
 
         for mul_image in self.mulimages:
-            mul_image.basename = self.fileinfo.basename  # pyright: ignore[reportAttributeAccessIssue]
-            mul_image.fileinfo = self.fileinfo  # pyright: ignore[reportAttributeAccessIssue]
-            mul_image.m_id = mul_image.img_id  # pyright: ignore[reportAttributeAccessIssue]
-            mul_image.img_data = SpmImage(  # pyright: ignore[reportAttributeAccessIssue]
+            mul_image.basename = self.fileinfo.basename  # ty:ignore[unresolved-attribute]
+            mul_image.fileinfo = self.fileinfo  # ty:ignore[unresolved-attribute]
+            mul_image.m_id = mul_image.img_id  # ty:ignore[unresolved-attribute]
+            mul_image.img_data = SpmImage(  # ty:ignore[invalid-assignment]
                 np.flip(mul_image.img_data, axis=0),
                 mul_image.xsize,
             )
@@ -39,14 +39,14 @@ class StmMul(Measurement):
         return self.fileinfo.filename
 
     @override
-    def datetime(self) -> datetime:
+    def get_datetime(self) -> datetime:
         return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
 
     @override
     def process(self, config: Config) -> Self:
         for mul_image in self.mulimages:
             (
-                mul_image.img_data.corr_plane()  # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
+                mul_image.img_data.corr_plane()  # ty:ignore[unresolved-attribute]
                 .corr_lines_median()
                 .corr_plane()
                 .corr_lines_median()

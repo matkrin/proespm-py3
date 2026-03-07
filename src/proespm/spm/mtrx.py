@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 from typing import Self, final, override
 import numpy as np
-import access2thematrix  # pyright: ignore[reportMissingTypeStubs]
+import access2thematrix
 
 from proespm.fileinfo import Fileinfo
 from proespm.config import Config
@@ -30,18 +30,18 @@ class StmMatrix(Measurement):
 
         mtrx_data = access2thematrix.MtrxData()
 
-        self.traces, _ = mtrx_data.open(filepath)  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
-        if self.traces == {}:  # pyright: ignore[reportUnknownMemberType]
+        self.traces, _ = mtrx_data.open(filepath)
+        if self.traces == {}:
             raise NoTracesError(self.fileinfo.filename)
 
-        img_fw = mtrx_data.select_image(self.traces[0])[0]  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
-        img_bw = mtrx_data.select_image(self.traces[1])[0]  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
+        img_fw = mtrx_data.select_image(self.traces[0])[0]
+        img_bw = mtrx_data.select_image(self.traces[1])[0]
 
         self.creation_comment = mtrx_data.creation_comment
         self.data_set_name = mtrx_data.data_set_name
         self.sample_name = mtrx_data.sample_name
 
-        self.yres, self.xres = img_fw.data.shape  # pyright: ignore[reportUnknownMemberType]
+        self.yres, self.xres = img_fw.data.shape
         self.xsize = img_fw.width * 1e9  # in nm
         self.ysize = img_fw.height * 1e9  # in nm
         self.rotation = img_fw.angle  # in deg
@@ -58,9 +58,9 @@ class StmMatrix(Measurement):
             elif param.startswith("GapVoltageControl.Voltage "):
                 self.bias = float(param.split()[1])  # in V
             elif param.startswith("Regulator.Loop_Gain_1_I "):
-                self.i_gain = float(param.split()[1])   # in %
+                self.i_gain = float(param.split()[1])  # in %
             elif param.startswith("Regulator.Loop_Gain_1_P "):
-                self.p_gain = float(param.split()[1])   # in %
+                self.p_gain = float(param.split()[1])  # in %
             elif param.startswith("XYScanner.Raster_Time "):
                 # in seconds, per pixel?
                 self.raster_time = float(param.split()[1])
@@ -75,13 +75,13 @@ class StmMatrix(Measurement):
             elif param.startswith("XYScanner.Enable_Drift_Compensation"):
                 self.is_drift_compensation_enabled = param.split()[1]
             elif param.startswith("XYScanner.Y_Retrace "):
-                self.retrace = param.split()[1]                
+                self.retrace = param.split()[1]
 
         self.line_time = self.raster_time * self.xres * 1e3  # in ms
         self.scan_duration = self.line_time * self.yres / 1e3  # in s
 
-        row_fw = np.flip(img_fw.data, axis=0) * 1e9  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType] # in nm
-        row_bw = np.flip(img_bw.data, axis=0) * 1e9  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType] # in nm
+        row_fw = np.flip(img_fw.data, axis=0) * 1e9
+        row_bw = np.flip(img_bw.data, axis=0) * 1e9
         self.img_data_fw = SpmImage(row_fw, self.xsize)
         self.img_data_bw = SpmImage(row_bw, self.xsize)
 
@@ -90,7 +90,7 @@ class StmMatrix(Measurement):
         return self.fileinfo.filename
 
     @override
-    def datetime(self) -> datetime:
+    def get_datetime(self) -> datetime:
         return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
 
     @override

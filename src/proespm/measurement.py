@@ -14,7 +14,7 @@ class Measurement(ABC):
         ...
 
     @abstractmethod
-    def datetime(self) -> datetime.datetime:
+    def get_datetime(self) -> datetime.datetime:
         """Date and time of the measurement."""
         ...
 

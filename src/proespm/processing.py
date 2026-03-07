@@ -6,8 +6,8 @@ from typing import Callable
 from jinja2 import Environment, FileSystemLoader
 
 from proespm.config import ALLOWED_FILE_TYPES, Config
-from proespm.ec.nordic_ec4 import NordicEc4
 from proespm.ec.ec_labview import CaLabview, CvLabview, FftLabview
+from proespm.ec.nordic_ec4 import NordicEc4
 from proespm.ec.PalmSens.ca import CaPalmSens
 from proespm.ec.PalmSens.cp import CpPalmSens
 from proespm.ec.PalmSens.cv import CvPalmSens
@@ -280,7 +280,7 @@ def process_loop(
             status.
     """
     slide_num = 1
-    measurement_objects.sort(key=lambda x: x.datetime())
+    measurement_objects.sort(key=lambda x: x.get_datetime())
     for measurement in measurement_objects:
         log(f"Processing of {measurement.m_id()}")
         _ = measurement.process(config)
@@ -302,7 +302,7 @@ def process_loop(
                 slide_num += 1
             case StmMul() if type(measurement) is StmMul:
                 for mul_image in measurement.mulimages:
-                    mul_image.slide_num = slide_num  # pyright: ignore[reportAttributeAccessIssue]
+                    mul_image.slide_num = slide_num  # ty:ignore[unresolved-attribute]
                     slide_num += 1
             case _:
                 pass
@@ -325,7 +325,7 @@ def create_html(
     """
 
     if getattr(sys, "frozen", False):
-        template_dir = os.path.join(sys._MEIPASS, "templates")  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType, reportAttributeAccessIssue]
+        template_dir = os.path.join(sys._MEIPASS, "templates")  # ty:ignore[unresolved-attribute]
     else:
         template_dir = os.path.join(os.path.dirname(__file__), "templates")
 

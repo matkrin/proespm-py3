@@ -40,11 +40,11 @@ class Qcmb(Measurement):
             active_scroll="wheel_zoom",
             active_inspect="hover",
         )
-        subplot_rate.toolbar.logo = None  # pyright: ignore[reportAttributeAccessIssue]
+        subplot_rate.toolbar.logo = None  # ty:ignore[invalid-assignment]
         subplot_rate.background_fill_alpha = 0
         # plot.circle(x, y, size=2)
         _ = subplot_rate.line(self.time, self.rate, line_width=2)
-        subplot_rate.toolbar.active_scroll = "auto"  # pyright: ignore[reportAttributeAccessIssue]
+        subplot_rate.toolbar.active_scroll = "auto"  # ty:ignore[invalid-assignment]
 
         subplot_thick = figure(
             width=1000,
@@ -57,13 +57,13 @@ class Qcmb(Measurement):
             active_scroll="wheel_zoom",
             active_inspect="hover",
         )
-        subplot_thick.toolbar.logo = None  # pyright: ignore[reportAttributeAccessIssue]
+        subplot_thick.toolbar.logo = None  # ty:ignore[invalid-assignment]
         subplot_thick.background_fill_alpha = 0
         # plot.circle(x, y, size=2)
         _ = subplot_thick.line(
             self.time, self.thickness, line_color="seagreen", line_width=2
         )
-        subplot_thick.toolbar.active_scroll = "auto"  # pyright: ignore[reportAttributeAccessIssue]
+        subplot_thick.toolbar.active_scroll = "auto"  # ty:ignore[invalid-assignment]
 
         plot = row(subplot_rate, subplot_thick, sizing_mode="scale_width")
 
@@ -74,7 +74,7 @@ class Qcmb(Measurement):
         return self.fileinfo.filename
 
     @override
-    def datetime(self) -> datetime:
+    def get_datetime(self) -> datetime:
         return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
 
     @override

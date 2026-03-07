@@ -71,7 +71,7 @@ class LsvPalmSens(Measurement):
         return self.fileinfo.filename
 
     @override
-    def datetime(self) -> datetime:
+    def get_datetime(self) -> datetime:
         assert self._datetime is not None  # Type assertion
         return self._datetime
 

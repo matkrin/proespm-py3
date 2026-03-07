@@ -16,7 +16,7 @@
         <td><a href="file:///{{ measurement.fileinfo.filepath }}">{{ measurement.m_id() }}</a></td>
       </tr>
         <th>Date/time</th>
-        <td>{{ measurement.datetime().strftime("%Y-%m-%d") }} <br> {{ measurement.datetime().strftime("%H:%M:%S") }}</td>
+        <td>{{ measurement.get_datetime().strftime("%Y-%m-%d") }} <br> {{ measurement.get_datetime().strftime("%H:%M:%S") }}</td>
       </tr>
       <tr>
         <th>Controller </th>

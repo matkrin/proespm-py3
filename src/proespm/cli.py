@@ -131,7 +131,7 @@ def parse_args() -> Args:
         help="Print version",
     )
 
-    return Args(**vars(parser.parse_args()))  # pyright: ignore[reportAny]
+    return Args(**vars(parser.parse_args()))
 
 
 def get_version() -> str:

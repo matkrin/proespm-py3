@@ -52,9 +52,9 @@ class RgaMassScan(Measurement):
             active_scroll="wheel_zoom",
             active_inspect="hover",
         )
-        plot.toolbar.logo = None  # pyright: ignore[reportAttributeAccessIssue]
+        plot.toolbar.logo = None  # ty:ignore[invalid-assignment]
         plot.background_fill_alpha = 0
-        plot.toolbar.active_scroll = "auto"  # pyright: ignore[reportAttributeAccessIssue]
+        plot.toolbar.active_scroll = "auto"  # ty:ignore[invalid-assignment]
         _ = plot.line(
             self.data[:, 0],
             self.data[:, 1],
@@ -67,7 +67,7 @@ class RgaMassScan(Measurement):
         return self.fileinfo.filename
 
     @override
-    def datetime(self) -> datetime.datetime:
+    def get_datetime(self) -> datetime.datetime:
         return self._datetime
 
     @override
@@ -159,9 +159,9 @@ class RgaTimeSeries(Measurement):
             active_scroll="wheel_zoom",
             active_inspect="hover",
         )
-        plot.toolbar.logo = None  # pyright: ignore[reportAttributeAccessIssue]
+        plot.toolbar.logo = None  # ty:ignore[invalid-assignment]
         plot.background_fill_alpha = 0
-        plot.toolbar.active_scroll = "auto"  # pyright: ignore[reportAttributeAccessIssue]
+        plot.toolbar.active_scroll = "auto"  # ty:ignore[invalid-assignment]
 
         for i in range(signals.shape[1]):
             _ = plot.line(
@@ -180,7 +180,7 @@ class RgaTimeSeries(Measurement):
         return self.fileinfo.filename
 
     @override
-    def datetime(self) -> datetime.datetime:
+    def get_datetime(self) -> datetime.datetime:
         return self._datetime
 
     @override

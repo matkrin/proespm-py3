@@ -11,15 +11,15 @@ from bs4 import BeautifulSoup
 
 def extract_elabftw(filepath: str) -> list[ElabFtw]:
     with open(filepath, "r") as f:
-        json_content = json.load(f)  # pyright: ignore[reportAny]
+        json_content = json.load(f)
 
-    entries = _parse_html_body(json_content["body_html"])  # pyright: ignore[reportAny]
+    entries = _parse_html_body(json_content["body_html"])
     return [
         ElabFtw(
             timestamp=k,
             text=v,
             number=i + 1,
-            json_content=json_content,  # pyright: ignore[reportAny]
+            json_content=json_content,
         )
         for i, (k, v) in enumerate(entries.items())
     ]
@@ -32,7 +32,7 @@ class ElabFtw(Measurement):
         timestamp: datetime,
         text: str,
         number: int,
-        json_content: dict[Hashable, Any],  # pyright: ignore[reportExplicitAny]
+        json_content: dict[Hashable, Any],
     ) -> None:
         self._datetime = timestamp
         self.text = text
@@ -49,7 +49,7 @@ class ElabFtw(Measurement):
         return f"{self.title} - {self._number}"
 
     @override
-    def datetime(self) -> datetime:
+    def get_datetime(self) -> datetime:
         return self._datetime
 
     @override

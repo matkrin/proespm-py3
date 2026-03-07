@@ -1,16 +1,17 @@
-from datetime import datetime
 import itertools
 import os
+from datetime import datetime
 from typing import Self, cast, final, override
-from bokeh.palettes import Category10_10
+
 import numpy as np
 from bokeh.embed import components
-from bokeh.plotting import figure
 from bokeh.models import LinearAxis, Range1d
+from bokeh.palettes import Category10_10
+from bokeh.plotting import figure
 from numpy.typing import NDArray
 
-from proespm.fileinfo import Fileinfo
 from proespm.config import Config
+from proespm.fileinfo import Fileinfo
 from proespm.measurement import Measurement
 
 
@@ -40,7 +41,7 @@ class Tpd(Measurement):
             if "Q" not in entry
         ]
 
-        return {k: v for k, v in zip(header_entries, numeric_data)}  # pyright: ignore[reportAny]
+        return {k: v for k, v in zip(header_entries, numeric_data)}
 
     def plot(self) -> None:
         """Creates an interactive plot of the data"""
@@ -72,9 +73,9 @@ class Tpd(Measurement):
             active_scroll="wheel_zoom",
             active_inspect="hover",
         )
-        plot.toolbar.logo = None  # pyright: ignore[reportAttributeAccessIssue]
+        plot.toolbar.logo = None  # ty:ignore[invalid-assignment]
         plot.background_fill_alpha = 0
-        plot.toolbar.active_scroll = "auto"  # pyright: ignore[reportAttributeAccessIssue]
+        plot.toolbar.active_scroll = "auto"  # ty:ignore[invalid-assignment]
         for k, v in self.data.items():
             _ = plot.line(
                 time_data,
@@ -86,9 +87,9 @@ class Tpd(Measurement):
 
         # Second Axis (right) for Temperature
         second_y_range_name = "Temperature"
-        plot.extra_y_ranges[second_y_range_name] = Range1d(  # pyright: ignore[reportIndexIssue]
-            temperature_data.min() - 5,  # pyright: ignore[reportAny]
-            temperature_data.max() + 5,  # pyright: ignore[reportAny]
+        plot.extra_y_ranges[second_y_range_name] = Range1d(  # ty:ignore[invalid-assignment]
+            temperature_data.min() - 5,
+            temperature_data.max() + 5,
         )
         ax2 = LinearAxis(
             y_range_name=second_y_range_name, axis_label="Temperature / °C"
@@ -110,7 +111,7 @@ class Tpd(Measurement):
         return self.fileinfo.filename
 
     @override
-    def datetime(self) -> datetime:
+    def get_datetime(self) -> datetime:
         return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
 
     @override

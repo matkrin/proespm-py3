@@ -70,7 +70,7 @@ class StmSm4(Measurement):
         ]
 
         if len(e_cell_imgs) != 0:
-            e_cell_avg: NDArray[np.float32] = np.average(  # pyright: ignore[reportAny]
+            e_cell_avg: NDArray[np.float32] = np.average(
                 e_cell_imgs[0].data, axis=0
             )
             x = np.arange(1, len(e_cell_avg) + 1)
@@ -81,7 +81,7 @@ class StmSm4(Measurement):
             plot.plot_scatter(x, e_cell_avg, legend_label="E_WE [V]")
 
             if len(u_tun_imgs) != 0:
-                u_tun_avg: NDArray[np.float32] = np.average(  # pyright: ignore[reportAny]
+                u_tun_avg: NDArray[np.float32] = np.average(
                     u_tun_imgs[0].data, axis=0
                 )
                 plot.plot_scatter(x, u_tun_avg, legend_label="U_b [V]")
@@ -97,7 +97,7 @@ class StmSm4(Measurement):
         ]
 
         if len(i_cell_imgs) != 0:
-            i_cell_avg: NDArray[np.float32] = np.average(  # pyright: ignore[reportAny]
+            i_cell_avg: NDArray[np.float32] = np.average(
                 i_cell_imgs[0].data, axis=1
             )
             if self.par5 is not None:
@@ -119,7 +119,7 @@ class StmSm4(Measurement):
         return self.fileinfo.filename
 
     @override
-    def datetime(self) -> datetime:
+    def get_datetime(self) -> datetime:
         return self._datetime
 
     @override

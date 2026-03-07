@@ -128,7 +128,7 @@ class SpmNid(Measurement):
         return self.fileinfo.filename
 
     @override
-    def datetime(self) -> datetime:
+    def get_datetime(self) -> datetime:
         return self._datetime
 
     @override
@@ -203,8 +203,8 @@ def _get_channels_meta(
 
 
 def _read_float_from_string(text: str) -> float:
-    return float(FLOAT_REGEX.match(text).group(0))  # pyright: ignore[reportOptionalMemberAccess]
+    return float(FLOAT_REGEX.match(text).group(0))  # ty:ignore[unresolved-attribute]
 
 
 def _read_units_from_string(text: str) -> str:
-    return UNITS_REGEX.findall(text)[0]  # pyright: ignore[reportAny]
+    return UNITS_REGEX.findall(text)[0]

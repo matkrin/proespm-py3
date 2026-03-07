@@ -4,7 +4,7 @@ from typing import Any, Self, cast, final
 
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib_scalebar.scalebar import ScaleBar  # pyright: ignore[reportMissingTypeStubs]
+from matplotlib_scalebar.scalebar import ScaleBar
 from numpy._typing import NDArray
 
 plt.rcParams.update({"figure.max_open_warning": 0})
@@ -20,7 +20,7 @@ class SpmImage:
 
     """
 
-    def __init__(self, arr: NDArray[np.floating[Any]], xsize: float) -> None:  # pyright: ignore[reportExplicitAny]
+    def __init__(self, arr: NDArray[np.floating[Any]], xsize: float) -> None:
         self.arr = arr
         self.yres, self.xres = arr.shape
         self.xsize = xsize
@@ -28,7 +28,7 @@ class SpmImage:
 
     @property
     def shape(self) -> tuple[int, int]:
-        return self.arr.shape  # pyright: ignore[reportReturnType]
+        return cast(tuple[int, int], self.arr.shape)
 
     def plot(
         self, colormap: str, colorrange: tuple[float, float], show: bool = False
@@ -37,12 +37,12 @@ class SpmImage:
 
         vmin = np.percentile(self.arr, colorrange[0])
         vmax = np.percentile(self.arr, colorrange[1])
-        fig, ax = plt.subplots(figsize=(5, 5))  # pyright: ignore[reportUnknownMemberType]
-        _ = ax.imshow(  # pyright: ignore[reportUnknownMemberType]
+        fig, ax = plt.subplots(figsize=(5, 5))
+        _ = ax.imshow(
             self.arr,
             cmap=colormap,
-            vmin=vmin,  # pyright: ignore[reportArgumentType]
-            vmax=vmax,  # pyright: ignore[reportArgumentType]
+            vmin=vmin,
+            vmax=vmax,
             extent=(0, self.xres, 0, self.yres),
         )
         # plt.colorbar()
@@ -55,7 +55,7 @@ class SpmImage:
             box_alpha=0,
         )
         _ = ax.add_artist(scalebar)
-        ax.tick_params(  # pyright: ignore[reportUnknownMemberType]
+        ax.tick_params(
             left=False,
             bottom=False,
             labelleft=False,
@@ -67,7 +67,7 @@ class SpmImage:
         extent = ax.get_window_extent().transformed(
             fig.dpi_scale_trans.inverted()
         )
-        plt.savefig(png_bytes, bbox_inches=extent)  # pyright: ignore[reportUnknownMemberType]
+        plt.savefig(png_bytes, bbox_inches=extent)
         _ = png_bytes.seek(0)
 
         png_data_uri = "data:image/png;base64, " + base64.b64encode(
@@ -75,7 +75,7 @@ class SpmImage:
         ).decode("ascii")
 
         if show is True:
-            plt.show()  # pyright: ignore[reportUnknownMemberType]
+            plt.show()
 
         self.data_uri = png_data_uri
 
@@ -116,7 +116,7 @@ class SpmImage:
         least_squares = np.linalg.lstsq(
             coeff_matrix, self.arr.ravel(), rcond=-1
         )[0]
-        background: NDArray[np.floating[Any]] = (  # pyright: ignore[reportAny, reportExplicitAny]
+        background: NDArray[np.floating[Any]] = (
             least_squares[0] * np.ones(self.arr.shape)
             + least_squares[1] * x_coords
             + least_squares[2] * y_coords

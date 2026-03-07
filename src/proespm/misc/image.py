@@ -35,7 +35,7 @@ class Image(Measurement):
         return self.fileinfo.filename
 
     @override
-    def datetime(self) -> datetime:
+    def get_datetime(self) -> datetime:
         return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
 
     @override

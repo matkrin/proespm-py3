@@ -45,6 +45,7 @@ def test_error_topography():
     assert et.aux_2_unit == "nA/V"
     assert et.aux_2_label == "Setpoint"
 
+
 def test_fast_scan():
     fs = FastScan(str(FS))
     assert fs.aux_1_unit == "V"
@@ -52,7 +53,8 @@ def test_fast_scan():
     assert round(fs.aux_2, 2) == -2.18
     assert fs.aux_2_unit == "nA"
     assert fs.aux_2_label == "Setpoint"
-    
+
+
 def test_high_speed():
     hs = HighSpeed(str(HS))
     assert hs.aux_1_unit == "V/V"
@@ -60,6 +62,7 @@ def test_high_speed():
     assert round(hs.aux_2, 2) == -0.79
     assert hs.aux_2_unit == "nA/V"
     assert hs.aux_2_label == "Setpoint"
+
 
 def test_slow_image():
     si = SlowImage(str(SI))

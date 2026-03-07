@@ -9,8 +9,8 @@ from bokeh.embed import components
 from bokeh.plotting import figure
 from numpy._typing import NDArray
 
-from proespm.fileinfo import Fileinfo
 from proespm.config import Config
+from proespm.fileinfo import Fileinfo
 from proespm.measurement import Measurement
 
 
@@ -86,7 +86,7 @@ class XpsEis(Measurement):
         return self.fileinfo.filename
 
     @override
-    def datetime(self) -> datetime:
+    def get_datetime(self) -> datetime:
         return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
 
     @override
@@ -107,7 +107,7 @@ class XpsScan:
     def __init__(
         self,
         filepath: str,
-        xps_data: NDArray[Any],  # pyright: ignore[reportExplicitAny]
+        xps_data: NDArray[Any],
         scan_number: int,
         start: float,
         end: float,
@@ -157,8 +157,8 @@ class XpsScan:
             active_scroll="wheel_zoom",
             active_inspect="hover",
         )
-        plot.toolbar.logo = None  # pyright: ignore[reportAttributeAccessIssue]
+        plot.toolbar.logo = None  # ty:ignore[invalid-assignment]
         plot.background_fill_alpha = 0
         _ = plot.line(x, y)
-        plot.toolbar.active_scroll = "auto"  # pyright: ignore[reportAttributeAccessIssue]
+        plot.toolbar.active_scroll = "auto"  # ty:ignore[invalid-assignment]
         self.script, self.div = components(plot, wrap_script=True)

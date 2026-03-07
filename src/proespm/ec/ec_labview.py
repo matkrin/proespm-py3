@@ -68,12 +68,12 @@ class CvLabview(Measurement):
         self.u_start = self.data[0, 1]
 
         is_bias_valid = (
-            self.datetime().timestamp() > CvLabview.bias_format_change_time
+            self.get_datetime().timestamp() > CvLabview.bias_format_change_time
         )
         if is_bias_valid:
             self.u_bias_start = self.data[0, 4]
 
-        if np.sign(self.data[1, 1] - self.data[0, 1]) > 0:  # pyright: ignore[reportAny]
+        if np.sign(self.data[1, 1] - self.data[0, 1]) > 0:
             self.u_1 = float(np.min(self.data[:, 1]))
             self.u_2 = float(np.max(self.data[:, 1]))
 
@@ -105,25 +105,25 @@ class CvLabview(Measurement):
         y = self.data[:, 2]  # current
 
         # Initial scan direction
-        d0 = np.sign(x[1] - x[0])  # pyright: ignore[reportAny]
+        d0 = np.sign(x[1] - x[0])
         if d0 == 0:
             raise ValueError("Initial scan direction cannot be zero")
 
-        x0 = x[0]  # pyright: ignore[reportAny]
+        x0 = x[0]
         cycle_start_indices = [0]
 
         for i in range(1, len(x)):
-            dx = x[i] - x[i - 1]  # pyright: ignore[reportAny]
-            d = np.sign(dx)  # pyright: ignore[reportAny]
+            dx = x[i] - x[i - 1]
+            d = np.sign(dx)
 
             # Ignore zero steps, Crossing must happen in initial scan direction
             if d == 0 or d != d0:
                 continue
 
             if d0 > 0:
-                crossed = (x[i - 1] < x0 - tol) and (x[i] >= x0 - tol)  # pyright: ignore[reportAny]
+                crossed = (x[i - 1] < x0 - tol) and (x[i] >= x0 - tol)
             else:
-                crossed = (x[i - 1] > x0 + tol) and (x[i] <= x0 + tol)  # pyright: ignore[reportAny]
+                crossed = (x[i - 1] > x0 + tol) and (x[i] <= x0 + tol)
 
             if crossed:
                 cycle_start_indices.append(i)
@@ -155,7 +155,7 @@ class CvLabview(Measurement):
         return self.fileinfo.filename
 
     @override
-    def datetime(self) -> datetime:
+    def get_datetime(self) -> datetime:
         return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
 
     @override
@@ -218,12 +218,12 @@ class CaLabview(Measurement):
         self.u_start = self.data[0, 1]
 
         is_bias_valid = (
-            self.datetime().timestamp() > CaLabview.bias_format_change_time
+            self.get_datetime().timestamp() > CaLabview.bias_format_change_time
         )
         if is_bias_valid:
             self.u_bias_start = self.data[0, 4]
 
-        if np.sign(self.data[1, 1] - self.data[0, 1]) > 0:  # pyright: ignore[reportAny]
+        if np.sign(self.data[1, 1] - self.data[0, 1]) > 0:
             self.u_1 = float(np.min(self.data[:, 1]))
             self.u_2 = float(np.max(self.data[:, 1]))
 
@@ -287,7 +287,7 @@ class CaLabview(Measurement):
         return self.fileinfo.filename
 
     @override
-    def datetime(self) -> datetime:
+    def get_datetime(self) -> datetime:
         return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
 
     @override
@@ -347,7 +347,7 @@ class FftLabview(Measurement):
         return self.fileinfo.filename
 
     @override
-    def datetime(self) -> datetime:
+    def get_datetime(self) -> datetime:
         return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
 
     @override

@@ -4,7 +4,10 @@ from typing import Self, final, override
 import h5py
 
 from proespm.config import Config
-from proespm.fastspm.fastspm import read_corresponding_image, read_corresponding_par_file
+from proespm.fastspm.fastspm import (
+    read_corresponding_image,
+    read_corresponding_par_file,
+)
 from proespm.fileinfo import Fileinfo
 from proespm.measurement import Measurement
 
@@ -28,16 +31,26 @@ class ErrorTopography(Measurement):
         with h5py.File(filepath, "r") as f:
             self.attributes = dict(f.attrs)
 
-        self.aux_1 = float(self.attributes.get("Aux1.Value","0"))*float(self.attributes.get("Aux1.ConversionFactor","0")) * (2 * float(self.attributes.get("Aux1.InvertSignalIn","0")) - 1)
-        self.aux_1_unit = self.attributes.get("Aux1.Unit","")
-        self.aux_1_label = self.attributes.get("Aux1.Label","")
+        self.aux_1 = (
+            float(self.attributes.get("Aux1.Value", "0"))
+            * float(self.attributes.get("Aux1.ConversionFactor", "0"))
+            * (2 * float(self.attributes.get("Aux1.InvertSignalIn", "0")) - 1)
+        )
+        self.aux_1_unit = self.attributes.get("Aux1.Unit", "")
+        self.aux_1_label = self.attributes.get("Aux1.Label", "")
 
-        self.aux_2 = float(self.attributes.get("Aux2.Value","0"))*float(self.attributes.get("Aux2.ConversionFactor","0")) * (2 * float(self.attributes.get("Aux2.InvertSignalIn","0")) - 1)
-        self.aux_2_unit = self.attributes.get("Aux2.Unit","")
-        self.aux_2_label = self.attributes.get("Aux2.Label","")
+        self.aux_2 = (
+            float(self.attributes.get("Aux2.Value", "0"))
+            * float(self.attributes.get("Aux2.ConversionFactor", "0"))
+            * (2 * float(self.attributes.get("Aux2.InvertSignalIn", "0")) - 1)
+        )
+        self.aux_2_unit = self.attributes.get("Aux2.Unit", "")
+        self.aux_2_label = self.attributes.get("Aux2.Label", "")
 
-        self.time_per_pixel = self.attributes.get("PI.ControlTimeStep","")
-        self.time_per_pixel_unit = self.attributes.get("PI.ControlTimeStep.Unit","")
+        self.time_per_pixel = self.attributes.get("PI.ControlTimeStep", "")
+        self.time_per_pixel_unit = self.attributes.get(
+            "PI.ControlTimeStep.Unit", ""
+        )
 
         self.par = read_corresponding_par_file(filepath)
 
@@ -46,8 +59,8 @@ class ErrorTopography(Measurement):
         return self.fileinfo.filename
 
     @override
-    def datetime(self) -> datetime:
-        time_start = self.attributes["ExperimentInfo.TimeStart"]  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
+    def get_datetime(self) -> datetime:
+        time_start = self.attributes["ExperimentInfo.TimeStart"]
         assert isinstance(time_start, str)  # Type assertion
 
         return (

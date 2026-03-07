@@ -32,7 +32,7 @@ class PalmSensSession(Measurement):
 
         with open(filepath, "r", encoding="utf-16") as f:
             content = f.read()
-            self.parsed: dict[Hashable, Any] = json.loads(content[:-1])  # pyright: ignore[reportExplicitAny]
+            self.parsed: dict[Hashable, Any] = json.loads(content[:-1])
 
         title = cast(str, self.parsed["Measurements"][0]["Title"])
         self.session_type: PalmSensType = PalmSensType(title)
@@ -51,30 +51,30 @@ class PalmSensSession(Measurement):
         self.data: NDArray[np.float64] = self._get_data()
 
     def _get_data(self) -> NDArray[np.float64]:
-        dataset_values = self.parsed["Measurements"][0]["DataSet"]["Values"]  # pyright: ignore[reportAny]
+        dataset_values = self.parsed["Measurements"][0]["DataSet"]["Values"]
 
         match self.session_type:
             case PalmSensType.EIS:
-                z_re = [x["V"] for x in dataset_values[4]["DataValues"]]  # pyright: ignore[reportAny]
-                z_im = [x["V"] for x in dataset_values[5]["DataValues"]]  # pyright: ignore[reportAny]
+                z_re = [x["V"] for x in dataset_values[4]["DataValues"]]
+                z_im = [x["V"] for x in dataset_values[5]["DataValues"]]
                 return np.array([z_re, z_im]).T
 
             case PalmSensType.CV:
                 data: list[list[float]] = []
-                for values_arr in dataset_values:  # pyright: ignore[reportAny]
+                for values_arr in dataset_values:
                     values: list[float] = []
-                    for v in values_arr["DataValues"]:  # pyright: ignore[reportAny]
-                        values.append(v["V"])  # pyright: ignore[reportAny]
+                    for v in values_arr["DataValues"]:
+                        values.append(v["V"])
 
                     data.append(values)
 
                 return np.array(data).T
 
             case PalmSensType.LSV | PalmSensType.CA | PalmSensType.CP:
-                time = [x["V"] for x in dataset_values[0]["DataValues"]]  # pyright: ignore[reportAny]
-                potential = [x["V"] for x in dataset_values[1]["DataValues"]]  # pyright: ignore[reportAny]
-                current = [x["V"] for x in dataset_values[2]["DataValues"]]  # pyright: ignore[reportAny]
-                charge = [x["V"] for x in dataset_values[3]["DataValues"]]  # pyright: ignore[reportAny]
+                time = [x["V"] for x in dataset_values[0]["DataValues"]]
+                potential = [x["V"] for x in dataset_values[1]["DataValues"]]
+                current = [x["V"] for x in dataset_values[2]["DataValues"]]
+                charge = [x["V"] for x in dataset_values[3]["DataValues"]]
 
                 return np.array([time, potential, current, charge]).T
 
@@ -151,7 +151,7 @@ class PalmSensSession(Measurement):
         return self.fileinfo.filename
 
     @override
-    def datetime(self) -> datetime:
+    def get_datetime(self) -> datetime:
         return self._datetime
 
     @override

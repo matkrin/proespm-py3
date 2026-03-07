@@ -10,7 +10,7 @@ from PyQt6.QtCore import (
     Qt,
     QThreadPool,
     pyqtSignal,
-    pyqtSlot,  # pyright: ignore[reportUnknownVariableType]
+    pyqtSlot,
 )
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
@@ -31,7 +31,11 @@ from PyQt6.QtWidgets import (
 )
 
 from proespm.config import DEFAULT_COLORMAP, Config
-from proespm.processing import create_html, create_measurement_objs, process_loop
+from proespm.processing import (
+    create_html,
+    create_measurement_objs,
+    process_loop,
+)
 
 
 @final
@@ -133,7 +137,7 @@ class MainGui(QMainWindow):
         colormap_layout = QHBoxLayout()
         colormap_lbl = QLabel("Colormap:")
         self.colormap = QComboBox()
-        self.colormap.addItems(plt.colormaps())  # pyright: ignore[reportUnknownMemberType]
+        self.colormap.addItems(plt.colormaps())
         self.colormap.setCurrentText(DEFAULT_COLORMAP)
         colormap_layout.addWidget(colormap_lbl)
         colormap_layout.addWidget(self.colormap)
@@ -166,7 +170,9 @@ class MainGui(QMainWindow):
         self.save_log_button = QPushButton("Save Log")
         log_button_layout.addStretch()  # Pushes button to the right
         log_button_layout.addWidget(self.save_log_button)
-        self._help = QLabel('<a href="https://matkrin.github.io/proespm-py3/">Help</a>')
+        self._help = QLabel(
+            '<a href="https://matkrin.github.io/proespm-py3/">Help</a>'
+        )
         self._help.setOpenExternalLinks(True)
         log_button_layout.addWidget(self._help)
         self.central_layout.addLayout(log_button_layout)
@@ -188,11 +194,11 @@ class MainGui(QMainWindow):
 
     def connect_signals(self):
         """Connect button clicks to their respective handler functions."""
-        _ = self.process_dir_button.clicked.connect(self.choose_directory)  # pyright: ignore[reportUnknownMemberType] `pyqtSlot` seems to be not typed
-        _ = self.output_button.clicked.connect(self.save_file)  # pyright: ignore[reportUnknownMemberType]
-        _ = self.save_log_button.clicked.connect(self.save_log)  # pyright: ignore[reportUnknownMemberType]
-        _ = self.exit_button.clicked.connect(self.exit_app)  # pyright: ignore[reportUnknownMemberType]
-        _ = self.start_button.clicked.connect(self.start_processing)  # pyright: ignore[reportUnknownMemberType]
+        _ = self.process_dir_button.clicked.connect(self.choose_directory)
+        _ = self.output_button.clicked.connect(self.save_file)
+        _ = self.save_log_button.clicked.connect(self.save_log)
+        _ = self.exit_button.clicked.connect(self.exit_app)
+        _ = self.start_button.clicked.connect(self.start_processing)
 
     @pyqtSlot()
     def choose_directory(self) -> None:
@@ -270,9 +276,9 @@ class MainGui(QMainWindow):
             colormap,
             colorrange,
         )
-        _ = processing_worker.signals.message.connect(self.log)  # pyright: ignore[reportUnknownMemberType]
-        _ = processing_worker.signals.finished.connect(self.processing_finished)  # pyright: ignore[reportUnknownMemberType]
-        self.threadpool.start(processing_worker)  # pyright: ignore[reportUnknownMemberType]
+        _ = processing_worker.signals.message.connect(self.log)
+        _ = processing_worker.signals.finished.connect(self.processing_finished)
+        self.threadpool.start(processing_worker)
 
     @pyqtSlot()
     def processing_finished(self):
