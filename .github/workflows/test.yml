@@ -23,8 +23,11 @@ jobs:
       - name: Run lint
         run: uv run ruff check src
 
-      # - name: Run typecheck
-      #   run: uv run ty check src
+      - name: Run typecheck
+        run: uv run ty check src
 
       - name: Run tests
         run: uv run pytest
+
+      - name: Build test report
+        run: uv run proespm ./tests/testdata
