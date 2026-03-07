@@ -1,13 +1,14 @@
 import argparse
-from dataclasses import dataclass
 import logging
-from pathlib import Path
-from pprint import pformat, pprint
 import sys
 import tomllib
+from dataclasses import dataclass
+from pathlib import Path
+from pprint import pformat
 from typing import cast
 
 import matplotlib.pyplot as plt
+
 from proespm.config import Config
 from proespm.processing import (
     create_html,
