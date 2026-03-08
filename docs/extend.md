@@ -44,7 +44,7 @@ class Measurement(ABC):
         ...
 
     @abstractmethod
-    def datetime(self) -> datetime.datetime:
+    def get_datetime(self) -> datetime.datetime:
         """Date and time of the measurement."""
         ...
 
@@ -63,7 +63,7 @@ The `__init__` constructor takes the full path to the measurement file as an
 argument and is reposible for reading the file. Any additional fields that can
 lated be used in the HTML template are defined here. `m_id` needs to return a
 unique identifier for that measurement as a string. It is common to use the
-filename without extenstion. The `datetime` method returns the date and time of
+filename without extenstion. The `get_datetime` method returns the date and time of
 the measurement as a
 [Python `datetime`](https://docs.python.org/3/library/datetime.html) object,
 which is used to order the measurements in the created HTML report
@@ -114,7 +114,7 @@ class Image(Measurement):
         return self.fileinfo.filename
 
     @override
-    def datetime(self) -> datetime:
+    def get_datetime(self) -> datetime:
         return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
 
     @override
@@ -148,7 +148,7 @@ folder in `src/proespm`. The filename must match the string returned by the
       </tr>
       <tr>
         <th>Date/time</th>
-        <td>{{ measurement.datetime().strftime("%Y-%m-%d <br> %H:%M:%S") }}</td>
+        <td>{{ measurement.get_datetime().strftime("%Y-%m-%d <br> %H:%M:%S") }}</td>
       </tr>
     </table>
   </div>
