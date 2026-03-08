@@ -1,4 +1,3 @@
-import os
 from datetime import datetime
 from typing import Self, override
 
@@ -40,7 +39,7 @@ class StmMul(Measurement):
 
     @override
     def get_datetime(self) -> datetime:
-        return datetime.fromtimestamp(os.path.getmtime(self.fileinfo.filepath))
+        return self.mulimages[0].datetime
 
     @override
     def process(self, config: Config) -> Self:
