@@ -1,4 +1,5 @@
 from __future__ import annotations
+from pathlib import Path
 
 import itertools
 import re
@@ -30,7 +31,7 @@ class NordicEc4(Measurement):
 
     controller = "Nordic EC4"
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
 
         self._datetime: datetime | None = None
@@ -46,7 +47,7 @@ class NordicEc4(Measurement):
         self.script: str | None = None
         self.div: str | None = None
 
-    def read_cv_data(self, filepath: str) -> NDArray[np.float64]:
+    def read_cv_data(self, filepath: Path) -> NDArray[np.float64]:
         return np.loadtxt(filepath, skiprows=96)
 
     def push_cv_data(self, other: NordicEc4) -> None:

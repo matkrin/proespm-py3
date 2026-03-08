@@ -1,4 +1,5 @@
 from __future__ import annotations
+from pathlib import Path
 
 import os
 from datetime import datetime
@@ -18,11 +19,11 @@ from proespm.measurement import Measurement
 class XpsEis(Measurement):
     """Class handling Omicron EIS XPS files (.txt)"""
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.data = self.read_xps_eis_txt(filepath)
 
-    def read_xps_eis_txt(self, filepath: str) -> list[XpsScan]:
+    def read_xps_eis_txt(self, filepath: Path) -> list[XpsScan]:
         """Reads the data of a .txt file from Omicron EIS software"""
         with open(filepath) as f:
             scan_num = f.read().count("Region")
@@ -106,7 +107,7 @@ class XpsScan:
 
     def __init__(
         self,
-        filepath: str,
+        filepath: Path,
         xps_data: NDArray[Any],
         scan_number: int,
         start: float,

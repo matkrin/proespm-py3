@@ -36,7 +36,9 @@ from proespm.spm.sm4 import StmSm4
 from proespm.spm.sxm import StmSxm
 
 
-def check_file_for_str(file: str, string_to_check: str, line_num: int) -> bool:
+def _check_file_for_str(
+    file: Path, string_to_check: str, line_num: int
+) -> bool:
     """Check if a file contains a string at a certain line number.
 
     Args:
@@ -48,19 +50,19 @@ def check_file_for_str(file: str, string_to_check: str, line_num: int) -> bool:
         True if `file` contains `string_to_check` at line `line_num`, False if not.
     """
     try:
-        with open(file) as f:
+        with file.open() as f:
             [next(f) for _ in range(line_num - 1)]
             line = f.readline()
-        return string_to_check in line
 
-    except Exception:
-        with open(file, encoding="utf-16") as f:
+    except UnicodeDecodeError:
+        with file.open(encoding="utf-16") as f:
             [next(f) for _ in range(line_num - 1)]
             line = f.readline()
-        return string_to_check in line
+
+    return string_to_check in line
 
 
-def import_files(process_dir: str) -> list[str]:
+def _import_files(process_dir: str) -> list[Path]:
     """Import files from a given directory and one level nested directories
     for processing.
 
@@ -70,18 +72,19 @@ def import_files(process_dir: str) -> list[str]:
     Returns:
         List of full paths to imported files.
     """
-    measurement_files: list[str] = []
+    measurement_files: list[Path] = []
     for entry in os.scandir(process_dir):
         if entry.is_dir():
             for sub_entry in os.scandir(entry):
                 if sub_entry.is_file() and sub_entry.path.lower().endswith(
                     ALLOWED_FILE_TYPES
                 ):
-                    measurement_files.append(sub_entry.path)
+                    measurement_files.append(Path(sub_entry.path))
+
         elif entry.is_file() and entry.path.lower().endswith(
             ALLOWED_FILE_TYPES
         ):
-            measurement_files.append(entry.path)
+            measurement_files.append(Path(entry.path))
 
     return sorted(measurement_files, key=lambda x: os.path.getctime(x))
 
@@ -104,44 +107,39 @@ def create_measurement_objs(
     last_ec4: NordicEc4 | None = None
 
     measurement_objects: list[Measurement] = []
-    for file_path in import_files(process_dir):
-        path = Path(file_path)
+    for path in _import_files(process_dir):
+        check = lambda s, n: _check_file_for_str(path, s, n)  # noqa: E731
         match path.suffix.lower():
             case ".z_mtrx":
-                obj = StmMatrix(file_path)
-                measurement_objects.append(obj)
+                obj = StmMatrix(path)
 
             case ".mul":
-                obj = StmMul(file_path)
-                measurement_objects.append(obj)
+                obj = StmMul(path)
 
             case ".sm4":
-                obj = StmSm4(file_path)
-                measurement_objects.append(obj)
+                obj = StmSm4(path)
 
             case ".sxm":
-                obj = StmSxm(file_path)
-                measurement_objects.append(obj)
+                obj = StmSxm(path)
 
             case ".nid":
-                obj = SpmNid(file_path)
-                measurement_objects.append(obj)
+                obj = SpmNid(path)
 
             case ".flm":
-                obj = StmFlm(file_path)
-                measurement_objects.append(obj)
+                obj = StmFlm(path)
 
-            case ".vms" | ".dat":
-                # TODO: check if vamas or dat file is really from Staib AES
-                obj = AesStaib(file_path)
-                measurement_objects.append(obj)
+            # case ".vms" if _check_file_for_str(file_path, "Staib SuperCMA", 3):
+            case ".vms" if check("Staib SuperCMA", 3):
+                obj = AesStaib(path)
 
-            case ".txt" if check_file_for_str(file_path, "Region", 1):
-                obj = XpsEis(file_path)
-                measurement_objects.append(obj)
+            case ".dat" if check("AES", 3):
+                obj = AesStaib(path)
 
-            case ".txt" if check_file_for_str(file_path, "EC4 File", 1):
-                obj = NordicEc4(file_path)
+            case ".txt" if check("Region", 1):
+                obj = XpsEis(path)
+
+            case ".txt" if check("EC4 File", 1):
+                obj = NordicEc4(path)
                 if path.stem.endswith("1"):
                     last_ec4 = obj
                     measurement_objects.append(last_ec4)
@@ -149,112 +147,87 @@ def create_measurement_objs(
                     assert last_ec4 is not None
                     last_ec4.push_cv_data(obj)
 
-            case ".txt" if check_file_for_str(
-                file_path, "Residual Gas Analyzer Software", 2
-            ) and check_file_for_str(file_path, "Analog Scan Setup:", 5):
-                obj = RgaMassScan(file_path)
-                measurement_objects.append(obj)
+                continue
 
-            case ".txt" if check_file_for_str(
-                file_path, "Residual Gas Analyzer Software", 2
-            ) and check_file_for_str(
-                file_path, "Pressure vs Time Scan Setup:", 5
+            case ".txt" if check("Residual Gas Analyzer Software", 2) and check(
+                "Analog Scan Setup:", 5
             ):
-                obj = RgaTimeSeries(file_path)
-                measurement_objects.append(obj)
+                obj = RgaMassScan(path)
 
-            case ".log":
-                # TODO: check if valid qcmb file
-                obj = Qcmb(file_path)
-                measurement_objects.append(obj)
+            case ".txt" if check("Residual Gas Analyzer Software", 2) and check(
+                "Pressure vs Time Scan Setup:", 5
+            ):
+                obj = RgaTimeSeries(path)
+
+            case ".log" if check("Rate (Å/s)", 2):
+                obj = Qcmb(path)
 
             case ".csv" if (
-                not check_file_for_str(file_path, "Scan rate", 1)
-                and not check_file_for_str(file_path, "Freq_Hz", 1)
-                and not check_file_for_str(file_path, "Date and time", 1)
-                and not check_file_for_str(file_path, "Date and time", 4)
+                not check("Scan rate", 1)
+                and not check("Freq_Hz", 1)
+                and not check("Date and time", 1)
+                and not check("Date and time", 4)
             ):
-                obj = CaLabview(file_path)
-                measurement_objects.append(obj)
+                obj = CaLabview(path)
 
-            case ".csv" if check_file_for_str(file_path, "Scan rate", 1):
-                obj = CvLabview(file_path)
-                measurement_objects.append(obj)
+            case ".csv" if check("Scan rate", 1):
+                obj = CvLabview(path)
 
-            case ".csv" if check_file_for_str(file_path, "Freq_Hz", 1):
-                obj = FftLabview(file_path)
-                measurement_objects.append(obj)
+            case ".csv" if check("Freq_Hz", 1):
+                obj = FftLabview(path)
 
-            case ".csv" if check_file_for_str(
-                file_path, "Chronopotentiometry", 4
-            ):
-                obj = CpPalmSens(file_path)
-                measurement_objects.append(obj)
+            case ".csv" if check("Chronopotentiometry", 4):
+                obj = CpPalmSens(path)
 
-            case ".csv" if check_file_for_str(
-                file_path, "Chronoamperometry", 4
-            ):
-                obj = CaPalmSens(file_path)
-                measurement_objects.append(obj)
+            case ".csv" if check("Chronoamperometry", 4):
+                obj = CaPalmSens(path)
 
-            case ".csv" if check_file_for_str(
-                file_path, "Cyclic Voltammetry", 4
-            ):
-                obj = CvPalmSens(file_path)
-                measurement_objects.append(obj)
+            case ".csv" if check("Cyclic Voltammetry", 4):
+                obj = CvPalmSens(path)
 
-            case ".csv" if check_file_for_str(
-                file_path, "Linear Sweep Voltammetry", 4
-            ):
-                obj = LsvPalmSens(file_path)
-                measurement_objects.append(obj)
+            case ".csv" if check("Linear Sweep Voltammetry", 4):
+                obj = LsvPalmSens(path)
 
-            case ".csv" if check_file_for_str(
-                file_path, "Impedance Spectroscopy", 2
-            ):
-                obj = EisPalmSens(file_path)
-                measurement_objects.append(obj)
+            case ".csv" if check("Impedance Spectroscopy", 2):
+                obj = EisPalmSens(path)
 
             case ".png" | ".jpg" | ".jpeg" if not path.with_suffix(
                 ".h5"
             ).exists():
                 if path.name.startswith("RF"):
-                    obj = ResonanceFrequency(file_path)
+                    obj = ResonanceFrequency(path)
                 else:
-                    obj = Image(file_path)
-
-                measurement_objects.append(obj)
+                    obj = Image(path)
 
             case ".lvm":
-                obj = Tpd(file_path)
-                measurement_objects.append(obj)
+                obj = Tpd(path)
 
             case ".pssession":
-                obj = PalmSensSession(file_path)
-                measurement_objects.append(obj)
+                obj = PalmSensSession(path)
 
             case ".h5":
                 if path.name.startswith("FS"):
-                    obj = FastScan(file_path)
+                    obj = FastScan(path)
                 elif path.name.startswith("AT"):
-                    obj = AtomTracking(file_path)
+                    obj = AtomTracking(path)
                 elif path.name.startswith("ET"):
-                    obj = ErrorTopography(file_path)
+                    obj = ErrorTopography(path)
                 elif path.name.startswith("SI"):
-                    obj = SlowImage(file_path)
+                    obj = SlowImage(path)
                 elif path.name.startswith("HS"):
-                    obj = HighSpeed(file_path)
+                    obj = HighSpeed(path)
                 else:
                     continue
 
-                measurement_objects.append(obj)
-
             case ".json":
-                objs = extract_elabftw(file_path)
+                objs = extract_elabftw(path)
                 measurement_objects += objs
+                continue
 
             case _:
                 continue
+
+        measurement_objects.append(obj)
 
     return measurement_objects
 
@@ -266,10 +239,10 @@ def process_loop(
 ) -> None:
     """Processing of `measurement_objects`.
 
-    This basically sorts `measurement_objects` according to their `datetime` method
+    This basically sorts `measurement_objects` according to their `get_datetime` method
     and calls the `process` method on every `Measurement` object.
     For certain objects that contain image data, a running number is added that is
-    used in the HTML report's modal.
+    used in the HTML report's image modal.
 
     Args:
         measurement_objects: List of Objects that implement `Measurement` which

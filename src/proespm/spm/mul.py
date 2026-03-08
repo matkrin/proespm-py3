@@ -1,3 +1,4 @@
+from pathlib import Path
 from datetime import datetime
 from typing import Self, override
 
@@ -18,7 +19,7 @@ class StmMul(Measurement):
         filepath (str): Full path to the .mul file
     """
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo: Fileinfo = Fileinfo(filepath)
         self.slide_num: int | None = None
 

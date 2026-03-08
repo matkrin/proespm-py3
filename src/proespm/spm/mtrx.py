@@ -1,11 +1,13 @@
 import os
 from datetime import datetime
+from pathlib import Path
 from typing import Self, final, override
-import numpy as np
-import access2thematrix
 
-from proespm.fileinfo import Fileinfo
+import access2thematrix
+import numpy as np
+
 from proespm.config import Config
+from proespm.fileinfo import Fileinfo
 from proespm.measurement import Measurement
 from proespm.spm.spm import SpmImage
 
@@ -24,13 +26,13 @@ class StmMatrix(Measurement):
         filepath (str): Full path to the .Z_mtrx file
     """
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.slide_num: int | None = None
 
         mtrx_data = access2thematrix.MtrxData()
 
-        self.traces, _ = mtrx_data.open(filepath)
+        self.traces, _ = mtrx_data.open(str(filepath))
         if self.traces == {}:
             raise NoTracesError(self.fileinfo.filename)
 

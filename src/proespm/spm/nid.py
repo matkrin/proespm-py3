@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from pathlib import Path
 from typing import Self, final, override
 
 import numpy as np
@@ -10,14 +11,13 @@ from proespm.fileinfo import Fileinfo
 from proespm.measurement import Measurement
 from proespm.spm.spm import SpmImage
 
-
 FLOAT_REGEX = re.compile(r"[+-]?([0-9]*[.])?[0-9]+")
 UNITS_REGEX = re.compile(r"[a-zA-Zµ°]+")
 
 
 @final
 class SpmNid(Measurement):
-    def __init__(self, filepath: str):
+    def __init__(self, filepath: Path):
         self.fileinfo = Fileinfo(filepath)
         self.slide_num: int | None = None
 

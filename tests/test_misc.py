@@ -10,7 +10,7 @@ RGA_TIMESERIES = testdata / "rga-timeseries-test.txt"
 
 
 def test_rga_massscan():
-    rga = RgaMassScan(str(RGA_MASSSCAN))
+    rga = RgaMassScan(RGA_MASSSCAN)
     assert rga.num_datapoints == 641
     assert rga.units == "Torr"
     assert rga.noise_floor == 2
@@ -20,7 +20,7 @@ def test_rga_massscan():
 
 
 def test_rga_timeseries():
-    rga = RgaTimeSeries(str(RGA_TIMESERIES))
+    rga = RgaTimeSeries(RGA_TIMESERIES)
     assert rga.active_channels == 10
     assert rga.units == "Torr"
     assert rga.sample_period == 1.00

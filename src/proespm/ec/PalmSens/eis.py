@@ -1,4 +1,5 @@
 from __future__ import annotations
+from pathlib import Path
 
 import re
 from datetime import datetime
@@ -28,7 +29,7 @@ class EisPalmSens(Measurement):
     controller = "PalmSens"
     ec_type = "Impedence Spectroscopy"
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo: Fileinfo = Fileinfo(filepath)
 
         self._datetime: datetime | None = None
@@ -38,7 +39,7 @@ class EisPalmSens(Measurement):
         self.script: str | None = None
         self.div: str | None = None
 
-    def read_cv_data(self, filepath: str) -> NDArray[np.float64]:
+    def read_cv_data(self, filepath: Path) -> NDArray[np.float64]:
         return np.genfromtxt(
             filepath,
             usecols=[4, 5],

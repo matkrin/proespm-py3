@@ -8,14 +8,14 @@ AES_VMS = testdata / "aes-staib-vms.vms"
 
 
 def test_aes():
-    parsed = AesStaib(str(AES_DAT))
+    parsed = AesStaib(AES_DAT)
     assert isinstance(parsed, AesStaib)
-    parsed = AesStaib(str(AES_VMS))
+    parsed = AesStaib(AES_VMS)
     assert isinstance(parsed, AesStaib)
 
 
 def test_aes_dat():
-    aes = AesStaib(str(AES_DAT))
+    aes = AesStaib(AES_DAT)
     assert aes.mode == "LockIn"
     assert aes.e_start
     assert round(aes.e_start) == 30
@@ -31,7 +31,7 @@ def test_aes_dat():
 
 
 def test_aes_vms():
-    aes = AesStaib(str(AES_VMS))
+    aes = AesStaib(AES_VMS)
     assert aes.mode == "analogue"
     assert aes.e_start
     assert round(aes.e_start) == 20

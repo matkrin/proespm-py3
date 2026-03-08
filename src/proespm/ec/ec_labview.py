@@ -1,6 +1,7 @@
 import io
 import os
 from datetime import datetime
+from pathlib import Path
 from typing import Self, final, override
 
 import numpy as np
@@ -25,7 +26,7 @@ class CvLabview(Measurement):
 
     bias_format_change_time = 1765843200
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
 
         self.type: str | None = None
@@ -52,7 +53,7 @@ class CvLabview(Measurement):
         self.script: str | None = None
         self.div: str | None = None
 
-    def read_cv_data(self, filepath: str) -> NDArray[np.float64]:
+    def read_cv_data(self, filepath: Path) -> NDArray[np.float64]:
         """Read the numeric data as numpy array"""
 
         with open(filepath, "rb") as f:
@@ -181,7 +182,7 @@ class CaLabview(Measurement):
 
     bias_format_change_time = 1765843200
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
 
         self.type: str | None = None
@@ -202,7 +203,7 @@ class CaLabview(Measurement):
         self.script: str | None = None
         self.div: str | None = None
 
-    def read_ca_data(self, filepath: str) -> NDArray[np.float64]:
+    def read_ca_data(self, filepath: Path) -> NDArray[np.float64]:
         """Read the numeric data as numpy array"""
 
         with open(filepath, "rb") as f:
@@ -310,7 +311,7 @@ class FftLabview(Measurement):
     x_axis_label = "Frequency [Hz]"
     y_axis_label = "PSD(I_t) [dB]"
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
 
         self.type: str | None = None
@@ -319,7 +320,7 @@ class FftLabview(Measurement):
         self.script = str | None
         self.div = str | None
 
-    def read_fft_data(self, filepath: str) -> NDArray[np.float64]:
+    def read_fft_data(self, filepath: Path) -> NDArray[np.float64]:
         """Read the numeric data as numpy array"""
 
         with open(filepath, "rb") as f:

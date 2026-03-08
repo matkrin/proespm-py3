@@ -1,3 +1,4 @@
+from pathlib import Path
 from datetime import datetime
 from typing import Self, final, override
 
@@ -21,12 +22,12 @@ class StmSm4(Measurement):
         filepath (str): Full path to the .sm4 files
     """
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.slide_num: int | None = None
         self.par5: str | None = None
 
-        self.sm4 = Sm4(filepath)
+        self.sm4 = Sm4(str(filepath))
 
         for channel in self.sm4.topography_channels():
             if channel.scan_direction == "right":

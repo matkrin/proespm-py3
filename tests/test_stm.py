@@ -15,7 +15,7 @@ AFM_NID = testdata / "afm-nanosurf-nid.nid"
 
 
 def test_stm_nid():
-    nid = SpmNid(str(STM_NID))
+    nid = SpmNid(STM_NID)
     assert nid.current == 1.00
     assert nid.bias == 600.0
     assert nid.xsize == 20.0
@@ -30,7 +30,7 @@ def test_stm_nid():
 
 
 def test_afm_nid():
-    nid = SpmNid(str(AFM_NID))
+    nid = SpmNid(AFM_NID)
     assert nid.current == 70.00
     assert nid.bias == 0.0
     assert nid.xsize == 7000.0
@@ -45,7 +45,7 @@ def test_afm_nid():
 
 
 def test_stm_matrix():
-    mtrx = StmMatrix(str(STM_MATRIX))
+    mtrx = StmMatrix(STM_MATRIX)
     assert mtrx.current == 0.30
     assert round(mtrx.bias, 2) == 0.60
     assert mtrx.xsize == 100.00
@@ -57,7 +57,7 @@ def test_stm_matrix():
 
 
 def test_stm_sm4():
-    mtrx = StmSm4(str(STM_RHK))
+    mtrx = StmSm4(STM_RHK)
     assert round(mtrx.current, 2) == 1.00
     assert round(mtrx.bias, 2) == 0.51
     assert round(mtrx.xsize, 2) == 80.00

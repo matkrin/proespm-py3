@@ -1,3 +1,4 @@
+from pathlib import Path
 import os
 from datetime import datetime
 from typing import Self, final, override
@@ -21,7 +22,7 @@ class StmFlm(StmMul):
 
     """
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         super().__init__(filepath)
 
         self.mp4_save_dir = os.path.join(self.fileinfo.dirname, "movies")

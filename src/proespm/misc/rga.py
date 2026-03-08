@@ -1,3 +1,4 @@
+from pathlib import Path
 import datetime
 import itertools
 from dataclasses import dataclass
@@ -18,7 +19,7 @@ from proespm.measurement import Measurement
 class RgaMassScan(Measurement):
     op_mode = "MASSSCAN"
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
 
         self.script: str | None = None
@@ -106,7 +107,7 @@ class RgaChannel:
 class RgaTimeSeries(Measurement):
     op_mode = "TIMESERIES"
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
 
         self.colors = itertools.cycle(Category10_10)

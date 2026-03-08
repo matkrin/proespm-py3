@@ -1,3 +1,4 @@
+from pathlib import Path
 import base64
 import os
 from datetime import datetime
@@ -12,7 +13,7 @@ from proespm.measurement import Measurement
 class Image(Measurement):
     """Class handeling image files (.png, .jpg, .jpeg)"""
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
 
         self.img_uri: str | None = None

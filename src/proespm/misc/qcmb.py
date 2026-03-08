@@ -1,3 +1,4 @@
+from pathlib import Path
 import os
 from datetime import datetime
 from typing import Self, final, override
@@ -14,7 +15,7 @@ from proespm.measurement import Measurement
 
 @final
 class Qcmb(Measurement):
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
 
         arr = np.genfromtxt(

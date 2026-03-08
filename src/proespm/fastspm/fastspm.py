@@ -6,8 +6,8 @@ import io
 FASTSPM_SCREENSHOT_EXTENSIONS = ("jpg", "jpeg")
 
 
-def read_corresponding_image(filepath: str, rotate: bool) -> str:
-    base_path = Path(filepath).with_suffix("")
+def read_corresponding_image(filepath: Path, rotate: bool) -> str:
+    base_path = filepath.with_suffix("")
 
     for ext in FASTSPM_SCREENSHOT_EXTENSIONS:
         path = base_path.with_suffix(f".{ext}")
@@ -31,8 +31,8 @@ def read_corresponding_image(filepath: str, rotate: bool) -> str:
         return f"data:image/{image_extension};base64,{encoded}"
 
 
-def read_corresponding_par_file(filepath: str) -> dict[str, str] | None:
-    par_file_path = Path(filepath).with_suffix(".par")
+def read_corresponding_par_file(filepath: Path) -> dict[str, str] | None:
+    par_file_path = filepath.with_suffix(".par")
 
     if not par_file_path.exists():
         return None

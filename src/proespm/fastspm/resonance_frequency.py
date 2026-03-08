@@ -1,3 +1,4 @@
+from pathlib import Path
 from datetime import datetime
 import os
 from typing import Self, final, override
@@ -19,7 +20,7 @@ class ResonanceFrequency(Measurement):
 
     op_mode = "RF"
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
 
         self.img_uri = read_corresponding_image(

@@ -1,3 +1,4 @@
+from pathlib import Path
 from datetime import datetime
 from typing import Self, TextIO, final, override
 
@@ -21,7 +22,7 @@ class AesStaib(Measurement):
         filepath (str): Path to .dat or .vms file
     """
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
 
         self._datetime = None
@@ -44,7 +45,7 @@ class AesStaib(Measurement):
         else:
             self.read_staib_dat(filepath)
 
-    def read_staib_vamas(self, filepath: str) -> None:
+    def read_staib_vamas(self, filepath: Path) -> None:
         """Uses vamas library to read AES Staib .vms files
 
         Args:
@@ -83,7 +84,7 @@ class AesStaib(Measurement):
         y_values = np.array(data.corresponding_variables[0].y_values)
         self.aes_data = np.column_stack((x_values, y_values))
 
-    def read_staib_dat(self, filepath: str) -> None:
+    def read_staib_dat(self, filepath: Path) -> None:
         """Reads the .dat file format of the STAIB CMA
 
         Args:

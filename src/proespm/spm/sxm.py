@@ -1,4 +1,5 @@
 from datetime import datetime
+from pathlib import Path
 from typing import Self, final, override
 
 import nanonispy as nap
@@ -19,7 +20,7 @@ class StmSxm(Measurement):
         filepath (str): Full path to the .sxm file
     """
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.slide_num: int | None = None
 

@@ -1,4 +1,5 @@
 from __future__ import annotations
+from pathlib import Path
 from typing import Any, Hashable, Self, final, override
 from proespm.config import Config
 from proespm.measurement import Measurement
@@ -9,7 +10,7 @@ import html
 from bs4 import BeautifulSoup
 
 
-def extract_elabftw(filepath: str) -> list[ElabFtw]:
+def extract_elabftw(filepath: Path) -> list[ElabFtw]:
     with open(filepath, "r") as f:
         json_content = json.load(f)
 

@@ -1,3 +1,4 @@
+from pathlib import Path
 import json
 from datetime import datetime, timedelta
 from enum import Enum
@@ -25,7 +26,7 @@ class PalmSensType(Enum):
 class PalmSensSession(Measurement):
     controller = "PalmSens"
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo: Fileinfo = Fileinfo(filepath)
         self.script: str | None = None
         self.div: str | None = None

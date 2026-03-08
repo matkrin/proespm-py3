@@ -1,3 +1,4 @@
+from pathlib import Path
 import itertools
 import os
 from datetime import datetime
@@ -17,7 +18,7 @@ from proespm.measurement import Measurement
 
 @final
 class Tpd(Measurement):
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
 
         self.script: str | None = None

@@ -1,3 +1,4 @@
+from pathlib import Path
 from datetime import datetime, timezone
 from typing import Self, final, override
 
@@ -22,7 +23,7 @@ class FastScan(Measurement):
 
     op_mode = "FS"
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
 
         self.img_uri: str | None = None

@@ -18,7 +18,7 @@ SI = testdata / "fastspm" / "SI_250605_012.h5"
 
 
 def test_atom_tracking():
-    at = AtomTracking(str(AT))
+    at = AtomTracking(AT)
     assert round(at.aux_1, 2) == -2.23
     assert at.aux_1_unit == "V/V"
     assert at.aux_1_label == "Bias"
@@ -28,7 +28,7 @@ def test_atom_tracking():
 
 
 def test_atom_tracking_par():
-    par = AtomTracking(str(AT)).par
+    par = AtomTracking(AT).par
     assert par["E_WE_V"] == "-0.203 V"
     assert par["I_WE_A"] == "+1.816E-8 A"
     assert par["U_Tun_res_V"] == "+0.304 V"
@@ -37,7 +37,7 @@ def test_atom_tracking_par():
 
 
 def test_error_topography():
-    et = ErrorTopography(str(ET))
+    et = ErrorTopography(ET)
     assert round(et.aux_1, 2) == -2.23
     assert et.aux_1_unit == "V/V"
     assert et.aux_1_label == "Bias"
@@ -47,7 +47,7 @@ def test_error_topography():
 
 
 def test_fast_scan():
-    fs = FastScan(str(FS))
+    fs = FastScan(FS)
     assert fs.aux_1_unit == "V"
     assert fs.aux_1_label == "U_tun_res"
     assert round(fs.aux_2, 2) == -2.18
@@ -56,7 +56,7 @@ def test_fast_scan():
 
 
 def test_high_speed():
-    hs = HighSpeed(str(HS))
+    hs = HighSpeed(HS)
     assert hs.aux_1_unit == "V/V"
     assert hs.aux_1_label == "U_tun_res"
     assert round(hs.aux_2, 2) == -0.79
@@ -65,7 +65,7 @@ def test_high_speed():
 
 
 def test_slow_image():
-    si = SlowImage(str(SI))
+    si = SlowImage(SI)
     assert si.aux_1_unit == "V/V"
     assert si.aux_1_label == "Bias"
     assert round(si.aux_2, 2) == -22.26
