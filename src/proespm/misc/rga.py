@@ -31,11 +31,11 @@ class RgaMassScan(Measurement):
             for _ in range(4):
                 _ = next(f)
 
-            self.num_datapoints = f.readline().split(", ")[-1]
-            self.units = f.readline().split(", ")[-1]
-            self.noise_floor = f.readline().split(", ")[-1]
-            self.cem_status = f.readline().split(", ")[-1]
-            self.points_per_amu = f.readline().split(", ")[-1]
+            self.num_datapoints = int(f.readline().split(", ")[-1].strip())
+            self.units = f.readline().split(", ")[-1].strip()
+            self.noise_floor = int(f.readline().split(", ")[-1].strip())
+            self.cem_status = f.readline().split(", ")[-1].strip()
+            self.points_per_amu = int(f.readline().split(", ")[-1].strip())
 
             _skip_until_two_empty_lines(f)
             self.data = np.genfromtxt(f, delimiter=",", usecols=(0, 1))
@@ -120,11 +120,13 @@ class RgaTimeSeries(Measurement):
             for _ in range(4):
                 _ = next(f)
 
-            self.active_channels = f.readline().split(", ")[-1]
-            self.units = f.readline().split(", ")[-1]
+            self.active_channels = int(f.readline().split(", ")[-1].strip())
+            self.units = f.readline().split(", ")[-1].strip()
             self.sample_period, self.sample_period_unit = f.readline().split(
                 ", "
             )[1:]
+            self.sample_period = float(self.sample_period)
+            self.sample_period_unit = self.sample_period_unit.strip()
 
             line = f.readline()
             while "Start time" not in line:
