@@ -41,8 +41,8 @@ class SpmImage:
         _ = ax.imshow(
             self.arr,
             cmap=colormap,
-            vmin=vmin,
-            vmax=vmax,
+            vmin=vmin,  # ty:ignore[invalid-argument-type]
+            vmax=vmax,  # ty:ignore[invalid-argument-type]
             extent=(0, self.xres, 0, self.yres),
         )
         # plt.colorbar()

@@ -142,7 +142,7 @@ class CvLabview(Measurement):
         plot.set_x_axis_label(CvLabview.x_axis_label)
         plot.set_y_axis_label(CvLabview.y_axis_label)
 
-        for i, arr in enumerate(self.cycles):
+        for i, arr in enumerate(self.cycles):  # ty:ignore[unresolved-attribute]
             voltage = arr[0]
             current = arr[1]
 

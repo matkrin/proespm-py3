@@ -151,15 +151,15 @@ class XpsScan:
             height=540,
             x_axis_label="E_b / eV",
             y_axis_label="Intensity / arb. units",
-            x_range=x_range,
+            x_range=x_range,  # ty:ignore[invalid-argument-type]
             sizing_mode="scale_width",
             tools="reset, save, wheel_zoom, pan, box_zoom, hover, crosshair",
             active_drag="box_zoom",
             active_scroll="wheel_zoom",
             active_inspect="hover",
         )
-        plot.toolbar.logo = None  # ty:ignore[invalid-assignment]
+        plot.toolbar.logo = None
         plot.background_fill_alpha = 0
         _ = plot.line(x, y)
-        plot.toolbar.active_scroll = "auto"  # ty:ignore[invalid-assignment]
+        plot.toolbar.active_scroll = "auto"
         self.script, self.div = components(plot, wrap_script=True)

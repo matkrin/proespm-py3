@@ -53,9 +53,9 @@ class RgaMassScan(Measurement):
             active_scroll="wheel_zoom",
             active_inspect="hover",
         )
-        plot.toolbar.logo = None  # ty:ignore[invalid-assignment]
+        plot.toolbar.logo = None
         plot.background_fill_alpha = 0
-        plot.toolbar.active_scroll = "auto"  # ty:ignore[invalid-assignment]
+        plot.toolbar.active_scroll = "auto"
         _ = plot.line(
             self.data[:, 0],
             self.data[:, 1],
@@ -162,9 +162,9 @@ class RgaTimeSeries(Measurement):
             active_scroll="wheel_zoom",
             active_inspect="hover",
         )
-        plot.toolbar.logo = None  # ty:ignore[invalid-assignment]
+        plot.toolbar.logo = None
         plot.background_fill_alpha = 0
-        plot.toolbar.active_scroll = "auto"  # ty:ignore[invalid-assignment]
+        plot.toolbar.active_scroll = "auto"
 
         for i in range(signals.shape[1]):
             _ = plot.line(

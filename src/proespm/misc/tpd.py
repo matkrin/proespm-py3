@@ -66,7 +66,7 @@ class Tpd(Measurement):
             height=540,
             x_axis_label="Time / s",
             y_axis_label="Ion Current / A",
-            y_range=(y_min, y_max),
+            y_range=(y_min, y_max),  # ty:ignore[invalid-argument-type]
             # x_range=x_range,
             sizing_mode="scale_width",
             tools="reset, save, wheel_zoom, pan, box_zoom, hover, crosshair",
@@ -74,9 +74,9 @@ class Tpd(Measurement):
             active_scroll="wheel_zoom",
             active_inspect="hover",
         )
-        plot.toolbar.logo = None  # ty:ignore[invalid-assignment]
+        plot.toolbar.logo = None
         plot.background_fill_alpha = 0
-        plot.toolbar.active_scroll = "auto"  # ty:ignore[invalid-assignment]
+        plot.toolbar.active_scroll = "auto"
         for k, v in self.data.items():
             _ = plot.line(
                 time_data,
@@ -88,7 +88,7 @@ class Tpd(Measurement):
 
         # Second Axis (right) for Temperature
         second_y_range_name = "Temperature"
-        plot.extra_y_ranges[second_y_range_name] = Range1d(  # ty:ignore[invalid-assignment]
+        plot.extra_y_ranges[second_y_range_name] = Range1d(
             temperature_data.min() - 5,
             temperature_data.max() + 5,
         )

@@ -22,9 +22,9 @@ class EcPlot:
             active_scroll="wheel_zoom",
             active_inspect="hover",
         )
-        self.fig.toolbar.logo = None  # ty:ignore[invalid-assignment]
+        self.fig.toolbar.logo = None
         self.fig.background_fill_alpha = 0
-        self.fig.toolbar.active_scroll = "auto"  # ty:ignore[invalid-assignment]
+        self.fig.toolbar.active_scroll = "auto"
         self.colors = itertools.cycle(Category10_10)
         self.y_range_name = ""
 
@@ -35,10 +35,10 @@ class EcPlot:
         self.fig.yaxis.axis_label = label_text
 
     def set_y_range(self, min: float, max: float) -> None:
-        self.fig.y_range = Range1d(min, max)
+        self.fig.y_range = Range1d(start=min, end=max)
 
     def set_legend_location(self, location: str) -> None:
-        self.fig.legend.location = location
+        self.fig.legend.location = location  # ty:ignore[invalid-assignment]
 
     def plot_scatter(
         self,
@@ -57,7 +57,7 @@ class EcPlot:
         )
 
         if range_min is not None and range_max is not None:
-            self.fig.y_range = Range1d(range_min, range_max)
+            self.fig.y_range = Range1d(start=range_min, end=range_max)
 
     def plot_line(
         self,
@@ -74,7 +74,7 @@ class EcPlot:
         axis_label: str,
     ) -> None:
         self.y_range_name = y_range_name
-        self.fig.extra_y_ranges[y_range_name] = Range1d(range_min, range_max)  # ty:ignore[invalid-assignment]
+        self.fig.extra_y_ranges[y_range_name] = Range1d(start=range_min, end=range_max)
         ax2 = LinearAxis(y_range_name=y_range_name, axis_label=axis_label)
         self.fig.add_layout(ax2, "right")
 
