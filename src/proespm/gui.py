@@ -1,3 +1,4 @@
+from pathlib import Path
 import os
 import traceback
 from datetime import datetime
@@ -63,7 +64,7 @@ class ProcessingWorker(QRunnable):
     def run(self):
         process_dir = self.process_dir
         output_path = self.output_path
-        report_name = os.path.basename(process_dir)
+        report_name = Path(process_dir).name
 
         try:
             self.log(f"Start processing of {process_dir}")
@@ -213,7 +214,9 @@ class MainGui(QMainWindow):
         if dirname:
             self.process_dir_input.setText(dirname)
             self.log(f"Directory chosen: {dirname}")
-            self.output_input.setText(dirname + "_report.html")
+            self.output_input.setText(
+                dirname.rstrip("/").rstrip("\\") + "_report.html"
+            )
         else:
             self.log("No directory chosen.")
 
