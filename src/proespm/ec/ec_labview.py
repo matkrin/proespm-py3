@@ -100,7 +100,7 @@ class CvLabview(Measurement):
     def pointA_closer_pointB(
         self, reference: np.float64,
         pointA: np.float64, pointB: np.float64
-        ) -> bool:
+        ) -> np.bool[bool]:
 
         """ returns true if pointA is closer to reference than pointB """
 
