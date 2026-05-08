@@ -47,7 +47,7 @@ class CvLabview(Measurement):
 
         assert self.u_1 is not None and self.u_2 is not None  # Type assertion
 
-        tol = 0.002 * (self.u_1 - self.u_2)
+        tol = 0.002 * (self.u_2 - self.u_1)
         self.cycles = self.split_cycles(tol)
 
         self.script: str | None = None
@@ -74,7 +74,7 @@ class CvLabview(Measurement):
         if is_bias_valid:
             self.u_bias_start = self.data[0, 4]
 
-        if np.sign(self.data[1, 1] - self.data[0, 1]) > 0:
+        if np.sign(self.data[10, 1] - self.data[0, 1]) < 0:
             self.u_1 = float(np.min(self.data[:, 1]))
             self.u_2 = float(np.max(self.data[:, 1]))
 
@@ -97,6 +97,15 @@ class CvLabview(Measurement):
         )
         self.scanrate = self.data[0, 8]
 
+    def pointA_closer_pointB(
+        self, reference: np.float64,
+        pointA: np.float64, pointB: np.float64
+        ) -> bool:
+
+        """ returns true if pointA is closer to reference than pointB """
+
+        return abs(pointA - reference) < abs(pointB - reference)
+
     def split_cycles(
         self, tol: float = 0.0
     ) -> list[tuple[NDArray[np.float64], NDArray[np.float64]]]:
@@ -105,29 +114,28 @@ class CvLabview(Measurement):
         x = self.data[:, 1]  # voltage
         y = self.data[:, 2]  # current
 
-        # Initial scan direction
-        d0 = np.sign(x[1] - x[0])
-        if d0 == 0:
-            raise ValueError("Initial scan direction cannot be zero")
-
-        x0 = x[0]
         cycle_start_indices = [0]
 
-        for i in range(1, len(x)):
-            dx = x[i] - x[i - 1]
-            d = np.sign(dx)
+        start_point = x[0]
+        cycle_travel_size = (np.max(x) - np.min(x)) * 2
+        curr_travel = 0
 
-            # Ignore zero steps, Crossing must happen in initial scan direction
-            if d == 0 or d != d0:
-                continue
+        for i in range(1,len(x)):
+            if i < len(x)-1:
+                diff_curr_next_point = abs(x[i+1] - x[i])
 
-            if d0 > 0:
-                crossed = (x[i - 1] < x0 - tol) and (x[i] >= x0 - tol)
+                if curr_travel + diff_curr_next_point > 0.999 * cycle_travel_size and self.pointA_closer_pointB(start_point, x[i], x[i+1]):
+                    cycle_start_indices.append(i)
+                    curr_travel = 0
+                else:
+                    curr_travel += diff_curr_next_point
+            
             else:
-                crossed = (x[i - 1] > x0 + tol) and (x[i] <= x0 + tol)
-
-            if crossed:
-                cycle_start_indices.append(i)
+                if curr_travel > 0.5 * cycle_travel_size:
+                    cycle_start_indices.append(i)
+            
+        if len(cycle_start_indices) < 2:
+            cycle_start_indices.append(i)
 
         cycles: list[tuple[NDArray[np.float64], NDArray[np.float64]]] = []
         for i in range(len(cycle_start_indices) - 1):
