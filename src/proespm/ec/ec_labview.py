@@ -47,8 +47,7 @@ class CvLabview(Measurement):
 
         assert self.u_1 is not None and self.u_2 is not None  # Type assertion
 
-        tol = 0.002 * (self.u_2 - self.u_1)
-        self.cycles = self.split_cycles(tol)
+        self.cycles = self.split_cycles()
 
         self.script: str | None = None
         self.div: str | None = None
@@ -98,16 +97,14 @@ class CvLabview(Measurement):
         self.scanrate = self.data[0, 8]
 
     def pointA_closer_pointB(
-        self, reference: np.float64,
-        pointA: np.float64, pointB: np.float64
-        ) -> np.bool[bool]:
-
-        """ returns true if pointA is closer to reference than pointB """
+        self, reference: np.float64, pointA: np.float64, pointB: np.float64
+    ) -> np.bool:
+        """returns true if pointA is closer to reference than pointB"""
 
         return abs(pointA - reference) < abs(pointB - reference)
 
     def split_cycles(
-        self, tol: float = 0.0
+        self,
     ) -> list[tuple[NDArray[np.float64], NDArray[np.float64]]]:
         """Detect start/end of cycles and split data accordingly."""
 
@@ -120,20 +117,23 @@ class CvLabview(Measurement):
         cycle_travel_size = (np.max(x) - np.min(x)) * 2
         curr_travel = 0
 
-        for i in range(1,len(x)):
-            if i < len(x)-1:
-                diff_curr_next_point = abs(x[i+1] - x[i])
+        for i in range(1, len(x)):
+            if i < len(x) - 1:
+                diff_curr_next_point = abs(x[i + 1] - x[i])
 
-                if curr_travel + diff_curr_next_point > 0.999 * cycle_travel_size and self.pointA_closer_pointB(start_point, x[i], x[i+1]):
+                if (
+                    curr_travel + diff_curr_next_point
+                    > 0.999 * cycle_travel_size
+                    and self.pointA_closer_pointB(start_point, x[i], x[i + 1])
+                ):
                     cycle_start_indices.append(i)
                     curr_travel = 0
                 else:
                     curr_travel += diff_curr_next_point
-            
-            else:
-                if curr_travel > 0.5 * cycle_travel_size:
-                    cycle_start_indices.append(i)
-            
+
+            elif curr_travel > 0.5 * cycle_travel_size:
+                cycle_start_indices.append(i)
+
         if len(cycle_start_indices) < 2:
             cycle_start_indices.append(i)
 
