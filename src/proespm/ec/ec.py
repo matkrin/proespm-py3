@@ -74,7 +74,9 @@ class EcPlot:
         axis_label: str,
     ) -> None:
         self.y_range_name = y_range_name
-        self.fig.extra_y_ranges[y_range_name] = Range1d(start=range_min, end=range_max)
+        self.fig.extra_y_ranges[y_range_name] = Range1d(
+            start=range_min, end=range_max
+        )
         ax2 = LinearAxis(y_range_name=y_range_name, axis_label=axis_label)
         self.fig.add_layout(ax2, "right")
 
