@@ -18,8 +18,10 @@ from proespm.measurement import Measurement
 class CvLabview(Measurement):
     """Class handeling the CV files from self-written LabView software"""
 
+    measurement_family = "Electro chemistry"
+
     controller = "LabView"
-    ec_type = "Cyclic Voltammetry"
+    op_mode = "Cyclic Voltammetry"
 
     x_axis_label = "E_WE [V]"
     y_axis_label = "I_WE [A]"
@@ -181,8 +183,10 @@ class CvLabview(Measurement):
 class CaLabview(Measurement):
     """Class handling the CA files from self-written LabView software"""
 
+    measurement_family = "Electro chemistry"
+
     controller = "LabView"
-    ec_type = "Chronoamperometry"
+    op_mode = "Chronoamperometry"
 
     x_axis_label = "t [s]"
     y_axis_label = "I_WE [A]"
@@ -313,8 +317,10 @@ class CaLabview(Measurement):
 class FftLabview(Measurement):
     """Class handeling the FFT files from self-written LabView software"""
 
+    measurement_family = "Electro chemistry"
+
     controller = "LabView"
-    ec_type = "FFT"
+    op_mode = "FFT"
 
     x_axis_label = "Frequency [Hz]"
     y_axis_label = "PSD(I_t) [dB]"

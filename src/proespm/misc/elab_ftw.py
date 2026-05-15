@@ -28,6 +28,8 @@ def extract_elabftw(filepath: Path) -> list[ElabFtw]:
 
 @final
 class ElabFtw(Measurement):
+    measurement_family = "ElabFTW"
+
     def __init__(
         self,
         timestamp: datetime,

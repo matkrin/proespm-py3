@@ -22,6 +22,8 @@ class StmFlm(StmMul):
 
     """
 
+    measurement_family = "SPM"
+
     def __init__(self, filepath: Path) -> None:
         super().__init__(filepath)
 

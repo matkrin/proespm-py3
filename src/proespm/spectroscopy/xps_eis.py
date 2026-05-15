@@ -19,6 +19,8 @@ from proespm.measurement import Measurement
 class XpsEis(Measurement):
     """Class handling Omicron EIS XPS files (.txt)"""
 
+    measurement_family = "Spectroscopy"
+
     def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.data = self.read_xps_eis_txt(filepath)

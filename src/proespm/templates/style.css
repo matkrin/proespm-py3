@@ -76,8 +76,21 @@ tr:nth-child(even) {
     color: white;
 }
 
+/* COLLAPSABLE MEASUREMENT ROWS */
+summary {
+  margin: 20px;
+  list-style: none;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
 /* OVERVIEW */
-details {
+#overview_root {
     margin: 15px 20px;
     border-style: solid;
     border-width: 1px;
@@ -86,13 +99,14 @@ details {
     background-color: var(--row-bg-color);
 }
 
-details>summary {
+#overview_root>summary {
     cursor: pointer;
     padding: 15px 0 15px 20px;
     font-size: 1.2em;
+    margin: 0;
 }
 
-details>div {
+#overview_root>div {
     margin: 15px 20px 15px 20px;
 }
 

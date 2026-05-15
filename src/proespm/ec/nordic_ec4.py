@@ -29,6 +29,8 @@ RATE_REGEX = re.compile(r"Rate(\s+[\d.-]+)")
 class NordicEc4(Measurement):
     """Class for handling Nordic Electrochemistry EC4 files (.txt)"""
 
+    measurement_family = "Electro chemistry"
+
     controller = "Nordic EC4"
 
     def __init__(self, filepath: Path) -> None:
@@ -41,7 +43,7 @@ class NordicEc4(Measurement):
         self.scanrate: float | None = None
         self.read_params()
 
-        self.ec_type: str | None = None
+        self.op_mode: str | None = None
 
         self.data: list[NDArray[np.float64]] = [self.read_cv_data(filepath)]
         self.script: str | None = None
@@ -75,7 +77,7 @@ class NordicEc4(Measurement):
 
     def plot(self):
         # Unfortunately, we cannot tell the type by the file ifself, external info needed
-        if self.ec_type == "ca_ec4":
+        if self.op_mode == "ca_ec4":
             self.plot_ca()
             return
 

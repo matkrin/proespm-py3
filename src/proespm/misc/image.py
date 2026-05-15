@@ -13,6 +13,8 @@ from proespm.measurement import Measurement
 class Image(Measurement):
     """Class handeling image files (.png, .jpg, .jpeg)"""
 
+    measurement_family = "Image"
+
     def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
 

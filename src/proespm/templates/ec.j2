@@ -15,12 +15,12 @@
                 <td>{{ measurement.get_datetime().strftime("%Y-%m-%d") }} <br> {{ measurement.get_datetime().strftime("%H:%M:%S") }}</td>
             </tr>
             <tr>
-                <th>EC Type</th>
-                <td>{{ measurement.ec_type }}</td>
-            </tr>
-            <tr>
                 <th>Controller</th>
                 <td>{{ measurement.controller }}</td>
+            </tr>
+            <tr>
+                <th>Op. mode</th>
+                <td>{{ measurement.op_mode }}</td>
             </tr>
 
             {% if measurement.timestep %}
@@ -51,13 +51,13 @@
                     <td>{{ "%.2f"|format(measurement.u_start) }} V</td>
                 </tr>
 
-                {% if measurement.ec_type == 'Cyclic Voltammetry' %}
+                {% if measurement.op_mode == 'Cyclic Voltammetry' %}
                     <tr>
                         <th>E<sub>WE_1</sub> / E<sub>WE_2</sub></th>
                         <td>{{ "%.2f"|format(measurement.u_1) }} / {{ "%.2f"|format(measurement.u_2) }} V</td>
                     </tr>
 
-                {% elif measurement.ec_type == 'Chronoamperometry' %}
+                {% elif measurement.op_mode == 'Chronoamperometry' %}
                     <tr>
                         <th>E<sub>WE_max</sub> / E<sub>WE_min</sub></th>
                         <td>{{ "%.2f"|format(measurement.u_2) }} / {{ "%.2f"|format(measurement.u_1) }} V</td>
@@ -81,13 +81,13 @@
                     <td>{{ "%.2f"|format(measurement.u_bias_start) }} V</td>
                 </tr>
 
-                {% if measurement.ec_type == 'Cyclic Voltammetry' %}
+                {% if measurement.op_mode == 'Cyclic Voltammetry' %}
                     <tr>
                         <th>U<sub>b_1</sub> / U<sub>b_</sub></th>
                         <td>{{ "%.2f"|format(measurement.u_bias_1) }} / {{ "%.2f"|format(measurement.u_bias_2) }} V</td>
                     </tr>
 
-                {% elif measurement.ec_type == 'Chronoamperometry' %}
+                {% elif measurement.op_mode == 'Chronoamperometry' %}
                     <tr>
                         <th>U<sub>b_max</sub> / U<sub>b_min</sub></th>
                         <td>{{ "%.2f"|format(measurement.u_bias_2) }} / {{ "%.2f"|format(measurement.u_bias_1) }} V</td>

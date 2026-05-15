@@ -21,7 +21,7 @@ from proespm.fastspm.high_speed import HighSpeed
 from proespm.fastspm.resonance_frequency import ResonanceFrequency
 from proespm.fastspm.slow_image import SlowImage
 from proespm.measurement import Measurement
-from proespm.misc.elab_ftw import extract_elabftw
+from proespm.misc.elab_ftw import extract_elabftw, ElabFtw
 from proespm.misc.image import Image
 from proespm.misc.qcmb import Qcmb
 from proespm.misc.rga import RgaMassScan, RgaTimeSeries
@@ -303,6 +303,8 @@ def create_html(
         template_dir = os.path.join(os.path.dirname(__file__), "templates")
 
     env = Environment(loader=FileSystemLoader(template_dir))
+    env.globals["isinstance"] = isinstance
+    env.globals["ElabFTW"] = ElabFtw
 
     template = env.get_template("base_template.j2")
 

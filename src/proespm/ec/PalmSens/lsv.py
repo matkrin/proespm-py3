@@ -24,8 +24,10 @@ class LsvPalmSens(Measurement):
     (testfile: PS241105-13.csv)
     """
 
+    measurement_family = "Electro chemistry (PalmSens)"
+
     controller = "PalmSens"
-    ec_type = "Linear Sweep Voltammetry"
+    op_mode = "Linear Sweep Voltammetry"
 
     def __init__(self, filepath: Path) -> None:
         self.fileinfo: Fileinfo = Fileinfo(filepath)
