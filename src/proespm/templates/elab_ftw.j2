@@ -1,33 +1,43 @@
-<div class="measurement-row" style="border-color: limegreen; border-width: 2px">
-    <div style="float: left; width: 30%; padding: 20px">
-        <table style="width=100%">
+<div class="measurement-row" style="border-color: {{ measurement.border_color }}; border-style: {{ measurement.border_style }}; border-width: 2px; padding: 10px 20px;">
+    <details class="elab-entry">
+        <summary>{{ measurement.text | safe }}</summary>
+        <table style="text-align: left; margin-top: 12px;">
             <tr>
-                <th id="{{ measurement.m_id() }}">ID</th>
+                <th id="{{ measurement.m_id() }}" style="padding-right: 12px;">ID</th>
                 <td>{{ measurement.m_id() }}</td>
             </tr>
             <tr>
-                <th>Datetime</th>
-                <td>{{ measurement.datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
+                <th style="padding-right: 12px;">Datetime</th>
+                <td>{{ measurement.get_datetime().strftime("%Y-%m-%d %H:%M:%S") }}</td>
             </tr>
             <tr>
-                <th>Type</th>
+                <th style="padding-right: 12px;">Type</th>
                 <td>{{ measurement.type_ }}</td>
             </tr>
             <tr>
-                <th>Operator</th>
+                <th style="padding-right: 12px;">Owner</th>
                 <td>{{ measurement.operator }}</td>
             </tr>
             <tr>
-                <th>Team</th>
-                <td>{{ measurement.team }}</td>
+                <th style="padding-right: 12px;">Posted by</th>
+                <td>{{ measurement.initials }}</td>
             </tr>
             <tr>
-                <th>Tags</th>
+                <th style="padding-right: 12px;">elab-app</th>
+                <td>{{ measurement.app_version }}</td>
+            </tr>
+            {% if measurement.team %}
+            <tr>
+                <th style="padding-right: 12px;">Team</th>
+                <td>{{ measurement.team }}</td>
+            </tr>
+            {% endif %}
+            {% if measurement.tags %}
+            <tr>
+                <th style="padding-right: 12px;">Tags</th>
                 <td>{{ measurement.tags }}</td>
             </tr>
+            {% endif %}
         </table>
-    </div>
-    <div style="float: left; width: 40%;" >
-        <p style="font-size: 20px; text-align: justify">{{ measurement.text | safe }}</p>
-    </div>
+    </details>
 </div>
