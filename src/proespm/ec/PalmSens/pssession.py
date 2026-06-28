@@ -26,6 +26,8 @@ class PalmSensType(Enum):
 class PalmSensSession(Measurement):
     controller = "PalmSens"
 
+    measurement_family = "Electro chemistry (PalmSens)"
+
     def __init__(self, filepath: Path) -> None:
         self.fileinfo: Fileinfo = Fileinfo(filepath)
         self.script: str | None = None
@@ -37,7 +39,7 @@ class PalmSensSession(Measurement):
 
         title = cast(str, self.parsed["Measurements"][0]["Title"])
         self.session_type: PalmSensType = PalmSensType(title)
-        self.ec_type = self.session_type.value
+        self.op_mode = self.session_type.value
 
         timestamp_in_10e7: int = cast(
             int, self.parsed["Measurements"][0]["TimeStamp"]

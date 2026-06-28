@@ -17,6 +17,8 @@ from proespm.measurement import Measurement
 
 @final
 class RgaMassScan(Measurement):
+    measurement_family = "RGA MassScan"
+
     op_mode = "MASSSCAN"
 
     def __init__(self, filepath: Path) -> None:
@@ -106,6 +108,8 @@ class RgaChannel:
 @final
 class RgaTimeSeries(Measurement):
     op_mode = "TIMESERIES"
+
+    measurement_family = "RGA Timeseries"
 
     def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)

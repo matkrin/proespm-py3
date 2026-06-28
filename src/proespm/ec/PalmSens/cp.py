@@ -24,8 +24,10 @@ class CpPalmSens(Measurement):
     (testfile: PS241105-1.csv)
     """
 
+    measurement_family = "Electro chemistry (PalmSens)"
+
     controller = "PalmSens"
-    ec_type = "Chronopotentiometry"
+    op_mode = "Chronopotentiometry"
 
     def __init__(self, filepath: Path) -> None:
         self.fileinfo: Fileinfo = Fileinfo(filepath)

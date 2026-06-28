@@ -18,6 +18,8 @@ from proespm.measurement import Measurement
 
 @final
 class Tpd(Measurement):
+    measurement_family = "TPD"
+
     def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
 

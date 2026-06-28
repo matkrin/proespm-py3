@@ -20,6 +20,8 @@ class StmSxm(Measurement):
         filepath (str): Full path to the .sxm file
     """
 
+    measurement_family = "SPM"
+
     def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.slide_num: int | None = None

@@ -24,8 +24,10 @@ class CvPalmSens(Measurement):
     (testfile: PS241105-3.csv)
     """
 
+    measurement_family = "Electro chemistry (PalmSens)"
+
     controller = "PalmSens"
-    ec_type = "Cyclic Voltammetry"
+    op_mode = "Cyclic Voltammetry"
 
     def __init__(self, filepath: Path) -> None:
         self.fileinfo: Fileinfo = Fileinfo(filepath)

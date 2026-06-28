@@ -26,6 +26,8 @@ class StmMatrix(Measurement):
         filepath (str): Full path to the .Z_mtrx file
     """
 
+    measurement_family = "SPM"
+
     def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
         self.slide_num: int | None = None

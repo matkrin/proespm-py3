@@ -21,13 +21,14 @@
     <div class="navbar">
         <ul>
             <li id="menu"><i data-feather="menu"></i></li>
+            <li><button id="lab-book-btn" onclick="toggleLabBookView()">Lab Book View</button></li>
             <li ><a href="file:///{{ files_dir }}" >{{ title }}</a></li>
             <!-- <li class="navbar_li">{{ title }} - Report</li> -->
         </ul>
     </div>
 
     <!-- The collapsable overview grid, handeled by `overview.js` -->
-    <details open>
+    <details id="overview_root">
         <summary>Overview</summary>
         <div id="overview"></div>
     </details>
@@ -35,7 +36,26 @@
     <!-- Loop through the `measurement_objects` and choose the according template -->
     {% for measurement in measurement_objects %}
         {% if measurement.template_name is defined and measurement.template_name() %}
-            {% include measurement.template_name() %}
+            
+            {% if isinstance(measurement, ElabFTW) %}
+                <div id="{{ measurement.m_id() }}" class="elab-anchor">
+                {% include measurement.template_name() %}
+                </div>
+            {% else %}
+                <section id="{{ measurement.m_id() }}">
+                <details open>
+                <summary>
+                    {{ measurement.measurement_family }} -
+                    {{ measurement.__class__.__name__ }} -
+                    {{ measurement.controller ~ " - " if measurement.controller is defined and measurement.op_mode != None else "" }}
+                    {{ measurement.op_mode ~ " - " if measurement.op_mode is defined and measurement.op_mode != None else "" }}
+                    {{ measurement.fileinfo.filename }}
+                </summary>
+                {% include measurement.template_name() %}
+                </details>
+                </section>
+            {% endif %}
+            <hr />
         {% endif %}
     {% endfor %}
 
@@ -75,5 +95,6 @@
     <script>{% include 'overview.js' %}</script>
     <script>{% include 'modal.js' %}</script>
     <script>{% include 'top_button.js' %}</script>
+    <script>{% include 'toggle_expand.js' %}</script>
     <script>{% include 'sidebar.js' %}</script>
 </body>

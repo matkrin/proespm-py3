@@ -1,0 +1,758 @@
+{
+  "body_html": "<table>\n<tr><td>elab_app</td><td>https://github.com/ffelsen/elab_app</td><td></td><td></td></tr>\n<tr><th>ISO time<br>(ISO 8601)</th><th>Log<br>(newest to oldest)</th><th>Initials</th><th>App<br>version</th></tr>\n<tr><td>2026-05-27T08:51:56</td><td><p>pressures in the morning: STM=2.24e-10, Prep= 1.2e-9, LL=2.6e-8</p></td><td>nap</td><td>v3.2</td></tr>\n</table>",
+  "changelog": [
+    {
+      "created_at": "2026-05-27 08:52:05",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-26 09:04:52",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-22 08:52:17",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-21 10:58:33",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-20 13:46:28",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-05-20 09:11:00",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-19 10:50:17",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-05-18 16:12:31",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-05-18 13:24:58",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-05-15 18:24:20",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-15 18:24:08",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-15 18:24:04",
+      "target": "links",
+      "content": "Added link to resource: <a href=\"/database.php?mode=view&amp;id=20759\">W tip 260515</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-15 18:06:34",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-15 18:04:59",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-15 18:04:14",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-15 18:02:24",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-14 10:46:25",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-12 09:58:33",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-11 10:57:08",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-05-11 10:53:08",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-05-11 10:00:32",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-05-11 09:59:19",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-05-08 08:51:00",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-07 12:04:53",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-06 19:11:05",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-06 19:04:43",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-06 19:04:22",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-06 19:03:47",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-06 10:34:10",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-06 10:34:04",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-06 10:33:10",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-06 09:08:11",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-06 08:44:53",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-05 18:47:24",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-05 18:47:01",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-05 16:38:29",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-05 16:37:56",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-05 16:27:09",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-05 09:14:22",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-05 08:52:10",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-05 08:51:33",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-05 08:51:31",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-05 08:50:53",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-05 08:50:29",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-05 08:50:19",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-05 08:49:35",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-05 08:48:55",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-05 08:47:46",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-05 08:46:39",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-04 18:17:45",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-04 17:21:59",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-04 16:58:36",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-04 13:00:01",
+      "target": "links",
+      "content": "Added link to resource: <a href=\"/database.php?mode=view&amp;id=18381\">Fe3O4(100)</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-04 13:00:01",
+      "target": "links",
+      "content": "Added link to resource: <a href=\"/database.php?mode=view&amp;id=18380\">Fe2O3(012) TU Wien</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-05-04 13:00:01",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-04-21 15:20:14",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-04-21 15:12:02",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-21 13:56:53",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-21 13:53:58",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-21 13:53:48",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-21 12:31:01",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-21 12:10:47",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-21 12:07:51",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-21 11:52:16",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-20 15:28:54",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-20 15:09:02",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-04-20 14:57:24",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-04-20 14:46:43",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-04-20 13:52:01",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-20 09:30:33",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-17 10:49:13",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-17 10:32:11",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-15 17:54:28",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-04-14 08:52:06",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "User NAP-STM",
+      "userid": 521
+    },
+    {
+      "created_at": "2026-04-10 09:54:59",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-04-08 13:27:12",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-04-08 13:27:11",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-04-08 13:25:41",
+      "target": "links",
+      "content": "Added link to resource: <a href=\"/database.php?mode=view&amp;id=16452\">TiO2(110) #2.11 LR</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-04-08 13:25:41",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-04-08 09:35:49",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-04-08 09:34:57",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-04-07 16:24:47",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-07 16:24:46",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-07 13:46:26",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-07 13:46:20",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-07 13:45:22",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-07 13:44:58",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-07 13:44:46",
+      "target": "date",
+      "content": "2026-03-24",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-07 13:23:08",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-07 08:47:14",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-02 20:37:37",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-01 09:01:08",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-04-01 09:00:44",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Marina de la Higuera",
+      "userid": 512
+    },
+    {
+      "created_at": "2026-03-24 17:21:40",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    },
+    {
+      "created_at": "2026-03-24 17:20:58",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=16450\">See revisions page.</a>",
+      "fullname": "Lorenz Falling",
+      "userid": 509
+    }
+  ],
+  "comments": [],
+  "compounds_links": [],
+  "created_at": "2026-03-24 16:34:10",
+  "elabid": "20260324-5f6be606e1a15f20a3725dcb79645083efb89120",
+  "experiments_links": [],
+  "firstname": "Lorenz",
+  "fullname": "Lorenz Falling",
+  "hide_main_text": 0,
+  "id": 16450,
+  "items_links": [
+    {
+      "entityid": 16452,
+      "title": "TiO2(110) #2.11 LR",
+      "is_bookable": 0,
+      "link_state": 1,
+      "page": "database.php",
+      "type": "items"
+    },
+    {
+      "entityid": 18380,
+      "title": "Fe2O3(012) #626 (TU Wien)",
+      "is_bookable": 0,
+      "link_state": 1,
+      "page": "database.php",
+      "type": "items"
+    },
+    {
+      "entityid": 18381,
+      "title": "Fe3O4(100) #3.2",
+      "is_bookable": 0,
+      "link_state": 1,
+      "page": "database.php",
+      "type": "items"
+    }
+  ],
+  "lastchangeby": 521,
+  "lastname": "Falling",
+  "locked": 0,
+  "modified_at": "2026-05-27 08:52:05",
+  "page": "database",
+  "related_experiments_links": [
+    {
+      "entityid": 4729,
+      "title": "Ni on TiO2(110)",
+      "link_state": 1,
+      "page": "experiments.php",
+      "type": "experiments"
+    },
+    {
+      "entityid": 4731,
+      "title": "Pt on TiO2(110)",
+      "link_state": 1,
+      "page": "experiments.php",
+      "type": "experiments"
+    },
+    {
+      "entityid": 4751,
+      "title": "elab_app testing",
+      "link_state": 1,
+      "page": "experiments.php",
+      "type": "experiments"
+    },
+    {
+      "entityid": 5310,
+      "title": "Fe2O3(012)",
+      "link_state": 1,
+      "page": "experiments.php",
+      "type": "experiments"
+    }
+  ],
+  "related_items_links": [],
+  "sharelink": "https://eln.ub.tum.de/database.php?mode=view&id=16450",
+  "steps": [],
+  "timestamped": 0,
+  "type": "items",
+  "uploads": [],
+  "body": "<table>\n<tr><td>elab_app</td><td>https://github.com/ffelsen/elab_app</td><td></td><td></td></tr>\n<tr><th>ISO time<br>(ISO 8601)</th><th>Log<br>(newest to oldest)</th><th>Initials</th><th>App<br>version</th></tr>\n<tr><td>2026-05-27T08:51:56</td><td><p>pressures in the morning: STM=2.24e-10, Prep= 1.2e-9, LL=2.6e-8</p></td><td>nap</td><td>v3.2</td></tr>\n</table>",
+  "canread_base": 30.0,
+  "canread": "{\"teams\": [], \"users\": [], \"teamgroups\": []}",
+  "canwrite_base": 30.0,
+  "canwrite": "{\"teams\": [], \"users\": [], \"teamgroups\": []}",
+  "date": "2026-03-24",
+  "content_type": 1,
+  "rating": 0,
+  "state": 1,
+  "title": "NAP-STM",
+  "template": -1,
+  "userid": 509
+}

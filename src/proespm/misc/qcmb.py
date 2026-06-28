@@ -15,6 +15,8 @@ from proespm.measurement import Measurement
 
 @final
 class Qcmb(Measurement):
+    measurement_family = "Qcmb"
+
     def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
 

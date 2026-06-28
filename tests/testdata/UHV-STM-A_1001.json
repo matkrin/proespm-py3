@@ -1,0 +1,90 @@
+{
+  "body_html": "<table>\n<tr><td>elab_app</td><td>https://github.com/ffelsen/elab_app</td><td></td><td></td></tr>\n<tr><th>ISO time<br>(ISO 8601)</th><th>Log<br>(newest to oldest)</th><th>Initials</th><th>App<br>version</th></tr>\n<tr><td>2026-02-21T09:14:22</td><td><p>Morning pressures: Analysis=1.8e-10 mbar, Prep=4.2e-9 mbar, LL=3.1e-8 mbar. System stable.</p></td><td>js</td><td>v3.2</td></tr>\n<tr><td>2026-02-10T10:30:05</td><td><p>Exchanged tip (W wire, electrochemically etched). First approach on Au(111) reference successful. Atomic steps clearly resolved.</p></td><td>js</td><td>v3.2</td></tr>\n<tr><td>2026-01-15T08:45:33</td><td><p>New sample loaded into prep chamber. Starting degassing at 450 K for 2 h before transfer.</p></td><td>ac</td><td>v3.2</td></tr>\n<tr><td>2025-11-20T14:22:10</td><td><p>Bakeout finished after 72 h at 120 C. Base pressure recovered to 2.1e-10 mbar in analysis chamber.</p></td><td>js</td><td>v3.2</td></tr>\n<tr><td>2025-09-08T09:05:44</td><td><p>Pressures this morning: Analysis=2.0e-10 mbar, Prep=5.8e-9 mbar, LL=2.9e-8 mbar.</p></td><td>ac</td><td>v3.2</td></tr>\n<tr><td>2025-06-17T11:33:27</td><td><p>Tip characterization on clean reference surface: lateral resolution ~2 A, noise floor 3 pm. Good imaging condition confirmed.</p></td><td>js</td><td>v3.2</td></tr>\n<tr><td>2025-03-04T10:15:02</td><td><p>Sample B transferred from prep to analysis chamber. Temperature at transfer: 310 K. First scan shows clean terraces.</p></td><td>ac</td><td>v3.2</td></tr>\n<tr><td>2024-12-11T09:02:18</td><td><p>Morning pressures: Analysis=1.9e-10 mbar, Prep=4.5e-9 mbar. Slight uptick in prep chamber—checked ion gauge, reading nominal.</p></td><td>js</td><td>v3.2</td></tr>\n<tr><td>2024-08-22T13:45:55</td><td><p>Calibrated scanner piezo using Au(111) monoatomic step height (2.35 A). x/y calibration within 2% of nominal value.</p></td><td>js</td><td>v3.2</td></tr>\n<tr><td>2024-04-30T08:58:11</td><td><p>Tip flashed at 800 K for 10 s. Imaging quality improved noticeably, tunnelling noise reduced.</p></td><td>ac</td><td>v3.2</td></tr>\n<tr><td>2024-01-10T11:00:05</td><td><p>[elab-app] Experiment <a href=\"https://eln.example.org/experiments.php?mode=view&amp;id=42\" target=\"_blank\" rel=\"noreferrer noopener\">Surface Study 2024</a> tagged this resource. Posted by ac.</p></td><td>#</td><td>v3.2</td></tr>\n<tr><td>2023-11-14T10:20:36</td><td><p>Sample A loaded. Sputter cycle: Ar+ at 1 keV, 1e-5 mbar Ar, 20 min. Anneal at 900 K for 15 min. Surface looks clean in LEED.</p></td><td>js</td><td>v3.2</td></tr>\n<tr><td>2023-07-03T09:11:49</td><td><p>Pressures: Analysis=2.2e-10 mbar, Prep=6.1e-9 mbar. No anomalies.</p></td><td>ac</td><td>v3.2</td></tr>\n<tr><td>2023-02-20T11:04:22</td><td><p>Tip exchange after accidental crash. New tip installed and approached at 50 pA / 1.0 V. Feedback stable.</p></td><td>js</td><td>v3.2</td></tr>\n<tr><td>2022-09-12T14:33:08</td><td><p>Started bakeout of load-lock. Temperature ramp 2 K/min up to 120 C. Estimated duration 48 h.</p></td><td>ac</td><td>v3.2</td></tr>\n<tr><td>2022-04-05T09:45:17</td><td><p>Good imaging session. Scan range 100x100 nm, 256x256 px, 200 ms/line. Step-and-terrace structure well resolved, step height 2.0 A.</p></td><td>js</td><td>v3.2</td></tr>\n<tr><td>2021-10-18T10:22:41</td><td><p>Pressures: Analysis=1.7e-10 mbar, Prep=3.9e-9 mbar. System performing well after filament replacement.</p></td><td>ac</td><td>v3.1</td></tr>\n<tr><td>2021-05-07T13:55:29</td><td><p>Characterised new tip on reference crystal. Single-atom resolution achieved at 200 pA / 500 mV. Ready for experiment.</p></td><td>js</td><td>v3.1</td></tr>\n<tr><td>2020-11-23T09:08:14</td><td><p>Sample transferred to analysis chamber. No contamination visible in first overview scan (500x500 nm).</p></td><td>ac</td></tr>\n<tr><td>2020-06-16T11:30:55</td><td><p>Pressures: Analysis=2.3e-10 mbar, Prep=7.2e-9 mbar. Turbo pump replaced last week, system still recovering.</p></td><td>js</td></tr>\n<tr><td>2020-01-09T08:52:07</td><td><p>System startup after annual maintenance. All gauges reading nominal. Starting conditioning scan on reference sample.</p></td><td>js</td></tr>\n</table>",
+  "changelog": [
+    {
+      "created_at": "2026-02-21 09:14:35",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=1001\">See revisions page.</a>",
+      "fullname": "Jane Smith",
+      "userid": 1
+    },
+    {
+      "created_at": "2026-02-10 10:30:20",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=1001\">See revisions page.</a>",
+      "fullname": "Jane Smith",
+      "userid": 1
+    },
+    {
+      "created_at": "2026-01-15 08:45:50",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=1001\">See revisions page.</a>",
+      "fullname": "Alex Chen",
+      "userid": 2
+    },
+    {
+      "created_at": "2024-01-10 11:00:10",
+      "target": "links",
+      "content": "Added link to experiment: <a href=\"/experiments.php?mode=view&amp;id=42\">Surface Study 2024</a>",
+      "fullname": "Alex Chen",
+      "userid": 2
+    },
+    {
+      "created_at": "2020-01-08 15:30:00",
+      "target": "body",
+      "content": "Depending on your instance configuration, the change in the body is possibly recorded in the revisions. <a href=\"revisions.php?type=items&amp;item_id=1001\">See revisions page.</a>",
+      "fullname": "Jane Smith",
+      "userid": 1
+    }
+  ],
+  "comments": [],
+  "compounds_links": [],
+  "created_at": "2020-01-08 15:30:00",
+  "elabid": "20200108-a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+  "experiments_links": [
+    {
+      "entityid": 42,
+      "title": "Surface Study 2024",
+      "link_state": 1,
+      "page": "experiments.php",
+      "type": "experiments"
+    }
+  ],
+  "firstname": "Jane",
+  "fullname": "Jane Smith",
+  "hide_main_text": 0,
+  "id": 1001,
+  "items_links": [],
+  "lastchangeby": 1,
+  "lastname": "Smith",
+  "locked": 0,
+  "modified_at": "2026-02-21 09:14:35",
+  "page": "database",
+  "related_experiments_links": [
+    {
+      "entityid": 42,
+      "title": "Surface Study 2024",
+      "link_state": 1,
+      "page": "experiments.php",
+      "type": "experiments"
+    }
+  ],
+  "related_items_links": [],
+  "sharelink": "https://eln.example.org/database.php?mode=view&id=1001",
+  "steps": [],
+  "timestamped": 0,
+  "type": "items",
+  "uploads": [],
+  "body": "<table>\n<tr><td>elab_app</td><td>https://github.com/ffelsen/elab_app</td><td></td><td></td></tr>\n<tr><th>ISO time<br>(ISO 8601)</th><th>Log<br>(newest to oldest)</th><th>Initials</th><th>App<br>version</th></tr>\n<tr><td>2026-02-21T09:14:22</td><td><p>Morning pressures: Analysis=1.8e-10 mbar, Prep=4.2e-9 mbar, LL=3.1e-8 mbar. System stable.</p></td><td>js</td><td>v3.2</td></tr>\n<tr><td>2026-02-10T10:30:05</td><td><p>Exchanged tip (W wire, electrochemically etched). First approach on Au(111) reference successful. Atomic steps clearly resolved.</p></td><td>js</td><td>v3.2</td></tr>\n<tr><td>2026-01-15T08:45:33</td><td><p>New sample loaded into prep chamber. Starting degassing at 450 K for 2 h before transfer.</p></td><td>ac</td><td>v3.2</td></tr>\n<tr><td>2025-11-20T14:22:10</td><td><p>Bakeout finished after 72 h at 120 C. Base pressure recovered to 2.1e-10 mbar in analysis chamber.</p></td><td>js</td><td>v3.2</td></tr>\n<tr><td>2025-09-08T09:05:44</td><td><p>Pressures this morning: Analysis=2.0e-10 mbar, Prep=5.8e-9 mbar, LL=2.9e-8 mbar.</p></td><td>ac</td><td>v3.2</td></tr>\n<tr><td>2025-06-17T11:33:27</td><td><p>Tip characterization on clean reference surface: lateral resolution ~2 A, noise floor 3 pm. Good imaging condition confirmed.</p></td><td>js</td><td>v3.2</td></tr>\n<tr><td>2025-03-04T10:15:02</td><td><p>Sample B transferred from prep to analysis chamber. Temperature at transfer: 310 K. First scan shows clean terraces.</p></td><td>ac</td><td>v3.2</td></tr>\n<tr><td>2024-12-11T09:02:18</td><td><p>Morning pressures: Analysis=1.9e-10 mbar, Prep=4.5e-9 mbar. Slight uptick in prep chamber—checked ion gauge, reading nominal.</p></td><td>js</td><td>v3.2</td></tr>\n<tr><td>2024-08-22T13:45:55</td><td><p>Calibrated scanner piezo using Au(111) monoatomic step height (2.35 A). x/y calibration within 2% of nominal value.</p></td><td>js</td><td>v3.2</td></tr>\n<tr><td>2024-04-30T08:58:11</td><td><p>Tip flashed at 800 K for 10 s. Imaging quality improved noticeably, tunnelling noise reduced.</p></td><td>ac</td><td>v3.2</td></tr>\n<tr><td>2024-01-10T11:00:05</td><td><p>[elab-app] Experiment <a href=\"https://eln.example.org/experiments.php?mode=view&amp;id=42\" target=\"_blank\" rel=\"noreferrer noopener\">Surface Study 2024</a> tagged this resource. Posted by ac.</p></td><td>#</td><td>v3.2</td></tr>\n<tr><td>2023-11-14T10:20:36</td><td><p>Sample A loaded. Sputter cycle: Ar+ at 1 keV, 1e-5 mbar Ar, 20 min. Anneal at 900 K for 15 min. Surface looks clean in LEED.</p></td><td>js</td><td>v3.2</td></tr>\n<tr><td>2023-07-03T09:11:49</td><td><p>Pressures: Analysis=2.2e-10 mbar, Prep=6.1e-9 mbar. No anomalies.</p></td><td>ac</td><td>v3.2</td></tr>\n<tr><td>2023-02-20T11:04:22</td><td><p>Tip exchange after accidental crash. New tip installed and approached at 50 pA / 1.0 V. Feedback stable.</p></td><td>js</td><td>v3.2</td></tr>\n<tr><td>2022-09-12T14:33:08</td><td><p>Started bakeout of load-lock. Temperature ramp 2 K/min up to 120 C. Estimated duration 48 h.</p></td><td>ac</td><td>v3.2</td></tr>\n<tr><td>2022-04-05T09:45:17</td><td><p>Good imaging session. Scan range 100x100 nm, 256x256 px, 200 ms/line. Step-and-terrace structure well resolved, step height 2.0 A.</p></td><td>js</td><td>v3.2</td></tr>\n<tr><td>2021-10-18T10:22:41</td><td><p>Pressures: Analysis=1.7e-10 mbar, Prep=3.9e-9 mbar. System performing well after filament replacement.</p></td><td>ac</td><td>v3.1</td></tr>\n<tr><td>2021-05-07T13:55:29</td><td><p>Characterised new tip on reference crystal. Single-atom resolution achieved at 200 pA / 500 mV. Ready for experiment.</p></td><td>js</td><td>v3.1</td></tr>\n<tr><td>2020-11-23T09:08:14</td><td><p>Sample transferred to analysis chamber. No contamination visible in first overview scan (500x500 nm).</p></td><td>ac</td></tr>\n<tr><td>2020-06-16T11:30:55</td><td><p>Pressures: Analysis=2.3e-10 mbar, Prep=7.2e-9 mbar. Turbo pump replaced last week, system still recovering.</p></td><td>js</td></tr>\n<tr><td>2020-01-09T08:52:07</td><td><p>System startup after annual maintenance. All gauges reading nominal. Starting conditioning scan on reference sample.</p></td><td>js</td></tr>\n</table>",
+  "canread_base": 30.0,
+  "canread": "{\"teams\": [], \"users\": [], \"teamgroups\": []}",
+  "canwrite_base": 30.0,
+  "canwrite": "{\"teams\": [], \"users\": [], \"teamgroups\": []}",
+  "date": "2020-01-08",
+  "content_type": 1,
+  "rating": 0,
+  "state": 1,
+  "title": "UHV-STM System A",
+  "template": -1,
+  "userid": 1
+}

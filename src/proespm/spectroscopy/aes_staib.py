@@ -22,6 +22,8 @@ class AesStaib(Measurement):
         filepath (str): Path to .dat or .vms file
     """
 
+    measurement_family = "Spectroscopy"
+
     def __init__(self, filepath: Path) -> None:
         self.fileinfo = Fileinfo(filepath)
 

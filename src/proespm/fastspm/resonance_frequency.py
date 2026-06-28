@@ -18,6 +18,8 @@ class ResonanceFrequency(Measurement):
         filepath (str): Full path to the .h5 file
     """
 
+    measurement_family = "FastSPM"
+
     op_mode = "RF"
 
     def __init__(self, filepath: Path) -> None:

@@ -76,8 +76,87 @@ tr:nth-child(even) {
     color: white;
 }
 
+.navbar button {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    color: white;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 18px;
+    transition: background 0.15s;
+}
+
+.navbar button.active {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+/* COLLAPSABLE MEASUREMENT ROWS */
+summary {
+  margin: 20px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Default mode: measurement summaries invisible — cards appear like matkrin */
+section > details > summary {
+    display: none;
+}
+
+/* Lab Book View: reveal summaries and make them collapsible */
+body.lab-book-view section > details > summary {
+    display: block;
+}
+
+/* elab-entry — spans full width of the flex card */
+details.elab-entry {
+    flex: 0 0 100%;
+}
+
+details.elab-entry > summary {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    font-size: 16px;
+    font-weight: normal;
+    color: inherit;
+    cursor: pointer;
+}
+
+details.elab-entry > summary::marker {
+    display: none;
+}
+
+details.elab-entry > summary::-webkit-details-marker {
+    display: none;
+}
+
+/* reset margins on block elements rendered inside the log text */
+details.elab-entry > summary > p,
+details.elab-entry > summary > div {
+    flex: 1;
+    margin: 0;
+    text-align: justify;
+}
+
+details.elab-entry > summary::after {
+    content: "▶";
+    color: #bbb;
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-left: 12px;
+    align-self: center;
+}
+
+details.elab-entry[open] > summary::after {
+    content: "▼";
+    color: #888;
+}
+
 /* OVERVIEW */
-details {
+#overview_root {
     margin: 15px 20px;
     border-style: solid;
     border-width: 1px;
@@ -86,13 +165,14 @@ details {
     background-color: var(--row-bg-color);
 }
 
-details>summary {
+#overview_root>summary {
     cursor: pointer;
     padding: 15px 0 15px 20px;
     font-size: 1.2em;
+    margin: 0;
 }
 
-details>div {
+#overview_root>div {
     margin: 15px 20px 15px 20px;
 }
 
@@ -118,6 +198,11 @@ details>div {
     margin: 0 0 7px 0;
     max-width: 200px;
     text-align: center;
+}
+
+section,
+.elab-anchor {
+    scroll-margin-top: 55px;
 }
 
 .measurement-row {
