@@ -303,8 +303,8 @@ def create_html(
         template_dir = os.path.join(os.path.dirname(__file__), "templates")
 
     env = Environment(loader=FileSystemLoader(template_dir))
-    env.globals["isinstance"] = isinstance
-    env.globals["ElabFTW"] = ElabFtw
+    env.globals["isinstance"] = isinstance  # ty:ignore[invalid-assignment]
+    env.globals["ElabFTW"] = ElabFtw  # ty:ignore[invalid-assignment]
 
     template = env.get_template("base_template.j2")
 
